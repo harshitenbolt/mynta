@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    tools:context=".activity.DashboardActivity">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_margin="@dimen/margin_10dp"
+        android:background="@color/colorWhite"
+        app:cardElevation="5dp">
+
+        <ScrollView
+            android:id="@+id/svMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_10dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/mobile" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/rb_medium"
+                            android:gravity="center"
+                            android:visibility="gone"
+                            android:paddingBottom="10dp"
+                            android:text="Mobile Connected to Aadhaar"
+                            android:textColor="@color/colorDarkBlack" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/rb_medium"
+                            android:gravity="center"
+                            android:paddingBottom="10dp"
+                            android:text="Please provide store owner mobile number"
+                            android:textColor="@color/colorDarkBlack"
+                            android:textSize="@dimen/font_login" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingLeft="25dp"
+                            android:paddingRight="25dp">
+
+                            <EditText
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:enabled="false"
+                                android:fontFamily="@font/rb_medium"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:padding="15dp"
+                                android:text="+91"
+                                android:textColor="@color/colorDarkBlack" />
+
+                            <EditText
+                                android:id="@+id/edit_mobile"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/rb_regular"
+                                android:hint="0000000000"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:maxLines="1"
+                                android:padding="15dp"
+                                android:textColor="@color/colorDarkBlack"
+                                android:textColorHint="@color/colorDarkBlack" />
+
+
+                        </LinearLayout>
+
+
+                        <android.support.design.widget.FloatingActionButton
+                            android:id="@+id/btn_next"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|center_horizontal"
+
+                            android:layout_marginBottom="50dp"
+                            android:layout_marginTop="@dimen/margin_80dp"
+                            android:tint="@android:color/white"
+                            android:visibility="gone"
+                            app:backgroundTint="@color/colorPrimary"
+                            app:srcCompat="@drawable/ic_arrow_right_black" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txt_show_msg_sucess"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#A5D6A7"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="Sucessfully Done"
+                        android:textColor="#1E6023"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/txt_show_msg_fail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FFCDD2"
+                        android:gravity="center"
+                        android:padding="15dp"
+                        android:text="Sucessfully Done"
+                        android:textColor="#F44336"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+            </FrameLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

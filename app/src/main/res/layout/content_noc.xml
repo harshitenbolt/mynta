@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"></android.support.v7.widget.Toolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/toolbar"
+        android:background="#bebbbb" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/relative_buttom"
+
+        android:layout_below="@id/toolbar"
+        android:layout_margin="@dimen/margin_10dp"
+        app:contentPadding="5dp">
+
+        <WebView
+            android:id="@+id/web_view_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></WebView>
+    </android.support.v7.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/relative_buttom"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_active"
+        android:paddingTop="@dimen/margin_10dp">
+
+
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/btn_agree"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/agree_done"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/rb_medium"
+            android:gravity="center"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingTop="5dp"
+
+            android:text="AGREE"
+            android:textColor="@color/colorWhite"
+            app:fontFamily="@font/rb_medium" />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/btn_send_link"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_msg"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/rb_medium"
+            android:gravity="center"
+            android:visibility="gone"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:paddingTop="5dp"
+
+            android:text="SEND LINK"
+            android:textColor="@color/colorWhite"
+            app:fontFamily="@font/rb_medium" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/activity_thread_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        tools:ignore="RtlCompat" />
+</RelativeLayout>

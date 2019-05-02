@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@color/colorWhite"
+    tools:context=".activity.LoginActivity">
+
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvDelBoyList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btAddDelBoy"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/whitePrimary"
+            android:background="@drawable/rounded_corner_button"
+            android:text="Add Delivery Boy"/>
+
+        <Button
+            android:id="@+id/btSubmit"
+            android:enabled="false"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/whitePrimary"
+            android:background="@drawable/rounded_corner_button_grey"
+            android:text="Submit"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

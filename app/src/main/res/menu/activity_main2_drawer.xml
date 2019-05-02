@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:checkableBehavior="single"
+        android:visible="true">
+
+        <item
+            android:id="@+id/nav_1"
+            android:title="HOME" />
+        <item
+            android:id="@+id/nav_2"
+            android:title="ONBOARD VENDOR" />
+        <item
+            android:id="@+id/nav_v"
+
+            android:title="VENDOR LIST" />
+        <item
+            android:id="@+id/nav_3"
+
+            android:title="INVOICE" />
+
+        <item
+            android:id="@+id/nav_gst"
+
+            android:title="GST INVOICE" />
+
+        <item
+            android:id="@+id/nav_debit"
+
+            android:title="DEBIT NOTE" />
+        <item
+            android:id="@+id/nav_4"
+
+            android:title="NOTIFICATION" />
+        <item
+            android:id="@+id/nav_5"
+            android:title="REPORTS" />
+        <item
+            android:id="@+id/nav_6"
+            android:title="@string/app_version_2" />
+
+        <item
+            android:id="@+id/menu_profile"
+            android:title="PROFILE"
+            android:visible="false" />
+
+        <item
+            android:id="@+id/nav_logout"
+
+            android:title="LOGOUT" />
+
+    </group>
+
+
+</menu>

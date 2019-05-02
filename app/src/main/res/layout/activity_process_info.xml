@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <ImageView
+                android:id="@+id/iv_back_process"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+                />
+
+            <TextView
+                android:id="@+id/tv_title_Process"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:fontFamily="@font/rb_medium"
+                android:gravity="start|center"
+                android:padding="5dp"
+                android:text="Esign Verification"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp" />
+        </android.support.v7.widget.Toolbar>
+
+        <include
+            layout="@layout/content_progress_info_details"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/margin_15dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+
+    <!--<include layout="@layout/base_nav_drawer"></include>-->
+</LinearLayout>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    android:orientation="vertical"
+    tools:context=".fragment.VenderListFragment">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/iv_vendor_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_margin="5dp"
+                android:src="@drawable/opaper2" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8sdp"
+                android:background="@drawable/rounded_corner_view"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="Name : " />
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:fontFamily="@font/rb_medium"
+                    android:text="P.K.Chorasiya" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8sdp"
+                android:background="@drawable/rounded_corner_view"
+
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="Mobile : " />
+
+                <TextView
+                    android:id="@+id/tv_mobile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:fontFamily="@font/rb_medium"
+                    android:text="8585858585" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8sdp"
+                android:background="@drawable/rounded_corner_view"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="Store Name : " />
+
+                <TextView
+                    android:id="@+id/tv_shop_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:fontFamily="@font/rb_medium"
+                    android:text="Hanuman Bros." />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8sdp"
+                android:background="@drawable/rounded_corner_view"
+                android:orientation="horizontal"
+                android:padding="@dimen/margin_10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:text="EID : " />
+
+                <TextView
+                    android:id="@+id/tvProcessId"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    android:fontFamily="@font/rb_medium"
+                    android:text="124" />
+            </LinearLayout>
+            </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_weight="2"
+    android:gravity="center"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/llEdit"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/linear_cheq"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btn_update_cheque"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/margin_15dp"
+                        android:layout_marginRight="@dimen/margin_15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/chip_selected"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:fontFamily="@font/rb_medium"
+                        android:paddingLeft="@dimen/margin_10dp"
+                        android:paddingRight="@dimen/margin_10dp"
+                        android:text="Update Cheque Details"
+                        android:textAllCaps="false"
+                        android:textColor="#ffffff" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linear_del"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btn_update_delivery_boy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="@dimen/margin_15dp"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+                        android:background="@drawable/chip_selected"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:fontFamily="@font/rb_medium"
+                        android:paddingLeft="@dimen/margin_10dp"
+                        android:paddingRight="@dimen/margin_10dp"
+                        android:singleLine="true"
+                        android:text="Delivery Boy Details"
+                        android:textAllCaps="false"
+                        android:textColor="#ffffff" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btn_resend_agreement"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/margin_15dp"
+                        android:layout_marginLeft="@dimen/margin_15dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/chip_selected"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:fontFamily="@font/rb_medium"
+                        android:paddingLeft="@dimen/margin_10dp"
+                        android:paddingRight="@dimen/margin_10dp"
+                        android:text="Resend Agreement Link"
+
+                        android:textAllCaps="false"
+                        android:textColor="#ffffff"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btn_update_store_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/margin_15dp"
+                        android:layout_marginLeft="@dimen/margin_15dp"
+                        android:layout_marginRight="@dimen/margin_15dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/chip_selected"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:fontFamily="@font/rb_medium"
+
+                        android:paddingLeft="@dimen/margin_10dp"
+                        android:paddingRight="@dimen/margin_10dp"
+                        android:text="Change Rate/Add Store Type"
+                        android:textAllCaps="false"
+                        android:textColor="#ffffff" />
+                </LinearLayout>
+            </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+        </LinearLayout>
+
+
+</android.support.v7.widget.LinearLayoutCompat>

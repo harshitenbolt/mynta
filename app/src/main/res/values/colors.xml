@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5cb946</color>
+    <color name="colorPrimaryDark">#54ac41</color>
+    <color name="colorAccent">#71d15b</color>
+    <color name="colorDarkBlack">#212121</color>
+    <color name="colorLight">#7cb96e</color>
+    <color name="tab_bg">#9b9999</color>
+    <color name="allbg">#F4F4F7</color>
+    <color name="black_35">#59000000</color>
+    <color name="whitePrimary">#FFFFFF</color>
+
+    // font color
+    <color name="font_login">#212121</color>
+    <color name="lightGray">#f2f2f2</color>
+    <color name="lightGray2">#f4f4f4</color>
+
+    <!--fab colors-->
+    <color name="text_color_dark_grey">#6e6e6e</color>
+    <color name="overlay">#AA1C1C1C</color>
+    <color name="divider">#333333</color>
+    <color name="windowBackground">#1C1C1C</color>
+
+    <color name="color_333333">#333333</color>
+    <color name="color_a3a3a3">#a3a3a3</color>
+
+    <!--theme colors-->
+    <color name="colorShadow">#41000000</color>
+    <color name="colorBackground">#2b2b2b</color>
+    <color name="colorForeground">#3A3A3A</color>
+    <!--fab colors-->
+
+
+    <color name="colorAccentIcons">#edb537</color>
+
+
+    <!--chat-->
+    <!--text colors-->
+    <color name="colorTextPrimary">#D9FFFFFF</color>
+    <color name="colorTextPrimaryHighlighted">#F2FFFFFF</color>
+    <color name="colorTextSecondary">#8CFFFFFF</color>
+
+    <!--basic colors-->
+    <color name="colorTransparent">#00000000</color>
+    <color name="colorAccentPressed">#8cff72</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#1b1b1b</color>
+    <color name="colorEmptyStates">#40ffffff</color>
+    <color name="colorGrey">#BDBDBD</color>
+    <color name="colorRed">#F44336</color>
+    <color name="colorPink">#de7172</color>
+
+
+    <color name="color1">#F44336</color>
+    <color name="color2">#673AB7</color>
+    <color name="color3">#2196F3</color>
+    <color name="color4">#009688</color>
+    <color name="color5">#4CAF50</color>
+    <color name="color6">#8BC34A</color>
+    <color name="color7">#CDDC39</color>
+    <color name="color8">#FF5722</color>
+    <color name="color9">#795548</color>
+    <color name="color10">#757575</color>
+    <color name="color11">#607D8B</color>
+    <color name="color12">#EAEAEA</color>
+
+</resources>

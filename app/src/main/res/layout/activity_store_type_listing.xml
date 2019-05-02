@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.StoreTypeListingActivity">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/llApproved"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="@dimen/margin_10dp"
+                    android:text="Approved" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_approved_store_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llRejected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="@dimen/margin_10dp"
+                    android:text="Reconsider Price" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_rejected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llNeutral"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lightGray"
+                    android:gravity="center"
+                    android:padding="@dimen/margin_10dp"
+                    android:text="Select" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_neutral_store_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_update_store_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/margin_10dp"
+                    android:background="@drawable/chip_selected"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:fontFamily="@font/rb_medium"
+                    android:paddingLeft="@dimen/margin_10dp"
+                    android:paddingRight="@dimen/margin_10dp"
+                    android:text="Update Store Details"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff" />
+
+                <Button
+                    android:id="@+id/btn_skip_to_addendum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/margin_10dp"
+                    android:background="@drawable/chip_selected"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:fontFamily="@font/rb_medium"
+                    android:paddingLeft="@dimen/margin_10dp"
+                    android:paddingRight="@dimen/margin_10dp"
+                    android:text="Skip to Addendum"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

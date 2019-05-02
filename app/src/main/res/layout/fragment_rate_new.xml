@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    tools:context=".activity.DashboardActivity">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:backgroundTint="@color/colorWhite"
+        app:cardElevation="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/linear_bottom"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_rate_type"
+                    android:layout_width="match_parent"
+
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:id="@+id/linner_err_display"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/margin_10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="Find Details here"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/txt_notice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:textColor="@color/colorBlack" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/btn_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/margin_20dp"
+                    android:layout_margin="10dp"
+                    android:tint="@android:color/white"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_arrow_right_black" />
+
+                <Button
+                    android:id="@+id/btn_skip_to_addendum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/margin_10dp"
+                    android:background="@drawable/chip_selected"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:fontFamily="@font/rb_medium"
+                    android:paddingLeft="@dimen/margin_10dp"
+                    android:paddingRight="@dimen/margin_10dp"
+                    android:text="Skip to Addendum"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff"
+                    android:visibility="gone"
+                   />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linear_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/btn_submit_final"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_add_boy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/margin_15dp"
+                android:layout_marginTop="@dimen/margin_15dp"
+                android:background="@drawable/rounded_corner_button"
+                android:padding="10dp"
+                android:text="Add Delivery boy"
+                android:textAllCaps="false"
+                android:textColor="@color/whitePrimary" />
+
+            <!-- TODO: Update blank fragment layout -->
+
+            <TextView
+                android:id="@+id/tv_nodata"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Please Add Delivery Boy from above mentioned Button..."
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/margin_20dp"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_deliveryboylist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btn_submit_final"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/btn_active"
+            android:fontFamily="@font/rb_medium"
+            android:paddingTop="@dimen/margin_10dp"
+            android:text="Done"
+            android:textColor="@color/colorWhite" />
+    </RelativeLayout>
+</LinearLayout>

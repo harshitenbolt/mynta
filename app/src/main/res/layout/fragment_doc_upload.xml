@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    android:layout_above="@id/btn_next"
+    tools:context=".activity.LoginActivity">
+<ScrollView
+    android:id="@+id/svMain"
+    android:layout_width="match_parent"
+    android:fillViewport="true"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_next"
+        android:layout_below="@id/toolbar"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_25sdp"
+                android:paddingLeft="@dimen/margin_10dp"
+                android:gravity="center_vertical"
+                android:paddingRight="@dimen/margin_10dp"
+                android:text="Address Proof Documents"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/switch_shopact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:padding="@dimen/margin_10dp"
+                android:text="Choose shop act image"
+                android:textColor="@color/colorBlack" />
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_4sdp"
+                app:contentPaddingRight="@dimen/_4sdp"
+                app:contentPaddingLeft="@dimen/_4sdp"
+                app:contentPaddingTop="@dimen/_4sdp">
+
+                <RelativeLayout
+                    android:id="@+id/img_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    android:visibility="visible">
+
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/pager"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentTop="true"
+                        android:background="@drawable/image_placeholder" />
+
+                    <TextView
+                        android:id="@+id/pick_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Click here"
+                        android:textColor="@color/colorDarkBlack"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_35sdp"
+                        android:layout_alignParentBottom="true"
+                        android:background="#55000000"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/_10sdp"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:text="Swap Left|Right To change image"
+                        android:textColor="@color/colorWhite" />
+
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/margin_20dp"
+                    android:paddingRight="@dimen/margin_20dp"
+                    android:weightSum="1">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:src="@drawable/image_thums" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:src="@drawable/image_thums" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/margin_20dp"
+                    android:paddingRight="@dimen/margin_20dp"
+                    android:weightSum="1">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:src="@drawable/image_thums" />
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:src="@drawable/image_thums" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15dp"
+                android:paddingLeft="@dimen/margin_10dp"
+                android:paddingRight="@dimen/margin_10dp"
+                android:text="Store Image"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin_10dp"
+                android:text="Choose Store Image" />
+
+            <TextView
+                android:id="@+id/pick_image2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="right"
+                android:padding="10dp"
+                android:text="Pick Image"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:contentPadding="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp">
+
+                    <ImageView
+                        android:id="@+id/img_doc_upload_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/image_placeholder"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:id="@+id/ivImage2Selected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="@dimen/margin_20dp"
+                        android:src="@drawable/done"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/rb_regular"
+                        android:text="Click here"
+                        android:textColor="@color/colorDarkBlack"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15dp"
+                android:paddingLeft="@dimen/margin_10dp"
+                android:paddingRight="@dimen/margin_10dp"
+                android:text="Owner Image"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin_10dp"
+                android:text="Choose Owner Image" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:contentPadding="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp">
+
+                    <ImageView
+                        android:id="@+id/ivOwnerImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/image_placeholder"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:id="@+id/ivOwnerImageSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="@dimen/margin_20dp"
+                        android:src="@drawable/done"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/rb_regular"
+                        android:text="Click here"
+                        android:textColor="@color/colorDarkBlack"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_active"
+        android:fontFamily="@font/rb_medium"
+        android:paddingTop="@dimen/margin_10dp"
+        android:text="Upload"
+        android:textColor="@color/colorWhite" />
+
+</RelativeLayout>

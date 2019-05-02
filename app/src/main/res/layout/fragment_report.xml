@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:clickable="true"
+    tools:context=".activity.DashboardActivity">
+
+    <!--<android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/rb_medium"
+            android:padding="5dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="20dp" />
+    </android.support.v7.widget.Toolbar>-->
+
+    <RadioGroup
+        android:id="@+id/activity_course_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="visible">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/rb_in1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:checked="true"
+
+            android:text="ALL"
+
+            android:textSize="16sp" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/rb_in"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:checked="false"
+
+            android:text="Daily"
+            android:textSize="16sp" />
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/rb_ex"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:checked="false"
+
+            android:text="Monthly"
+
+            android:textSize="16sp" />
+
+
+    </RadioGroup>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/activity_course_rg"
+        android:background="#ffffff">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/imgnodata"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/nodata" />
+</LinearLayout>

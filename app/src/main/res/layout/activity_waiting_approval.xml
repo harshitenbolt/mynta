@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    tools:context=".fragment.WaitingApprovalFragment">
+
+
+
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/img"
+        android:padding="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+
+        android:layout_below="@+id/toolbar"
+
+        android:src="@drawable/logo_splash" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="@dimen/_20sdp"
+        android:text="Vendor need to wait till approval"
+        android:textColor="@color/colorPrimary" />
+</RelativeLayout>

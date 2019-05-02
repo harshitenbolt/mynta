@@ -1,0 +1,58 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="margin_15dp">15dp</dimen>
+    <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="margin_30dp">30dp</dimen>
+    <dimen name="margin_25dp">25dp</dimen>
+    <dimen name="margin_60dp">60dp</dimen>
+    <dimen name="margin_80dp">80dp</dimen>
+    <dimen name="margin_100dp">100dp</dimen>
+    <dimen name="spacing">16dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_xlarge">24dp</dimen>
+    <dimen name="spacing_xsmall">4dp</dimen>
+    <dimen name="text_size_m">20sp</dimen>
+    <dimen name="text_size_s">16sp</dimen>
+    <dimen name="button_height">48dp</dimen>
+
+
+    <dimen name="font_login">12sp</dimen>
+    <dimen name="font_signin">14sp</dimen>
+
+
+
+
+    <dimen name="app_bar_height">200dp</dimen>
+
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="font_size">14sp</dimen>
+    <dimen name="dash_img_size">110dp</dimen>
+
+    <!--chat-->
+
+    <dimen name="text_size_title">18sp</dimen>
+    <dimen name="text_size_primary">16sp</dimen>
+    <dimen name="text_size_secondary">14sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="text_size_primary_big">20sp</dimen>
+    <dimen name="text_size_primary_huge">26sp</dimen>
+
+    <dimen name="simple_padding_tiny">2dp</dimen>
+    <dimen name="simple_padding_small">4dp</dimen>
+    <dimen name="simple_padding_medium">8dp</dimen>
+    <dimen name="simple_padding_largish">12dp</dimen>
+    <dimen name="simple_padding_large">16dp</dimen>
+    <dimen name="simple_padding_larger">32dp</dimen>
+    <dimen name="simple_padding_huge">56dp</dimen>
+
+    <dimen name="toolbar_progress_size">24dp</dimen>
+
+
+</resources>

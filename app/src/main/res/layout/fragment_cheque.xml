@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    tools:context=".activity.LoginActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_next"
+        android:layout_below="@id/toolbar"
+        android:padding="@dimen/margin_10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/rb_medium"
+                android:gravity="center"
+                android:text="Canclled Cheque" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:contentPadding="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/btn_cheque_cards"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:adjustViewBounds="true"
+                        android:background="@drawable/cheque_placholder"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:id="@+id/btn_cheque_cards_done"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="@dimen/margin_20dp"
+                        android:src="@drawable/done"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/rb_regular"
+                        android:text="Click here"
+                        android:textColor="@color/colorDarkBlack"
+                        android:textSize="20sp" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <EditText
+                android:id="@+id/edit_ac_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20dp"
+                android:layout_marginRight="@dimen/margin_20dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/rounded_corner_view"
+                android:fontFamily="@font/rb_regular"
+                android:hint="Account Number"
+                android:imeActionLabel="Next"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:maxLength="20"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/margin_15dp"
+                android:paddingLeft="@dimen/margin_20dp"
+                android:paddingRight="@dimen/margin_10dp"
+                android:paddingTop="@dimen/margin_15dp"
+                android:textColor="@color/colorDarkBlack"
+                android:textColorHint="@color/colorDarkBlack"
+                android:textSize="@dimen/font_login" />
+
+            <EditText
+                android:id="@+id/edit_ac_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20dp"
+                android:layout_marginRight="@dimen/margin_20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_view"
+                android:fontFamily="@font/rb_regular"
+                android:hint="Payee Name"
+                android:imeActionLabel="Next"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLength="50"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/margin_15dp"
+                android:paddingLeft="@dimen/margin_20dp"
+                android:paddingRight="@dimen/margin_10dp"
+                android:paddingTop="@dimen/margin_15dp"
+                android:textColor="@color/font_login"
+                android:textColorHint="@color/colorDarkBlack"
+                android:textSize="@dimen/font_login" />
+
+            <EditText
+                android:id="@+id/edit_ifsc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20dp"
+                android:layout_marginRight="@dimen/margin_20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_view"
+                android:fontFamily="@font/rb_regular"
+                android:hint="IFSC Code"
+                android:imeActionLabel="Next"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:maxLength="12"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/margin_15dp"
+                android:paddingLeft="@dimen/margin_20dp"
+                android:paddingRight="@dimen/margin_10dp"
+                android:paddingTop="@dimen/margin_15dp"
+                android:textColor="@color/font_login"
+                android:textColorHint="@color/colorDarkBlack"
+                android:textSize="@dimen/font_login" />
+
+            <EditText
+                android:id="@+id/edit_bank_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20dp"
+                android:layout_marginRight="@dimen/margin_20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_view"
+                android:fontFamily="@font/rb_regular"
+                android:hint="Bank name"
+                android:imeActionLabel="Next"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/margin_15dp"
+                android:paddingLeft="@dimen/margin_20dp"
+                android:paddingRight="@dimen/margin_10dp"
+                android:paddingTop="@dimen/margin_15dp"
+                android:textColor="@color/font_login"
+                android:textColorHint="@color/colorDarkBlack"
+                android:textSize="@dimen/font_login" />
+
+            <EditText
+                android:id="@+id/edit_bank_branch_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20dp"
+                android:layout_marginRight="@dimen/margin_20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_view"
+                android:fontFamily="@font/rb_regular"
+                android:hint="Bank branch name"
+                android:imeActionLabel="Next"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/margin_15dp"
+                android:paddingLeft="@dimen/margin_20dp"
+                android:paddingRight="@dimen/margin_10dp"
+                android:paddingTop="@dimen/margin_15dp"
+                android:textColor="@color/font_login"
+                android:textColorHint="@color/colorDarkBlack"
+                android:textSize="@dimen/font_login" />
+
+            <EditText
+                android:id="@+id/edit_bank_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_20dp"
+                android:layout_marginRight="@dimen/margin_20dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corner_view"
+                android:fontFamily="@font/rb_regular"
+                android:hint="Bank address"
+                android:imeActionLabel="Next"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingBottom="@dimen/margin_15dp"
+                android:paddingLeft="@dimen/margin_20dp"
+                android:paddingRight="@dimen/margin_10dp"
+                android:paddingTop="@dimen/margin_15dp"
+                android:textColor="@color/font_login"
+                android:textColorHint="@color/colorDarkBlack"
+                android:textSize="@dimen/font_login" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
+                android:layout_marginTop="@dimen/margin_10dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cbAgreeTC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margin_10dp"
+                    android:checked="false"
+                    android:padding="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_10dp"
+                    android:text="I have verified above data with physical copy of cheque." />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/txt_show_msg_sucess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="#A5D6A7"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Sucessfully Done"
+        android:textColor="#1E6023"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txt_show_msg_fail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:background="#FFCDD2"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="Sucessfully Done"
+        android:textColor="#F44336"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_active"
+        android:fontFamily="@font/rb_medium"
+        android:paddingTop="@dimen/margin_10dp"
+        android:text="Upload"
+        android:textColor="@color/colorWhite" />
+
+</RelativeLayout>

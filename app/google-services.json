@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "926736469204",
+    "firebase_url": "https://opapermy.firebaseio.com",
+    "project_id": "opapermy",
+    "storage_bucket": "opapermy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926736469204:android:8c69cbf34ffbd621",
+        "android_client_info": {
+          "package_name": "com.canvascoders.opaper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "926736469204-589ajgpmp12ug813vv1jnh7gvv77k7mh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJjVzZQp7_lo0bh7VJ3iU80f4pDkkWWqs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

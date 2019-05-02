@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="@dimen/margin_30dp"
+    android:background="@drawable/rounded_corner_white"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/whitePrimary"
+        android:paddingTop="@dimen/margin_20dp"
+        android:paddingBottom="@dimen/margin_20dp"
+        android:paddingRight="@dimen/margin_10dp"
+        android:paddingLeft="@dimen/margin_10dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ivSkip"
+            android:layout_width="@dimen/margin_60dp"
+            android:layout_height="@dimen/margin_60dp"
+            android:src="@drawable/checked"/>
+        <TextView
+            android:id="@+id/tvSuccess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:textSize="@dimen/margin_20dp"
+            android:lines="4"
+            android:layout_marginTop="@dimen/margin_30dp"
+            android:text="Sent SuccessFully !!!"/>
+
+
+        <Button
+            android:id="@+id/btOk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#7dd460"
+            android:text="OK"
+            android:paddingBottom="@dimen/margin_10dp"
+            android:paddingTop="@dimen/margin_10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="@dimen/margin_20dp"
+            android:layout_marginLeft="@dimen/margin_15dp"
+            android:layout_marginRight="@dimen/margin_15dp"
+            android:textColor="@color/whitePrimary"
+            android:layout_marginTop="@dimen/margin_25dp"/>
+
+    </LinearLayout>
+</LinearLayout>

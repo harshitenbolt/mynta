@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/edit_name"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/margin_15dp"
+    android:background="@color/colorWhite"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/main_linner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/lbl_your_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_10dp"
+            android:fontFamily="@font/rb_medium"
+            android:gravity="center"
+            android:padding="@dimen/margin_10dp"
+            android:text="@string/complete_esign"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/margin_15dp" />
+
+
+        <ProgressBar
+            android:id="@+id/pbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_10dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/relative_buttom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/margin_10dp">
+
+        <Button
+            android:id="@+id/btnResend"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_20dp"
+            android:layout_marginRight="@dimen/margin_15dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corner_button"
+            android:fontFamily="@font/rb_medium"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="Resend"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            app:fontFamily="@font/rb_medium" />
+
+        <Button
+            android:id="@+id/btnCheckSign"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/margin_15dp"
+            android:layout_marginRight="@dimen/margin_20dp"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corner_button"
+            android:drawablePadding="10dp"
+            android:fontFamily="@font/rb_medium"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="Check E-Sign"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            app:fontFamily="@font/rb_medium" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:elevation="5dp"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/btnDashboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:background="#00000000"
+            android:drawableLeft="@drawable/viewdashboard"
+            android:drawablePadding="15dp"
+            android:fontFamily="@font/rb_medium"
+            android:gravity="left|center"
+            android:padding="20dp"
+            android:text="GO TO DASHBOARD" />
+    </android.support.v7.widget.CardView>
+</LinearLayout>
