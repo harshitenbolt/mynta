@@ -47,7 +47,7 @@
                 android:fontFamily="@font/rb_bold"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Rate sent for approval"
+                android:text="Kirana sent for approval"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18dp" />
 

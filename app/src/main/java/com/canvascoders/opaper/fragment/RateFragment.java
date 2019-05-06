@@ -304,21 +304,28 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
                 if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE)) {
-                    if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0)
-                        try {
+                    if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
+                        if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
+                            try {
 //                        float rate = Float.parseFloat(rateTypeBeans.get(i).getRate());
 //                        if(rate>0)
-                            jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
+                                jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
 //                        else
 //                        {
 //                            Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
 //                            return;
 //                        }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        }
+                        else {
+                            Toast.makeText(mcontext, "Issue with Rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                             return;
                         }
+                    }
 
                     else {
                         Toast.makeText(mcontext, "Issue with Rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
@@ -371,6 +378,9 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                                     showDialogApproval(jsonObject.getString("response"));
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(mcontext);
+                                }
+                                else{
+                                    Toast.makeText(getActivity(),jsonObject.getString("response"),Toast.LENGTH_LONG).show();
                                 }
                             } else if (response.code() == 405) {
                                 sessionManager.logoutUser(mcontext);

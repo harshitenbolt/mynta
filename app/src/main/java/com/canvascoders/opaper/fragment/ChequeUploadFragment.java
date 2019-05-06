@@ -608,10 +608,6 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                                         Toast.makeText(getActivity(), validation.getCancelledCheque(), Toast.LENGTH_LONG).show();
                                     }
 
-                                    if (validation.getCancelledCheque() != null && validation.getCancelledCheque().length() > 0) {
-                                        Toast.makeText(getActivity(), validation.getCancelledCheque(), Toast.LENGTH_LONG).show();
-                                    }
-
 
                                 } else {
                                     Toast.makeText(getActivity(), chequeDetail.getStatus(), Toast.LENGTH_LONG).show();

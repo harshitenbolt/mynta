@@ -727,9 +727,9 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                         if (chequeDetail.getResponseCode() == 200) {
                             showAlert(response.body().getResponse());
                         }
-                        if(chequeDetail.getResponseCode() == 400){
+                        if (chequeDetail.getResponseCode() == 400) {
                             progressDialog.dismiss();
-                            if(chequeDetail.getValidation() != null) {
+                            if (chequeDetail.getValidation() != null) {
                                 Validation validation = chequeDetail.getValidation();
                                 if (validation.getIfsc() != null && validation.getIfsc().length() > 0) {
                                     edit_ifsc.setError(validation.getIfsc());
@@ -739,16 +739,34 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                                 if (validation.getBankAc() != null && validation.getBankAc().length() > 0) {
                                     edit_ac_no.setError(validation.getBankAc());
                                     edit_ac_no.requestFocus();
+
                                 }
                                 if (validation.getAcName() != null && validation.getAcName().length() > 0) {
                                     edit_ac_name.setError(validation.getAcName());
                                     edit_ac_name.requestFocus();
+
+                                    // Toast.makeText(getActivity(),validation.getAgentId(),Toast.LENGTH_LONG).show();
                                 }
-                            }
-                            else{
-                                Toast.makeText(mcontext, chequeDetail.getResponse(), Toast.LENGTH_SHORT).show();
+                                if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
+                                    Toast.makeText(getActivity(), validation.getProccessId(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                    Toast.makeText(getActivity(), validation.getAgentId(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getRequestId() != null && validation.getRequestId().length() > 0) {
+                                    Toast.makeText(getActivity(), validation.getRequestId(), Toast.LENGTH_LONG).show();
+
+                                }
+                                if (validation.getCancelledCheque() != null && validation.getCancelledCheque().length() > 0) {
+                                    Toast.makeText(getActivity(), validation.getCancelledCheque(), Toast.LENGTH_LONG).show();
+                                }
+
+
+                            } else {
+                                Toast.makeText(getActivity(), chequeDetail.getStatus(), Toast.LENGTH_LONG).show();
                             }
 
+                            // ErrorResponsePanCard errorResponsePanCard = response.body();
                         }
                         else {
 

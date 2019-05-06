@@ -68,7 +68,7 @@ import static com.canvascoders.opaper.utils.Constants.showAlert;
 
 public class InfoFragment extends Fragment implements View.OnClickListener {
 
-    private EditText etOwnerName, edit_fathername, edit_email, etRoute, etResidentialAddress,etResidentialStreet,etResidentialLandmark,etResidentialPincode,etResidentialCity,etResidentialState,etPermententAdd,etPermanentStreet,etPermanentLandmark,etPermanentPincode,etPermanentCity,etPermanentState, edit_storename, edit_storeaddress, edit_pincode, edit_gstn, edit_city, edit_state, edit_licenceno;
+    private EditText etOwnerName, edit_fathername, edit_email, etRoute, etResidentialAddress,etResidentialStreet,etResidentialLandmark,etResidentialPincode,etResidentialCity,etResidentialState,etPermententAdd,etPermanentStreet,etPermanentLandmark,etPermanentPincode,etPermanentCity,etPermanentState, edit_storename, edit_storeaddress,etStreet,etLandmark, edit_pincode, edit_gstn, edit_city, edit_state, edit_licenceno;
     private Toolbar toolbar;
     private TextView tvLanguage, tvDob,tvStoreType;
     private SwitchCompat switchGst, switchPartner;
@@ -224,6 +224,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
         edit_storename = (EditText) view.findViewById(R.id.edit_storename);
         edit_storename.setFilters(new InputFilter[]{filter});
         edit_storeaddress = (EditText) view.findViewById(R.id.edit_storeaddress);
+        etStreet = view.findViewById(R.id.etStreet);
+        etLandmark = view.findViewById(R.id.etLandmark);
         edit_pincode = (EditText) view.findViewById(R.id.edit_pincode);
         edit_gstn = (EditText) view.findViewById(R.id.edit_gstn);
         tvPartner = (TextView) view.findViewById(R.id.tvPartnerWith);
@@ -509,7 +511,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
         if (TextUtils.isEmpty(edit_email.getText().toString())) {
             edit_email.requestFocus();
             edit_email.setError("Provide Email");
-
             // showMSG(false, "dProvide Email");
             return false;
         }
@@ -526,18 +527,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
             edit_storename.setError("Provide store name");
             return false;
         }
-        if (TextUtils.isEmpty(edit_storeaddress.getText().toString())) {
-            edit_storeaddress.requestFocus();
-            edit_storeaddress.setError("Provide store address");
-            //showMSG(false, "Provide Store address");
-            return false;
-        }
-        if (TextUtils.isEmpty(edit_pincode.getText().toString())) {
-            edit_pincode.requestFocus();
-            edit_pincode.setError("Provide pincode");
-            // showMSG(false, "Provide Pincode");
-            return false;
-        }
         if (TextUtils.isEmpty(etOwnerName.getText().toString())) {
             etOwnerName.requestFocus();
             etOwnerName.setError("Provide Owner Name");
@@ -549,6 +538,44 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
             // showMSG(false, "Provide Pincode");
             return false;
         }
+        if (TextUtils.isEmpty(edit_storeaddress.getText().toString())) {
+            edit_storeaddress.requestFocus();
+            edit_storeaddress.setError("Provide store address");
+            //showMSG(false, "Provide Store address");
+            return false;
+        }
+        if (TextUtils.isEmpty(etStreet.getText().toString())) {
+            etStreet.requestFocus();
+            etStreet.setError("Provide store street");
+            //showMSG(false, "Provide Store address");
+            return false;
+        }
+        if (TextUtils.isEmpty(etLandmark.getText().toString())) {
+            etLandmark.requestFocus();
+            etLandmark.setError("Provide landmark");
+            //showMSG(false, "Provide Store address");
+            return false;
+        }
+        if (TextUtils.isEmpty(edit_pincode.getText().toString())) {
+            edit_pincode.requestFocus();
+            edit_pincode.setError("Provide pincode");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
+        if (TextUtils.isEmpty(edit_city.getText().toString())) {
+            edit_city.requestFocus();
+            edit_city.setError("Provide City");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
+        if (TextUtils.isEmpty(edit_state.getText().toString())) {
+            edit_state.requestFocus();
+            edit_state.setError("Provide State");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
+
+
         if (TextUtils.isEmpty(etRoute.getText().toString())) {
             etRoute.requestFocus();
             etRoute.setError("Provide Route");
@@ -562,6 +589,37 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
             // showMSG(false, "Provide Pincode");
             return false;
         }
+        if (TextUtils.isEmpty(etResidentialStreet.getText().toString())) {
+            etResidentialStreet.requestFocus();
+            etResidentialStreet.setError("Provide Residential Street");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
+
+        if (TextUtils.isEmpty(etResidentialLandmark.getText().toString())) {
+            etResidentialLandmark.requestFocus();
+            etResidentialLandmark.setError("Provide Residential Landmark");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
+        if (TextUtils.isEmpty(etResidentialPincode.getText().toString())) {
+            etResidentialPincode.requestFocus();
+            etResidentialPincode.setError("Provide Residential pincode");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
+        if (TextUtils.isEmpty(etResidentialCity.getText().toString())) {
+            etResidentialCity.requestFocus();
+            etResidentialCity.setError("Provide Residential City");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
+        if (TextUtils.isEmpty(etResidentialState.getText().toString())) {
+            etResidentialState.requestFocus();
+            etResidentialState.setError("Provide Residential State");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
 
         if (TextUtils.isEmpty(etPermententAdd.getText().toString())) {
             etPermententAdd.requestFocus();
@@ -569,16 +627,47 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
             // showMSG(false, "Provide Pincode");
             return false;
         }
-        /*if (spTypeofVendor.getSelectedItem().equals("--Type of Vendor--")) {
-            spTypeofVendor.requestFocus();
-            Toast.makeText(getActivity(), "Select Type of Vendor", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(etPermanentStreet.getText().toString())) {
+            etPermanentStreet.requestFocus();
+            etPermanentStreet.setError("Provide Permanent Address Street");
             // showMSG(false, "Provide Pincode");
             return false;
-        }*/
+        }
+        if (TextUtils.isEmpty(etPermanentLandmark.getText().toString())) {
+            etPermanentLandmark.requestFocus();
+            etPermanentLandmark.setError("Provide Permanent Address Landmark");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
+
+
+        if (TextUtils.isEmpty(etPermanentPincode.getText().toString())) {
+            etPermanentPincode.requestFocus();
+            etPermanentPincode.setError("Provide Permanent Address Pincode");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
+        if (TextUtils.isEmpty(etPermanentCity.getText().toString())) {
+            etPermanentCity.requestFocus();
+            etPermanentCity.setError("Provide Permanent Address City");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
+        if (TextUtils.isEmpty(etPermanentState.getText().toString())) {
+            etPermanentState.requestFocus();
+            etPermanentState.setError("Provide Permanent Address State");
+            // showMSG(false, "Provide Pincode");
+            return false;
+        }
 
         if (spShipment.getSelectedItem().equals("Shipment Transfer")) {
             spShipment.requestFocus();
-            Toast.makeText(getActivity(), "Select Shipment Type", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Select Shipment Transfer Type", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (TextUtils.isEmpty(edit_licenceno.getText().toString())) {
+            edit_licenceno.requestFocus();
+            edit_licenceno.setError("Provide Licence Number");
             // showMSG(false, "Provide Pincode");
             return false;
         }
@@ -626,12 +715,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
         }
 
 
-//        if (TextUtils.isEmpty(edit_licenceno.getText().toString())) {
-//            edit_licenceno.requestFocus();
-//            showMSG(false, "Provide Licence number");
-//            return false;
-//        }
-
         return true;
     }
 
@@ -665,7 +748,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
         user.addProperty(Constants.PARAM_PROCESS_ID, str_process_id);
         user.addProperty(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
-        user.addProperty(Constants.PARAM_FATHER_NAME, "" + edit_fathername.getText());
         user.addProperty(Constants.PARAM_EMAIL, "" + edit_email.getText());
         user.addProperty(Constants.PARAM_IF_GST, isgsttn);
         user.addProperty(Constants.PARAM_GSTN, "" + edit_gstn.getText());
@@ -675,6 +757,10 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
         user.addProperty(Constants.PARAM_CITY, "" + edit_city.getText());
         user.addProperty(Constants.PARAM_STORE_NAME, "" + edit_storename.getText());
         user.addProperty(Constants.PARAM_STORE_ADDRESS, "" + edit_storeaddress.getText());
+        user.addProperty(Constants.PARAM_STORE_ADDRESS1, "" + etStreet.getText());
+        user.addProperty(Constants.PARAM_STORE_ADDRESS_LANDMARK,""+etLandmark.getText());
+
+
         user.addProperty(Constants.PARAM_LICENCE_NO, "" + edit_licenceno.getText());
 
         //new Update
@@ -682,7 +768,24 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
         user.addProperty(Constants.PARAM_DOB, "" + tvDob.getText());
         user.addProperty(Constants.PARAM_ROUTE, "" + etRoute.getText());
         user.addProperty(Constants.PARAM_RESIDENTIAL_ADDRESS, "" + etResidentialAddress.getText());
+        user.addProperty(Constants.PARAM_RESIDENTIAL_ADDRESS1, "" + etResidentialStreet.getText());
+        user.addProperty(Constants.PARAM_RESIDENTIAL_LANDMARK, "" + etResidentialLandmark.getText());
+        user.addProperty(Constants.PARAM_RESIDENTIAL_CITY, "" + etResidentialCity.getText());
+        user.addProperty(Constants.PARAM_RESIDENTIAL_PINCODE, "" + etResidentialPincode.getText());
+        user.addProperty(Constants.PARAM_RESIDENTIAL_STATE, "" + etResidentialState.getText());
+
+
+
+
         user.addProperty(Constants.PARAM_PERMANENT_ADDRESS, "" + etPermententAdd.getText());
+        user.addProperty(Constants.PARAM_PERMANENT_ADDRESS1, "" + etPermanentStreet.getText());
+        user.addProperty(Constants.PARAM_PERMANENT_ADDRESS_LANDMARK, "" + etPermanentLandmark.getText());
+        user.addProperty(Constants.PARAM_PERMANENT_ADDRESS_PINCODE, "" + etPermanentPincode.getText());
+        user.addProperty(Constants.PARAM_PERMANENT_ADDRESS_CITY, "" + etPermanentCity.getText());
+        user.addProperty(Constants.PARAM_PERMANENT_ADDRESS_STATE, "" + etPermanentState.getText());
+
+
+
         user.addProperty(Constants.PARAM_VENDOR_TYPE, "" + spTypeofVendor.getSelectedItem());
         user.addProperty(Constants.PARAM_LOCALITY, "" + spLocality.getSelectedItem());
         user.addProperty(Constants.PARAM_APPROACH, "" + spApproach.getSelectedItem());
@@ -713,49 +816,44 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
                         mProgressDialog.dismiss();
                         if (getUserDetailResponse.getValidation() != null) {
                             Validation validation = getUserDetailResponse.getValidation();
-                            if (validation.getStoreName() != null && validation.getStoreName().length() > 0) {
-                                edit_storename.setError(validation.getStoreName());
-                                edit_storename.requestFocus();
-                                // return false;
-                            }
                             if (validation.getOwnerName() != null && validation.getOwnerName().length() > 0) {
                                 etOwnerName.setError(validation.getOwnerName());
                                 etOwnerName.requestFocus();
                                 // return false;
                             }
-                            if (validation.getEmail() != null && validation.getEmail().length() > 0) {
-                                edit_email.setError(validation.getEmail());
-                                edit_email.requestFocus();
-                                // return false;
-                            }
-
                             if (validation.getDob() != null && validation.getDob().length() > 0) {
                                 tvDob.setError(validation.getOwnerName());
                                 tvDob.requestFocus();
                                 // return false;
                             }
+                            if (validation.getRoute() != null && validation.getRoute().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etRoute.setError(validation.getRoute());
+                                etRoute.requestFocus();
 
-                            if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
-                                Toast.makeText(getActivity(), validation.getProccessId(), Toast.LENGTH_LONG).show();
+                            }
+                            if (validation.getStoreAddress() != null && validation.getStoreAddress().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                edit_storeaddress.setError(validation.getStoreAddress());
+                                edit_storeaddress.requestFocus();
 
-                                // return false;
                             }
-                            if (validation.getStoreTypeConfig() != null && validation.getStoreTypeConfig().length() > 0) {
-                                Toast.makeText(getActivity(), validation.getStoreTypeConfig(), Toast.LENGTH_LONG).show();
+                            if (validation.getStoreAddress1() != null && validation.getStoreAddress1().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etStreet.setError(validation.getStoreAddress1());
+                                etStreet.requestFocus();
 
-                                // return false;
                             }
-                            if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
-                                Toast.makeText(getActivity(), validation.getAgentId(), Toast.LENGTH_LONG).show();
+                            if (validation.getStoreAddressLandmark() != null && validation.getStoreAddressLandmark().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etLandmark.setError(validation.getStoreAddressLandmark());
+                                etLandmark.requestFocus();
+                            }
+                            if (validation.getPincode() != null && validation.getPincode().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                edit_pincode.setError(validation.getPincode());
+                                edit_pincode.requestFocus();
 
-                                // return false;
-                            }
-                            if (validation.getIfGst() != null && validation.getIfGst().length() > 0) {
-                                edit_gstn.setError(validation.getIfGst());
-                                edit_gstn.requestFocus();
-                            }
-                            if (validation.getDc() != null && validation.getDc().length() > 0) {
-                                Toast.makeText(getActivity(), validation.getDc(), Toast.LENGTH_LONG).show();
                             }
                             if (validation.getCity() != null && validation.getCity().length() > 0) {
 
@@ -766,33 +864,67 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
                                 edit_state.setError(validation.getState());
                                 edit_state.requestFocus();
                             }
-                            if (validation.getStoreAddress() != null && validation.getStoreAddress().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                edit_storeaddress.setError(validation.getStoreAddress());
-                                edit_storeaddress.requestFocus();
-
-                            }
-                            if (validation.getPincode() != null && validation.getPincode().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                edit_pincode.setError(validation.getPincode());
-                                edit_pincode.requestFocus();
-
-                            }
-                            if (validation.getRoute() != null && validation.getRoute().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                etRoute.setError(validation.getRoute());
-                                etRoute.requestFocus();
-
-                            }
                             if (validation.getResidentialAddress() != null && validation.getResidentialAddress().length() > 0) {
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 etResidentialAddress.setError(validation.getResidentialAddress());
                                 etResidentialAddress.requestFocus();
                             }
+                            if (validation.getResidentialAddress1() != null && validation.getResidentialAddress1().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etResidentialStreet.setError(validation.getResidentialAddress1());
+                                etResidentialStreet.requestFocus();
+                            }
+                            if (validation.getResidentialAddressLandmark() != null && validation.getResidentialAddressLandmark().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etResidentialLandmark.setError(validation.getResidentialAddressLandmark());
+                                etResidentialLandmark.requestFocus();
+                            }
+                            if (validation.getResidentialAddresspicode() != null && validation.getResidentialAddresspicode().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etResidentialPincode.setError(validation.getResidentialAddresspicode());
+                                etResidentialPincode.requestFocus();
+                            }
+                            if (validation.getResidentialAddressCity() != null && validation.getResidentialAddressCity().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etResidentialCity.setError(validation.getResidentialAddressCity());
+                                etResidentialCity.requestFocus();
+                            }
+                            if (validation.getResidentialAddressState() != null && validation.getResidentialAddressState().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etResidentialState.setError(validation.getResidentialAddressState());
+                                etResidentialState.requestFocus();
+                            }
+
                             if (validation.getPermanentAddress() != null && validation.getPermanentAddress().length() > 0) {
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 etPermententAdd.setError(validation.getPermanentAddress());
                                 etPermententAdd.requestFocus();
+                            }
+
+                            if (validation.getPermanentAddress1() != null && validation.getPermanentAddress1().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etPermanentStreet.setError(validation.getPermanentAddress1());
+                                etPermanentStreet.requestFocus();
+                            }
+                            if (validation.getPermanentAddressLandmark() != null && validation.getPermanentAddressLandmark().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etPermanentLandmark.setError(validation.getPermanentAddressLandmark());
+                                etPermanentLandmark.requestFocus();
+                            }
+                            if (validation.getPermanentAddressPicode() != null && validation.getPermanentAddressPicode().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etPermanentPincode.setError(validation.getPermanentAddressPicode());
+                                etPermanentPincode.requestFocus();
+                            }
+                            if (validation.getPermanentAddressCity() != null && validation.getPermanentAddressCity().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etPermanentCity.setError(validation.getPermanentAddressCity());
+                                etPermanentCity.requestFocus();
+                            }
+                            if (validation.getPermanentAddressState() != null && validation.getPermanentAddressState().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etPermanentState.setError(validation.getPermanentAddressState());
+                                etPermanentState.requestFocus();
                             }
                             if (validation.getVendorType() != null && validation.getVendorType().length() > 0) {
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
@@ -818,10 +950,42 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 Toast.makeText(mcontext, validation.getPartnerWithOtherEcommerce(), Toast.LENGTH_SHORT).show();
                             }
-                            if (validation.getPartnerWithOtherEcommerce() != null && validation.getPartnerWithOtherEcommerce().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                Toast.makeText(mcontext, validation.getPartnerWithOtherEcommerce(), Toast.LENGTH_SHORT).show();
-                            } else {
+                            if (validation.getStoreName() != null && validation.getStoreName().length() > 0) {
+                                edit_storename.setError(validation.getStoreName());
+                                edit_storename.requestFocus();
+                                // return false;
+                            }
+                            if (validation.getIfGst() != null && validation.getIfGst().length() > 0) {
+                                edit_gstn.setError(validation.getIfGst());
+                                edit_gstn.requestFocus();
+                            }
+                            if (validation.getDc() != null && validation.getDc().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getDc(), Toast.LENGTH_LONG).show();
+                            }
+
+
+                            if (validation.getEmail() != null && validation.getEmail().length() > 0) {
+                                edit_email.setError(validation.getEmail());
+                                edit_email.requestFocus();
+                                // return false;
+                            }
+
+                            if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getProccessId(), Toast.LENGTH_LONG).show();
+
+                                // return false;
+                            }
+                            if (validation.getStoreTypeConfig() != null && validation.getStoreTypeConfig().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getStoreTypeConfig(), Toast.LENGTH_LONG).show();
+
+                                // return false;
+                            }
+                            if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getAgentId(), Toast.LENGTH_LONG).show();
+
+                                // return false;
+                            }
+                             else {
                                 showAlert(v, getUserDetailResponse.getResponse(), false);
                             }
 
@@ -852,8 +1016,10 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
 
     private void addDC(String pcode,String pincodenumber) {
         // state is DC and DC is state
+        if(pincodenumber.equalsIgnoreCase("1")){
+            dcLists.clear();
+        }
 
-        dcLists.clear();
         mProgressDialog.show();
 
         JsonObject user = new JsonObject();

@@ -286,6 +286,9 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(StoreTypeListingActivity.this);
                                 }
+                                else{
+                                    showDialogApproval2(jsonObject.optString("response"));
+                                }
                             } else if (response.code() == 202) {
                                 showDialogApproval(jsonObject.optString("message"));
                             } else if (response.code() == 405) {
@@ -334,6 +337,25 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+    public void showDialogApproval2(String Msg) {
+        // Display message in dialog box if you have not internet connection
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(StoreTypeListingActivity.this);
+        alertDialogBuilder.setTitle("Error !!");
+        alertDialogBuilder.setMessage(Msg);
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                arg0.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
+
 
     private void getStoreListing(Integer proccessId) {
         JsonObject dataObj = new JsonObject();

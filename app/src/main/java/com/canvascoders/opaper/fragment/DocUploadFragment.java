@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.ImageUtils;
@@ -66,7 +67,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
     private String TAG = "DocUpload";
     private Button btn_next;
     private static final int IMAGE_SHPO_ACT = 103;
-    private static final int IMAGE_SHOP_IMG = 105,IMAGE_OWNER_IMG=106;
+    private static final int IMAGE_SHOP_IMG = 105, IMAGE_OWNER_IMG = 106;
     private static int IMAGE_SELCTED_IMG = 0;
     private Uri imgURI;
     private String shopImg = "";
@@ -78,7 +79,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
     private String shop_act = "shop_act";
     //private PermissionUtil.PermissionRequestObject mALLPermissionRequest;
 
-    ImageView img_doc_upload_2, ivImage2Selected,ivOwnerImage,ivOwnerImageSelected;
+    ImageView img_doc_upload_2, ivImage2Selected, ivOwnerImage, ivOwnerImageSelected;
     SwitchCompat switch_shopact;
     private static ViewPager mPager;
     private MyAdapter myAdapter;
@@ -89,7 +90,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
     View view;
     ProgressDialog progressDialog;
     private RequestPermissionHandler requestPermissionHandler;
-    String str_process_id,delBoyScreen;
+    String str_process_id, delBoyScreen;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -312,7 +313,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
             }
         }
 
-        if(v.getId() == R.id.ivOwnerImage){
+        if (v.getId() == R.id.ivOwnerImage) {
             capture_document_front_and_back_image(3);
         }
 
@@ -322,7 +323,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
 
         MultipartBody.Part shop_image_part = null;
         MultipartBody.Part shop_act_part = null;
-        MultipartBody.Part owner_img_part= null;
+        MultipartBody.Part owner_img_part = null;
 
 
         Mylogger.getInstance().Logit(TAG, "getUserInfo");
@@ -357,7 +358,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
             progressDialog.setMessage("Please Wait Uploading User Documents...");
             progressDialog.show();
 
-            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreDocument("Bearer "+sessionManager.getToken(),params, shop_image_part, shop_act_part,owner_img_part);
+            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreDocument("Bearer " + sessionManager.getToken(), params, shop_image_part, shop_act_part, owner_img_part);
             callUpload.enqueue(new Callback<CommonResponse>() {
                 @Override
                 public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
@@ -371,14 +372,16 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
 
                             str_process_id = String.valueOf(getdocumentdetail.getData().get(0).getProccess_id());
                             delBoyScreen = getdocumentdetail.getData().get(0).getDelBoysCreen();
-                            showAlert(response.body().getResponse(),delBoyScreen);
+                            showAlert(response.body().getResponse(), delBoyScreen);
 
                         } else {
 
+                           Toast.makeText(getActivity(),getdocumentdetail.getResponse(),Toast.LENGTH_LONG).show();
 
                         }
 
-                    } else {
+                    }
+                    else{
                         Toast.makeText(mcontext, "Server Timeout", Toast.LENGTH_LONG).show();
                     }
 
@@ -396,7 +399,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
 
     }
 
-    private void showAlert(String msg,String delBoyScreen) {
+    private void showAlert(String msg, String delBoyScreen) {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mcontext);
         alertDialog.setTitle("Vendor Documents");
@@ -404,10 +407,10 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-               // commanFragmentCallWithoutBackStack(new RateFragment());
-                if(delBoyScreen.equalsIgnoreCase("1")){
-                commanFragmentCallWithoutBackStack(new DeliveryBoyFragment());}
-                else{
+                // commanFragmentCallWithoutBackStack(new RateFragment());
+                if (delBoyScreen.equalsIgnoreCase("1")) {
+                    commanFragmentCallWithoutBackStack(new DeliveryBoyFragment());
+                } else {
                     commanFragmentCallWithoutBackStack(new RateFragment());
                 }
             }
@@ -446,7 +449,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
 
                 if (IMAGE_SELCTED_IMG == IMAGE_SHOP_IMG) {
                     Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                   // img_doc_upload_2.setImageBitmap(bitmap);
+                    // img_doc_upload_2.setImageBitmap(bitmap);
                     shopImg = ImagePicker.getBitmapPath(bitmap, getActivity()); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
                     Glide.with(getActivity()).load(shopImg).into(img_doc_upload_2);
                     Log.e("aadharcard", "back image" + shopImg);

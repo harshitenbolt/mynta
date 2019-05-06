@@ -102,7 +102,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     private LinearLayout llGoback;
     private ImageView btn_pan_card;
     Context mcontext;
-    private boolean isedit=false;
+    private boolean isedit = false;
     public static final int CROPPED_IMAGE = 5333;
     View view;
     String str_process_id, authUserID, authCreated, authID;
@@ -215,13 +215,12 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             String is_edit = bundle.getString(Constants.KEY_EMP_MOBILE);
 
             if (is_edit != null) {
-                Log.e("isedit",is_edit);
+                Log.e("isedit", is_edit);
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                    isedit=true;
+                    isedit = true;
                     llGoback.setVisibility(View.VISIBLE);
                     ApiCallGetDetails();
-                }
-                else{
+                } else {
                     Constants.ShowNoInternet(mcontext);
                 }
             }
@@ -231,29 +230,28 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     private void ApiCallGetDetails() {
         mProgressDialog.show();
         HashMap<String, String> param = new HashMap<>();
-        param.put(Constants.PARAM_PROCESS_ID,str_process_id);
-        Call<UpdatePanDetailResponse> call = ApiClient.getClient().create(ApiInterface.class).pandetailResponse("Bearer "+sessionManager.getToken(),param);
+        param.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        Call<UpdatePanDetailResponse> call = ApiClient.getClient().create(ApiInterface.class).pandetailResponse("Bearer " + sessionManager.getToken(), param);
         call.enqueue(new Callback<UpdatePanDetailResponse>() {
             @Override
             public void onResponse(Call<UpdatePanDetailResponse> call, retrofit2.Response<UpdatePanDetailResponse> response) {
-               mProgressDialog.dismiss();
-                if(response.isSuccessful()){
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
                     UpdatePanDetailResponse updatePanDetailResponse = response.body();
-                    if(updatePanDetailResponse.getResponseCode()==200){
+                    if (updatePanDetailResponse.getResponseCode() == 200) {
                         edit_pan_name.setText(updatePanDetailResponse.getData().get(0).getPanName());
                         edit_pan_name_father.setText(updatePanDetailResponse.getData().get(0).getFatherName());
                         edit_pan_number.setText(updatePanDetailResponse.getData().get(0).getPanNo());
-                        Glide.with(getActivity()).load(Constants.BaseImageURL+updatePanDetailResponse.getData().get(0).getPan()).into(btn_pan_card);
+                        Glide.with(getActivity()).load(Constants.BaseImageURL + updatePanDetailResponse.getData().get(0).getPan()).into(btn_pan_card);
                         isPanSelected = true;
                         btn_pan_card_select.setVisibility(View.VISIBLE);
                         edit_pan_number.setEnabled(true);
                         edit_pan_name_father.setEnabled(true);
                         edit_pan_name.setEnabled(true);
-                        Bitmap bitmap = ImagePicker.getBitmapFromURL(Constants.BaseImageURL+updatePanDetailResponse.getData().get(0).getPan());
+                        Bitmap bitmap = ImagePicker.getBitmapFromURL(Constants.BaseImageURL + updatePanDetailResponse.getData().get(0).getPan());
                         panImagepath = ImagePicker.getBitmapPath(bitmap, getActivity());
-                       // ExtractPanDetail();
-                    }
-                    else{
+                        // ExtractPanDetail();
+                    } else {
                         edit_pan_number.setEnabled(true);
                         edit_pan_name_father.setEnabled(true);
                         edit_pan_name.setEnabled(true);
@@ -375,9 +373,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-
-        else if(v.getId()==R.id.llGonext){
+        } else if (v.getId() == R.id.llGonext) {
             commanFragmentCallWithoutBackStack(new InfoFragment());
         }
 
@@ -425,7 +421,6 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     }
 
 
-
     private void storePanwithOCR() {
         HashMap<String, String> param = new HashMap<>();
         param.put(Constants.PARAM_PAN_CARD_DETAIL_ID, pan_card_detail_id);
@@ -442,7 +437,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                 if (response.isSuccessful()) {
                     PanCardSubmitResponse panCardDetail = response.body();
                     if (panCardDetail.getStatus().equalsIgnoreCase("success")) {
-                       // Toast.makeText(getActivity(), panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(getActivity(), panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getActivity(), panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -455,6 +450,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             }
         });
     }
+
     public void storePAN() {
 
         MultipartBody.Part pan_card_part = null;
@@ -469,7 +465,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             params.put(Constants.PARAM_PAN_NO, "" + edit_pan_number.getText());
             params.put(Constants.PARAM_PAN_NAME, "" + edit_pan_name.getText());
             params.put(Constants.PARAM_FATHER_NAME, "" + edit_pan_name_father.getText());
-            if(isedit == true){
+            if (isedit == true) {
                 params.put(Constants.PARAM_IS_EDIT, "1");
 
             }
@@ -503,37 +499,35 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                         if (panVerificationDetail.getResponseCode() == 400) {
                             mProgressDialog.dismiss();
                             try {
-                                if(panVerificationDetail.getValidation() != null){
+                                if (panVerificationDetail.getValidation() != null) {
 
-                                Validation validation = panVerificationDetail.getValidation();
-                                if (validation.getPanName() != null && validation.getPanName().length() > 0) {
-                                    edit_pan_name.setError(validation.getPanName());
-                                    edit_pan_name.requestFocus();
-                                    // return false;
-                                }
-                                if (validation.getFatherName() != null && validation.getFatherName().length() > 0) {
-                                    edit_pan_name_father.setError(validation.getFatherName());
-                                    edit_pan_name_father.requestFocus();
-                                }
-                                if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
-                                    Toast.makeText(getActivity(), validation.getAgentId(), Toast.LENGTH_LONG).show();
-                                }
-                                if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
-                                    Toast.makeText(getActivity(), validation.getProccessId(), Toast.LENGTH_LONG).show();
-                                }
-                                if (validation.getPanNo() != null && validation.getPanNo().length() > 0) {
-                                    edit_pan_number.setError(validation.getPanNo());
-                                    edit_pan_number.requestFocus();
-                                }
-                                if (validation.getPanCardFront() != null && validation.getPanCardFront().length() > 0) {
-                                    Toast.makeText(getActivity(), validation.getPanCardFront(), Toast.LENGTH_LONG).show();
-                                }
-                                }
-                                else{
+                                    Validation validation = panVerificationDetail.getValidation();
+                                    if (validation.getPanName() != null && validation.getPanName().length() > 0) {
+                                        edit_pan_name.setError(validation.getPanName());
+                                        edit_pan_name.requestFocus();
+                                        // return false;
+                                    }
+                                    if (validation.getFatherName() != null && validation.getFatherName().length() > 0) {
+                                        edit_pan_name_father.setError(validation.getFatherName());
+                                        edit_pan_name_father.requestFocus();
+                                    }
+                                    if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                        Toast.makeText(getActivity(), validation.getAgentId(), Toast.LENGTH_LONG).show();
+                                    }
+                                    if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
+                                        Toast.makeText(getActivity(), validation.getProccessId(), Toast.LENGTH_LONG).show();
+                                    }
+                                    if (validation.getPanNo() != null && validation.getPanNo().length() > 0) {
+                                        edit_pan_number.setError(validation.getPanNo());
+                                        edit_pan_number.requestFocus();
+                                    }
+                                    if (validation.getPanCardFront() != null && validation.getPanCardFront().length() > 0) {
+                                        Toast.makeText(getActivity(), validation.getPanCardFront(), Toast.LENGTH_LONG).show();
+                                    }
+                                } else {
                                     Toast.makeText(getActivity(), panVerificationDetail.getResponse(), Toast.LENGTH_LONG).show();
                                 }
-                            }
-                            catch (Exception e){
+                            } catch (Exception e) {
                                 Toast.makeText(mcontext, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             }
                             // ErrorResponsePanCard errorResponsePanCard = response.body();
@@ -564,7 +558,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             Constants.ShowNoInternet(mcontext);
         }
 
-}
+    }
 
 
     private void showAlert(String msg) {
@@ -574,10 +568,9 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                if(isedit == true){
+                if (isedit == true) {
                     commanFragmentCallWithoutBackStack(new InfoFragment());
-                }
-             else{
+                } else {
                     commanFragmentCallWithoutBackStack(new ChequeUploadFragment());
                 }
 
@@ -634,59 +627,56 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             });*/
 
 
-
-
-            Call<GetPanDetailsResponse>call = ApiClient.getClient2().create(ApiInterface.class).getPanDetails(params,typedFile);
+            Call<GetPanDetailsResponse> call = ApiClient.getClient2().create(ApiInterface.class).getPanDetails(params, typedFile);
             call.enqueue(new Callback<GetPanDetailsResponse>() {
                 @Override
                 public void onResponse(Call<GetPanDetailsResponse> call, retrofit2.Response<GetPanDetailsResponse> response) {
                     mProgressDialog.dismiss();
-                    try{
-                    if (response.isSuccessful()) {
-                        GetPanDetailsResponse getPanDetailsResponse = response.body();
-                        if(getPanDetailsResponse.getStatus().equalsIgnoreCase("success")){
-                            Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            edit_pan_name.setText(getPanDetailsResponse.getPanCardDetail().getName());
-                            edit_pan_name_father.setText(getPanDetailsResponse.getPanCardDetail().getFatherName());
-                            edit_pan_number.setText(getPanDetailsResponse.getPanCardDetail().getPanCardNumber());
-                            pan_card_detail_id = String.valueOf(getPanDetailsResponse.getPanCardDetail().getPanCardDetailId());
-                            file_name = getPanDetailsResponse.getPanCardDetail().getFileName();
-                            file_url = getPanDetailsResponse.getPanCardDetail().getFileUrl();
-                            birth_date = getPanDetailsResponse.getPanCardDetail().getBirthDate();
-                            edit_pan_name.setEnabled(true);
-                            edit_pan_name_father.setEnabled(true);
-                            edit_pan_number.setEnabled(true);
-
-                        }
-                        else{
-                            if (getPanDetailsResponse.getReselectImage() != null && getPanDetailsResponse.getReselectImage().equalsIgnoreCase("1")) {
-                                panImagepath = "";
-                                Glide.with(getActivity()).load(panImagepath).into(btn_pan_card);
-                                isPanSelected = false;
-                                btn_pan_card_select.setVisibility(View.GONE);
+                    try {
+                        if (response.isSuccessful()) {
+                            GetPanDetailsResponse getPanDetailsResponse = response.body();
+                            if (getPanDetailsResponse.getStatus().equalsIgnoreCase("success")) {
                                 Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            } else {
-                                edit_pan_name.setEnabled(true);
-                                edit_pan_name_father.setEnabled(true);
-                                edit_pan_number.setEnabled(true);
+                                edit_pan_name.setText(getPanDetailsResponse.getPanCardDetail().getName());
+                                edit_pan_name_father.setText(getPanDetailsResponse.getPanCardDetail().getFatherName());
+                                edit_pan_number.setText(getPanDetailsResponse.getPanCardDetail().getPanCardNumber());
                                 pan_card_detail_id = String.valueOf(getPanDetailsResponse.getPanCardDetail().getPanCardDetailId());
                                 file_name = getPanDetailsResponse.getPanCardDetail().getFileName();
                                 file_url = getPanDetailsResponse.getPanCardDetail().getFileUrl();
                                 birth_date = getPanDetailsResponse.getPanCardDetail().getBirthDate();
-                                Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                                edit_pan_name.setEnabled(true);
+                                edit_pan_name_father.setEnabled(true);
+                                edit_pan_number.setEnabled(true);
 
-                    }}
-                    catch (Exception e){
+                            } else {
+                                if (getPanDetailsResponse.getReselectImage() != null && getPanDetailsResponse.getReselectImage().equalsIgnoreCase("1")) {
+                                    panImagepath = "";
+                                    Glide.with(getActivity()).load(panImagepath).into(btn_pan_card);
+                                    isPanSelected = false;
+                                    btn_pan_card_select.setVisibility(View.GONE);
+                                    Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    edit_pan_name.setEnabled(true);
+                                    edit_pan_name_father.setEnabled(true);
+                                    edit_pan_number.setEnabled(true);
+                                    pan_card_detail_id = String.valueOf(getPanDetailsResponse.getPanCardDetail().getPanCardDetailId());
+                                    file_name = getPanDetailsResponse.getPanCardDetail().getFileName();
+                                    file_url = getPanDetailsResponse.getPanCardDetail().getFileUrl();
+                                    birth_date = getPanDetailsResponse.getPanCardDetail().getBirthDate();
+                                    Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }
+                    } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(getActivity(),"NSDL error Contact administrator immediately",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<GetPanDetailsResponse> call, Throwable t) {
-                mProgressDialog.dismiss();
+                    mProgressDialog.dismiss();
                     Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
@@ -760,7 +750,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                 Request requestLogin = new Request.Builder()
                         .url(Constants.singzyBaseURL + "patrons/login")
                         .post(body)
-                        .addHeader("Authorization","Bearer "+sessionManager.getToken())
+                        .addHeader("Authorization", "Bearer " + sessionManager.getToken())
                         .build();
 
                 Response responseLogin = client.newCall(requestLogin).execute();
@@ -834,7 +824,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                                             .url(Constants.singzyBaseURL + "snoops")
                                             //
                                             .post(bodyAadhar)
-                                            .addHeader("Authorization","Bearer "+sessionManager.getToken())
+                                            .addHeader("Authorization", "Bearer " + sessionManager.getToken())
                                             .build();
 
                                     Response responseAadhar = client.newCall(requestAadhar).execute();

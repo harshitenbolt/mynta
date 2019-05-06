@@ -147,9 +147,128 @@ public class Validation {
     @SerializedName("residential_address")
     @Expose
     private String residentialAddress;
+
+    public String getResidentialAddress1() {
+        return residentialAddress1;
+    }
+
+    public void setResidentialAddress1(String residentialAddress1) {
+        this.residentialAddress1 = residentialAddress1;
+    }
+
+    public String getResidentialAddressLandmark() {
+        return residentialAddressLandmark;
+    }
+
+    public void setResidentialAddressLandmark(String residentialAddressLandmark) {
+        this.residentialAddressLandmark = residentialAddressLandmark;
+    }
+
+    public String getResidentialAddresspicode() {
+        return residentialAddresspicode;
+    }
+
+    public void setResidentialAddresspicode(String residentialAddresspicode) {
+        this.residentialAddresspicode = residentialAddresspicode;
+    }
+
+    public String getResidentialAddressCity() {
+        return residentialAddressCity;
+    }
+
+    public void setResidentialAddressCity(String residentialAddressCity) {
+        this.residentialAddressCity = residentialAddressCity;
+    }
+
+    public String getResidentialAddressState() {
+        return residentialAddressState;
+    }
+
+    public void setResidentialAddressState(String residentialAddressState) {
+        this.residentialAddressState = residentialAddressState;
+    }
+
+    @SerializedName("residential_address1")
+    @Expose
+    private String residentialAddress1;
+    @SerializedName("residential_address_landmark")
+    @Expose
+    private String residentialAddressLandmark;
+    @SerializedName("residential_address_picode")
+    @Expose
+    private String residentialAddresspicode;
+    @SerializedName("residential_address_city")
+    @Expose
+    private String residentialAddressCity;
+
+    @SerializedName("residential_address_state")
+    @Expose
+    private String residentialAddressState;
+
+
+
+
+
+
     @SerializedName("permanent_address")
     @Expose
     private String permanentAddress;
+    @SerializedName("permanent_address1")
+    @Expose
+    private String permanentAddress1;
+    @SerializedName("permanent_address_landmark")
+    @Expose
+    private String permanentAddressLandmark;
+    @SerializedName("permanent_address_picode")
+    @Expose
+    private String permanentAddressPicode;
+
+    public String getPermanentAddress1() {
+        return permanentAddress1;
+    }
+
+    public void setPermanentAddress1(String permanentAddress1) {
+        this.permanentAddress1 = permanentAddress1;
+    }
+
+    public String getPermanentAddressLandmark() {
+        return permanentAddressLandmark;
+    }
+
+    public void setPermanentAddressLandmark(String permanentAddressLandmark) {
+        this.permanentAddressLandmark = permanentAddressLandmark;
+    }
+
+    public String getPermanentAddressPicode() {
+        return permanentAddressPicode;
+    }
+
+    public void setPermanentAddressPicode(String permanentAddressPicode) {
+        this.permanentAddressPicode = permanentAddressPicode;
+    }
+
+    public String getPermanentAddressCity() {
+        return permanentAddressCity;
+    }
+
+    public void setPermanentAddressCity(String permanentAddressCity) {
+        this.permanentAddressCity = permanentAddressCity;
+    }
+
+    public String getPermanentAddressState() {
+        return permanentAddressState;
+    }
+
+    public void setPermanentAddressState(String permanentAddressState) {
+        this.permanentAddressState = permanentAddressState;
+    }
+
+    @SerializedName("permanent_address_city")
+    @Expose
+    private String permanentAddressCity;
+    @SerializedName("permanent_address_state")
+    @Expose
+    private String permanentAddressState;
     @SerializedName("vendor_type")
     @Expose
     private String vendorType;
@@ -186,6 +305,31 @@ public class Validation {
     @SerializedName("store_address")
     @Expose
     private String storeAddress;
+
+    @SerializedName("store_address1")
+    @Expose
+    private String storeAddress1;
+    @SerializedName("store_address_landmark")
+    @Expose
+    private String storeAddressLandmark;
+
+
+    public String getStoreAddress1() {
+        return storeAddress1;
+    }
+
+    public void setStoreAddress1(String storeAddress1) {
+        this.storeAddress1 = storeAddress1;
+    }
+
+    public String getStoreAddressLandmark() {
+        return storeAddressLandmark;
+    }
+
+    public void setStoreAddressLandmark(String storeAddressLandmark) {
+        this.storeAddressLandmark = storeAddressLandmark;
+    }
+
     @SerializedName("pincode")
     @Expose
     private String pincode;
@@ -560,6 +704,33 @@ public class Validation {
     public void setVoterIdNum(String voterIdNum) {
         this.voterIdNum = voterIdNum;
     }
+
+
+    //location base validation
+    @SerializedName("longitude")
+    @Expose
+    private String longitude;
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    @SerializedName("latitude")
+    @Expose
+    private String latitude;
+
 
 
 

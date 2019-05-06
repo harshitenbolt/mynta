@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.OTPActivity;
@@ -159,8 +160,8 @@ public class MapsCurrentPlaceFragment extends Fragment
         super.onResume();
         LocationManager service = (LocationManager) mcontext.getSystemService(LOCATION_SERVICE);
         enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if(!enabled)
-            enabled=service.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (!enabled)
+            enabled = service.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         if (!enabled) {
             new AlertDialog.Builder(getActivity())
                     .setTitle("Alert")
@@ -457,7 +458,7 @@ public class MapsCurrentPlaceFragment extends Fragment
         user.addProperty(Constants.PARAM_LATITUDE, String.valueOf(mDefaultLocation.latitude));
         user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
 
-        ApiClient.getClient().create(ApiInterface.class).verifyLocation("Bearer "+sessionManager.getToken(),user).enqueue(new Callback<GetLocationResponse>() {
+        ApiClient.getClient().create(ApiInterface.class).verifyLocation("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetLocationResponse>() {
             @Override
             public void onResponse(Call<GetLocationResponse> call, retrofit2.Response<GetLocationResponse> response) {
                 mProgressDialog.dismiss();
@@ -471,6 +472,33 @@ public class MapsCurrentPlaceFragment extends Fragment
                         /*Intent i = new Intent(mcontext, AadharVerificationFragment.class);
                         startActivity(i);
                         getActivity().finish();*/
+
+                    }
+                    if (getLocationResponse.getResponseCode() == 400) {
+
+                        if (getLocationResponse.getValidation() != null) {
+                            Validation validation = getLocationResponse.getValidation();
+                            if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getProccessId(), Toast.LENGTH_LONG).show();
+                            }
+                            if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getAgentId(), Toast.LENGTH_LONG).show();
+                            }
+                            if (validation.getLongitude() != null && validation.getLongitude().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getLongitude(), Toast.LENGTH_LONG).show();
+                            }
+                            if (validation.getLatitude() != null && validation.getLatitude().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getLatitude(), Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(getActivity(), getLocationResponse.getResponse(), Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                        else{ Toast.makeText(getActivity(), getLocationResponse.getResponse(), Toast.LENGTH_LONG).show();
+
+                        }
+
 
                     } else {
                         showAlert(v, getLocationResponse.getResponse(), false);

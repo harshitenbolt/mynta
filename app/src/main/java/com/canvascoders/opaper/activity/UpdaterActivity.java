@@ -75,9 +75,10 @@ public class UpdaterActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Please wait till app update", Toast.LENGTH_SHORT).show();
     }
 
+
+
+
     private void appUpdate() {
-
-
         String destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/";
         String fileName = "opaper.apk";
         destination += fileName;
@@ -85,8 +86,8 @@ public class UpdaterActivity extends AppCompatActivity {
         File file = new File(RealPathUtil.getRealPath(UpdaterActivity.this, uri));
         if (file.exists())
             file.delete();
-
-        String url = "http://139.59.94.135/apk/opaper.apk";  //Constants.BaseURL + "apk/opaper.apk";//
+        String url = Constants.APKROOT + "apk/opaper.apk";
+       /* String url = "http://139.59.94.135/apk/opaper.apk"; */ //Constants.BaseURL + "apk/opaper.apk";//
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setDescription("opaper Version" + Constants.APP_VERSION);
         request.setTitle("Opaper Update");

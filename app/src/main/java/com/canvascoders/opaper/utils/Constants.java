@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 public class Constants {
 
     //-------------------------------------------------------------------------
-    public final static int APP_VERSION = 22; //need to set +1 here befor apk sent on last update before 942018 @ 12 version
+    public final static int APP_VERSION = 23; //need to set +1 here befor apk sent on last update before 942018 @ 12 version
     //-------------------------------------------------------------------------
 
 
@@ -38,14 +38,14 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
 
-//  public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
-   public static String BaseURL = "https://mystaging.opaper.in/api3/";  // test server 2
+public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+//   public static String BaseURL = "https://mystaging.opaper.in/api3/";  // test server 2
 
-   public final static String APP_NAME = "my_stage"; //stage
- //  public final static String APP_NAME = "my_live"; //live
+  // public final static String APP_NAME = "my_stage"; //stage
+ public final static String APP_NAME = "my_live"; //live
 
-   //public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
-   public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
+   public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+  //public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
 
@@ -150,6 +150,11 @@ public class Constants {
     public static String PARAM_BACKSIDE_IMAGE = "back_side_image";
     public static String PARAM_CURRENT_RESIDENTIAL = "current_residential_address";
     public static String PARAM_PERMANENT_ADDRESS = "permanent_address";
+    public static String PARAM_PERMANENT_ADDRESS1 = "permanent_address1";
+    public static String PARAM_PERMANENT_ADDRESS_LANDMARK = "permanent_address_landmark";
+    public static String PARAM_PERMANENT_ADDRESS_PINCODE = "permanent_address_picode";
+    public static String PARAM_PERMANENT_ADDRESS_CITY = "permanent_address_city";
+    public static String PARAM_PERMANENT_ADDRESS_STATE= "permanent_address_state";
 
     public static String PHONE_NUMBER = "phone_number";
     public static String NAME = "name";
@@ -214,6 +219,9 @@ public class Constants {
     public static String PARAM_DC = "dc";
     public static String PARAM_STORE_NAME = "store_name";
     public static String PARAM_STORE_ADDRESS = "store_address";
+    public static String PARAM_STORE_ADDRESS1 = "store_address1";
+    public static String PARAM_STORE_ADDRESS_LANDMARK = "store_address_landmark";
+
     public static String PARAM_LICENCE_NO = "license_no";
     public static String PARAM_OWNER_NAME = "owner_name";
     public static String PARAM_INVOICE_ID = "invoice_id";
@@ -247,6 +255,15 @@ public class Constants {
     public static String PARAM_DOB = "dob";
     public static String PARAM_ROUTE = "route";
     public static String PARAM_RESIDENTIAL_ADDRESS = "residential_address";
+    public static String PARAM_RESIDENTIAL_ADDRESS1 = "residential_address1";
+    public static String PARAM_RESIDENTIAL_LANDMARK = "residential_address_landmark";
+    public static String PARAM_RESIDENTIAL_PINCODE = "residential_address_picode";
+    public static String PARAM_RESIDENTIAL_CITY = "residential_address_city";
+    public static String PARAM_RESIDENTIAL_STATE= "residential_address_state";
+
+
+
+
     public static String PARAM_VENDOR_TYPE = "vendor_type";
     public static String PARAM_LOCALITY = "locality";
     public static String PARAM_APPROACH = "approach";
