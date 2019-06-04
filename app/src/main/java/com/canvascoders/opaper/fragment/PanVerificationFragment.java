@@ -488,8 +488,8 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             params.put(Constants.PARAM_PAN_NO, "" + edit_pan_number.getText());
             params.put(Constants.PARAM_PAN_NAME, "" + edit_pan_name.getText());
             params.put(Constants.PARAM_FATHER_NAME, "" + edit_pan_name_father.getText());
-           /* params.put(Constants.PARAM_LATITUDE, lattitude);
-            params.put(Constants.PARAM_LONGITUDE, longitude);*/
+            params.put(Constants.PARAM_LATITUDE, lattitude);
+            params.put(Constants.PARAM_LONGITUDE, longitude);
             if (isedit == true) {
                 params.put(Constants.PARAM_IS_EDIT, "1");
 

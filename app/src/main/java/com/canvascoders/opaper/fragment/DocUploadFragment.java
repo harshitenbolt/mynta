@@ -356,8 +356,8 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
             params.put(Constants.PARAM_PROCESS_ID, str_process_id);
             params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
             params.put(Constants.PARAM_IF_SHOP_ACT, String.valueOf(switch_shopact.isChecked()));
-           /* params.put(Constants.PARAM_LATITUDE,lattitude);
-            params.put(Constants.PARAM_LONGITUDE,longitude);*/
+            params.put(Constants.PARAM_LATITUDE,lattitude);
+            params.put(Constants.PARAM_LONGITUDE,longitude);
 
 
             File imagefile = new File(shopImg);
