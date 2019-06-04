@@ -474,7 +474,10 @@ public class MapsCurrentPlaceFragment extends Fragment
                         getActivity().finish();*/
 
                     }
-                    if (getLocationResponse.getResponseCode() == 400) {
+                    else if (getLocationResponse.getResponseCode()==411){
+                        sessionManager.logoutUser(getActivity());
+                    }
+                    else if (getLocationResponse.getResponseCode() == 400) {
 
                         if (getLocationResponse.getValidation() != null) {
                             Validation validation = getLocationResponse.getValidation();

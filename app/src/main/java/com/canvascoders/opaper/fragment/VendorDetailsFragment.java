@@ -21,6 +21,7 @@ import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResp
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.activity.OTPActivity;
 import com.canvascoders.opaper.activity.StoreTypeListingActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
@@ -155,6 +156,9 @@ public class VendorDetailsFragment extends Fragment {
                     ResignAgreementResponse resignAgreementResponse = response.body();
                     if(resignAgreementResponse.getResponseCode()==200){
                         Toast.makeText(getActivity(), resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+                    else if (resignAgreementResponse.getResponseCode()==411){
+                        sessionManager.logoutUser(getActivity());
                     }
                     else{
                         Toast.makeText(getActivity(), resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();

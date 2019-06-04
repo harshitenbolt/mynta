@@ -53,6 +53,7 @@ import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVot
 import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.CropImage2Activity;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.OTPActivity;
@@ -143,6 +144,8 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
     private RelativeLayout rvAdhar, rvother, rvFrontDl, rvBackDl, rvMain;
     ProgressDialog mProgressDialog;
     private TextView tv_review;
+    GPSTracker gps;
+    private String lattitude="",longitude="";
     private RequestPermissionHandler requestPermissionHandler;
     private String str_process_id;
     private static int CROPPED_IMAGE_VOTER_FRONT = 7000, CROPPED_IMAGE_VOTER_BACK = 8000, CROPPED_IMAGE_DL_BACK = 8001, CROPPED_IMAGE_DL_FRONT = 8002;
@@ -1092,6 +1095,22 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
     }*/
 
     public void storeAadhar() {
+        gps = new GPSTracker(getActivity());
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
 
         MultipartBody.Part aadharcard_front_part = null;
         MultipartBody.Part aadharcard_back_part = null;
@@ -1116,6 +1135,8 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             params.put(Constants.PARAM_NAME, name.trim());
             params.put(Constants.PARAM_YEAR_OF_BIRTH, year.trim());
             params.put(Constants.PARAM_PINCODE, pincode.trim());
+            /*params.put(Constants.PARAM_LATITUDE, lattitude);
+            params.put(Constants.PARAM_LONGITUDE, longitude);*/
 
             File imagefile = new File(aadharImagepathFront);
             aadharcard_front_part = MultipartBody.Part.createFormData(Constants.PARAM_AADHAR_FRONT, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathFront)), imagefile));
@@ -1127,7 +1148,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             mProgressDialog.setMessage("Please wait getting details...");
             mProgressDialog.show();
 
-            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadhar("Bearer " + sessionManager.getToken(), params, aadharcard_front_part, aadharcard_back_part);
+            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class). getstoreAadhar("Bearer " + sessionManager.getToken(), params, aadharcard_front_part, aadharcard_back_part);
             callUpload.enqueue(new Callback<CommonResponse>() {
                 @Override
                 public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
@@ -1159,6 +1180,9 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                         } else {
                             if (getaadhardetail.getResponseCode() == 405) {
                                 sessionManager.logoutUser(mcontext);
+                            }
+                            if (getaadhardetail.getResponseCode()==411){
+                                sessionManager.logoutUser(getActivity());
                             }
 
                             if (getaadhardetail.getResponseCode() == 400) {
@@ -1392,6 +1416,22 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
     private void ApiCallSubmitKYC() {
+        gps = new GPSTracker(getActivity());
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
         MultipartBody.Part aadharcard_front_part = null;
         MultipartBody.Part aadharcard_back_part = null;
         Map<String, String> params = new HashMap<String, String>();
@@ -1406,6 +1446,8 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             params.put(Constants.PARAM_VOTER_FATHER_NAME, etVoterFatherName.getText().toString());
             params.put(Constants.PARAM_VOTER_DOB, tvVoterDOB.getText().toString());
             params.put(Constants.PARAM_VOTER_ID_NUM, etVoterId.getText().toString());
+            /*params.put(Constants.PARAM_LATITUDE, lattitude);
+            params.put(Constants.PARAM_LONGITUDE, longitude);*/
 
             File imagefile = new File(voterImagePathFront);
             aadharcard_front_part = MultipartBody.Part.createFormData(Constants.PARAM_VOTER_CARD_FRONT, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathFront)), imagefile));
@@ -1425,6 +1467,8 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             params.put(Constants.PARAM_DL_FATHER_NAME, etDlFatherName.getText().toString());
             params.put(Constants.PARAM_DL_DOB, tvDlDOB.getText().toString());
             params.put(Constants.PARAM_DL_ID_NUM, etDLNumber.getText().toString());
+          /*  params.put(Constants.PARAM_LATITUDE, lattitude);
+            params.put(Constants.PARAM_LONGITUDE, longitude);*/
 
             File imagefile = new File(dlImageOathFront);
             aadharcard_front_part = MultipartBody.Part.createFormData(Constants.PARAM_DL_CARD_FRONT, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dlImageOathFront)), imagefile));
@@ -1462,53 +1506,55 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                             if (getaadhardetail.getResponseCode() == 405) {
                                 sessionManager.logoutUser(mcontext);
                             }
+                            if (getaadhardetail.getResponseCode() == 411) {
+                                sessionManager.logoutUser(mcontext);
+                            }
+
                             if (getaadhardetail.getResponseCode() == 400) {
                                 if (getaadhardetail.getValidation() != null) {
                                     Validation validation = getaadhardetail.getValidation();
                                     if (validation.getVoterCardFront() != null && validation.getVoterCardFront().length() > 0) {
                                         Toast.makeText(mcontext, validation.getVoterCardFront(), Toast.LENGTH_SHORT).show();
                                         // return false;
-                                    } else if (validation.getVoterCardBack() != null && validation.getVoterCardBack().length() > 0) {
+                                    }  if (validation.getVoterCardBack() != null && validation.getVoterCardBack().length() > 0) {
                                         Toast.makeText(mcontext, validation.getVoterCardBack(), Toast.LENGTH_SHORT).show();
                                         // return false;
-                                    } else if (validation.getVoterDob() != null && validation.getVoterDob().length() > 0) {
+                                    }  if (validation.getVoterDob() != null && validation.getVoterDob().length() > 0) {
                                         // Toast.makeText(mcontext, validation.getVoterCardBack(), Toast.LENGTH_SHORT).show();
                                         tvVoterDOB.setError(validation.getVoterDob());
                                         tvVoterDOB.requestFocus();
-                                    } else if (validation.getVoterName() != null && validation.getVoterName().length() > 0) {
+                                    }  if (validation.getVoterName() != null && validation.getVoterName().length() > 0) {
                                         // Toast.makeText(mcontext, validation.getVoterCardBack(), Toast.LENGTH_SHORT).show();
                                         etvoterName.setError(validation.getVoterName());
                                         etvoterName.requestFocus();
-                                    } else if (validation.getVoterFatherName() != null && validation.getVoterFatherName().length() > 0) {
+                                    } if (validation.getVoterFatherName() != null && validation.getVoterFatherName().length() > 0) {
                                         // Toast.makeText(mcontext, validation.getVoterCardBack(), Toast.LENGTH_SHORT).show();
                                         etVoterFatherName.setError(validation.getVoterFatherName());
                                         etVoterFatherName.requestFocus();
-                                    } else if (validation.getVoterIdNum() != null && validation.getVoterIdNum().length() > 0) {
+                                    }  if (validation.getVoterIdNum() != null && validation.getVoterIdNum().length() > 0) {
                                         // Toast.makeText(mcontext, validation.getVoterCardBack(), Toast.LENGTH_SHORT).show();
                                         etVoterId.setError(validation.getVoterIdNum());
                                         etVoterId.requestFocus();
-                                    } else if (validation.getDlCardFront() != null && validation.getDlCardFront().length() > 0) {
+                                    }  if (validation.getDlCardFront() != null && validation.getDlCardFront().length() > 0) {
                                         Toast.makeText(mcontext, validation.getDlCardFront(), Toast.LENGTH_SHORT).show();
                                         /*etVoterId.setError(validation.getVoterIdNum());
                                         etVoterId.requestFocus();*/
-                                    } else if (validation.getDlCardBack() != null && validation.getDlCardBack().length() > 0) {
+                                    } if (validation.getDlCardBack() != null && validation.getDlCardBack().length() > 0) {
                                         Toast.makeText(mcontext, validation.getDlCardBack(), Toast.LENGTH_SHORT).show();
                                         /*etVoterId.setError(validation.getVoterIdNum());
                                         etVoterId.requestFocus();*/
-                                    } else if (validation.getDlDob() != null && validation.getDlDob().length() > 0) {
+                                    } if (validation.getDlDob() != null && validation.getDlDob().length() > 0) {
                                         tvDlDOB.setError(validation.getDlDob());
                                         tvDlDOB.requestFocus();
-                                    } else if (validation.getDlFatherName() != null && validation.getDlFatherName().length() > 0) {
+                                    }  if (validation.getDlFatherName() != null && validation.getDlFatherName().length() > 0) {
                                         etDlFatherName.setError(validation.getDlFatherName());
                                         etDlFatherName.requestFocus();
-                                    } else if (validation.getDlNumber() != null && validation.getDlNumber().length() > 0) {
+                                    }  if (validation.getDlNumber() != null && validation.getDlNumber().length() > 0) {
                                         etDLNumber.setError(validation.getDlNumber());
                                         etDLNumber.requestFocus();
-                                    } else if (validation.getDlName() != null && validation.getDlName().length() > 0) {
+                                    }  if (validation.getDlName() != null && validation.getDlName().length() > 0) {
                                         etNameDL.setError(validation.getDlName());
                                         etNameDL.requestFocus();
-                                    } else {
-                                        Toast.makeText(mcontext, "", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
                                     showAlert2(getaadhardetail.getResponse());

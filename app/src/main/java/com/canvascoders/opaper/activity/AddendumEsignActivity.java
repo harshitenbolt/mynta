@@ -178,6 +178,9 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
                 if(resendOTPResponse.getResponseCode() == 200){
                     Toast.makeText(AddendumEsignActivity.this,resendOTPResponse.getResponse(),Toast.LENGTH_LONG).show();
                 }
+                else if(resendOTPResponse.getResponseCode() ==411){
+                    sessionManager.logoutUser(AddendumEsignActivity.this);
+                }
                 else{
                     Toast.makeText(AddendumEsignActivity.this,resendOTPResponse.getResponse(),Toast.LENGTH_LONG).show();
                 }

@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.activity_splash_new);
         sessionManager = new SessionManager(SplashActivity.this);
         Mylogger.getInstance().setEnable(true);
         FirebaseApp.initializeApp(this);

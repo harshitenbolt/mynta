@@ -389,6 +389,11 @@ public class DebitInvoiceMainFragment extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(message);
                 Mylogger.getInstance().Logit(TAG, message);
+                if(jsonObject.has("responseCode")) {
+                    if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
+                        sessionManager.logoutUser(getActivity());
+                    }
+                }
                 if(jsonObject.has("response")){
                     Toast.makeText(mcontext, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
                 }

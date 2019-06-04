@@ -3,21 +3,29 @@ package com.canvascoders.opaper.activity;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,14 +33,25 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.Beans.UserDetailTResponse.GetUserDetails;
+import com.canvascoders.opaper.fragment.MobileFragment;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,17 +64,63 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String TAG = "LoginActivity";
     private EditText edt_email_id, edt_password;
     private Button btn_login;
+    private String longitude= "";
+    private String lattitude="";
+    private String address="";
     private ProgressDialog mProgressDialog;
     private SessionManager sessionManager;
     private TextView tvForgot;
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    boolean enabled = false;
+    private boolean mLocationPermissionGranted;
+    private ImageView ivShowPassword;
+    GPSTracker gps;
+    boolean showPassword = false;
     RequestPermissionHandler requestPermissionHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        sessionManager = new SessionManager(LoginActivity.this);
+
+        gps = new GPSTracker(LoginActivity.this);
         initView();
+
+        requestPermissionHandler.requestPermission(this, new String[]{
+                Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.READ_PHONE_STATE}, 123, new RequestPermissionHandler.RequestPermissionListener() {
+            @Override
+            public void onSuccess() {
+                if (gps.canGetLocation()) {
+                    Double lat = gps.getLatitude();
+                    Double lng = gps.getLongitude();
+                    lattitude = String.valueOf(gps.getLatitude());
+                    longitude = String.valueOf(gps.getLongitude());
+                    Log.e("Lattitude", lattitude);
+                    Log.e("Longitude", longitude);
+                    if (lat !=0.0 ) {
+                        getAddress(lat, lng);
+                    }
+
+
+
+                } else {
+                    // can't get location
+                    // GPS or Network is not enabled
+                    // Ask user to enable GPS/network in settings
+                    gps.showSettingsAlert();
+                }
+            }
+
+            @Override
+            public void onFailed() {
+
+            }
+        });
+
+        sessionManager = new SessionManager(LoginActivity.this);
+
     }
 
     private void initView() {
@@ -63,6 +128,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         requestPermissionHandler = new RequestPermissionHandler();
         tvForgot = findViewById(R.id.tvForgot);
         tvForgot.setOnClickListener(this);
+        ivShowPassword = findViewById(R.id.ivShowPw);
+
         mProgressDialog = new ProgressDialog(LoginActivity.this);
         mProgressDialog.setMessage("Please wait authenticating store executive");
 
@@ -75,7 +142,93 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_login.setTextSize(TypedValue.COMPLEX_UNIT_PX, 14f * AppApplication.dip);
 
         btn_login.setOnClickListener(this);
+        ivShowPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(showPassword == false){
+                    showPassword = true;
+                    ivShowPassword.setImageResource(R.drawable.ic_eye);
+                    edt_password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
+                }
+                else{
+                    showPassword = false;
+                    ivShowPassword.setImageResource(R.drawable.ic_eye_close);
+                    edt_password.setInputType(129);
+
+                }
+            }
+        });
     }
+
+
+    public void getAddress(Double lat, Double lng) {
+        Geocoder geocoder = new Geocoder(LoginActivity.this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            Address obj = addresses.get(0);
+            String add = obj.getAddressLine(0);
+            address = add;
+            Log.v("IGA", "Address" + add);
+            // Toast.makeText(this, "Address=>" + add,
+            // Toast.LENGTH_SHORT).show();
+
+            // TennisAppActivity.showDialog(add);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocationManager service = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+        enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (!enabled)
+            enabled = service.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        if (!enabled) {
+            new AlertDialog.Builder (this)
+                    .setTitle("Alert")
+                    .setMessage("Device GPS is not enabled")
+                    .setPositiveButton("Start", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                           Toast.makeText(LoginActivity.this,"Please allow Location Permission",Toast.LENGTH_LONG).show();
+                        }
+                    }).show();
+        }
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+            if (lat !=0.0 ) {
+                getAddress(lat, lng);
+            }
+
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+
+    }
+
 
     private boolean isValid(View v) {
         if (edt_email_id.getText().toString().length() == 0) {
@@ -103,6 +256,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         return true;
     }
+
+
+
 
     public void setLogin(final View v) {
 
@@ -168,6 +324,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user.addProperty(Constants.PARAM_PASSWORD, edt_password.getText().toString().trim());
         user.addProperty(Constants.PARAM_FCM_ID, sessionManager.getData(Constants.KEY_FCM_ID));
         user.addProperty(Constants.PARAM_DEVICE_INFO, jsonObject.toString());
+        user.addProperty(Constants.PARAM_LATITUDE, lattitude);
+        user.addProperty(Constants.PARAM_LONGITUDE, longitude);
 
         Log.e("FCMID", "FCMID" + sessionManager.getData(Constants.KEY_FCM_ID));
         Log.e("device_info",jsonObject.toString());
@@ -242,7 +400,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 if (isValid(v)) {
                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                        setLogin(v);
+                        gps = new GPSTracker(LoginActivity.this);
+                        if (gps.canGetLocation()) {
+                            Double lat = gps.getLatitude();
+                            Double lng = gps.getLongitude();
+                            lattitude = String.valueOf(gps.getLatitude());
+                            longitude = String.valueOf(gps.getLongitude());
+                            Log.e("Lattitude", lattitude);
+                            Log.e("Longitude", longitude);
+                            if (lat !=0.0 ) {
+                                getAddress(lat, lng);
+                            }
+
+                            setLogin(v);
+
+                        } else {
+                            // can't get location
+                            // GPS or Network is not enabled
+                            // Ask user to enable GPS/network in settings
+                            gps.showSettingsAlert();
+                        }
+
+
                     } else {
                         Constants.ShowNoInternet(LoginActivity.this);
                     }

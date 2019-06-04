@@ -38,6 +38,7 @@ import com.canvascoders.opaper.adapters.RejectedStoreListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.canvascoders.opaper.activity.AgreementDetailActivity;
@@ -72,7 +73,9 @@ public class RateFragment extends Fragment implements View.OnClickListener {
 //    private Toolbar toolbar;
     private TextView txt_notice;
     Context mcontext;
+    private String lattitude="",longitude="";
     View view;
+    GPSTracker gps;
     String str_process_id;
     RateListAdapter rateListAdapter;
     ArrayList<StoreTypeBean> rateTypeBeans;
@@ -156,6 +159,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                 startActivity(i);*/
                 Intent i = new Intent(getActivity(), ProcessInfoActivity.class);
                 startActivity(i);
+                getActivity().finish();
             }
         });
         alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -243,11 +247,16 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(getContext());
                                 }
+                                else if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
+                                    sessionManager.logoutUser(getContext());
+                                }
                             } else if (response.code() == 202) {
                                 showDialogApproval(response.message());
                             } else if (response.code() == 405) {
                                 sessionManager.logoutUser(getContext());
-                            } else {
+                            } else if (response.code() == 411) {
+                                sessionManager.logoutUser(getContext());
+                            }else {
                                 Toast.makeText(getContext(), jsonObject.getString("response").toString(), Toast.LENGTH_LONG).show();
                             }
 
@@ -346,11 +355,31 @@ public class RateFragment extends Fragment implements View.OnClickListener {
     }
 
     private void submitStoreUpdateDetails(JsonArray jsonArray) {
+
+        gps = new GPSTracker(getActivity());
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+
         JsonObject dataObj = new JsonObject();
 
         dataObj.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
         dataObj.addProperty(Constants.KEY_PROCESS_ID, str_process_id);
         dataObj.addProperty(Constants.KEY_AGENT_ID, sessionManager.getAgentID());
+       /* dataObj.addProperty(Constants.PARAM_LATITUDE,lattitude);
+        dataObj.addProperty(Constants.PARAM_LONGITUDE,longitude);*/
         dataObj.add(Constants.KEY_STORES, jsonArray);
 
         Retrofit retrofit = ApiClient.getClient();

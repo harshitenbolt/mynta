@@ -225,6 +225,9 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                         ApiCallGetLists();
                         Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                    if (addDelBoyResponse.getResponseCode()==411){
+                        sessionManager.logoutUser(AddDeliveryBoysActivity.this);
+                    }
 
                     if (addDelBoyResponse.getResponseCode() == 400) {
 
@@ -343,7 +346,10 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                         mProgressDialog.dismiss();
 //                        Toast.makeText(AddDeliveryBoysActivity.this,deliveryBoysList.getResponse(),Toast.LENGTH_SHORT).show();
                         delivery_boys_list.addAll(deliveryBoysList.getData());
-                    } else {
+                    }
+                    else if (deliveryBoysList.getResponseCode()==411){
+                        sessionManager.logoutUser(AddDeliveryBoysActivity.this);
+                    }else {
                         mProgressDialog.dismiss();
                         Toast.makeText(AddDeliveryBoysActivity.this, deliveryBoysList.getResponse(), Toast.LENGTH_SHORT).show();
                     }

@@ -231,7 +231,9 @@ public class ReportFragment extends Fragment {
                         billLists.add(new BillList(0, lmsId, enboltId, vendorId, csatCondition, billPeriod, toDate, "", "", 0, ""));
 
                         linearAdapter.notifyDataSetChanged();
-                    } else {
+                    }else if(jsonObject.getInt("responseCode")==411){
+                        sessionManager.logoutUser(getActivity());
+                    }else {
 
                         ImageView m = (ImageView) view.findViewById(R.id.imgnodata);
                         m.setVisibility(View.VISIBLE);

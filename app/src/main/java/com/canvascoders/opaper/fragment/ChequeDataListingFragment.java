@@ -158,7 +158,11 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
                         } else if (response.code() == 405) {
                             mSwipeRefreshLayout.setRefreshing(false);
                             sessionManager.logoutUser(getContext());
-                        } else {
+                        }
+                        else if (response.code() == 411) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            sessionManager.logoutUser(getContext());
+                        }else {
                             mSwipeRefreshLayout.setRefreshing(false);
                             Toast.makeText(getContext(), response.body().getResponse(), Toast.LENGTH_LONG).show();
                         }

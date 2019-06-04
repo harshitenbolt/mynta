@@ -234,6 +234,9 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
                             if (sendInvoiceLinkresponse.getResponseCode()==200){
                                 Toast.makeText(InvoiceEsignActivity.this,sendInvoiceLinkresponse.getResponse(),Toast.LENGTH_LONG).show();
                             }
+                            else if(sendInvoiceLinkresponse.getResponseCode() ==411){
+                                sessionManager.logoutUser(InvoiceEsignActivity.this);
+                            }
                             else{
                                 progressDialog.dismiss();
                                 Toast.makeText(InvoiceEsignActivity.this,sendInvoiceLinkresponse.getResponse(),Toast.LENGTH_LONG).show();

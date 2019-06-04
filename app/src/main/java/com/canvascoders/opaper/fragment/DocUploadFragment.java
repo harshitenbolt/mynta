@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.ImageUtils;
 import com.canvascoders.opaper.activity.AppApplication;
@@ -88,6 +89,8 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
     TextView tv_pick_image2;
     Context mcontext;
     View view;
+    GPSTracker gps;
+    private String lattitude="",longitude="";
     ProgressDialog progressDialog;
     private RequestPermissionHandler requestPermissionHandler;
     String str_process_id, delBoyScreen;
@@ -321,6 +324,22 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
 
     public void uploadDOCS() {
 
+        gps = new GPSTracker(getActivity());
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
         MultipartBody.Part shop_image_part = null;
         MultipartBody.Part shop_act_part = null;
         MultipartBody.Part owner_img_part = null;
@@ -337,6 +356,8 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
             params.put(Constants.PARAM_PROCESS_ID, str_process_id);
             params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
             params.put(Constants.PARAM_IF_SHOP_ACT, String.valueOf(switch_shopact.isChecked()));
+           /* params.put(Constants.PARAM_LATITUDE,lattitude);
+            params.put(Constants.PARAM_LONGITUDE,longitude);*/
 
 
             File imagefile = new File(shopImg);
@@ -374,7 +395,10 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                             delBoyScreen = getdocumentdetail.getData().get(0).getDelBoysCreen();
                             showAlert(response.body().getResponse(), delBoyScreen);
 
-                        } else {
+                        }
+                        else if (getdocumentdetail.getResponseCode()==411){
+                            sessionManager.logoutUser(getActivity());
+                        }else {
 
                            Toast.makeText(getActivity(),getdocumentdetail.getResponse(),Toast.LENGTH_LONG).show();
 

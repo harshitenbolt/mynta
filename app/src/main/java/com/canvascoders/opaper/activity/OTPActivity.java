@@ -40,6 +40,7 @@ import com.canvascoders.opaper.fragment.DebitInvoiceMainFragment;
 import com.canvascoders.opaper.fragment.DeliveryBoyFragment;
 import com.canvascoders.opaper.fragment.GSTInvoiceMainFragment;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.canvascoders.opaper.fragment.AadharVerificationFragment;
@@ -80,6 +81,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
     static TextView tv_title;
     private Toolbar toolbar;
     private String processID;
+    private String lattitude="",longitude="";
     private int chqCount = 0;
     String status_page;
 
@@ -125,6 +127,21 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                 String userOTp = edt_otp_1.getText().toString() + edt_otp_2.getText().toString() + edt_otp_3.getText().toString() + edt_otp_4.getText().toString();
                 if (userOTp.equals(otp)) {
                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        GPSTracker gps = new GPSTracker(OTPActivity.this);
+                        if (gps.canGetLocation()) {
+                            Double lat = gps.getLatitude();
+                            Double lng = gps.getLongitude();
+                            lattitude = String.valueOf(gps.getLatitude());
+                            longitude = String.valueOf(gps.getLongitude());
+                            Log.e("Lattitude", lattitude);
+                            Log.e("Longitude", longitude);
+
+
+
+                        } else {
+
+                            gps.showSettingsAlert();
+                        }
                         getMobileDetails(v);
                     } else {
                         Constants.ShowNoInternet(this);
@@ -150,6 +167,8 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
         user.addProperty(Constants.PARAM_MOBILE_NO, mobile);
         user.addProperty(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
+        user.addProperty(Constants.PARAM_LATITUDE, lattitude);
+        user.addProperty(Constants.PARAM_LONGITUDE, longitude);
 
         Mylogger.getInstance().Logit(TAG, user.toString());
         ApiClient.getClient().create(ApiInterface.class).verifyMobile("Bearer "+sessionManager.getToken(),user).enqueue(new Callback<GetMobileResponse>() {
@@ -169,7 +188,10 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                         Log.e("PROCESS ID", "" + processID);
                         chqCount = mobileResponse.getData().get(0).getBank();
                         goTOScreen(mobileResponse.getData().get(0).getScreen());
-                    } else {
+                    }
+                    else if (mobileResponse.getResponseCode()==411){
+                        sessionManager.logoutUser(OTPActivity.this);
+                    }else {
                         showMSG(false, response.body().getResponse());
                         if (response.body().getResponseCode() == 405) {
                             sessionManager.logoutUser(OTPActivity.this);
@@ -568,6 +590,9 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                     } else {
                         showMSG(false, getOTP.getResponse());
                         if (getOTP.getResponseCode() == 405) {
+                            sessionManager.logoutUser(OTPActivity.this);
+                        }
+                        else if (getOTP.getResponseCode()==411){
                             sessionManager.logoutUser(OTPActivity.this);
                         }
                     }

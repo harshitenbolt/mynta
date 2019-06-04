@@ -43,6 +43,7 @@ import com.canvascoders.opaper.Beans.VendorBankDetail;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.CropImage2Activity;
+import com.canvascoders.opaper.activity.OTPActivity;
 import com.canvascoders.opaper.camera.MyCameraActivity;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.DashboardActivity;
@@ -726,6 +727,9 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
 
                         if (chequeDetail.getResponseCode() == 200) {
                             showAlert(response.body().getResponse());
+                        }
+                        if (chequeDetail.getResponseCode()==411){
+                            sessionManager.logoutUser(getActivity());
                         }
                         if (chequeDetail.getResponseCode() == 400) {
                             progressDialog.dismiss();

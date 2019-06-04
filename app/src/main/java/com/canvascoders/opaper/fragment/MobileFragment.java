@@ -144,7 +144,10 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
                         startActivity(i);
                     } else if (getOTP.getResponseCode() == 405) {
                         sessionManager.logoutUser(mcontext);
-                    } else {
+                    }
+                    else if (getOTP.getResponseCode()==411){
+                        sessionManager.logoutUser(mcontext);
+                    }else {
                         showMSG(false, getOTP.getResponse());
                     }
                 } else {

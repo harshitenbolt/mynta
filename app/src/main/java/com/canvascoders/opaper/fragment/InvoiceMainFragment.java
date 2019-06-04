@@ -394,6 +394,11 @@ public class InvoiceMainFragment extends Fragment {
                 if(jsonObject.has("response")){
                     Toast.makeText(mcontext, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
                 }
+                if(jsonObject.has("responseCode")) {
+                    if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
+                        sessionManager.logoutUser(getActivity());
+                    }
+                }
                 {
                     String next_Url = jsonObject.getString("next_page_url");
                     if (!next_Url.equalsIgnoreCase("") && !next_Url.equals("null")) {

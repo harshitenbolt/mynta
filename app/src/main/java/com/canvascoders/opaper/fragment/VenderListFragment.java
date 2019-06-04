@@ -448,6 +448,11 @@ public class VenderListFragment extends Fragment implements SwipeRefreshLayout.O
                     if (jsonObject.has("response")) {
                         Toast.makeText(mcontext, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
                     }
+                    if(jsonObject.has("responseCode")) {
+                        if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
+                            sessionManager.logoutUser(getActivity());
+                        }
+                    }
 
                     {
                         String next_Url = jsonObject.getString("next_page_url");
@@ -585,6 +590,11 @@ public class VenderListFragment extends Fragment implements SwipeRefreshLayout.O
                     JSONObject jsonObject = new JSONObject(message);
                     if (jsonObject.has("response")) {
                         Toast.makeText(mcontext, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
+                    }
+                    if(jsonObject.has("responseCode")) {
+                        if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
+                            sessionManager.logoutUser(getActivity());
+                        }
                     }
                     {
                         String next_Url = jsonObject.getString("next_page_url");

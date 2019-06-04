@@ -44,6 +44,7 @@ import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.DialogueUtils;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.ImageUploadTask;
 import com.canvascoders.opaper.utils.Mylogger;
@@ -87,6 +88,8 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     private Button btn_next;
     private String cancelChequeImagepath = "";
     private Uri imgURI;
+    GPSTracker gps;
+    private String lattitude="",longitude="";
     private ImageView btn_cheque_card;
     private ImageView btn_cheque_card_select;
     private SessionManager sessionManager;
@@ -534,6 +537,22 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     }
 
     public void storeCheque() {
+        gps = new GPSTracker(getActivity());
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
 
         MultipartBody.Part cheque_image_part = null;
 
@@ -552,6 +571,8 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             params.put(Constants.PARAM_BANK_AC, "" + edit_ac_no.getText());
             params.put(Constants.PARAM_IFSC, "" + edit_ifsc.getText());
             params.put(Constants.PARAM_REQUEST_ID, "" + request_id);
+           /* params.put(Constants.PARAM_LATITUDE, lattitude);
+            params.put(Constants.PARAM_LONGITUDE, longitude);*/
 
             File imagefile = new File(cancelChequeImagepath);
             cheque_image_part = MultipartBody.Part.createFormData(Constants.PARAM_CANCELLED_CHEQUE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(cancelChequeImagepath)), imagefile));
@@ -573,6 +594,9 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
                             if (chequeDetail.getResponseCode() == 200) {
                                 showAlert(response.body().getResponse());
+                            }
+                            if (chequeDetail.getResponseCode() == 411) {
+                                sessionManager.logoutUser(mcontext);
                             }
                             if (chequeDetail.getResponseCode() == 400) {
                                 progressDialog.dismiss();
@@ -684,7 +708,10 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                                     edit_bank_address.setText(result.getString("bank_address").toString());
                                 } else if (jsonObject.getInt("responseCode") == 405) {
                                     sessionManager.logoutUser(mcontext);
-                                } else {
+                                }
+                                else if (jsonObject.getInt("responseCode")==411){
+                                    sessionManager.logoutUser(mcontext);
+                                }else {
                                 }
                             }
                         } else {

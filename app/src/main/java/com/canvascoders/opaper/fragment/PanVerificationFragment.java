@@ -40,7 +40,9 @@ import com.canvascoders.opaper.Beans.PanCardOcrResponse.PanCardSubmitResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
+import com.canvascoders.opaper.activity.AddNewDeliveryBoy;
 import com.canvascoders.opaper.activity.CropImage2Activity;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.OTPActivity;
@@ -114,6 +116,8 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     private SessionManager sessionManager;
     private boolean isPanSelected = false;
     private EditText edit_pan_name, edit_pan_name_father, edit_pan_number;
+    private String lattitude="",longitude="";
+    GPSTracker gps;
     TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -251,7 +255,10 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                         Bitmap bitmap = ImagePicker.getBitmapFromURL(Constants.BaseImageURL + updatePanDetailResponse.getData().get(0).getPan());
                         panImagepath = ImagePicker.getBitmapPath(bitmap, getActivity());
                         // ExtractPanDetail();
-                    } else {
+                    }
+                    else if (updatePanDetailResponse.getResponseCode()==411){
+                        sessionManager.logoutUser(getActivity());
+                    }else {
                         edit_pan_number.setEnabled(true);
                         edit_pan_name_father.setEnabled(true);
                         edit_pan_name.setEnabled(true);
@@ -452,6 +459,22 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     }
 
     public void storePAN() {
+        gps = new GPSTracker(getActivity());
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
 
         MultipartBody.Part pan_card_part = null;
 
@@ -465,6 +488,8 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             params.put(Constants.PARAM_PAN_NO, "" + edit_pan_number.getText());
             params.put(Constants.PARAM_PAN_NAME, "" + edit_pan_name.getText());
             params.put(Constants.PARAM_FATHER_NAME, "" + edit_pan_name_father.getText());
+           /* params.put(Constants.PARAM_LATITUDE, lattitude);
+            params.put(Constants.PARAM_LONGITUDE, longitude);*/
             if (isedit == true) {
                 params.put(Constants.PARAM_IS_EDIT, "1");
 
@@ -494,6 +519,9 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                         if (panVerificationDetail.getResponseCode() == 200) {
                             str_process_id = panVerificationDetail.getData().get(0).getProccess_id();
                             showAlert(response.body().getResponse());
+                        }
+                        if (panVerificationDetail.getResponseCode() == 411) {
+                            sessionManager.logoutUser(mcontext);
                         }
 
                         if (panVerificationDetail.getResponseCode() == 400) {

@@ -113,7 +113,10 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
                         mProgressDialog.dismiss();
 //                        Toast.makeText(AddDeliveryBoysActivity.this,deliveryBoysList.getResponse(),Toast.LENGTH_SHORT).show();
                         delivery_boys_list.addAll(deliveryBoysList.getData());
-                    } else {
+                    }
+                    else if (deliveryBoysList.getResponseCode()==411){
+                        sessionManager.logoutUser(getActivity());
+                    }else {
                         mProgressDialog.dismiss();
                         Toast.makeText(getActivity(), deliveryBoysList.getResponse(), Toast.LENGTH_SHORT).show();
                     }
@@ -206,6 +209,9 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
                         DelBoysNextResponse delBoysNextResponse = response.body();
                         if(delBoysNextResponse.getResponseCode() == 200){
                             showAlert(delBoysNextResponse.getResponse());
+                        }
+                        else if (delBoysNextResponse.getResponseCode()==411){
+                            sessionManager.logoutUser(getActivity());
                         }
                         else{
                             Toast.makeText(getActivity(), delBoysNextResponse.getResponse(), Toast.LENGTH_SHORT).show();

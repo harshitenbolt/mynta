@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.JsonObject;
@@ -36,6 +38,8 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
     String str_process_id;
     private int countDown = 30;
     String page_num;
+    private String lattitude = "",longitude="";
+    GPSTracker gps;
     private Boolean resend = false;
     private String TAG = "Process_info";
 
@@ -145,7 +149,11 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                 Constants.showAlert(tv_message.getRootView(), checkEsignResponse.getData().get(0).getScreenMsg(), true);
                             }
 
-                        } else {
+                        }
+                    else if (checkEsignResponse.getResponseCode() == 405) {
+
+                        sessionManager.logoutUser(ProcessInfoActivity.this);
+                    }else {
                             Constants.showAlert(tv_message.getRootView(), checkEsignResponse.getStatus(), false);
                             // Toast.makeText(ProcessInfoActivity.this, object.getStatus(), Toast.LENGTH_LONG).show();
                         }
@@ -162,11 +170,29 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void ApiCallResend() {
+        gps = new GPSTracker(this);
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
             Map<String, String> params = new HashMap<String, String>();
             params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             params.put(Constants.KEY_PROCESS_ID, str_process_id);
             params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+            params.put(Constants.PARAM_LONGITUDE,longitude);
+            params.put(Constants.PARAM_LATITUDE,lattitude);
 
             Call<ResendOTPResponse> call = ApiClient.getClient().create(ApiInterface.class).resendOTP("Bearer "+sessionManager.getToken(),params);
             call.enqueue(new Callback<ResendOTPResponse>() {
@@ -176,6 +202,9 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                     Mylogger.getInstance().Logit(TAG, String.valueOf(response));
                     if(resendOTPResponse.getResponseCode() == 200){
                         Toast.makeText(ProcessInfoActivity.this,resendOTPResponse.getResponse(),Toast.LENGTH_LONG).show();
+                    }
+                    else if(resendOTPResponse.getResponseCode() ==411){
+                        sessionManager.logoutUser(ProcessInfoActivity.this);
                     }
                     else{
                         Toast.makeText(ProcessInfoActivity.this,resendOTPResponse.getResponse(),Toast.LENGTH_LONG).show();

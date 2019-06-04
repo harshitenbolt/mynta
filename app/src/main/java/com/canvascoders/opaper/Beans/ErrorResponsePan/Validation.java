@@ -272,6 +272,18 @@ public class Validation {
     @SerializedName("vendor_type")
     @Expose
     private String vendorType;
+    @SerializedName("vendor_type_detail")
+    @Expose
+    private String vendorTypeDetail;
+
+    public String getVendorTypeDetail() {
+        return vendorTypeDetail;
+    }
+
+    public void setVendorTypeDetail(String vendorTypeDetail) {
+        this.vendorTypeDetail = vendorTypeDetail;
+    }
+
     @SerializedName("locality")
     @Expose
     private String locality;

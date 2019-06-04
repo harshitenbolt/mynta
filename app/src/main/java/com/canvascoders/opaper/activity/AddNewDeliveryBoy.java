@@ -39,6 +39,7 @@ import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.InfoFragment;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
@@ -75,6 +76,8 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     private RelativeLayout rvLanguage;
     private ProgressDialog mProgressDialog;
     Spinner dc;
+    private String lattitude ="",longitude="";
+    GPSTracker gps;
     String str_process_id;
     private ArrayList<String> dcLists = new ArrayList<>();
     private SessionManager sessionManager;
@@ -325,6 +328,22 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     }
 
     private void ApiCallSubmit() {
+        gps = new GPSTracker(AddNewDeliveryBoy.this);
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
         mProgressDialog.show();
         MultipartBody.Part prof_image = null;
         MultipartBody.Part license_image = null;
@@ -355,6 +374,8 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         params.put(Constants.PARAM_DRIVING_LICENCE_DOB, dob.getText().toString().trim());
         params.put(Constants.PARAM_DRIVING_LICENCE_VEHICLE, etVehicle.getText().toString().trim());
         params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
+        params.put(Constants.PARAM_LATITUDE,lattitude);
+        params.put(Constants.PARAM_LONGITUDE,longitude);
 
         Call<AddDelBoyResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image);
         callUpload.enqueue(new Callback<AddDelBoyResponse>() {
@@ -366,6 +387,9 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                     if (addDelBoyResponse.getResponseCode() == 200) {
                         Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         finish();
+                    }
+                    if (addDelBoyResponse.getResponseCode()==411){
+                        sessionManager.logoutUser(AddNewDeliveryBoy.this);
                     }
                     if (addDelBoyResponse.getResponseCode() == 400) {
 

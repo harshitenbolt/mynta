@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -47,6 +48,7 @@ import com.canvascoders.opaper.adapters.MyLanguageAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.canvascoders.opaper.activity.AppApplication;
@@ -81,6 +83,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
     boolean[] checkedItems;
     private String same_address = "0",pincode;
     boolean[] checkedStoreType;
+    private String lattitude="",longitude="";
+    GPSTracker gps;
     private TextView tvPartner;
 
     private String blockCharacterSet = "~#^|$%&*!'()*+-,./:;<=>?@[]";
@@ -95,9 +99,10 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
             return null;
         }
     };
-    private Spinner dc, spLocality, spTypeofVendor, spApproach, spShipment, spLanguage;
+    private Spinner dc, spLocality, spTypeofVendor,spTypeofVendorDetail, spApproach, spShipment, spLanguage;
     private List<String> shipmentmodeltype = new ArrayList<>();
     private List<String> type_of_vendor = new ArrayList<>();
+    private List<String> type_of_vendorDetail = new ArrayList<>();
     private List<String> locality = new ArrayList<>();
     private List<String> approach = new ArrayList<>();
     private String isgsttn = "no";
@@ -128,10 +133,10 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
         OTPActivity.settitle(Constants.TITLE_VENDOR_DETAIL_MENSA);
 
         initView();
-        //type_of_vendor = Arrays.asList(getResources().getStringArray(R.array.TypeofVendor));
-        /*CustomAdapter<String> spTypeofVendorAdapter = new CustomAdapter<String>(mcontext, android.R.layout.simple_spinner_item, type_of_vendor);
+        type_of_vendor = Arrays.asList(getResources().getStringArray(R.array.TypeofVendor));
+        CustomAdapter<String> spTypeofVendorAdapter = new CustomAdapter<String>(mcontext, android.R.layout.simple_spinner_item, type_of_vendor);
         spTypeofVendorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spTypeofVendor.setAdapter(spTypeofVendorAdapter);*/
+        spTypeofVendor.setAdapter(spTypeofVendorAdapter);
 
         locality = Arrays.asList(getResources().getStringArray(R.array.Locality));
         CustomAdapter<String> spLocalityAdapter = new CustomAdapter<String>(mcontext, android.R.layout.simple_spinner_item, locality);
@@ -165,7 +170,42 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
         rvSelectStoretype = view.findViewById(R.id.rvSelectStoretype);
         rvSelectStoretype.setOnClickListener(this);
         spTypeofVendor = (Spinner) view.findViewById(R.id.snTypeofVendor);
-        spLocality = (Spinner) view.findViewById(R.id.snLocality);
+        spTypeofVendorDetail = (Spinner) view.findViewById(R.id.snTypeofVendorDetail);
+
+        spTypeofVendor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(spTypeofVendor.getSelectedItem().equals("Physical Shop")){
+                    type_of_vendorDetail = Arrays.asList(getResources().getStringArray(R.array.PhysicalShop));
+                    CustomAdapter<String> spTypeofVendorAdapter = new CustomAdapter<String>(mcontext, android.R.layout.simple_spinner_item, type_of_vendorDetail);
+                    spTypeofVendorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spTypeofVendorDetail.setAdapter(spTypeofVendorAdapter);
+                }
+                else if(spTypeofVendor.getSelectedItem().equals("Individual")){
+                    type_of_vendorDetail = Arrays.asList(getResources().getStringArray(R.array.Individual));
+                    CustomAdapter<String> spTypeofVendorAdapter = new CustomAdapter<String>(mcontext, android.R.layout.simple_spinner_item, type_of_vendorDetail);
+                    spTypeofVendorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spTypeofVendorDetail.setAdapter(spTypeofVendorAdapter);
+
+                }
+                else if (spTypeofVendor.getSelectedItem().equals("Company/Firm")){
+                    type_of_vendorDetail = Arrays.asList(getResources().getStringArray(R.array.Company));
+                    CustomAdapter<String> spTypeofVendorAdapter = new CustomAdapter<String>(mcontext, android.R.layout.simple_spinner_item, type_of_vendorDetail);
+                    spTypeofVendorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spTypeofVendorDetail.setAdapter(spTypeofVendorAdapter);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
+       spLocality = (Spinner) view.findViewById(R.id.snLocality);
         spApproach = (Spinner) view.findViewById(R.id.snApproach);
         spShipment = (Spinner) view.findViewById(R.id.snShipment);
         // spLanguage = (Spinner)view.findViewById(R.id.snLanguage);
@@ -345,15 +385,18 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
                     try {
                         GetVendorTypeDetails getVendorTypeDetails = response.body();
                         if (getVendorTypeDetails.getResponseCode() == 200) {
-                            type_of_vendor.addAll(getVendorTypeDetails.getData());
+                           /* type_of_vendor.addAll(getVendorTypeDetails.getData());
                             CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(mcontext, android.R.layout.simple_spinner_item, type_of_vendor);
                             spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spTypeofVendor.setAdapter(spinnerArrayAdapter);
-                            spTypeofVendor.setAdapter(spinnerArrayAdapter);
-                            spTypeofVendor.setSelection(0);
+                            spTypeofVendor.setSelection(0);*/
                             select_Store_type=getVendorTypeDetails.getStoreTypeConfig();
                             checkedStoreType = new boolean[select_Store_type.size()];
                         }
+                        else if (getVendorTypeDetails.getResponseCode()==411){
+                            sessionManager.logoutUser(mcontext);
+                        }
+
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -665,13 +708,18 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getActivity(), "Select Shipment Transfer Type", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (TextUtils.isEmpty(edit_licenceno.getText().toString())) {
+      /*  if (TextUtils.isEmpty(edit_licenceno.getText().toString())) {
             edit_licenceno.requestFocus();
             edit_licenceno.setError("Provide Licence Number");
             // showMSG(false, "Provide Pincode");
             return false;
+        }*/
+        if (spTypeofVendor.getSelectedItem().equals("--Type of Vendor--")) {
+            spTypeofVendor.requestFocus();
+            Toast.makeText(getActivity(), "Select type of vendor", Toast.LENGTH_SHORT).show();
+            // showMSG(false, "Provide Pincode");
+            return false;
         }
-
         if (spLocality.getSelectedItem().equals("--Locality--")) {
             spLocality.requestFocus();
             Toast.makeText(getActivity(), "Select Locality", Toast.LENGTH_SHORT).show();
@@ -743,6 +791,22 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
 
 
     public void bizDetailsSubmit(final View v) {
+        gps = new GPSTracker(getActivity());
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
         mProgressDialog.show();
         JsonObject user = new JsonObject();
         user.addProperty(Constants.PARAM_PROCESS_ID, str_process_id);
@@ -759,9 +823,15 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
         user.addProperty(Constants.PARAM_STORE_ADDRESS, "" + edit_storeaddress.getText());
         user.addProperty(Constants.PARAM_STORE_ADDRESS1, "" + etStreet.getText());
         user.addProperty(Constants.PARAM_STORE_ADDRESS_LANDMARK,""+etLandmark.getText());
+       /* user.addProperty(Constants.PARAM_LATITUDE, "" + lattitude);
+        user.addProperty(Constants.PARAM_LONGITUDE,""+longitude);*/
 
-
-        user.addProperty(Constants.PARAM_LICENCE_NO, "" + edit_licenceno.getText());
+        if(!TextUtils.isEmpty(edit_licenceno.getText().toString())){
+            user.addProperty(Constants.PARAM_LICENCE_NO, "" + edit_licenceno.getText());
+        }
+        else{
+            user.addProperty(Constants.PARAM_LICENCE_NO, "");
+        }
 
         //new Update
         user.addProperty(Constants.PARAM_OWNER_NAME, "" + etOwnerName.getText());
@@ -787,6 +857,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
 
 
         user.addProperty(Constants.PARAM_VENDOR_TYPE, "" + spTypeofVendor.getSelectedItem());
+        user.addProperty(Constants.PARAM_VENDOR_TYPE_DETAIL, "" + spTypeofVendorDetail.getSelectedItem());
         user.addProperty(Constants.PARAM_LOCALITY, "" + spLocality.getSelectedItem());
         user.addProperty(Constants.PARAM_APPROACH, "" + spApproach.getSelectedItem());
         user.addProperty(Constants.PARAM_LANGUAGES, "" + tvLanguage.getText());
@@ -810,6 +881,9 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
                         Mylogger.getInstance().Logit(TAG, "" + getUserDetailResponse.getData().get(0).getProccessId());
                         commanFragmentCallWithoutBackStack(new DocUploadFragment());
                     }
+                    if (getUserDetailResponse.getResponseCode()==411){
+                        sessionManager.logoutUser(getActivity());
+                    }
 
                     if (getUserDetailResponse.getResponseCode() == 400) {
 
@@ -826,6 +900,12 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
                                 tvDob.requestFocus();
                                 // return false;
                             }
+                            if (validation.getVendorTypeDetail() != null && validation.getVendorTypeDetail().length() > 0) {
+                              Toast.makeText(getActivity(),validation.getVendorTypeDetail(),Toast.LENGTH_LONG).show();
+                                // return false;
+                                // return false;
+                            }
+
                             if (validation.getRoute() != null && validation.getRoute().length() > 0) {
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 etRoute.setError(validation.getRoute());

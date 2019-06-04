@@ -64,4 +64,9 @@
     <color name="color11">#607D8B</color>
     <color name="color12">#EAEAEA</color>
 
+
+
+    <!--new Colors-->
+    <color name="colorLightGrey">#EFEDEE</color>
+
 </resources>

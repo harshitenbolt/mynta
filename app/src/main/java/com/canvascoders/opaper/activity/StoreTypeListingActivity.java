@@ -286,6 +286,9 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(StoreTypeListingActivity.this);
                                 }
+                                else if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
+                                    sessionManager.logoutUser(StoreTypeListingActivity.this);
+                                }
                                 else{
                                     showDialogApproval2(jsonObject.optString("response"));
                                 }
@@ -424,7 +427,9 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(StoreTypeListingActivity.this);
                                 }
-
+                                else if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
+                                    sessionManager.logoutUser(StoreTypeListingActivity.this);
+                                }
 
                             } else if (response.code() == 202) {
                                 showDialogApproval(jsonObject.optString("message"));

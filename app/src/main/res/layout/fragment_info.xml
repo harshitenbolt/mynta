@@ -737,6 +737,37 @@
 
 
             </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="@dimen/margin_20dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/margin_20dp"
+                android:background="@drawable/rounded_corner_view">
+
+                <Spinner
+                    android:id="@+id/snTypeofVendorDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/margin_10dp" />
+                <!--<AutoCompleteTextView-->
+                <!--android:id="@+id/autoCompleteTextView1"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="#0000"-->
+                <!--android:fontFamily="@font/rb_regular"-->
+                <!--android:hint="Type DC name to find"-->
+                <!--android:maxLines="1"-->
+                <!--android:paddingBottom="@dimen/margin_15dp"-->
+                <!--android:paddingLeft="@dimen/margin_20dp"-->
+                <!--android:paddingRight="@dimen/margin_10dp"-->
+                <!--android:paddingTop="@dimen/margin_15dp"-->
+                <!--android:textColor="@color/font_login"-->
+                <!--android:textSize="@dimen/font_login" />-->
+
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
