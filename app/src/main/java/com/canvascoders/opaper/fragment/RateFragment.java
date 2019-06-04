@@ -82,7 +82,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
     RecyclerView recyclerView;
     VendorList vendor;
 
-    // se commit done
+    // se commit done Start
 
 
 
