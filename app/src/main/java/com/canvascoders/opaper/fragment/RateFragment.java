@@ -82,6 +82,9 @@ public class RateFragment extends Fragment implements View.OnClickListener {
     RecyclerView recyclerView;
     VendorList vendor;
 
+    // se commit done
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
