@@ -84,7 +84,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
 
     // se commit done Start
 
-
+        // new branch change mobile
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
