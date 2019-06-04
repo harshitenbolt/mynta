@@ -823,8 +823,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener {
         user.addProperty(Constants.PARAM_STORE_ADDRESS, "" + edit_storeaddress.getText());
         user.addProperty(Constants.PARAM_STORE_ADDRESS1, "" + etStreet.getText());
         user.addProperty(Constants.PARAM_STORE_ADDRESS_LANDMARK,""+etLandmark.getText());
-       /* user.addProperty(Constants.PARAM_LATITUDE, "" + lattitude);
-        user.addProperty(Constants.PARAM_LONGITUDE,""+longitude);*/
+        user.addProperty(Constants.PARAM_LATITUDE, "" + lattitude);
+        user.addProperty(Constants.PARAM_LONGITUDE,""+longitude);
 
         if(!TextUtils.isEmpty(edit_licenceno.getText().toString())){
             user.addProperty(Constants.PARAM_LICENCE_NO, "" + edit_licenceno.getText());

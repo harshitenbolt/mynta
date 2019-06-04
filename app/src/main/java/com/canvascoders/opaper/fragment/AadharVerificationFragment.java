@@ -1135,8 +1135,8 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             params.put(Constants.PARAM_NAME, name.trim());
             params.put(Constants.PARAM_YEAR_OF_BIRTH, year.trim());
             params.put(Constants.PARAM_PINCODE, pincode.trim());
-            /*params.put(Constants.PARAM_LATITUDE, lattitude);
-            params.put(Constants.PARAM_LONGITUDE, longitude);*/
+            params.put(Constants.PARAM_LATITUDE, lattitude);
+            params.put(Constants.PARAM_LONGITUDE, longitude);
 
             File imagefile = new File(aadharImagepathFront);
             aadharcard_front_part = MultipartBody.Part.createFormData(Constants.PARAM_AADHAR_FRONT, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathFront)), imagefile));

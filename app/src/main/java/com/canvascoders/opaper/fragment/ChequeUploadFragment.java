@@ -571,8 +571,8 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             params.put(Constants.PARAM_BANK_AC, "" + edit_ac_no.getText());
             params.put(Constants.PARAM_IFSC, "" + edit_ifsc.getText());
             params.put(Constants.PARAM_REQUEST_ID, "" + request_id);
-           /* params.put(Constants.PARAM_LATITUDE, lattitude);
-            params.put(Constants.PARAM_LONGITUDE, longitude);*/
+            params.put(Constants.PARAM_LATITUDE, lattitude);
+            params.put(Constants.PARAM_LONGITUDE, longitude);
 
             File imagefile = new File(cancelChequeImagepath);
             cheque_image_part = MultipartBody.Part.createFormData(Constants.PARAM_CANCELLED_CHEQUE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(cancelChequeImagepath)), imagefile));

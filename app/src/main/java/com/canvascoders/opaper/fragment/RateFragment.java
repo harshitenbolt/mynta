@@ -381,8 +381,8 @@ public class RateFragment extends Fragment implements View.OnClickListener {
         dataObj.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
         dataObj.addProperty(Constants.KEY_PROCESS_ID, str_process_id);
         dataObj.addProperty(Constants.KEY_AGENT_ID, sessionManager.getAgentID());
-       /* dataObj.addProperty(Constants.PARAM_LATITUDE,lattitude);
-        dataObj.addProperty(Constants.PARAM_LONGITUDE,longitude);*/
+        dataObj.addProperty(Constants.PARAM_LATITUDE,lattitude);
+        dataObj.addProperty(Constants.PARAM_LONGITUDE,longitude);
         dataObj.add(Constants.KEY_STORES, jsonArray);
 
         Retrofit retrofit = ApiClient.getClient();
