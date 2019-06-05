@@ -4,6 +4,7 @@ package com.canvascoders.opaper.api;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 
 import com.canvascoders.opaper.Beans.BankDetailResp;
+import com.canvascoders.opaper.Beans.ChangeMobileResponse.ChangeMobileResponse;
 import com.canvascoders.opaper.Beans.CheckEsignResponse.CheckEsignResponse;
 import com.canvascoders.opaper.Beans.DelBoysNextScreenResponse.DelBoysNextResponse;
 import com.canvascoders.opaper.Beans.DelBoysResponse.DelBoyResponse;
@@ -318,6 +319,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("nocesign")
     Call<ResponseBody> nocEsign(@FieldMap Map<String, String> apiVersionMap);
+
+
+    @FormUrlEncoded
+    @POST("change-mobile")
+    Call<ChangeMobileResponse> changeMobile(@Header("Authorization")String header, @FieldMap Map<String, String> apiVersionMap);
 
     //-----------------------------------------------------------------------------
 

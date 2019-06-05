@@ -21,6 +21,7 @@ import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResp
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.activity.ChangeMobileActivity;
 import com.canvascoders.opaper.activity.OTPActivity;
 import com.canvascoders.opaper.activity.StoreTypeListingActivity;
 import com.canvascoders.opaper.api.ApiClient;
@@ -42,7 +43,7 @@ public class VendorDetailsFragment extends Fragment {
     VendorList vendor;
     TextView tv_ShopName, tv_Mobile, tv_Name, tvProcessId;
     ImageView ivVendorImage;
-    Button btn_update_cheque, btn_update_delivery_boy, btn_update_store_details,btn_resend_agreement;
+    Button btn_update_cheque, btn_update_delivery_boy,btn_update_mobile,btn_update_store_details,btn_resend_agreement;
     LinearLayout linear_check;
     String isUpdationRequired,allowDEdit,allowEditDelBoy;
     SessionManager sessionManager;
@@ -64,6 +65,7 @@ public class VendorDetailsFragment extends Fragment {
         tv_Name = view.findViewById(R.id.tv_name);
         ivVendorImage = view.findViewById(R.id.iv_vendor_image);
         btn_update_cheque = view.findViewById(R.id.btn_update_cheque);
+        btn_update_mobile =view.findViewById(R.id.btUpdateMobile);
         btn_update_delivery_boy = view.findViewById(R.id.btn_update_delivery_boy);
         btn_resend_agreement = view.findViewById(R.id.btn_resend_agreement);
         btn_update_store_details = view.findViewById(R.id.btn_update_store_details);
@@ -125,6 +127,15 @@ public class VendorDetailsFragment extends Fragment {
             public void onClick(View v) {
 //                commanFragmentCallWithBackStack(new ChequedataUpdateFragment(),vendor);
                 commanFragmentCallWithBackStack(new ChequeDataListingFragment(), vendor);
+            }
+        });
+
+        btn_update_mobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(),ChangeMobileActivity.class);
+                i.putExtra(Constants.KEY_VENDOR_MOBILE,vendor);
+                startActivity(i);
             }
         });
 

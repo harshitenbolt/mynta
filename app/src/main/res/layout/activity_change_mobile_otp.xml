@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.ChangeMobileOTPActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <ImageView
+            android:id="@+id/iv_back_process"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_title_Process"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:fontFamily="@font/rb_medium"
+            android:gravity="start|center"
+            android:padding="5dp"
+            android:text="Change Mobile"
+            android:textColor="@color/colorWhite"
+            android:textSize="20dp" />
+    </android.support.v7.widget.Toolbar>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/margin_10dp"
+        android:backgroundTint="@color/colorWhite"
+        app:cardElevation="5dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_10dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/otp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rb_medium"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:text="Enter you OTP"
+                    android:textColor="@color/colorBlack" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rb_light"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:text="We have sent you access code\nvia SMS to mobile number"
+                    android:textColor="@color/colorDarkBlack"
+                    android:textSize="@dimen/font_login" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_mobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rb_medium"
+                        android:gravity="center"
+                        android:padding="@dimen/margin_10dp"
+                        android:text="+91 "
+                        android:textColor="@color/colorBlack" />
+
+                    <ImageView
+                        android:id="@+id/img_edit_mobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:visibility="gone"
+                        android:src="@drawable/edit" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/margin_10dp">
+
+                    <EditText
+                        android:id="@+id/edt_otp_1"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:background="@color/lightGray2"
+                        android:fontFamily="@font/rb_light"
+                        android:gravity="center"
+                        android:hint="*"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:maxLines="1" />
+
+                    <EditText
+                        android:id="@+id/edt_otp_2"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:background="@color/lightGray2"
+                        android:fontFamily="@font/rb_light"
+                        android:gravity="center"
+                        android:hint="*"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:maxLines="1" />
+
+                    <EditText
+                        android:id="@+id/edt_otp_3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:background="@color/lightGray2"
+                        android:fontFamily="@font/rb_light"
+                        android:gravity="center"
+                        android:hint="*"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:maxLines="1" />
+
+                    <EditText
+                        android:id="@+id/edt_otp_4"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp"
+                        android:background="@color/lightGray2"
+                        android:fontFamily="@font/rb_light"
+                        android:gravity="center"
+                        android:hint="*"
+                        android:inputType="numberPassword"
+                        android:maxLength="1"
+                        android:maxLines="1" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/btn_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_80dp"
+                    android:tint="@android:color/white"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_arrow_right_black" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rb_light"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:text="Didn't Receive the OTP?"
+                    android:textColor="@color/colorGrey"
+                    android:textSize="@dimen/font_signin" />
+
+                <TextView
+                    android:id="@+id/tv_resend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rb_medium"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Resend code"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_show_msg_sucess"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#A5D6A7"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Sucessfully Done"
+                android:textColor="#1E6023"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txt_show_msg_fail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFCDD2"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Sucessfully Done"
+                android:textColor="#F44336"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

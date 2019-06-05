@@ -170,6 +170,22 @@
                         android:text="Update Cheque Details"
                         android:textAllCaps="false"
                         android:textColor="#ffffff" />
+                    <Button
+                        android:id="@+id/btUpdateMobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/margin_15dp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/chip_selected"
+                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:fontFamily="@font/rb_medium"
+                        android:paddingLeft="@dimen/margin_10dp"
+                        android:paddingRight="@dimen/margin_10dp"
+                        android:text="Update Mobile Details"
+                        android:textAllCaps="false"
+                        android:textColor="#ffffff" />
 
                 </LinearLayout>
 
