@@ -199,6 +199,7 @@ public class InvoiceMainFragment extends Fragment {
                     intent.putExtra(Constants.INVOICE_TYPE,type_name);
                     intent.putExtra(Constants.INVOICE_NUMBER,status);
                     intent.putExtra(Constants.SIGNED,signed);
+                    intent.putExtra(Constants.KEY_NAME,billLists.get(position).getStore_name());
                     startActivity(intent);
                 }
                 else{
@@ -342,6 +343,7 @@ public class InvoiceMainFragment extends Fragment {
 
 
     public class GetInvoice1 extends AsyncTask<String, Void, String> {
+
 
         String jsonReq;
         String apinumber;

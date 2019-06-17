@@ -36,6 +36,7 @@ import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.database.RealmController;
 import com.canvascoders.opaper.fragment.DebitInvoiceMainFragment;
 import com.canvascoders.opaper.fragment.GSTInvoiceMainFragment;
+import com.canvascoders.opaper.fragment.SupportFragment;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
@@ -389,6 +390,10 @@ public class GstActivity extends AppCompatActivity implements NavigationView.OnN
 
 
         }
+        if(id == R.id.nav_Support){
+            commanFragmentCallWithoutBackStack(new SupportFragment());
+        }
+
         if (id == R.id.nav_logout) {
 
             SessionManager sessionManager = new SessionManager(GstActivity.this);

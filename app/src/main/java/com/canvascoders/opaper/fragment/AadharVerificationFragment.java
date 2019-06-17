@@ -1142,7 +1142,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             aadharcard_front_part = MultipartBody.Part.createFormData(Constants.PARAM_AADHAR_FRONT, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathFront)), imagefile));
 
             File imagefile1 = new File(aadharImagepathBack);
-            aadharcard_back_part = MultipartBody.Part.createFormData(Constants.PARAM_AADHAR_BACK, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathBack)), imagefile));
+            aadharcard_back_part = MultipartBody.Part.createFormData(Constants.PARAM_AADHAR_BACK, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathBack)), imagefile1));
 
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
             mProgressDialog.setMessage("Please wait getting details...");

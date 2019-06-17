@@ -128,8 +128,6 @@ public class ReportFragment extends Fragment {
         recyclerview.setLayoutManager(linearLayoutManager);
         linearAdapter = new ReportAdapter(billLists);
         recyclerview.setAdapter(linearAdapter);
-
-
     }
 
 

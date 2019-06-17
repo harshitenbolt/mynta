@@ -40,6 +40,7 @@ import com.canvascoders.opaper.fragment.MobileFragment;
 import com.canvascoders.opaper.fragment.NotificationFragment;
 import com.canvascoders.opaper.fragment.ProfileFragment;
 import com.canvascoders.opaper.fragment.ReportFragment;
+import com.canvascoders.opaper.fragment.SupportFragment;
 import com.canvascoders.opaper.fragment.VenderListFragment;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.Mylogger;
@@ -631,6 +632,9 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
             commanFragmentCallWithoutBackStack(new ReportFragment());
 
 
+        }
+        if(id == R.id.nav_Support){
+            commanFragmentCallWithoutBackStack(new SupportFragment());
         }
         if (id == R.id.nav_logout) {
 

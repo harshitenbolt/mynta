@@ -39,6 +39,7 @@ import com.canvascoders.opaper.fragment.DebitInvoiceMainFragment;
 
 import com.canvascoders.opaper.fragment.DeliveryBoyFragment;
 import com.canvascoders.opaper.fragment.GSTInvoiceMainFragment;
+import com.canvascoders.opaper.fragment.SupportFragment;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
@@ -533,6 +534,10 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
 
 
         }
+        if(id == R.id.nav_Support){
+            commanFragmentCallWithoutBackStack(new SupportFragment());
+        }
+
         if (id == R.id.nav_logout) {
 
             SessionManager sessionManager = new SessionManager(OTPActivity.this);

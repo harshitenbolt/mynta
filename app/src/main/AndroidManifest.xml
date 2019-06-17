@@ -34,17 +34,23 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon">
-        <activity android:name=".activity.MobileChangedSuccessActivity"
+        <activity android:name=".activity.SupportDetailActivity"></activity>
+        <activity
+            android:name=".activity.ReportIssueActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
-        <activity android:name=".activity.ChangeMobileOTPActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".activity.MobileChangedSuccessActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.ChangeMobileActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.ChangeMobileOTPActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.ChangeMobileActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">

@@ -198,6 +198,7 @@ public class DebitInvoiceMainFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), InvoiceEsignActivity.class);
                     intent.putExtra(Constants.KEY_INVOICE_ID, String.valueOf(billLists.get(position).getId()));
                     intent.putExtra(Constants.INVOICE_TYPE, type_name);
+                    intent.putExtra(Constants.KEY_NAME,billLists.get(position).getStore_name());
                     intent.putExtra(Constants.INVOICE_NUMBER, status);
                     intent.putExtra(Constants.SIGNED, signed);
                     startActivity(intent);

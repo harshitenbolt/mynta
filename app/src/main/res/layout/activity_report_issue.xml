@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:focusable="true"
+    android:gravity="center|start"
+    android:orientation="vertical"
+    tools:context=".activity.ReportIssueActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/rb_medium"
+                android:gravity="start|center"
+                android:text="Support Screen"
+                android:textColor="@color/colorWhite"
+                android:textSize="20dp" />
+        </LinearLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_next"
+        android:layout_below="@+id/toolbar"
+        android:gravity="center|start">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_75sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Store Name :- "
+                        android:textSize="@dimen/_15sdp" />
+
+                    <TextView
+                        android:id="@+id/tvEnbolt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="3217"
+                        android:textColor="@color/text_color_dark_grey"
+                        android:textSize="@dimen/_15sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Agent Id       :- "
+                        android:textSize="@dimen/_15sdp" />
+
+                    <TextView
+                        android:id="@+id/tvAgent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1212"
+                        android:textColor="@color/text_color_dark_grey"
+                        android:textSize="@dimen/_15sdp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Invoice No   :- "
+                        android:textSize="@dimen/_15sdp" />
+
+                    <TextView
+                        android:id="@+id/tvInvoiceNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1212"
+                        android:textColor="@color/text_color_dark_grey"
+                        android:textSize="@dimen/_15sdp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/rounded_corner_view">
+
+                <Spinner
+                    android:id="@+id/snSubject"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/margin_10dp" />
+                <!--<AutoCompleteTextView-->
+                <!--android:id="@+id/autoCompleteTextView1"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="#0000"-->
+                <!--android:fontFamily="@font/rb_regular"-->
+                <!--android:hint="Type DC name to find"-->
+                <!--android:maxLines="1"-->
+                <!--android:paddingBottom="@dimen/margin_15dp"-->
+                <!--android:paddingLeft="@dimen/margin_20dp"-->
+                <!--android:paddingRight="@dimen/margin_10dp"-->
+                <!--android:paddingTop="@dimen/margin_15dp"-->
+                <!--android:textColor="@color/font_login"-->
+                <!--android:textSize="@dimen/font_login" />-->
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+
+                android:layout_height="@dimen/_30sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/rounded_corner_view">
+
+                <Spinner
+                    android:id="@+id/snPriority"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/margin_10dp" />
+                <!--<AutoCompleteTextView-->
+                <!--android:id="@+id/autoCompleteTextView1"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:background="#0000"-->
+                <!--android:fontFamily="@font/rb_regular"-->
+                <!--android:hint="Type DC name to find"-->
+                <!--android:maxLines="1"-->
+                <!--android:paddingBottom="@dimen/margin_15dp"-->
+                <!--android:paddingLeft="@dimen/margin_20dp"-->
+                <!--android:paddingRight="@dimen/margin_10dp"-->
+                <!--android:paddingTop="@dimen/margin_15dp"-->
+                <!--android:textColor="@color/font_login"-->
+                <!--android:textSize="@dimen/font_login" />-->
+
+
+            </RelativeLayout>
+
+
+            <EditText
+                android:id="@+id/etDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@drawable/squre"
+                android:gravity="top"
+                android:hint="Description"
+                android:lines="5"
+                android:padding="@dimen/_10sdp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:text="Attachment :-"
+                android:textSize="@dimen/_15sdp" />
+
+            <ImageView
+                android:id="@+id/issue"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_135sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:scaleType="fitCenter" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/btSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_normal"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:clickable="true"
+        android:enabled="false"
+        android:paddingTop="@dimen/_2sdp"
+        android:text="Submit"
+        android:textColor="#ffffff"
+        android:visibility="visible" />
+</RelativeLayout>

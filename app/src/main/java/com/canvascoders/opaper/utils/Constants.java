@@ -38,14 +38,14 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
 
-//public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
-   public static String BaseURL = "https://mystaging.opaper.in/api3/";  // test server 2
+    //public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+    public static String BaseURL = "https://mystaging.opaper.in/api3/";  // test server 2
 
-   public final static String APP_NAME = "my_stage"; //stage
- //public final static String APP_NAME = "my_live"; //live
+    public final static String APP_NAME = "my_stage"; //stage
+    //public final static String APP_NAME = "my_live"; //live
 
-   //public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
-  public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
+    //public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+    public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
 
@@ -58,6 +58,12 @@ public class Constants {
 
 
     public static final String OCRMEREK = "https://api.merak.ai/v1/text-recognition/cheque/recognize/?key=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0LCJlbWFpbCI6ImJpa2FzaC5taXNocmFAbXludHJhLmNvbSIsIm9yZ2FuaXphdGlvbl9pZCI6NCwiaWF0IjoxNTM3MzEwMDYyfQ.3jXCcyKnyXmnJIyvI1XoZ6ay5OKz8uBnQD_OUWywNG8";
+
+
+    //Api's Called for Comment List
+    public static String GET_COMMENT_LIST = "support-thread-detail";
+
+
     //Static Fixde Values
     public static final int VIEW_TYPE_ITEM = 0;
     public static final int VIEW_TYPE_ADMIN = 1;
@@ -110,6 +116,7 @@ public class Constants {
     public static String KEY_TOKEN = "tkn";
     public static String KEY_EMAIL = "email";
     public static String KEY_NAME = "name";
+    public static String KEY_INVOICE_NUM = "invoice_num";
     public static String KEY_AADHAR_NAME = "uid_name";
     public static String KEY_RH_ID = "rh_id";
     public static String KEY_EMP_ID = "emp_id";
@@ -127,6 +134,7 @@ public class Constants {
     public static String INVOICE_TYPE = "invoice_type";
     public static String INVOICE_NUMBER = "invoice_number";
     public static String SIGNED = "signed";
+    public static String KEY_SUPPORT_ID = "support_id";
     public static String KEY_EDIT_DETAIL = "edit_detail";
 
     //-------------------------
@@ -136,6 +144,15 @@ public class Constants {
 
     //all api parameter
     public static String PARAM_EMAIL = "email";
+    public static String PARAM_SCREEN_NAME = "screen_name";
+    public static String PARAM_ATTACHMENT = "attachment";
+
+    public static String PARAM_SUBJECT_NAME = "subject";
+
+    public static String PARAM_DESCRIPTION = "descreption";
+    public static String PARAM_PRIORITY = "priority";
+
+
     public static String PARAM_EMAIL_ID = "email_id";
     public static String PARAM_MOBILE_NUMBER = "mobile_number";
     public static String PARAM_REMEMBER_TOKEN = "remember_token";
@@ -154,7 +171,7 @@ public class Constants {
     public static String PARAM_PERMANENT_ADDRESS_LANDMARK = "permanent_address_landmark";
     public static String PARAM_PERMANENT_ADDRESS_PINCODE = "permanent_address_picode";
     public static String PARAM_PERMANENT_ADDRESS_CITY = "permanent_address_city";
-    public static String PARAM_PERMANENT_ADDRESS_STATE= "permanent_address_state";
+    public static String PARAM_PERMANENT_ADDRESS_STATE = "permanent_address_state";
 
     public static String PHONE_NUMBER = "phone_number";
     public static String NAME = "name";
@@ -166,7 +183,6 @@ public class Constants {
     public static String PARAM_DRIVING_LICENCE_NUMBER = "driving_licence_number";
     public static String PARAM_DRIVING_LICENCE_DOB = "driving_licence_dob";
     public static String PARAM_DRIVING_LICENCE_VEHICLE = "vehicle_for_delivery";
-
 
 
     public static String PARAM_PROCESS_ID = "proccess_id";
@@ -195,7 +211,7 @@ public class Constants {
     public static String PARAM_DL_CARD_BACK = "dl_card_back";
     public static String PARAM_DRIVING_LICENCE_DETAIL = "driving_licence_detail";
     public static String PARAM_VOTERID_DETAIL = "voter_id_detail";
-
+    public static String PARAM_SUPPORT_ID = "support_id";
     public static String PARAM_NAME = "name";
     public static String PARAM_YEAR_OF_BIRTH = "yob";
     public static String PARAM_PINCODE = "pincode";
@@ -248,8 +264,6 @@ public class Constants {
     public static String PARAM_BACKSIDE_FILE_URL = "back_side_file_url";
 
 
-
-
     public static String PARAM_PAN_CARD_DETAIL_ID = "pan_card_detail_id";
     public static String PARAM_PAN_CARD_NUMBER = "pan_card_number";
     public static String PARAM_DOB = "dob";
@@ -259,7 +273,7 @@ public class Constants {
     public static String PARAM_RESIDENTIAL_LANDMARK = "residential_address_landmark";
     public static String PARAM_RESIDENTIAL_PINCODE = "residential_address_picode";
     public static String PARAM_RESIDENTIAL_CITY = "residential_address_city";
-    public static String PARAM_RESIDENTIAL_STATE= "residential_address_state";
+    public static String PARAM_RESIDENTIAL_STATE = "residential_address_state";
 
 
     public static String PARAM_VENDOR_TYPE = "vendor_type";
@@ -271,8 +285,6 @@ public class Constants {
     public static String PARAM_SHIPMENT_TRANS = "shipment_transfer";
     public static String PARAM_PARTNER_WITH_OTHER = "partner_with_other_ecommerce";
     public static String PARAM_STORE_TYPE_CONFIG = "store_type_config";
-
-
 
 
     public static String PARAM_COMMENT = "comment";
@@ -311,6 +323,7 @@ public class Constants {
     public static String TITLE_RATE_UPDATE = "Rate Update";
     public static String TITLE_DELIVERY_BOY = "Delivery boy";
     public static String TITLE_REPORT = "Reports";
+    public static String TITLE_SUPPORT = "Support";
     public static String TITLE_VENDOR_LIST = "Vendor List";
     public static String TITLE_VENDOR_DETAIL = "Vendor Details";
     public static final String TITLE_BANK_DETAILS = "Bank Details";

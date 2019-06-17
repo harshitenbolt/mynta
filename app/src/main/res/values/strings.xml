@@ -62,7 +62,12 @@
         <item>Company/Firm</item>
     </array>
 
-
+    <array name="Priority">
+        <item>Select Priority</item>
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+    </array>
     <array name="PhysicalShop">
 
         <item>Kirana Store</item>

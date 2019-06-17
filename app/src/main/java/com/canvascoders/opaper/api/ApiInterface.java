@@ -6,6 +6,8 @@ import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 import com.canvascoders.opaper.Beans.BankDetailResp;
 import com.canvascoders.opaper.Beans.ChangeMobileResponse.ChangeMobileResponse;
 import com.canvascoders.opaper.Beans.CheckEsignResponse.CheckEsignResponse;
+import com.canvascoders.opaper.Beans.CommentListResponse.CommentListResponse;
+import com.canvascoders.opaper.Beans.CommentResponse.CommentResponse;
 import com.canvascoders.opaper.Beans.DelBoysNextScreenResponse.DelBoysNextResponse;
 import com.canvascoders.opaper.Beans.DelBoysResponse.DelBoyResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.DeliveryboyListResponse;
@@ -23,6 +25,11 @@ import com.canvascoders.opaper.Beans.ResendOTPResponse.ResendOTPResponse;
 import com.canvascoders.opaper.Beans.ResetPassResponse.ResetPassResponse;
 import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResponse;
 import com.canvascoders.opaper.Beans.SendInvoiceEsignResponse.SendInvoiceLinkresponse;
+import com.canvascoders.opaper.Beans.SubmitReportResponse.SubmitReportResponse;
+import com.canvascoders.opaper.Beans.SupportDetailResponse.SupportDetailResponse;
+import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
+import com.canvascoders.opaper.Beans.SupportSubjectResponse.SupportSubjectResponse;
+import com.canvascoders.opaper.Beans.ThreadCommentsResponse.CommentThreadResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.Beans.UserDetailTResponse.GetUserDetails;
 import com.canvascoders.opaper.Beans.VendorListResponse.VendorListResponse;
@@ -35,14 +42,9 @@ import com.canvascoders.opaper.Beans.verifylocation.GetLocationResponse;
 import com.canvascoders.opaper.Beans.verifymobile.GetMobileResponse;
 import com.google.gson.JsonObject;
 
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -161,6 +163,12 @@ public interface ApiInterface {
     //@Headers({"Content-type: application/json", "Accept: */*"})
     @POST("get-dc")
     Call<GetDC> getDC(@Header("Authorization")String token,@Body JsonObject data);
+
+    @FormUrlEncoded
+    @POST("support-subject")
+    Call<SupportSubjectResponse> getSubject(@Header("Authorization")String token, @FieldMap Map<String,String>param );
+
+
     //-----------------------------------------------------------------------------
 
 //    buildernew.addFormDataPart("token", sessionManager.getToken());
@@ -380,5 +388,33 @@ public interface ApiInterface {
 
     @POST("send-invoice-esign-link")
     Call<SendInvoiceLinkresponse> sendInvoice(@Header("Authorization")String token, @QueryMap Map<String, String> data);
+
+    @Multipart
+    @POST("invoice-support")
+    Call<SubmitReportResponse> submitReportResponse(@Header("Authorization")String token, @PartMap() Map<String, String> data,
+                                              @Part MultipartBody.Part attachment);
+
+
+    @FormUrlEncoded
+    @POST("support-listing")
+    Call<SupportListResponse>getSupportList(@Header("Authorization")String token, @FieldMap Map<String, String> data);
+
+
+    @FormUrlEncoded
+    @POST("support-detail")
+    Call<SupportDetailResponse>getSupportDetails(@Header("Authorization")String token, @Field("support_id") String data);
+
+
+    @FormUrlEncoded
+    @POST("support-thread-detail")
+    Call<CommentListResponse>getSupportThreadDetail(@Header("Authorization")String token, @Field("support_id") String data);
+
+
+
+    @Multipart
+    @POST("support-thread-comment")
+    Call<CommentResponse> getCommentResponse(@Header("Authorization")String token, @PartMap() Map<String, String> data,
+                                                    @Part MultipartBody.Part attachment);
+
 
 }

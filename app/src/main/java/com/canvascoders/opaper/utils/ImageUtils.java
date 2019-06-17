@@ -1,6 +1,7 @@
 package com.canvascoders.opaper.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,6 +32,15 @@ public class ImageUtils {
             mInstant = new ImageUtils();
         }
         return mInstant;
+    }
+
+
+
+
+    public static Intent getGalleryIntenr(Context context) {
+        Intent pickIntent = new Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        return pickIntent;
     }
 
     public Bitmap getCompressedBitmap(String imagePath) {

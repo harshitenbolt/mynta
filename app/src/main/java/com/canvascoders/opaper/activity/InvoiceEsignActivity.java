@@ -3,11 +3,18 @@ package com.canvascoders.opaper.activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,6 +27,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -28,7 +36,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -37,6 +48,8 @@ import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.SendInvoiceEsignResponse.SendInvoiceLinkresponse;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.Screenshot.DragRectView;
+import com.canvascoders.opaper.Screenshot.Screenshot;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.DebitInvoiceMainFragment;
@@ -84,6 +97,7 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
     private static boolean isOtp = false;
     JSONObject jsonObject = new JSONObject();
     Digio digio;
+    RelativeLayout rvMainWithRect;
     private WebView mWebView;
     private RelativeLayout relative_buttom;
     private SessionManager sessionManager;
@@ -95,18 +109,23 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
     private String uid = "";
     private String uname = "";
     private String invoice_pdf = "";
-    private String enbolt_id = "";
+    private String enbolt_id = "",invoice_num="";
     private String invoice_id = "";
     private String invoice_type = "";
-    private String mobile_no = "";
+    private String mobile_no = "",storename="";
     private ProgressDialog progressDialog;
     private boolean isSigned = false;
     Toolbar toolbar;
+    CardView cvMain;
     private String status = "";
     int signed ;
+    Button ivSelect;
+    FrameLayout flImage;
+    Bitmap b,converted;
+    RelativeLayout rvMain;
     private String status_value;
     String str_mobile_no;
-
+    ImageView ivSupport,imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,15 +154,97 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
         btn_send_link = (AppCompatTextView)findViewById(R.id.btn_send_link);
         relative_buttom = findViewById(R.id.relative_buttom);
         str_mobile_no = sessionManager.getData(Constants.KEY_EMP_MOBILE);
-
+        cvMain = findViewById(R.id.cvMain);
         invoice_id = getIntent().getStringExtra(Constants.KEY_INVOICE_ID);
         invoice_type = getIntent().getStringExtra(Constants.INVOICE_TYPE);
         status = getIntent().getStringExtra(Constants.INVOICE_NUMBER);
+        Log.e("invoice_num",status);
         signed = getIntent().getIntExtra(Constants.SIGNED,0);
+        storename = getIntent().getStringExtra(Constants.KEY_NAME);
         if(invoice_type.equalsIgnoreCase("gst")){
             relative_buttom.setVisibility(View.VISIBLE);
             btn_send_link.setVisibility(View.VISIBLE);
         }
+        ivSupport = findViewById(R.id.ivSupport);
+        imageView = findViewById(R.id.ivImage);
+        ivSelect = findViewById(R.id.ivSelect);
+        rvMain = findViewById(R.id.rvMain);
+        flImage = findViewById(R.id.flImage);
+        rvMainWithRect = findViewById(R.id.rlWithMain);
+
+
+        ivSupport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int color = 0x90000000;
+                final Drawable drawable = new ColorDrawable(color);
+                b = Screenshot.takescreenshotOfRootView(imageView);
+                imageView.setImageBitmap(b);
+                findViewById(R.id.rvCaptured).setVisibility(View.VISIBLE);
+                rvMain.setVisibility(View.GONE);
+                //ivSupport.setVisibility(View.GONE);
+                flImage.setForeground(drawable);
+              //  btn_next.setForeground(drawable);
+               /* findViewById(R.id.btn_next).setVisibility(View.GONE);
+                findViewById(R.id.scView).setVisibility(View.GONE);*/
+            }
+        });
+
+
+        findViewById(R.id.ivClose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              /*  final int color = 0xFFFFFF;
+                final Drawable drawable = new ColorDrawable(color);
+                imageView.setImageResource(android.R.color.transparent);*/
+              //  ivSupport.setVisibility(View.GONE);
+                findViewById(R.id.rvCaptured).setVisibility(View.GONE);
+                findViewById(R.id.rvMain).setVisibility(View.VISIBLE);
+               // rvMain.setForeground(drawable);
+             /* //  findViewById(R.id.btn_next).setVisibility(View.VISIBLE);
+              //  rvMain.setForeground(drawable);
+              //  btn_next.setForeground(drawable);*/
+            }
+        });
+        ivSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*View v1 = rvMainWithRect.getRootView();
+                v1.setDrawingCacheEnabled(true);
+                Bitmap bitmap = v1.getDrawingCache();
+                BitmapDrawable drawable=new BitmapDrawable(bitmap);*/
+
+                final int color = 0xFFFFFF;
+                final Drawable drawable = new ColorDrawable(color);
+                flImage.setForeground(drawable);
+
+                findViewById(R.id.llButton).setVisibility(View.GONE);
+                findViewById(R.id.tverror).setVisibility(View.GONE);
+                Bitmap bitmap = viewToBitmap(rvMainWithRect);
+                converted = getResizedBitmap(bitmap, 400);
+                Intent i = new Intent(InvoiceEsignActivity.this,ReportIssueActivity.class);
+                i.putExtra("BitmapImage", converted);
+                i.putExtra(Constants.PARAM_SCREEN_NAME,"Invoice");
+                i.putExtra(Constants.KEY_PROCESS_ID,enbolt_id);
+                i.putExtra(Constants.KEY_INVOICE_NUM,invoice_num);
+                i.putExtra(Constants.KEY_NAME,storename);
+                i.putExtra(Constants.KEY_INVOICE_ID,invoice_id);
+
+                startActivity(i);
+            }
+        });
+        final DragRectView view = (DragRectView) findViewById(R.id.dragRect);
+
+        if (null != view) {
+            view.setOnUpCallback(new DragRectView.OnUpCallback() {
+                @Override
+                public void onRectFinished(final Rect rect) {
+                   // view.setForeground(drawable);
+
+                }
+            });
+        }
+
 /*
         if(invoice_number != null){
             if(invoice_number.equalsIgnoreCase("1")){
@@ -472,6 +573,7 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
                         if (response.isSuccessful()) {
                             JsonObject object = response.body();
                             if (response.code() == 200) {
+                                storename = Constants.billList.getStore_name();
                                 String msg = "Store name: " + Constants.billList.getStore_name() +
                                         " , Invoice No: " + getInvoiceWithFormate(Constants.billList.getVendor_id(), invoice_id) +
                                         " , Invoice signed on " + Constants.billList.getUpdated_at() + " successfully.";
@@ -779,8 +881,11 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
                         }
 
                         enbolt_id = result.getString("enbolt_id").toString();
+                        invoice_num = result.getString("invoice_num").toString();
+
                         mobile_no = result.getString("mobile_no").toString();
                         invoice_pdf = result.getString("invoice_pdf").toString();
+
                         mWebView.getSettings().setJavaScriptEnabled(true);
                         String pdf = invoice_pdf;
                         mWebView.loadUrl( pdf);
@@ -826,5 +931,36 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
         }
 
 
+    }
+
+    public Bitmap viewToBitmap(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
+    }
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float)width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        final int color = 0x90000000;
+        final Drawable drawable = new ColorDrawable(color);
+        flImage.setForeground(drawable);
+        findViewById(R.id.llButton).setVisibility(View.VISIBLE);
+        findViewById(R.id.tverror).setVisibility(View.VISIBLE);
     }
 }

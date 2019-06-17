@@ -32,6 +32,7 @@ import com.canvascoders.opaper.fragment.MobileFragment;
 import com.canvascoders.opaper.fragment.NotificationFragment;
 import com.canvascoders.opaper.fragment.ProfileFragment;
 import com.canvascoders.opaper.fragment.ReportFragment;
+import com.canvascoders.opaper.fragment.SupportFragment;
 import com.canvascoders.opaper.fragment.UpdaterFragment;
 import com.canvascoders.opaper.fragment.VenderListFragment;
 import com.canvascoders.opaper.Beans.NotificationResponse.NotificattionResponse;
@@ -217,6 +218,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             commanFragmentCallWithBackStack(new ReportFragment());
 
 
+        }
+        if(id == R.id.nav_Support){
+            commanFragmentCallWithBackStack(new SupportFragment());
         }
         if (id == R.id.nav_logout) {
 
