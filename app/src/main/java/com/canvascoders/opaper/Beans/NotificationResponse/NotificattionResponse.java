@@ -8,12 +8,38 @@ public class NotificattionResponse {
     @SerializedName("response")
     @Expose
     private String response;
+
+    @SerializedName("live_vendors_count")
+    @Expose
+    private int liveVendorCount;
+
+    @SerializedName("in_procces_count")
+    @Expose
+    private int inProgressCount;
+
+    public int getLiveVendorCount() {
+        return liveVendorCount;
+    }
+
+    public void setLiveVendorCount(int liveVendorCount) {
+        this.liveVendorCount = liveVendorCount;
+    }
+
+    public int getInProgressCount() {
+        return inProgressCount;
+    }
+
+    public void setInProgressCount(int inProgressCount) {
+        this.inProgressCount = inProgressCount;
+    }
+
     @SerializedName("count")
     @Expose
     private Integer count;
     @SerializedName("isupdateavailable")
     @Expose
     private Boolean isupdateavailable;
+
     @SerializedName("version")
     @Expose
     private Integer version;

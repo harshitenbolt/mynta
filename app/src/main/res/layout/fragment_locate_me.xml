@@ -1,29 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:clickable="true"
-    android:orientation="vertical">
+    android:background="@color/whitePrimary">
+
+    <!-- TODO: Update blank fragment layout -->
+
 
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
+
         android:layout_height="match_parent"
         tools:context="com.canvascoders.opaper.view.LocateMeActivity" />
 
 
-    <Button
-        android:id="@+id/btn_locateme"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_45sdp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:visibility="gone"
+        android:paddingRight="@dimen/_10sdp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:background="@drawable/roundedcornergrey">
+
+            <ImageView
+                android:layout_width="@dimen/_15sdp"
+               android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:src="@drawable/magnifiertool" />
+
+            <AutoCompleteTextView
+                android:id="@+id/etSearchPlace"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:background="@null"
+                android:singleLine="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:hint="Search"
+                android:paddingLeft="@dimen/_5sdp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btLocate"
+        style="@style/Button_withGreen"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/btn_active"
-        android:fontFamily="@font/rb_medium"
         android:gravity="center_horizontal|center"
-        android:paddingTop="@dimen/margin_10dp"
         android:text="LOCATE ME"
         android:textColor="#ffffff" />
+
 </RelativeLayout>

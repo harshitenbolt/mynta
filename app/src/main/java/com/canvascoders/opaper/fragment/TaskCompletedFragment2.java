@@ -48,4 +48,8 @@ public class TaskCompletedFragment2 extends Fragment {
         message = string;
     }
 
+
+
+
+
 }

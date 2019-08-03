@@ -479,10 +479,13 @@ public class VenderListFragment extends Fragment implements SwipeRefreshLayout.O
                             vList.setMobileNo(vendorList.getMobileNo());
                             vList.setAadhaarName(vendorList.getAadhaarName());
                             vList.setAadhaarNo(vendorList.getAadhaarNo());
+                            vList.setLatitude(vendorList.getLatitude());
+                            vList.setLongitude(vendorList.getLongitude());
                             vList.setAadhaarPincode(vendorList.getAadhaarPincode());
                             vList.setPanName(vendorList.getPanName());
+
                             vList.setPanNo(vendorList.getPanNo());
-                            vList.setShopImage(Constants.BaseImageURL + vendorList.getShopImage());
+                            vList.setShopImage(vendorList.getShopImage());
                             vList.setStoreName(vendorList.getStoreName());
                             vList.setMobileVerify(vendorList.getMobileVerify());
                             vList.setLocationVerify(vendorList.getLocationVerify());
@@ -619,11 +622,15 @@ public class VenderListFragment extends Fragment implements SwipeRefreshLayout.O
                             vList.setAgentId(vendorList.getAgentId());
                             vList.setMobileNo(vendorList.getMobileNo());
                             vList.setAadhaarName(vendorList.getAadhaarName());
+                            vList.setLatitude(vendorList.getLatitude());
+                            vList.setLongitude(vendorList.getLongitude());
                             vList.setAadhaarNo(vendorList.getAadhaarNo());
                             vList.setAadhaarPincode(vendorList.getAadhaarPincode());
+                            vList.setLatitude(vendorList.getLatitude());
+                            vList.setLongitude(vendorList.getLongitude());
                             vList.setPanName(vendorList.getPanName());
                             vList.setPanNo(vendorList.getPanNo());
-                            vList.setShopImage(Constants.BaseImageURL + vendorList.getShopImage());
+                            vList.setShopImage(vendorList.getShopImage());
                             vList.setStoreName(vendorList.getStoreName());
                             vList.setMobileVerify(vendorList.getMobileVerify());
                             vList.setLocationVerify(vendorList.getLocationVerify());

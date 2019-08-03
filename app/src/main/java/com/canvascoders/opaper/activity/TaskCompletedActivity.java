@@ -18,8 +18,8 @@ public class TaskCompletedActivity extends AppCompatActivity implements View.OnC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_completed3);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+       /* ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);*/
         initialize();
 
     }
@@ -36,6 +36,7 @@ public class TaskCompletedActivity extends AppCompatActivity implements View.OnC
         switch (v.getId()){
             case R.id.iv_back_task_completed:
                 finish();
+                startActivity(new Intent(TaskCompletedActivity.this,DashboardActivity.class));
                 break;
             case R.id.btn_onboard:
                 finish();

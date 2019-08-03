@@ -1,16 +1,19 @@
 package com.canvascoders.opaper.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.SupportListResponse.Datum;
@@ -22,7 +25,11 @@ import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.EndlessRecyclerViewScrollListener;
 import com.canvascoders.opaper.utils.SessionManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +43,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PaymentSupportFragment extends Fragment implements RecyclerViewClickListener {
+public class PaymentSupportFragment extends Fragment implements RecyclerViewClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     View view;
     RecyclerView rvPayment;
@@ -44,8 +51,13 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
     int support_id;
     List<Datum> list = new ArrayList<>();
     SupportListAdapter supportListAdapter;
-
+    String next_page_url = "support-listing";
     SessionManager sessionManager;
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    LinearLayout llNoData;
+    ProgressDialog mProgress;
+    private EndlessRecyclerViewScrollListener scrollListener;
+
     public PaymentSupportFragment() {
         // Required empty public constructor
     }
@@ -55,7 +67,7 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_payment_support, container, false);
+        view = inflater.inflate(R.layout.fragment_payment_support, container, false);
         sessionManager = new SessionManager(getActivity());
         init();
         return view;
@@ -63,35 +75,90 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
 
     private void init() {
         rvPayment = view.findViewById(R.id.rvSupports);
+        mProgress = new ProgressDialog(getActivity());
+        mProgress.setCancelable(false);
+        mProgress.setMessage("Please wait...");
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        llNoData = view.findViewById(R.id.llNoData);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rvPayment.setLayoutManager(linearLayoutManager);
+        supportListAdapter = new SupportListAdapter(list, getActivity(), PaymentSupportFragment.this);
+        rvPayment.setAdapter(supportListAdapter);
+
+
         ApiCallgetReports();
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
+                // this condition  is for pagination in both with Search and without search
+                if (!next_page_url.equalsIgnoreCase("")) ;
+                ApiCallgetReports();
+
+            }
+        };
+        rvPayment.addOnScrollListener(scrollListener);
 
     }
 
     private void ApiCallgetReports() {
-        Map<String,String> param = new HashMap<>();
-        param.put(Constants.PARAM_AGENT_ID,sessionManager.getAgentID());
-        ApiClient.getClient().create(ApiInterface.class).getSupportList("Bearer "+sessionManager.getToken(),param).enqueue(new Callback<SupportListResponse>() {
+        mProgress.show();
+        Map<String, String> param = new HashMap<>();
+        param.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        param.put(Constants.PARAM_IS_INVOICE, "1");
+        ApiClient.getClient().create(ApiInterface.class).getSupportList(next_page_url, "Bearer " + sessionManager.getToken(), param).enqueue(new Callback<SupportListResponse>() {
             @Override
             public void onResponse(Call<SupportListResponse> call, Response<SupportListResponse> response) {
-                if(response.isSuccessful()){
-                    SupportListResponse supportListResponse = response.body();
+                if (response.isSuccessful()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    mProgress.dismiss();
 
-                    if(supportListResponse.getData().size()>0){
-                        list.addAll(supportListResponse.getData());
+                    try {
+                        SupportListResponse supportListResponse = response.body();
+                        if (supportListResponse.getData() != null) {
 
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                        rvPayment.setLayoutManager(linearLayoutManager);
-                        supportListAdapter = new SupportListAdapter(list,getActivity(),PaymentSupportFragment.this);
-                        rvPayment.setAdapter(supportListAdapter);
+                            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                            llNoData.setVisibility(View.GONE);
+
+                            list.addAll(supportListResponse.getData());
+
+                            if (supportListResponse.getNextPageUrl() != null) {
+                                if (!supportListResponse.getNextPageUrl().equalsIgnoreCase("")) {
+                                    next_page_url = supportListResponse.getNextPageUrl();
+                                    String[] separated = next_page_url.split("api3/");
+                                    next_page_url = Constants.BaseURL + separated[1];
+                                    Log.e("next_page_url", next_page_url);
+                                }
+                            } else {
+                                next_page_url = "";
+                            }
+
+                            supportListAdapter.notifyDataSetChanged();
+
+                        } else {
+                            Log.e("DoneDOnaNon", "DoneDOnaNon1");
+                            mSwipeRefreshLayout.setVisibility(View.GONE);
+                            llNoData.setVisibility(View.VISIBLE);
+                        }
+                    } catch (Exception e) {
+                        Log.e("DoneDOnaNon", "DoneDOnaNon2");
+                        e.printStackTrace();
                     }
 
 
+                } else {
+                    mProgress.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<SupportListResponse> call, Throwable t) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                mProgress.dismiss();
 
             }
         });
@@ -111,6 +178,20 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
 
     @Override
     public void onLongClick(View view, int position) {
+
+    }
+
+    @Override
+    public void SingleClick(String popup, int position) {
+
+    }
+
+
+    @Override
+    public void onRefresh() {
+        list.clear();
+        next_page_url = "support-listing";
+        ApiCallgetReports();
 
     }
 }

@@ -13,6 +13,7 @@ import com.canvascoders.opaper.Beans.DelBoysResponse.DelBoyResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.DeliveryboyListResponse;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.EditUserResponse.EditUserResponse;
+import com.canvascoders.opaper.Beans.GeneralSupportResponse.GeneralSupportResponse;
 import com.canvascoders.opaper.Beans.GenerateResetPWResponse.GenerateResetPWResponse;
 import com.canvascoders.opaper.Beans.GetAgentDetailResponse.GetAgentDetailResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
@@ -24,13 +25,16 @@ import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.Beans.ResendOTPResponse.ResendOTPResponse;
 import com.canvascoders.opaper.Beans.ResetPassResponse.ResetPassResponse;
 import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResponse;
+import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
 import com.canvascoders.opaper.Beans.SendInvoiceEsignResponse.SendInvoiceLinkresponse;
+import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
 import com.canvascoders.opaper.Beans.SubmitReportResponse.SubmitReportResponse;
 import com.canvascoders.opaper.Beans.SupportDetailResponse.SupportDetailResponse;
 import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
 import com.canvascoders.opaper.Beans.SupportSubjectResponse.SupportSubjectResponse;
 import com.canvascoders.opaper.Beans.ThreadCommentsResponse.CommentThreadResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
+import com.canvascoders.opaper.Beans.UpdatePanResponse.UpdatePancardResponse;
 import com.canvascoders.opaper.Beans.UserDetailTResponse.GetUserDetails;
 import com.canvascoders.opaper.Beans.VendorListResponse.VendorListResponse;
 import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
@@ -42,6 +46,7 @@ import com.canvascoders.opaper.Beans.verifylocation.GetLocationResponse;
 import com.canvascoders.opaper.Beans.verifymobile.GetMobileResponse;
 import com.google.gson.JsonObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -57,6 +62,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.PartMap;
+import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
@@ -70,7 +76,7 @@ public interface ApiInterface {
     //-----------------------------------------------------------------------------
     @Headers({"Content-type: application/json", "Accept: */*"})
     @POST("generate-otp")
-    Call<GetOTP> sendOTP(@Header("Authorization")String token,@Body JsonObject data);
+    Call<GetOTP> sendOTP(@Header("Authorization") String token, @Body JsonObject data);
 
     @FormUrlEncoded
     @POST("auth/agent/reset-password-otp")
@@ -78,56 +84,62 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("get-vendor-type")
-    Call<GetVendorTypeDetails> getVendorType(@Header("Authorization")String token,@Field("proccess_id") String mobile_number);
+    Call<GetVendorTypeDetails> getVendorType(@Header("Authorization") String token, @Field("proccess_id") String mobile_number);
 
 
-
-    @Headers({"Content-type: application/json", "Accept: */*"})
+    @FormUrlEncoded
     @POST("agreement-resign")
-    Call<ResignAgreementResponse> ResignAgreement(@Header("Authorization")String token, @Field("proccess_id") String data);
+    Call<ResignAgreementResponse> ResignAgreement(@Header("Authorization") String token, @Field("proccess_id") String data);
+
+
+    @FormUrlEncoded
+    @POST("get-signed-doc")
+    Call<SignedDocDetailResponse> signedDocDetailResponse(@Header("Authorization") String token, @FieldMap Map<String, String> param);
+
 
     @FormUrlEncoded
     @POST("auth/agent/reset-password-request")
-    Call<ResetPassResponse> ResetPassword(@FieldMap Map<String, String> data );
+    Call<ResetPassResponse> ResetPassword(@FieldMap Map<String, String> data);
 
 
     @Multipart
     @POST("pan-card-detail")
-    Call<GetPanDetailsResponse> getPanDetails(@PartMap() Map<String, String> data,@Part MultipartBody.Part attachment);
+    Call<GetPanDetailsResponse> getPanDetails(@PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
 
     @FormUrlEncoded
     @POST
-    Call<VendorListResponse> vendor_list(@Url String url,@Header("Authorization") String Header, @Field("agent_id") String data );
+    Call<VendorListResponse> vendor_list(@Url String url, @Header("Authorization") String Header, @Field("agent_id") String data);
+
     //-----------------------------------------------------------------------------
     @Headers({"Content-type: application/json", "Accept: */*"})
     @POST("verify-mobile")
-    Call<GetMobileResponse> verifyMobile(@Header("Authorization")String token,@Body JsonObject data);
+    Call<GetMobileResponse> verifyMobile(@Header("Authorization") String token, @Body JsonObject data);
 
     //-----------------------------------------------------------------------------
     @Headers({"Content-type: application/json", "Accept: */*"})
     @POST("verify-location")
-    Call<GetLocationResponse> verifyLocation(@Header("Authorization")String token,@Body JsonObject data);
+    Call<GetLocationResponse> verifyLocation(@Header("Authorization") String token, @Body JsonObject data);
 
     //-----------------------------------------------------------------------------
 
     @POST("esign-single-invoice")
-    Call<JsonObject> Storeinvoice(@Header("Authorization")String token,@QueryMap() Map<String, String> data);
+    Call<JsonObject> Storeinvoice(@Header("Authorization") String token, @QueryMap() Map<String, String> data);
 
     //-----------------------------------------------------------------------------
     //@FormUrlEncoded
     @POST("nocesign")
-    Call<JsonObject> StoreNocDocument(@Header("Authorization")String token,@QueryMap Map<String, String> data);
+    Call<JsonObject> StoreNocDocument(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 
     //-----------------------------------------------------------------------------
 
-   // @FormUrlEncoded
+    // @FormUrlEncoded
     @POST("esign")
-    Call<JsonObject> StoreAgreement(@Header("Authorization")String token,@QueryMap Map<String, String> data);
+    Call<JsonObject> StoreAgreement(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 
     //-----------------------------------------------------------------------------
-   // @FormUrlEncoded
+    // @FormUrlEncoded
     @POST("gstesign")
-    Call<JsonObject> StoreGstDocument(@Header("Authorization")String token,@QueryMap Map<String, String> data);
+    Call<JsonObject> StoreGstDocument(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 
     //-----------------------------------------------------------------------------
 
@@ -137,21 +149,26 @@ public interface ApiInterface {
 //    Call<GetStoreAadharResult> storeAadhar(@Part MultipartBody.Part file, @Part("adhar_card_front") RequestBody adhar_card_front, @Part("description") RequestBody desc, @Part("user_id") RequestBody user_id, @Part("product_id") RequestBody pid, @Part("is_own_product") RequestBody ownp);
 
 
-
     @FormUrlEncoded
     @POST("pan-card-detail/from-user-side")
     Call<PanCardSubmitResponse> SubmitPancardOCR(@FieldMap Map<String, String> apiVersionMap);
 
 
-
     @FormUrlEncoded
     @POST("user-side-response")
     Call<ApiSubmitOCRPanVoterDlResponse> submitDlorVoter(@FieldMap Map<String, String> apiVersionMap);
+
     //-----------------------------------------------------------------------------
     @Headers({"Content-type: application/json", "Accept: */*"})
     @POST("submit-details")
-    Call<GetUserDetailResponse> submitBizDetails(@Header("Authorization")String token, @Body JsonObject data);
+    Call<GetUserDetailResponse> submitBizDetails(@Header("Authorization") String token, @Body JsonObject data);
+
+
     //-----------------------------------------------------------------------------
+
+    @POST("submit-details-validation-{NUMERIC}")
+    Call<GetUserDetailResponse> submitBizDetailsValid1(@Header("Authorization") String token, @Path("NUMERIC") String URL, @Body JsonObject data);
+
 
     //-----------------------------------------------------------------------------
     @Headers({"Content-type: application/json", "Accept: */*"})
@@ -162,11 +179,11 @@ public interface ApiInterface {
 
     //@Headers({"Content-type: application/json", "Accept: */*"})
     @POST("get-dc")
-    Call<GetDC> getDC(@Header("Authorization")String token,@Body JsonObject data);
+    Call<GetDC> getDC(@Header("Authorization") String token, @Body JsonObject data);
 
     @FormUrlEncoded
     @POST("support-subject")
-    Call<SupportSubjectResponse> getSubject(@Header("Authorization")String token, @FieldMap Map<String,String>param );
+    Call<SupportSubjectResponse> getSubject(@Header("Authorization") String token, @FieldMap Map<String, String> param);
 
 
     //-----------------------------------------------------------------------------
@@ -192,7 +209,7 @@ public interface ApiInterface {
 
     @POST("get-pancard-ocr-url")
     @Multipart
-    Call<PanImageResponse> getPancardOcrUrl(@Header("Authorization")String auth,@Part("token") String token,
+    Call<PanImageResponse> getPancardOcrUrl(@Header("Authorization") String auth, @Part("token") String token,
                                             @Part("proccess_id") String proccess_id,
                                             @Part MultipartBody.Part attachment);
 
@@ -206,7 +223,7 @@ public interface ApiInterface {
 
     @Multipart
     @POST("verify-kyc")
-    Call<CommonResponse> getstoreAadhar(@Header("Authorization")String token,@PartMap() Map<String, String> data,
+    Call<CommonResponse> getstoreAadhar(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                         @Part MultipartBody.Part aadharcard_front,
                                         @Part MultipartBody.Part aadharcard_back);
 
@@ -214,63 +231,85 @@ public interface ApiInterface {
     @Multipart
     @POST("voter-id-detail")
     Call<VoterOCRGetDetaisResponse> getVoterIdOCR(@PartMap() Map<String, String> data,
-                                                   @Part MultipartBody.Part voter_front,
-                                                   @Part MultipartBody.Part voter_back);
+                                                  @Part MultipartBody.Part voter_front,
+                                                  @Part MultipartBody.Part voter_back);
 
     @Multipart
     @POST("driving-licence-detail")
-    Call<DrivingLicenceDetailResponse>getDrivingLicenceDetail(@PartMap() Map<String, String> data,
-                                                     @Part MultipartBody.Part voter_front);
+    Call<DrivingLicenceDetailResponse> getDrivingLicenceDetail(@PartMap() Map<String, String> data,
+                                                               @Part MultipartBody.Part voter_front);
     //-----------------------------------------------------------------------------
 
     @Multipart
     @POST("verify-pan-card")
-    Call<CommonResponse> getstorePancard(@Header("Authorization")String token,@PartMap() Map<String, String> data,
+    Call<CommonResponse> getstorePancard(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                          @Part MultipartBody.Part pancard);
+
+
+    @Multipart
+    @POST("update-pan-details")
+    Call<UpdatePancardResponse> updatePanDetails(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                                 @Part MultipartBody.Part pancard);
     //-----------------------------------------------------------------------------
 
     @Multipart
     @POST("verify-cheque")
-    Call<CommonResponse> getstoreCheque(@Header("Authorization")String token,@PartMap() Map<String, String> data,
+    Call<CommonResponse> getstoreCheque(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                         @Part MultipartBody.Part cheque);
 
 
     @Multipart
     @POST("bank-details-updation")
-    Call<CommonResponse> getStoreChequeUpdated(@Header("Authorization")String token,@PartMap() Map<String, String> data,
+    Call<CommonResponse> getStoreChequeUpdated(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                                @Part MultipartBody.Part cheque);
     //-----------------------------------------------------------------------------
 
     @Multipart
     @POST("shop-act-upload")
-    Call<CommonResponse> getstoreDocument(@Header("Authorization")String token,@PartMap() Map<String, String> data,
+    Call<CommonResponse> getstoreDocument(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                           @Part MultipartBody.Part store_image,
-                                          @Part MultipartBody.Part store_image_act,@Part MultipartBody.Part owner_img_act);
+                                          @Part MultipartBody.Part[] store_image_act, @Part MultipartBody.Part owner_img_act);
+
+
+
 
 
     // api call for add dilvery boys
     @Multipart
     @POST("delivery-boys-store")
-    Call<AddDelBoyResponse> addDelBoys(@Header("Authorization")String token,@PartMap() Map<String, String> data,
+    Call<AddDelBoyResponse> addDelBoys(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                        @Part MultipartBody.Part image, @Part MultipartBody.Part driving_licence);
+
+
+    @Multipart
+    @POST("delivery-boys-details-stage-validation{NUMERIC}")
+    Call<AddDelBoyResponse> DeliveryBoysDetailsValid1(@Header("Authorization") String token, @Path("NUMERIC") String URL, @PartMap() Map<String, String> data, @Part MultipartBody.Part image);
+
+
+    @Multipart
+    @POST("delivery-boys-details-stage-validation{NUMERIC}")
+    Call<AddDelBoyResponse> DeliveryBoysDetailsValid2(@Header("Authorization") String token, @Path("NUMERIC") String URL, @PartMap() Map<String, String> data);
 
 
     //-----------------------------------------------------------------------------
 
-   // @FormUrlEncoded
+    // @FormUrlEncoded
     @POST("count-notifications")
-    Call<NotificattionResponse> getNotification(@Header("Authorization")String token,@QueryMap Map<String, String> data);
+    Call<NotificattionResponse> getNotification(@Header("Authorization") String token, @QueryMap Map<String, String> data);
     //-----------------------------------------------------------------------------
 
     @FormUrlEncoded
     @POST("get-details")
     Call<EditUserResponse> getUserinfo(@FieldMap() Map<String, String> data);
 
+    @FormUrlEncoded
+    @POST("update-gst")
+    Call<CommonResponse> gstUpdate(@Header("Authorization") String token,@FieldMap() Map<String, String> data);
 
 
     @FormUrlEncoded
     @POST("get-agent-details")
-    Call<GetAgentDetailResponse> getAgentDetails(@Header("Authorization")String header,@Field("agent_id") String data);
+    Call<GetAgentDetailResponse> getAgentDetails(@Header("Authorization") String header, @Field("agent_id") String data);
     //-----------------------------------------------------------------------------
 
 
@@ -291,11 +330,11 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("get-pan-details")
-    Call<UpdatePanDetailResponse> pandetailResponse(@Header("Authorization")String header, @FieldMap Map<String, String> apiVersionMap);
+    Call<UpdatePanDetailResponse> pandetailResponse(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
 
     //@FormUrlEncodedz
     @POST("get-delivery-boys")
-    Call<DeliveryboyListResponse> getDelivery_boys(@Header("Authorization")String token,@QueryMap Map<String, String> params);
+    Call<DeliveryboyListResponse> getDelivery_boys(@Header("Authorization") String token, @QueryMap Map<String, String> params);
 
     @FormUrlEncoded
     @POST("gstesign")
@@ -304,17 +343,17 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("get-delivery-boys")
-    Call<DelBoyResponse> getDelBoys(@Header("Authorization")String token,@FieldMap Map<String, String> apiVersionMap);
+    Call<DelBoyResponse> getDelBoys(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
 
     //-----------------------------------------------------------------------------
 
     @FormUrlEncoded
     @POST("complete-deliery-boys-details")
-    Call<DelBoysNextResponse> completeDelBoy(@Header("Authorization")String token, @FieldMap Map<String, String> apiVersionMap);
+    Call<DelBoysNextResponse> completeDelBoy(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
 
-   // @FormUrlEncoded
+    // @FormUrlEncoded
     @POST("get-details")
-    Call<ResponseBody> getDetails(@Header("Authorization")String token,@QueryMap Map<String, String> apiVersionMap);
+    Call<ResponseBody> getDetails(@Header("Authorization") String token, @QueryMap Map<String, String> apiVersionMap);
 
     //-----------------------------------------------------------------------------
 
@@ -331,13 +370,13 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("change-mobile")
-    Call<ChangeMobileResponse> changeMobile(@Header("Authorization")String header, @FieldMap Map<String, String> apiVersionMap);
+    Call<ChangeMobileResponse> changeMobile(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
 
     //-----------------------------------------------------------------------------
 
 
     @POST("get-bank-details-from-ifsc")
-    Call<ResponseBody> getBankDetailsFromIfsc(@Header("Authorization")String token,@QueryMap Map<String, String> apiVersionMap);
+    Call<ResponseBody> getBankDetailsFromIfsc(@Header("Authorization") String token, @QueryMap Map<String, String> apiVersionMap);
 
     //-----------------------------------------------------------------------------
 
@@ -349,72 +388,94 @@ public interface ApiInterface {
     //-----------------------------------------------------------------------------
 
     //-----------------------------------------------------------------------------
-   // @Headers({"Content-type: application/json", "Accept: */*"})
+    // @Headers({"Content-type: application/json", "Accept: */*"})
     @POST("api-esign-log")
-    Call<ResponseBody> submitSigningLog(@Header("Authorization")String token,@Body JsonObject data);
+    Call<ResponseBody> submitSigningLog(@Header("Authorization") String token, @Body JsonObject data);
 
 
     //@Headers("Content-Type: application/json")
     @POST("store-type")
-    Call<ResponseBody> getStoreTypeListing(@Header("Authorization")String token,@Body JsonObject data);
+    Call<ResponseBody> getStoreTypeListing(@Header("Authorization") String token, @Body JsonObject data);
+    @POST("store-type-resign")
+    Call<ResponseBody> getStoreTypeListing2(@Header("Authorization") String token, @Body JsonObject data);
+
+
 
 
     @POST("rate-update")
-    Call<ResponseBody> setStoreTypeListing(@Header("Authorization")String token,@Body JsonObject data);
+    Call<ResponseBody> setStoreTypeListing(@Header("Authorization") String token, @Body JsonObject data);
 
     //--------------------------------------------------------------------------------------
-   // @FormUrlEncoded
+    // @FormUrlEncoded
     @POST("addendum-esign-save")
-    Call<JsonObject> StoreAddendum(@Header("Authorization")String token,@QueryMap Map<String, String> data);
+    Call<JsonObject> StoreAddendum(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 //--------------------------------------------------------------------------------------
 
 
     @Headers("Content-Type: application/json")
     @POST("vendor-type-for-addendum")
-    Call<ResponseBody> getOldStoreTypeListing(@Header("Authorization") String token,@Body JsonObject data);
+    Call<ResponseBody> getOldStoreTypeListing(@Header("Authorization") String token, @Body JsonObject data);
 
     @Headers("Content-Type: application/json")
     @POST("bank-details-log")
-    Call<BankDetailResp> getBankDetails(@Header("Authorization") String token,@Body JsonObject data);
+    Call<BankDetailResp> getBankDetails(@Header("Authorization") String token, @Body JsonObject data);
 
     //@FormUrlEncoded
     @POST("check-esign")
-    Call<CheckEsignResponse>checkEsign(@Header("Authorization")String token,@QueryMap Map<String, String> data);
+    Call<CheckEsignResponse> checkEsign(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 
     //@FormUrlEncoded
     @POST("resend-otp-link")
-    Call<ResendOTPResponse>resendOTP(@Header("Authorization")String token,@QueryMap Map<String, String> data);
+    Call<ResendOTPResponse> resendOTP(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 
 
     @POST("send-invoice-esign-link")
-    Call<SendInvoiceLinkresponse> sendInvoice(@Header("Authorization")String token, @QueryMap Map<String, String> data);
+    Call<SendInvoiceLinkresponse> sendInvoice(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 
     @Multipart
     @POST("invoice-support")
-    Call<SubmitReportResponse> submitReportResponse(@Header("Authorization")String token, @PartMap() Map<String, String> data,
-                                              @Part MultipartBody.Part attachment);
+    Call<SubmitReportResponse> submitReportResponse(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                                    @Part MultipartBody.Part attachment);
 
 
+    @Multipart
+    @POST("general-support")
+    Call<GeneralSupportResponse> generalSupportResponse(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                                        @Part MultipartBody.Part attachment);
+
+
+/*
     @FormUrlEncoded
     @POST("support-listing")
-    Call<SupportListResponse>getSupportList(@Header("Authorization")String token, @FieldMap Map<String, String> data);
+    Call<SupportListResponse>getSupportList(@Header("Authorization")String token, @FieldMap Map<String, String> data);*/
 
+    @FormUrlEncoded
+    @POST
+    Call<SupportListResponse> getSupportList(@Url String url, @Header("Authorization") String Header, @FieldMap Map<String, String> data);
 
     @FormUrlEncoded
     @POST("support-detail")
-    Call<SupportDetailResponse>getSupportDetails(@Header("Authorization")String token, @Field("support_id") String data);
+    Call<SupportDetailResponse> getSupportDetails(@Header("Authorization") String token, @Field("support_id") String data);
 
 
     @FormUrlEncoded
     @POST("support-thread-detail")
-    Call<CommentListResponse>getSupportThreadDetail(@Header("Authorization")String token, @Field("support_id") String data);
-
+    Call<CommentListResponse> getSupportThreadDetail(@Header("Authorization") String token, @Field("support_id") String data);
 
 
     @Multipart
     @POST("support-thread-comment")
-    Call<CommentResponse> getCommentResponse(@Header("Authorization")String token, @PartMap() Map<String, String> data,
-                                                    @Part MultipartBody.Part attachment);
+    Call<CommentResponse> getCommentResponsewithImage(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                                      @Part MultipartBody.Part attachment);
+
+    @FormUrlEncoded
+    @POST("support-thread-comment")
+    Call<CommentResponse> getCommentResponse(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+    @FormUrlEncoded
+    @POST("all-completed-vendors")
+    Call<SearchListResponse> getSearchListResponse(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
 
 }

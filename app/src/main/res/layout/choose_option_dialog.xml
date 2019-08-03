@@ -77,7 +77,7 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:padding="5dp"
-                android:background="@drawable/phone_normal" />
+                />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/txt_phone_otp"

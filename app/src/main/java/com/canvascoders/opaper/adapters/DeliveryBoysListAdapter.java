@@ -48,10 +48,10 @@ public class DeliveryBoysListAdapter extends RecyclerView.Adapter<DeliveryBoysLi
         holder.tvName.setText(moreitemList.get(position).getName());
         holder.tvMobile.setText(moreitemList.get(position).getPhoneNumber());
         holder.tvRoute.setText(moreitemList.get(position).getRouteNumber());
-        holder.tvVehicle.setText(moreitemList.get(position).getVehicleForDelivery());
+        //holder.tvVehicle.setText(moreitemList.get(position).getVehicleForDelivery());
 
         Log.e("URL", "" + Constants.BaseImageURL + moreitemList.get(position).getImage());
-        Glide.with(context).load(Constants.BaseImageURL+moreitemList.get(position).getImage()).into(holder.ivProfile);
+        Glide.with(context).load(Constants.BaseImageURL+moreitemList.get(position).getImage()).placeholder(R.drawable.image_placeholder).into(holder.ivProfile);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class DeliveryBoysListAdapter extends RecyclerView.Adapter<DeliveryBoysLi
             tvName = view.findViewById(R.id.tvName);
             tvMobile = view.findViewById(R.id.tvMobile);
             tvRoute = view.findViewById(R.id.tvRoute);
-            tvVehicle = view.findViewById(R.id.tvVehicle);
+       //     tvVehicle = view.findViewById(R.id.tvVehicle);
         }
     }
 }

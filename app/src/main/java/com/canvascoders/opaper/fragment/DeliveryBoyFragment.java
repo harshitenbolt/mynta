@@ -1,10 +1,12 @@
 package com.canvascoders.opaper.fragment;
 
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -55,6 +59,7 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
     View view;
     private ProgressDialog mProgressDialog;
     Context mcontext;
+    private static Dialog dialog;
     private SessionManager sessionManager;
     private String str_process_id;
     private RecyclerView rvDelBoysList;
@@ -62,6 +67,7 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
     DeliveryBoysListAdapter deliveryBoysListAdapter;
     private List<Datum> delivery_boys_list = new ArrayList<>();
     private int DEL_BOY = 100;
+    private LinearLayout llNoData;
     public DeliveryBoyFragment() {
         // Required empty public constructor
     }
@@ -76,7 +82,6 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
 
         sessionManager = new SessionManager(mcontext);
         str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
-
         OTPActivity.settitle(Constants.TITLE_ADD_DEL_BOY);
         init();
         return  view;
@@ -90,6 +95,7 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
         btSubmit = view.findViewById(R.id.btSubmit);
         btSubmit.setOnClickListener(this);
         rvDelBoysList =view.findViewById(R.id.rvDelBoyList);
+        llNoData =view.findViewById(R.id.llNoData);
 
         ApiCallGetLists();
     }
@@ -118,12 +124,14 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
                         sessionManager.logoutUser(getActivity());
                     }else {
                         mProgressDialog.dismiss();
-                        Toast.makeText(getActivity(), deliveryBoysList.getResponse(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getActivity(), deliveryBoysList.getResponse(), Toast.LENGTH_SHORT).show();
                     }
 
                     if (delivery_boys_list.isEmpty()) {
 
                         btSubmit.setEnabled(false);
+                        btSubmit.setVisibility(View.GONE);
+                        llNoData.setVisibility(View.VISIBLE);
                         if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                             btSubmit.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_button_grey) );
                         } else {
@@ -131,11 +139,14 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
                         }
 
                     } else {
+                        llNoData.setVisibility(View.GONE);
+                        btSubmit.setVisibility(View.VISIBLE);
+
                         btSubmit.setEnabled(true);
                         if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                            btSubmit.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_button) );
+                            btSubmit.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary) );
                         } else {
-                            btSubmit.setBackground(ContextCompat.getDrawable(mcontext, R.drawable.rounded_corner_button));
+                            btSubmit.setBackgroundColor(ContextCompat.getColor(mcontext, R.color.colorPrimary));
                         }
                     }
                     deliveryBoysListAdapter = new DeliveryBoysListAdapter(delivery_boys_list, getActivity());
@@ -254,7 +265,7 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
         super.onResume();
         OTPActivity.settitle(Constants.TITLE_ADD_DEL_BOY);
     }
-
+/*
     private void showAlert(String msg) {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mcontext);
@@ -263,14 +274,63 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
                 commanFragmentCallWithoutBackStack(new RateFragment());
-
             }
         });
         alertDialog.show();
 
+
+
+
+    }*/
+
+    private void showAlert(String msg) {
+
+
+
+        Button btSubmit;
+        TextView tvMessage, tvTitle;
+
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mcontext);
+        dialog = new Dialog(getActivity(), R.style.DialogLSideBelow);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_success);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        btSubmit = dialog.findViewById(R.id.btSubmit);
+        tvMessage = dialog.findViewById(R.id.tvMessage);
+        tvTitle = dialog.findViewById(R.id.tvTitle);
+        tvTitle.setText("Delivery Boys");
+
+        tvMessage.setText(msg);
+
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                commanFragmentCallWithoutBackStack(new RateFragment());
+
+            }
+        });
+
+        dialog.setCancelable(false);
+
+        dialog.show();
+
+
     }
+
 
     public void commanFragmentCallWithoutBackStack(Fragment fragment) {
 
@@ -281,7 +341,8 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_main, cFragment);
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragmentTransaction.replace(R.id.rvContentMainOTP, cFragment);
             fragmentTransaction.commit();
 
         }

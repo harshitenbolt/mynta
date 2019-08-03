@@ -1,9 +1,11 @@
 package com.canvascoders.opaper.fragment;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -67,16 +69,17 @@ public class RateFragment extends Fragment implements View.OnClickListener {
     private String TAG = "RateFragment";
     private ProgressDialog mProgressDialog;
     private SessionManager sessionManager;
-    private FloatingActionButton btn_next;
+    private Button btn_next;
     private Button btn_skip_to_addendum;
     //    private EditText edit_rate;
 //    private Toolbar toolbar;
     private TextView txt_notice;
     Context mcontext;
-    private String lattitude="",longitude="";
+    private String lattitude = "", longitude = "";
     View view;
     GPSTracker gps;
     String str_process_id;
+    private static Dialog dialog;
     RateListAdapter rateListAdapter;
     ArrayList<StoreTypeBean> rateTypeBeans;
     RecyclerView recyclerView;
@@ -84,7 +87,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
 
     // se commit done Start
 
-        // new branch change mobile
+    // new branch change mobile
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,7 +107,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
 
         rateTypeBeans = new ArrayList<>();
         recyclerView = (RecyclerView) view.findViewById(R.id.rv_rate_type);
-        btn_next = (FloatingActionButton) view.findViewById(R.id.btn_next);
+        btn_next = (Button) view.findViewById(R.id.btn_next);
         txt_notice = (TextView) view.findViewById(R.id.txt_notice);
 //        edit_rate = (EditText) view.findViewById(R.id.edit_rate);
         mProgressDialog = new ProgressDialog(mcontext);
@@ -185,7 +188,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
 
 
         Retrofit retrofit = ApiClient.getClient();
-        retrofit.create(ApiInterface.class).getStoreTypeListing("Bearer "+sessionManager.getToken(),dataObj).enqueue(new Callback<ResponseBody>() {
+        retrofit.create(ApiInterface.class).getStoreTypeListing("Bearer " + sessionManager.getToken(), dataObj).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
@@ -246,20 +249,19 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                                     rateListAdapter = new RateListAdapter(rateTypeBeans, getContext());
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
-                                    showDialogApproval(jsonObject.getString("response"));
+                                    showAlert(jsonObject.getString("response"));
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(getContext());
-                                }
-                                else if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
+                                } else if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
                                     sessionManager.logoutUser(getContext());
                                 }
                             } else if (response.code() == 202) {
-                                showDialogApproval(response.message());
+                                showAlert(response.message());
                             } else if (response.code() == 405) {
                                 sessionManager.logoutUser(getContext());
                             } else if (response.code() == 411) {
                                 sessionManager.logoutUser(getContext());
-                            }else {
+                            } else {
                                 Toast.makeText(getContext(), jsonObject.getString("response").toString(), Toast.LENGTH_LONG).show();
                             }
 
@@ -308,6 +310,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
     }
 
     private void checkAndPrepareObj() {
+       // mProgressDialog.show();
         JsonArray jsonArray = new JsonArray();
         // checking from neutral stores to get updated data.
         for (int i = 0; i < rateTypeBeans.size(); i++) {
@@ -322,6 +325,8 @@ public class RateFragment extends Fragment implements View.OnClickListener {
 //                        float rate = Float.parseFloat(rateTypeBeans.get(i).getRate());
 //                        if(rate>0)
                                 jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
+                              //  mProgressDialog.dismiss();
+
 //                        else
 //                        {
 //                            Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
@@ -332,14 +337,12 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                                 Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                        }
-                        else {
+                        } else {
+                            mProgressDialog.dismiss();
                             Toast.makeText(mcontext, "Issue with Rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                             return;
                         }
-                    }
-
-                    else {
+                    } else {
                         Toast.makeText(mcontext, "Issue with Rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                         return;
                     }
@@ -358,6 +361,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
     }
 
     private void submitStoreUpdateDetails(JsonArray jsonArray) {
+        mProgressDialog.show();
 
         gps = new GPSTracker(getActivity());
         if (gps.canGetLocation()) {
@@ -381,18 +385,19 @@ public class RateFragment extends Fragment implements View.OnClickListener {
         dataObj.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
         dataObj.addProperty(Constants.KEY_PROCESS_ID, str_process_id);
         dataObj.addProperty(Constants.KEY_AGENT_ID, sessionManager.getAgentID());
-        dataObj.addProperty(Constants.PARAM_LATITUDE,lattitude);
-        dataObj.addProperty(Constants.PARAM_LONGITUDE,longitude);
+        dataObj.addProperty(Constants.PARAM_LATITUDE, lattitude);
+        dataObj.addProperty(Constants.PARAM_LONGITUDE, longitude);
         dataObj.add(Constants.KEY_STORES, jsonArray);
 
         Retrofit retrofit = ApiClient.getClient();
-        retrofit.create(ApiInterface.class).setStoreTypeListing("Bearer "+sessionManager.getToken(),dataObj).enqueue(new Callback<ResponseBody>() {
+        retrofit.create(ApiInterface.class).setStoreTypeListing("Bearer " + sessionManager.getToken(), dataObj).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
                 Log.e("REsponse code", "" + response.code());
                 Log.e("REspomse msg", "" + response.body().toString());
                 if (response.isSuccessful()) {
+                    mProgressDialog.dismiss();
                     try {
                         String res = response.body().toString();
                         Mylogger.getInstance().Logit(TAG, res);
@@ -402,27 +407,26 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                                 if (jsonObject.getString("responseCode").equalsIgnoreCase("200")) {
                                    /* Intent i = new Intent(getActivity(), AgreementDetailActivity.class);
                                     startActivity(i);*/
-                                    Intent i = new Intent(getActivity(),ProcessInfoActivity.class);
-                                    startActivity(i);
-                                    getActivity().finish();
+                                    showAlert1(jsonObject.getString("response"));
+
 
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
-                                    showDialogApproval(jsonObject.getString("response"));
+                                    showAlert(jsonObject.getString("response"));
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(mcontext);
-                                }
-                                else{
-                                    Toast.makeText(getActivity(),jsonObject.getString("response"),Toast.LENGTH_LONG).show();
+                                } else {
+                                    Toast.makeText(getActivity(), jsonObject.getString("response"), Toast.LENGTH_LONG).show();
                                 }
                             } else if (response.code() == 405) {
                                 sessionManager.logoutUser(mcontext);
                             } else if (response.code() == 202) {
-                                showDialogApproval(response.message());
+                                showAlert(response.message());
                             } else {
                                 Toast.makeText(mcontext, jsonObject.getString("response").toString(), Toast.LENGTH_LONG).show();
                             }
 
                         } else {
+                            mProgressDialog.dismiss();
                             Toast.makeText(mcontext, "Server not responding", Toast.LENGTH_LONG).show();
                         }
 
@@ -439,13 +443,14 @@ public class RateFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                mProgressDialog.dismiss();
                 Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
 
     }
 
-    public void showDialogApproval(String Msg) {
+   /* public void showDialogApproval(String Msg) {
         // Display message in dialog box if you have not internet connection
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mcontext);
         alertDialogBuilder.setTitle("Approval Pending");
@@ -457,12 +462,110 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                 TaskCompletedFragment2 taskCompletedFragment2 = new TaskCompletedFragment2();
                 taskCompletedFragment2.setMesssge(Msg);
                 commanFragmentCallWithoutBackStack(taskCompletedFragment2);
+                ldmslvdmvm
                 arg0.dismiss();
             }
         });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }*/
+
+
+    private void showAlert(String msg) {
+
+
+        Button btSubmit;
+        TextView tvMessage, tvTitle;
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mcontext);
+        dialog = new Dialog(getActivity(), R.style.DialogLSideBelow);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_success);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        btSubmit = dialog.findViewById(R.id.btSubmit);
+        tvMessage = dialog.findViewById(R.id.tvMessage);
+        tvTitle = dialog.findViewById(R.id.tvTitle);
+        tvTitle.setText("Approval Pending");
+
+        tvMessage.setText(msg);
+
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TaskCompletedFragment2 taskCompletedFragment2 = new TaskCompletedFragment2();
+                taskCompletedFragment2.setMesssge(msg);
+                commanFragmentCallWithoutBackStack(taskCompletedFragment2);
+
+                dialog.dismiss();
+
+            }
+        });
+
+        dialog.setCancelable(false);
+
+        dialog.show();
+
+
+    }
+
+
+    private void showAlert1(String msg) {
+
+        Button btSubmit;
+        TextView tvMessage, tvTitle;
+
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mcontext);
+        dialog = new Dialog(getActivity(), R.style.DialogLSideBelow);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_success);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        btSubmit = dialog.findViewById(R.id.btSubmit);
+        tvMessage = dialog.findViewById(R.id.tvMessage);
+        tvTitle = dialog.findViewById(R.id.tvTitle);
+        tvTitle.setText("Rate Submit");
+
+        tvMessage.setText(msg);
+
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                Intent i = new Intent(getActivity(), ProcessInfoActivity.class);
+                startActivity(i);
+                getActivity().finish();
+
+                //  commanFragmentCallWithoutBackStack(new InfoFragment());
+
+            }
+        });
+
+        dialog.setCancelable(false);
+
+        dialog.show();
     }
 
 //    public void rateDetailsSubmit(final View v) {
@@ -525,7 +628,8 @@ public class RateFragment extends Fragment implements View.OnClickListener {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_main, cFragment);
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragmentTransaction.replace(R.id.rvContentMainOTP, cFragment);
             fragmentTransaction.commit();
 
         }

@@ -21,7 +21,7 @@ public class SupportListResponse {
     private Integer lastPage;
     @SerializedName("next_page_url")
     @Expose
-    private Object nextPageUrl;
+    private String nextPageUrl;
     @SerializedName("path")
     @Expose
     private String path;
@@ -70,11 +70,11 @@ public class SupportListResponse {
         this.lastPage = lastPage;
     }
 
-    public Object getNextPageUrl() {
+    public String getNextPageUrl() {
         return nextPageUrl;
     }
 
-    public void setNextPageUrl(Object nextPageUrl) {
+    public void setNextPageUrl(String nextPageUrl) {
         this.nextPageUrl = nextPageUrl;
     }
 

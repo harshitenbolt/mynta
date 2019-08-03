@@ -1,11 +1,13 @@
 package com.canvascoders.opaper.fragment;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +22,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +45,8 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.AddNewDeliveryBoy;
 import com.canvascoders.opaper.activity.CropImage2Activity;
+import com.canvascoders.opaper.helper.DialogListner;
+import com.canvascoders.opaper.utils.DialogUtil;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.activity.AppApplication;
@@ -92,6 +97,7 @@ import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI
 public class PanVerificationFragment extends Fragment implements View.OnClickListener {
 
     private static final int IMAGE_PAN = 101;
+    private TextView tvClickPan;
     private static final String IMAGE_DIRECTORY_NAME = "oppr";
     Pattern pattern = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}");
     File sourceFile;
@@ -99,10 +105,11 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     ProgressDialog pd;
     private String TAG = "PanVerification";
     private Button btn_next, btn_extract;
-    private String panImagepath = "", identityType = "", identityEmail = "", identityCallbackUrl = "", identityAccessToken = "", identityID = "", identityPatronId = "";
+    private String panImagepath = "", imagecamera = "", identityType = "", identityEmail = "", identityCallbackUrl = "", identityAccessToken = "", identityID = "", identityPatronId = "";
     private Uri imgURI;
+    private static Dialog dialog;
     private LinearLayout llGoback;
-    private ImageView btn_pan_card;
+    private ImageView ivPanImage;
     Context mcontext;
     private boolean isedit = false;
     public static final int CROPPED_IMAGE = 5333;
@@ -116,9 +123,9 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     private SessionManager sessionManager;
     private boolean isPanSelected = false;
     private EditText edit_pan_name, edit_pan_name_father, edit_pan_number;
-    private String lattitude="",longitude="";
+    private String lattitude = "", longitude = "";
     GPSTracker gps;
-    TextWatcher textWatcher = new TextWatcher() {
+    /*TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -127,7 +134,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             if (edit_pan_name.getText().toString().length() > 1 && edit_pan_name_father.getText().toString().length() > 0 && edit_pan_number.getText().toString().length() > 3) {
-                setButtonImage();
+               // setButtonImage();
             }
         }
 
@@ -135,7 +142,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         public void afterTextChanged(Editable s) {
 
         }
-    };
+    };*/
     private String from = "individualPan";
     private JSONObject panEssentials = new JSONObject();
     private ProgressDialog mProgressDialog;
@@ -193,27 +200,19 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         mProgressDialog = new ProgressDialog(mcontext);
         mProgressDialog.setMessage("Please wait, While we are uploading...");
         mProgressDialog.setCancelable(false);
-        btn_next = view.findViewById(R.id.btn_next);
-        btn_extract = view.findViewById(R.id.btn_extract);
-        btn_pan_card = (ImageView) view.findViewById(R.id.btn_pan_cards);
+
+        ivPanImage = view.findViewById(R.id.ivPanImage);
+        btn_extract = view.findViewById(R.id.bgtExtractPan);
+        tvClickPan = view.findViewById(R.id.tvClickPan);
+        tvClickPan.setOnClickListener(this);
         llGoback = view.findViewById(R.id.llGonext);
         llGoback.setOnClickListener(this);
-        btn_pan_card_select = (ImageView) view.findViewById(R.id.btn_pan_card_select);
-        edit_pan_name = (EditText) view.findViewById(R.id.edit_pan_name);
-        edit_pan_name_father = (EditText) view.findViewById(R.id.edit_pan_name_father);
-        edit_pan_number = (EditText) view.findViewById(R.id.edit_pan_number);
 
-        edit_pan_name.addTextChangedListener(textWatcher);
-        edit_pan_name_father.addTextChangedListener(textWatcher);
-        edit_pan_number.addTextChangedListener(textWatcher);
-/*
-        edit_pan_name.setEnabled(false);
-        edit_pan_name_father.setEnabled(false);
-        edit_pan_number.setEnabled(false);*/
-
-        btn_next.setOnClickListener(this);
-        btn_pan_card.setOnClickListener(this);
+        btn_pan_card_select = (ImageView) view.findViewById(R.id.tvClickPanSelected);
+        btn_pan_card_select.setOnClickListener(this);
         btn_extract.setOnClickListener(this);
+
+
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             String is_edit = bundle.getString(Constants.KEY_EMP_MOBILE);
@@ -239,29 +238,82 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         call.enqueue(new Callback<UpdatePanDetailResponse>() {
             @Override
             public void onResponse(Call<UpdatePanDetailResponse> call, retrofit2.Response<UpdatePanDetailResponse> response) {
-                mProgressDialog.dismiss();
+
                 if (response.isSuccessful()) {
                     UpdatePanDetailResponse updatePanDetailResponse = response.body();
                     if (updatePanDetailResponse.getResponseCode() == 200) {
-                        edit_pan_name.setText(updatePanDetailResponse.getData().get(0).getPanName());
-                        edit_pan_name_father.setText(updatePanDetailResponse.getData().get(0).getFatherName());
-                        edit_pan_number.setText(updatePanDetailResponse.getData().get(0).getPanNo());
-                        Glide.with(getActivity()).load(Constants.BaseImageURL + updatePanDetailResponse.getData().get(0).getPan()).into(btn_pan_card);
+                        mProgressDialog.dismiss();
+                        Glide.with(getActivity()).load(Constants.BaseImageURL + updatePanDetailResponse.getData().get(0).getPan()).placeholder(R.drawable.pancard).into(ivPanImage);
                         isPanSelected = true;
                         btn_pan_card_select.setVisibility(View.VISIBLE);
-                        edit_pan_number.setEnabled(true);
-                        edit_pan_name_father.setEnabled(true);
-                        edit_pan_name.setEnabled(true);
+
                         Bitmap bitmap = ImagePicker.getBitmapFromURL(Constants.BaseImageURL + updatePanDetailResponse.getData().get(0).getPan());
                         panImagepath = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                        DialogUtil.PanDetail(getActivity(), updatePanDetailResponse.getData().get(0).getPanName(), updatePanDetailResponse.getData().get(0).getFatherName(), updatePanDetailResponse.getData().get(0).getPanNo(), new DialogListner() {
+                            @Override
+                            public void onClickPositive() {
+
+                            }
+
+                            @Override
+                            public void onClickNegative() {
+
+                            }
+
+                            @Override
+                            public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                                Constants.hideKeyboardwithoutPopulate(getActivity());
+                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                    // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                    storePAN(name, fathername, id);
+                                } else {
+                                    Constants.ShowNoInternet(getActivity());
+                                }
+
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                            }
+                        });
+
+
                         // ExtractPanDetail();
-                    }
-                    else if (updatePanDetailResponse.getResponseCode()==411){
+                    } else if (updatePanDetailResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(getActivity());
-                    }else {
-                        edit_pan_number.setEnabled(true);
-                        edit_pan_name_father.setEnabled(true);
-                        edit_pan_name.setEnabled(true);
+                    } else {
+                        DialogUtil.PanDetail(getActivity(), updatePanDetailResponse.getData().get(0).getPanName(), updatePanDetailResponse.getData().get(0).getFatherName(), updatePanDetailResponse.getData().get(0).getPanNo(), new DialogListner() {
+                            @Override
+                            public void onClickPositive() {
+
+                            }
+
+                            @Override
+                            public void onClickNegative() {
+
+                            }
+
+                            @Override
+                            public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                                Constants.hideKeyboardwithoutPopulate(getActivity());
+                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                    // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                    storePAN(name, fathername, id);
+                                } else {
+                                    Constants.ShowNoInternet(getActivity());
+                                }
+
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                            }
+                        });
                     }
                 }
             }
@@ -273,18 +325,18 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         });
     }
 
-    private void setButtonImage() {
-        if (isPanSelected == true) {
-            btn_next.setBackground(getResources().getDrawable(R.drawable.btn_active));
-            btn_next.setEnabled(true);
-            btn_next.setTextColor(getResources().getColor(R.color.colorWhite));
-        } else {
-            btn_next.setBackground(getResources().getDrawable(R.drawable.btn_normal));
-            btn_next.setEnabled(false);
-            btn_next.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-        }
-    }
-
+    /* private void setButtonImage() {
+         if (isPanSelected == true) {
+             btn_next.setBackground(getResources().getDrawable(R.drawable.btn_active));
+             btn_next.setEnabled(true);
+             btn_next.setTextColor(getResources().getColor(R.color.colorWhite));
+         } else {
+             btn_next.setBackground(getResources().getDrawable(R.drawable.btn_normal));
+             btn_next.setEnabled(false);
+             btn_next.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+         }
+     }
+ */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -326,28 +378,6 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
         }
 
-        if (TextUtils.isEmpty(edit_pan_name.getText().toString())) {
-            edit_pan_name.setError("Provide name");
-            edit_pan_name.requestFocus();
-            return false;
-        }
-        if (TextUtils.isEmpty(edit_pan_name_father.getText().toString())) {
-            edit_pan_name_father.setError("Provide Father name");
-            edit_pan_name_father.requestFocus();
-            return false;
-        }
-
-        Matcher matcher = Constants.PAN_PATTERN.matcher(edit_pan_number.getText().toString());
-        if (TextUtils.isEmpty(edit_pan_number.getText().toString()) || edit_pan_number.getText().toString().length() < 5) {
-            edit_pan_number.setError("Provide Number");
-            edit_pan_number.requestFocus();
-            return false;
-        } else if (!matcher.matches()) {
-            edit_pan_number.setError("Provide Valid Pan Number");
-            edit_pan_number.requestFocus();
-            return false;
-        }
-
         return true;
     }
 
@@ -357,26 +387,31 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             if (validation()) {
                 Constants.hideKeyboardwithoutPopulate(getActivity());
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                    storePanwithOCR();
-                    storePAN();
+                   /* storePanwithOCR();
+                    storePAN();*/
                 } else {
                     Constants.ShowNoInternet(getActivity());
                 }
             }
-        } else if (v.getId() == R.id.btn_pan_cards) {
+        } else if (v.getId() == R.id.tvClickPan) {
 
             capture_pan_card_image();
 
 
-        } else if (v.getId() == R.id.btn_extract) {
+        } else if (v.getId() == R.id.tvClickPanSelected) {
+            capture_pan_card_image();
+        } else if (v.getId() == R.id.bgtExtractPan) {
             try {
 
-                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                    ExtractPanDetail();
-                } else {
-                    Constants.ShowNoInternet(mcontext);
-                }
 
+                if (validation()) {
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        ExtractPanDetail();
+                    } else {
+                        Constants.ShowNoInternet(mcontext);
+                    }
+
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -397,27 +432,28 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_PAN) {
 
-                Constants.hideKeyboardwithoutPopulate(getActivity());
+              //  Constants.hideKeyboardwithoutPopulate(getActivity());
                 Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                panImagepath = ImagePicker.getBitmapPath(bitmap, getActivity());
-               /* Glide.with(getActivity()).load(panImagepath).into(btn_pan_card);
-                isPanSelected = true;
-                btn_pan_card_select.setVisibility(View.VISIBLE);
-                Log.e("Pan image path", panImagepath);*/
+                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(panImagepath)).toString());
+                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
                 startActivityForResult(intent, CROPPED_IMAGE);
 
-                //new ResizeAsync().execute();
             }
             if (requestCode == CROPPED_IMAGE) {
                 imgURI = Uri.parse(data.getStringExtra("uri"));
                 panImagepath = RealPathUtil.getPath(getActivity(), imgURI);
-
                 try {
-                    Glide.with(getActivity()).load(imgURI).into(btn_pan_card);
+                    Glide.with(getActivity()).load(imgURI).placeholder(R.drawable.pancard).into(ivPanImage);
                     isPanSelected = true;
                     btn_pan_card_select.setVisibility(View.VISIBLE);
+                    tvClickPan.setVisibility(View.GONE);
+
+                    File casted_image6 = new File(imagecamera);
+                    if (casted_image6.exists()) {
+                        casted_image6.delete();
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -428,14 +464,14 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     }
 
 
-    private void storePanwithOCR() {
+    private void storePanwithOCR(String name, String fathername, String pannumber, String pancardDetailId, String filename, String FileUrl, String Birthdate) {
         HashMap<String, String> param = new HashMap<>();
-        param.put(Constants.PARAM_PAN_CARD_DETAIL_ID, pan_card_detail_id);
-        param.put(Constants.PARAM_PAN_CARD_NUMBER, edit_pan_number.getText().toString());
-        param.put(Constants.PARAM_NAME, edit_pan_name.getText().toString());
-        param.put(Constants.PARAM_FATHER_NAME, edit_pan_name_father.getText().toString());
-        param.put(Constants.PARAM_FILE_NAME, file_name);
-        param.put(Constants.PARAM_FILE_URL, file_url);
+        param.put(Constants.PARAM_PAN_CARD_DETAIL_ID, pancardDetailId);
+        param.put(Constants.PARAM_PAN_CARD_NUMBER, pannumber);
+        param.put(Constants.PARAM_NAME, name);
+        param.put(Constants.PARAM_FATHER_NAME, fathername);
+        param.put(Constants.PARAM_FILE_NAME, filename);
+        param.put(Constants.PARAM_FILE_URL, FileUrl);
         param.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
         Call<PanCardSubmitResponse> call = ApiClient.getClient2().create(ApiInterface.class).SubmitPancardOCR(param);
         call.enqueue(new Callback<PanCardSubmitResponse>() {
@@ -458,7 +494,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         });
     }
 
-    public void storePAN() {
+    public void storePAN(String name, String fathername, String id) {
         gps = new GPSTracker(getActivity());
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
@@ -485,9 +521,9 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             params.put(Constants.PARAM_PROCESS_ID, str_process_id);
             params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-            params.put(Constants.PARAM_PAN_NO, "" + edit_pan_number.getText());
-            params.put(Constants.PARAM_PAN_NAME, "" + edit_pan_name.getText());
-            params.put(Constants.PARAM_FATHER_NAME, "" + edit_pan_name_father.getText());
+            params.put(Constants.PARAM_PAN_NO, id);
+            params.put(Constants.PARAM_PAN_NAME, name);
+            params.put(Constants.PARAM_FATHER_NAME, fathername);
             params.put(Constants.PARAM_LATITUDE, lattitude);
             params.put(Constants.PARAM_LONGITUDE, longitude);
             if (isedit == true) {
@@ -513,14 +549,18 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
 
                     if (response.isSuccessful()) {
+                      //  deleteImages();
 
                         CommonResponse panVerificationDetail = response.body();
 
                         if (panVerificationDetail.getResponseCode() == 200) {
+                            deleteImages();
                             str_process_id = panVerificationDetail.getData().get(0).getProccess_id();
+                            DialogUtil.dismiss();
                             showAlert(response.body().getResponse());
                         }
                         if (panVerificationDetail.getResponseCode() == 411) {
+                            deleteImages();
                             sessionManager.logoutUser(mcontext);
                         }
 
@@ -531,13 +571,13 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
                                     Validation validation = panVerificationDetail.getValidation();
                                     if (validation.getPanName() != null && validation.getPanName().length() > 0) {
-                                        edit_pan_name.setError(validation.getPanName());
-                                        edit_pan_name.requestFocus();
-                                        // return false;
+
+                                        DialogUtil.etPanName.setError(validation.getPanName());
+
                                     }
                                     if (validation.getFatherName() != null && validation.getFatherName().length() > 0) {
-                                        edit_pan_name_father.setError(validation.getFatherName());
-                                        edit_pan_name_father.requestFocus();
+
+                                        DialogUtil.etPanFatherName.setError(validation.getFatherName());
                                     }
                                     if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
                                         Toast.makeText(getActivity(), validation.getAgentId(), Toast.LENGTH_LONG).show();
@@ -546,8 +586,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                                         Toast.makeText(getActivity(), validation.getProccessId(), Toast.LENGTH_LONG).show();
                                     }
                                     if (validation.getPanNo() != null && validation.getPanNo().length() > 0) {
-                                        edit_pan_number.setError(validation.getPanNo());
-                                        edit_pan_number.requestFocus();
+                                        DialogUtil.etPanNumber.setError(validation.getPanNo());
                                     }
                                     if (validation.getPanCardFront() != null && validation.getPanCardFront().length() > 0) {
                                         Toast.makeText(getActivity(), validation.getPanCardFront(), Toast.LENGTH_LONG).show();
@@ -566,6 +605,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
 
                         if (panVerificationDetail.getResponseCode() == 405) {
+                            deleteImages();
                             sessionManager.logoutUser(mcontext);
                         }
 
@@ -589,7 +629,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     }
 
 
-    private void showAlert(String msg) {
+  /*  private void showAlert(String msg) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mcontext);
         alertDialog.setTitle("PAN Details");
         alertDialog.setMessage(msg);
@@ -605,7 +645,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             }
         });
         alertDialog.show();
-    }
+    }*/
 
 
     public void ExtractPanDetail() {
@@ -665,33 +705,91 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                             GetPanDetailsResponse getPanDetailsResponse = response.body();
                             if (getPanDetailsResponse.getStatus().equalsIgnoreCase("success")) {
                                 Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                                edit_pan_name.setText(getPanDetailsResponse.getPanCardDetail().getName());
+                               /* edit_pan_name.setText(getPanDetailsResponse.getPanCardDetail().getName());
                                 edit_pan_name_father.setText(getPanDetailsResponse.getPanCardDetail().getFatherName());
-                                edit_pan_number.setText(getPanDetailsResponse.getPanCardDetail().getPanCardNumber());
+                                edit_pan_number.setText(getPanDetailsResponse.getPanCardDetail().getPanCardNumber());*/
                                 pan_card_detail_id = String.valueOf(getPanDetailsResponse.getPanCardDetail().getPanCardDetailId());
                                 file_name = getPanDetailsResponse.getPanCardDetail().getFileName();
                                 file_url = getPanDetailsResponse.getPanCardDetail().getFileUrl();
                                 birth_date = getPanDetailsResponse.getPanCardDetail().getBirthDate();
-                                edit_pan_name.setEnabled(true);
-                                edit_pan_name_father.setEnabled(true);
-                                edit_pan_number.setEnabled(true);
+
+
+                                DialogUtil.PanDetail(getActivity(), getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
+                                    @Override
+                                    public void onClickPositive() {
+
+                                    }
+
+                                    @Override
+                                    public void onClickNegative() {
+
+                                    }
+
+                                    @Override
+                                    public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                                        Constants.hideKeyboardwithoutPopulate(getActivity());
+                                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                            storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                            storePAN(name, fathername, id);
+                                        } else {
+                                            Constants.ShowNoInternet(getActivity());
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                    }
+                                });
 
                             } else {
                                 if (getPanDetailsResponse.getReselectImage() != null && getPanDetailsResponse.getReselectImage().equalsIgnoreCase("1")) {
                                     panImagepath = "";
-                                    Glide.with(getActivity()).load(panImagepath).into(btn_pan_card);
+                                    Glide.with(getActivity()).load(panImagepath).into(ivPanImage);
                                     isPanSelected = false;
                                     btn_pan_card_select.setVisibility(View.GONE);
+                                    tvClickPan.setVisibility(View.VISIBLE);
                                     Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 } else {
-                                    edit_pan_name.setEnabled(true);
-                                    edit_pan_name_father.setEnabled(true);
-                                    edit_pan_number.setEnabled(true);
+
                                     pan_card_detail_id = String.valueOf(getPanDetailsResponse.getPanCardDetail().getPanCardDetailId());
                                     file_name = getPanDetailsResponse.getPanCardDetail().getFileName();
                                     file_url = getPanDetailsResponse.getPanCardDetail().getFileUrl();
                                     birth_date = getPanDetailsResponse.getPanCardDetail().getBirthDate();
                                     Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                    DialogUtil.PanDetail(getActivity(), getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
+                                        @Override
+                                        public void onClickPositive() {
+
+                                        }
+
+                                        @Override
+                                        public void onClickNegative() {
+
+                                        }
+
+                                        @Override
+                                        public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                                            Constants.hideKeyboardwithoutPopulate(getActivity());
+                                            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                                storePAN(name, fathername, id);
+                                            } else {
+                                                Constants.ShowNoInternet(getActivity());
+                                            }
+
+                                        }
+
+                                        @Override
+                                        public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                        }
+                                    });
+
                                 }
                             }
 
@@ -741,7 +839,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                 Glide.with(PanVerificationFragment.this)
                         .load(Uri.fromFile(file))
                         .placeholder(R.drawable.placeholder)
-                        .into(btn_pan_card);
+                        .into(ivPanImage);
                 //.transform(new RotateTransformation(this, 90f))
                 isPanSelected = true;
                 btn_pan_card_select.setVisibility(View.VISIBLE);
@@ -908,7 +1006,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                     edit_pan_number.setText(result.getString("number"));
                 }
 
-                setButtonImage();
+                //  setButtonImage();
             } catch (Exception e) {
                 //  e.printStackTrace();
                 Constants.showAlert(edit_pan_name.getRootView(), "Network error please try again later", false);
@@ -1037,7 +1135,8 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_main, cFragment);
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragmentTransaction.replace(R.id.rvContentMainOTP, cFragment);
             fragmentTransaction.commit();
 
         }
@@ -1069,6 +1168,92 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         }
 
     }*/
+
+
+    public static void dismiss() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+    }
+
+
+    private void showAlert(String msg) {
+        Button btSubmit;
+        TextView tvMessage, tvTitle;
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mcontext);
+        dialog = new Dialog(getActivity(), R.style.DialogLSideBelow);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_success);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        btSubmit = dialog.findViewById(R.id.btSubmit);
+        tvMessage = dialog.findViewById(R.id.tvMessage);
+        tvTitle = dialog.findViewById(R.id.tvTitle);
+        tvTitle.setText("PAN VERIFICATION");
+
+        tvMessage.setText(msg);
+
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                if (isedit == true) {
+                    commanFragmentCallWithoutBackStack(new InfoFragment());
+                } else {
+                    commanFragmentCallWithoutBackStack(new ChequeUploadFragment());
+                }
+
+            }
+        });
+
+        dialog.setCancelable(false);
+
+        dialog.show();
+
+    }
+
+
+    @Override
+    public void onResume() {
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    deleteImages();
+
+                    getActivity().finish();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        super.onResume();
+    }
+
+    private void deleteImages() {
+
+        File casted_image = new File(panImagepath);
+        if (casted_image.exists()) {
+            casted_image.delete();
+        }
+
+        File casted_image6 = new File(imagecamera);
+        if (casted_image6.exists()) {
+            casted_image6.delete();
+        }
+
+    }
 
 }
 

@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +40,7 @@ import retrofit2.Response;
 public class MobileFragment extends Fragment implements View.OnClickListener {
 
     private EditText edit_mobile_no;
-    private FloatingActionButton btn_next;
+    private Button btn_next;
     private SessionManager sessionManager;
     private String TAG = "MobileFragment";
     private ProgressDialog mProgressDialog;
@@ -54,9 +56,8 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
                 WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         mcontext = this.getActivity();
         sessionManager = new SessionManager(mcontext);
-
-
         DashboardActivity.settitle(Constants.TITLE_MOBILE_AUTH);
+
 
         initView();
 
@@ -66,8 +67,9 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
     private void initView() {
         mProgressDialog = new ProgressDialog(mcontext);
         mProgressDialog.setMessage("sending OTP to mobile...");
-        edit_mobile_no = view.findViewById(R.id.edit_mobile);
-        btn_next = view.findViewById(R.id.btn_next);
+        mProgressDialog.setCancelable(false);
+        edit_mobile_no = view.findViewById(R.id.etMobileNumber);
+        btn_next = view.findViewById(R.id.btSendOTP);
         btn_next.setOnClickListener(this);
         edit_mobile_no.addTextChangedListener(new TextWatcher() {
             @Override
@@ -104,7 +106,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_next) {
+        if (v.getId() == R.id.btSendOTP) {
             if (TextUtils.isEmpty(edit_mobile_no.getText())) {
                 showMSG(false, "Mobile Not Valid");
             } else {
@@ -137,7 +139,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
                     Mylogger.getInstance().Logit(TAG, getOTP.getResponse());
                     if (getOTP.getResponseCode() == 200) {
                         Mylogger.getInstance().Logit(TAG, "OTP is =>" + getOTP.getData().get(0).getOtp().toString());
-                        Toast.makeText(mcontext, getOTP.getResponse(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(mcontext, getOTP.getResponse(), Toast.LENGTH_LONG).show();
                         Intent i = new Intent(mcontext, OTPActivity.class);
                         i.putExtra("otp", getOTP.getData().get(0).getOtp().toString());
                         i.putExtra(Constants.KEY_EMP_MOBILE, edit_mobile_no.getText().toString());
@@ -185,4 +187,15 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
             }
         }, 2000);
     }
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+
+
 }

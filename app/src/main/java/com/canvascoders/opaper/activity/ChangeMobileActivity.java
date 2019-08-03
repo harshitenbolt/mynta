@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,7 +36,7 @@ import retrofit2.Response;
 public class ChangeMobileActivity extends AppCompatActivity implements View.OnClickListener {
     private CardView cvFirst,cvSecond;
     private EditText edit_mobile_no;
-    private FloatingActionButton btn_next;
+    private Button btn_next;
     private SessionManager sessionManager;
     private String TAG = "MobileFragment";
     private ProgressDialog mProgressDialog;
@@ -58,7 +59,7 @@ public class ChangeMobileActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initView() {
-        cvFirst = findViewById(R.id.cvfirst);
+      //  cvFirst = findViewById(R.id.cvfirst);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("sending OTP to mobile...");
         edit_mobile_no = findViewById(R.id.edit_mobile);

@@ -24,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -78,11 +79,12 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
     Toolbar toolbar;
     private WebView mWebView;
     private SessionManager sessionManager;
-    private AppCompatTextView btn_agree,btn_resend,btn_update;
+    private AppCompatTextView btn_agree, btn_resend, btn_update;
     private ProgressDialog progressDialog;
     JSONObject jsonObject = new JSONObject();
     private String TAG = "AddendumEsign";
     VendorList vendor;
+    private ImageView ivBack;
     String pdfUrlToSign = "";
 
 
@@ -96,21 +98,28 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
         digio = new Digio();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+       /* DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+*/
+      /*  NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         getSupportActionBar().setTitle("");
-
+*/
         progressDialog = new ProgressDialog(AddendumEsignActivity.this);
         progressDialog.setTitle("Please Wait System is Generating Addendum...");
         progressDialog.setCancelable(false);
         sessionManager = new SessionManager(AddendumEsignActivity.this);
 
+        ivBack = findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         mWebView = (WebView) findViewById(R.id.web_view_id);
         btn_agree = (AppCompatTextView) findViewById(R.id.btn_agree);
         btn_resend = findViewById(R.id.btn_resend);
@@ -127,7 +136,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
             }
         });
 
-        btn_update=findViewById(R.id.btn_update);
+        btn_update = findViewById(R.id.btn_update);
         btn_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,21 +178,19 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
         params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
         params.put(Constants.KEY_PROCESS_ID, "" + vendor.getProccessId());
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-        params.put(Constants.PARAM_ADUMDUM,"1");
-        Call<ResendOTPResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).resendOTP("Bearer "+sessionManager.getToken(),params);
+        params.put(Constants.PARAM_ADUMDUM, "1");
+        Call<ResendOTPResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).resendOTP("Bearer " + sessionManager.getToken(), params);
         callUpload.enqueue(new Callback<ResendOTPResponse>() {
             @Override
             public void onResponse(Call<ResendOTPResponse> call, retrofit2.Response<ResendOTPResponse> response) {
                 ResendOTPResponse resendOTPResponse = response.body();
                 Mylogger.getInstance().Logit(TAG, String.valueOf(response));
-                if(resendOTPResponse.getResponseCode() == 200){
-                    Toast.makeText(AddendumEsignActivity.this,resendOTPResponse.getResponse(),Toast.LENGTH_LONG).show();
-                }
-                else if(resendOTPResponse.getResponseCode() ==411){
+                if (resendOTPResponse.getResponseCode() == 200) {
+                    Toast.makeText(AddendumEsignActivity.this, resendOTPResponse.getResponse(), Toast.LENGTH_LONG).show();
+                } else if (resendOTPResponse.getResponseCode() == 411) {
                     sessionManager.logoutUser(AddendumEsignActivity.this);
-                }
-                else{
-                    Toast.makeText(AddendumEsignActivity.this,resendOTPResponse.getResponse(),Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(AddendumEsignActivity.this, resendOTPResponse.getResponse(), Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -198,7 +205,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
 
         Intent myIntent = new Intent(AddendumEsignActivity.this, StoreTypeListingActivity.class);
         myIntent.putExtra("data", vendor);
-        myIntent.putExtra("editFlag",true);
+        myIntent.putExtra("editFlag", true);
         startActivity(myIntent);
         finish();
     }
@@ -227,7 +234,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
                 Request requestLogin = new Request.Builder()
                         .url(Constants.BaseURL + "get-addendum-pdf")
                         .post(body)
-                        .addHeader("Authorization","Bearer "+sessionManager.getToken())
+                        .addHeader("Authorization", "Bearer " + sessionManager.getToken())
                         .build();
 
                 Response responseLogin = client.newCall(requestLogin).execute();
@@ -312,7 +319,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
                 isBiometrix = true;
                 isOtp = false;
                 img_bio.setBackground(getResources().getDrawable(R.drawable.bio_active));
-                img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_normal));
+               // img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_normal));
             }
         });
 
@@ -321,7 +328,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
             public void onClick(View v) {
                 isOtp = true;
                 isBiometrix = false;
-                img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_active));
+                //img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_active));
                 img_bio.setBackground(getResources().getDrawable(R.drawable.bio_normal));
             }
         });
@@ -545,7 +552,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
             params.put(Constants.PARAM_ESIGN_URL, sss);
 
 
-            Call<JsonObject> callUpload = ApiClient.getClient().create(ApiInterface.class).StoreAddendum("Bearer "+sessionManager.getToken(),params);
+            Call<JsonObject> callUpload = ApiClient.getClient().create(ApiInterface.class).StoreAddendum("Bearer " + sessionManager.getToken(), params);
             callUpload.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, retrofit2.Response<JsonObject> response) {
@@ -633,7 +640,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
 
 
         }
-        if(id == R.id.nav_Support){
+        if (id == R.id.nav_Support) {
             commanFragmentCallWithoutBackStack(new SupportFragment());
         }
         if (id == R.id.nav_logout) {

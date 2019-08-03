@@ -472,6 +472,8 @@ public class VenderListFragment1 extends Fragment implements SwipeRefreshLayout.
                             vList.setAadhaarName(vendorList.getAadhaarName());
                             vList.setAadhaarNo(vendorList.getAadhaarNo());
                             vList.setAadhaarPincode(vendorList.getAadhaarPincode());
+                            vList.setLatitude(vendorList.getLatitude());
+                            vList.setLongitude(vendorList.getLongitude());
                             vList.setPanName(vendorList.getPanName());
                             vList.setPanNo(vendorList.getPanNo());
                             vList.setShopImage(Constants.BaseImageURL + vendorList.getShopImage());

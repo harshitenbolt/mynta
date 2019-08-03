@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.GeneralSupportSubmitActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <ImageView
+            android:id="@+id/iv_back_process"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_title_Process"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montesemibold"
+            android:gravity="center"
+            android:paddingRight="@dimen/_45sdp"
+            android:text="Supports"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
+
+        <!-- **** Place Your Content Here **** -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_3sdp"
+            android:background="@drawable/toolbarshadow" />
+
+    </FrameLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btSubmit"
+        android:layout_below="@+id/toolbar"
+        android:layout_weight="1"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:gravity="center|start">
+
+        <android.support.v7.widget.CardView
+            style="@style/CustomCardView"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:focusable="true"
+
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_75sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextviewwithoutSize"
+                            android:fontFamily="@font/montesemibold"
+                            android:text="Agent ID :- "
+                            android:textColor="@color/colorBlue"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <TextView
+                            android:id="@+id/tvAgentId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/monteregular"
+                            android:singleLine="true"
+                            android:text=""
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_13sdp" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        style="@style/TextviewwithoutSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+
+                        android:text="Subject       :- "
+                        android:textSize="@dimen/_10sdp" />
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:background="@drawable/etfieldbackgroundgrey">
+
+                    <Spinner
+                        android:id="@+id/snSubject"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/margin_10dp" />
+                    <!--<AutoCompleteTextView-->
+                    <!--android:id="@+id/autoCompleteTextView1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:background="#0000"-->
+                    <!--android:fontFamily="@font/rb_regular"-->
+                    <!--android:hint="Type DC name to find"-->
+                    <!--android:maxLines="1"-->
+                    <!--android:paddingBottom="@dimen/margin_15dp"-->
+                    <!--android:paddingLeft="@dimen/margin_20dp"-->
+                    <!--android:paddingRight="@dimen/margin_10dp"-->
+                    <!--android:paddingTop="@dimen/margin_15dp"-->
+                    <!--android:textColor="@color/font_login"-->
+                    <!--android:textSize="@dimen/font_login" />-->
+
+
+                </RelativeLayout>
+
+                <TextView
+                    style="@style/TextviewwithoutSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/montesemibold"
+                    android:text="Priority       :- "
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/_10sdp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:background="@drawable/etfieldbackgroundgrey">
+
+                    <Spinner
+                        android:id="@+id/snPriority"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/margin_10dp" />
+                    <!--<AutoCompleteTextView-->
+                    <!--android:id="@+id/autoCompleteTextView1"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:background="#0000"-->
+                    <!--android:fontFamily="@font/rb_regular"-->
+                    <!--android:hint="Type DC name to find"-->
+                    <!--android:maxLines="1"-->
+                    <!--android:paddingBottom="@dimen/margin_15dp"-->
+                    <!--android:paddingLeft="@dimen/margin_20dp"-->
+                    <!--android:paddingRight="@dimen/margin_10dp"-->
+                    <!--android:paddingTop="@dimen/margin_15dp"-->
+                    <!--android:textColor="@color/font_login"-->
+                    <!--android:textSize="@dimen/font_login" />-->
+
+
+                </RelativeLayout>
+                <TextView
+                    style="@style/TextviewwithoutSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/montesemibold"
+                    android:text="Description       :- "
+                    android:textColor="@color/colorBlue"
+                    android:textSize="@dimen/_10sdp" />
+
+                <EditText
+                    android:id="@+id/etDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/squre"
+                    android:gravity="top"
+                    android:hint="Description"
+                    android:lines="5"
+                    android:padding="@dimen/_10sdp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:text="Attachment :-"
+
+                    android:textSize="@dimen/_15sdp" />
+                <android.support.v7.widget.CardView
+                    android:layout_width="@dimen/_140sdp"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_height="@dimen/_140sdp">
+                <ImageView
+                    android:id="@+id/issue"
+                    android:layout_gravity="center"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_135sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:scaleType="fitCenter" />
+                </android.support.v7.widget.CardView>
+
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </ScrollView>
+
+
+    <Button
+        android:id="@+id/btSubmit"
+        style="@style/Button_withGreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingTop="@dimen/_2sdp"
+        android:text="Submit" />
+
+</LinearLayout>

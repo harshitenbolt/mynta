@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "926736469204-q25id3skhplv6sr25v0g3ssrsgho5av3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.canvascoders.opaper",
+            "certificate_hash": "bd16a9f337f5233e67ce208e51b777cce1db43cb"
+          }
+        },
+        {
           "client_id": "926736469204-589ajgpmp12ug813vv1jnh7gvv77k7mh.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -25,15 +33,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "926736469204-589ajgpmp12ug813vv1jnh7gvv77k7mh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

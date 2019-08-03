@@ -188,7 +188,7 @@ public class GstActivity extends AppCompatActivity implements NavigationView.OnN
                 isBiometrix = true;
                 isOtp = false;
                 img_bio.setBackground(getResources().getDrawable(R.drawable.bio_active));
-                img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_normal));
+              //  img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_normal));
             }
         });
         btnotp.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +196,7 @@ public class GstActivity extends AppCompatActivity implements NavigationView.OnN
             public void onClick(View v) {
                 isOtp = true;
                 isBiometrix = false;
-                img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_active));
+               // img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_active));
                 img_bio.setBackground(getResources().getDrawable(R.drawable.bio_normal));
             }
         });

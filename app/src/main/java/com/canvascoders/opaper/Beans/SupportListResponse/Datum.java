@@ -61,6 +61,18 @@ public class Datum {
     @Expose
     private String attachmentUrl;
 
+    public String getSubjectdesc() {
+        return subjectdesc;
+    }
+
+    public void setSubjectdesc(String subjectdesc) {
+        this.subjectdesc = subjectdesc;
+    }
+
+    @SerializedName("subject_desc")
+    @Expose
+    private String subjectdesc;
+
     public Integer getId() {
         return id;
     }

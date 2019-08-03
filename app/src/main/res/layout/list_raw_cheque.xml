@@ -4,8 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_10dp"
-
-    app:cardMaxElevation="5dp">
+    android:paddingTop="@dimen/_5sdp"
+    android:paddingBottom="@dimen/_5sdp"
+    android:background="@drawable/roundedcornergreythick"
+    app:cardCornerRadius="@dimen/_5sdp"
+    app:cardMaxElevation="@dimen/_5sdp">
 
     <LinearLayout
         android:id="@+id/llMain"
@@ -18,20 +21,21 @@
             android:id="@+id/img_cheque"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:visibility="gone"
             android:layout_centerVertical="true"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/icn_bank" />
+            android:src="@drawable/icn_bank"
+            android:visibility="gone" />
 
         <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/llLeft"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_weight="3"
             android:layout_toRightOf="@+id/img_cheque"
-            android:orientation="vertical">
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvName"
@@ -42,6 +46,7 @@
                 android:gravity="center|left"
                 android:maxLines="1"
                 android:text="Name" />
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvBank"
                 android:layout_width="match_parent"
@@ -51,6 +56,7 @@
                 android:gravity="center|left"
                 android:maxLines="1"
                 android:text="Bank" />
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvAccount"
                 android:layout_width="match_parent"
@@ -60,6 +66,7 @@
                 android:gravity="center|left"
                 android:maxLines="1"
                 android:text="Account" />
+
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvStatus"
                 android:layout_width="match_parent"
@@ -70,57 +77,112 @@
                 android:maxLines="1"
                 android:text="Status" />
         </android.support.v7.widget.LinearLayoutCompat>
+
+        <ImageView
+            android:id="@+id/ivAccImage"
+            android:layout_width="@dimen/_65sdp"
+            android:layout_height="@dimen/_65sdp"
+            android:layout_gravity="center"
+            android:background="@drawable/roundedcornergreythick" />
+
         <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/linear_one"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_10dp"
             android:layout_toRightOf="@+id/img_cheque"
+            android:layout_weight="1"
             android:orientation="vertical">
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tvPayeeName"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/rb_medium"
-                android:gravity="center|left"
-                android:maxLines="1"
-                android:text="ABC Store" />
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tvPayeeName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/rb_medium"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="Kevin Miyami"
+                    android:textSize="@dimen/_13sdp"
+                    app:fontFamily="@font/montesemibold" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tvStauts"
+                    android:layout_width="@dimen/_45sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="@drawable/rounded_circle_bordercolor_green"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:paddingTop="@dimen/_2sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_2sdp"
+                    android:text="ACTIVE"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_7sdp" />
+            </LinearLayout>
 
             <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tvBankName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/rb_light"
                 android:gravity="center|left"
                 android:maxLines="1"
-                android:text="State Bank of India" />
+                android:text="Bank name &amp; Account Number"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/_8sdp"
+                android:visibility="visible"
+                app:fontFamily="@font/monteregular" />
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tvAccountNo"
+
+            <LinearLayout
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/rb_light"
-                android:gravity="center|left"
-                android:maxLines="1"
-                android:text="12345" />
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tvBankName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/monteregular"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:textSize="@dimen/_8sdp"
+                    android:singleLine="true"
+                    android:text="State Bank of India -"
+                    app:fontFamily="@font/monteregular" />
 
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/tvStauts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:checked="true"
-                android:fontFamily="@font/rb_bold"
-                android:gravity="center|left"
-                android:maxLines="1"
-                android:text="Disabled" />
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tvAccountNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:textSize="@dimen/_8sdp"
+                    android:fontFamily="@font/monteregular"
+                    android:gravity="center|left"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="20101010101010"
+                    android:visibility="visible" />
+            </LinearLayout>
+
         </android.support.v7.widget.LinearLayoutCompat>
 
 

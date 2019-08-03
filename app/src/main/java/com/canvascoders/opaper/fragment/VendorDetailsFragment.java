@@ -22,6 +22,7 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.ChangeMobileActivity;
+import com.canvascoders.opaper.activity.EditPanCardActivity;
 import com.canvascoders.opaper.activity.OTPActivity;
 import com.canvascoders.opaper.activity.StoreTypeListingActivity;
 import com.canvascoders.opaper.api.ApiClient;
@@ -43,8 +44,9 @@ public class VendorDetailsFragment extends Fragment {
     VendorList vendor;
     TextView tv_ShopName, tv_Mobile, tv_Name, tvProcessId;
     ImageView ivVendorImage;
-    Button btn_update_cheque, btn_update_delivery_boy,btn_update_mobile,btn_update_store_details,btn_resend_agreement;
+    Button btn_update_cheque, btn_update_delivery_boy,btn_update_store_details;
     LinearLayout linear_check;
+    TextView tvUpdateMobile,tvResendAgree,tvUpdatePan;
     String isUpdationRequired,allowDEdit,allowEditDelBoy;
     SessionManager sessionManager;
     View view;
@@ -65,12 +67,13 @@ public class VendorDetailsFragment extends Fragment {
         tv_Name = view.findViewById(R.id.tv_name);
         ivVendorImage = view.findViewById(R.id.iv_vendor_image);
         btn_update_cheque = view.findViewById(R.id.btn_update_cheque);
-        btn_update_mobile =view.findViewById(R.id.btUpdateMobile);
-        btn_update_delivery_boy = view.findViewById(R.id.btn_update_delivery_boy);
-        btn_resend_agreement = view.findViewById(R.id.btn_resend_agreement);
+        tvUpdateMobile =view.findViewById(R.id.tvUpdateMobile);
+     //   btn_update_delivery_boy = view.findViewById(R.id.btn_update_delivery_boy);
+        tvResendAgree = view.findViewById(R.id.btn_resend_agreement);
         btn_update_store_details = view.findViewById(R.id.btn_update_store_details);
+        tvUpdatePan = view.findViewById(R.id.btUpdatePan);
         tvProcessId = view.findViewById(R.id.tvProcessId);
-        llEdit = view.findViewById(R.id.llEdit);
+        llEdit = view.findViewById(R.id.lledit);
         vendor = (VendorList) getArguments().getSerializable("data");
 
         if (vendor != null) {
@@ -82,16 +85,18 @@ public class VendorDetailsFragment extends Fragment {
             tvProcessId.setText("Id:" + vendor.getProccessId());
             isUpdationRequired = vendor.getIsAgreementUpdationRequire();
             if(isUpdationRequired.equalsIgnoreCase("1")){
-                btn_resend_agreement.setVisibility(View.VISIBLE);
+                tvResendAgree.setVisibility(View.VISIBLE);
             }
             allowDEdit= vendor.getAllowedit();
             allowEditDelBoy= vendor.getIsAddDeliveryBoy();
             if(allowDEdit.equalsIgnoreCase("1")){
                 llEdit.setVisibility(View.VISIBLE);
+                linear_check.setVisibility(View.VISIBLE);
             }
             if(allowEditDelBoy.equalsIgnoreCase("1")){
                 llEdit.setVisibility(View.VISIBLE);
-                btn_update_delivery_boy.setVisibility(View.VISIBLE);
+
+           //     btn_update_delivery_boy.setVisibility(View.VISIBLE);
             }
 
             Glide.with(this).load(vendor.getShopImage())
@@ -103,7 +108,7 @@ public class VendorDetailsFragment extends Fragment {
         }
 
 
-        btn_resend_agreement.setOnClickListener(new View.OnClickListener() {
+        tvResendAgree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(AppApplication.networkConnectivity.isNetworkAvailable()) {
@@ -130,7 +135,17 @@ public class VendorDetailsFragment extends Fragment {
             }
         });
 
-        btn_update_mobile.setOnClickListener(new View.OnClickListener() {
+
+        tvUpdatePan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), EditPanCardActivity.class);
+                i.putExtra("data", vendor);
+                startActivity(i);
+            }
+        });
+
+        tvUpdateMobile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity(),ChangeMobileActivity.class);
@@ -140,14 +155,14 @@ public class VendorDetailsFragment extends Fragment {
         });
 
         // changes on 28/01
-        btn_update_delivery_boy.setOnClickListener(new View.OnClickListener() {
+       /* btn_update_delivery_boy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(mcontext, AddDeliveryBoysActivity.class);
                 myIntent.putExtra("data", vendor);
                 startActivity(myIntent);
             }
-        });
+        });*/
         btn_update_store_details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -209,8 +224,9 @@ public class VendorDetailsFragment extends Fragment {
         if (cFragment != null) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
             fragment.setArguments(bundle);
-            fragmentTransaction.add(R.id.content_main, cFragment);
+            fragmentTransaction.add(R.id.rvContentMain, cFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }

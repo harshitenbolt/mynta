@@ -95,8 +95,7 @@ public class GSTInvoiceMainFragment extends Fragment {
         sessionManager = new SessionManager(mcontext);
         progressDialog = new ProgressDialog(mcontext);
         progressDialog.setMessage("please wait loading tax invoice...");
-
-
+        progressDialog.setCancelable(false);
         try {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
@@ -336,6 +335,12 @@ public class GSTInvoiceMainFragment extends Fragment {
             public void onLongClick(View view, final int position) {
 
             }
+
+            @Override
+            public void SingleClick(String popup, int position) {
+
+            }
+
         }
 
         ));

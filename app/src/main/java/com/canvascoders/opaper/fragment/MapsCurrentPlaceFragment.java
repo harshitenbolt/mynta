@@ -23,7 +23,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,8 +46,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -53,6 +60,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.JsonObject;
@@ -84,6 +92,7 @@ public class MapsCurrentPlaceFragment extends Fragment
     LocationRequest mLocationRequest;
     private GoogleMap mMap;
     private CameraPosition mCameraPosition;
+    private AutoCompleteTextView mAutocompleteTextView;
     private GoogleApiClient mGoogleApiClient;
     private boolean mLocationPermissionGranted;
     private Location mLastKnownLocation;
@@ -93,9 +102,14 @@ public class MapsCurrentPlaceFragment extends Fragment
     private LatLng[] mLikelyPlaceLatLngs = new LatLng[mMaxEntries];
     private ProgressDialog mProgressDialog;
     Context mcontext;
+    private static final String LOG_TAG = "MainActivity";
     View view;
+    // private PlaceArrayAdapter mPlaceArrayAdapter;
     SupportMapFragment mapFragment = null;
     String str_process_id;
+    EditText etSearch;
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -116,6 +130,7 @@ public class MapsCurrentPlaceFragment extends Fragment
         mProgressDialog = new ProgressDialog(mcontext);
         mProgressDialog.setMessage("Verifying Location...");
         sessionManager = new SessionManager(mcontext);
+        // etSearch =view.findViewById(R.id.etSearchPlace);
 
 
         str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
@@ -139,7 +154,7 @@ public class MapsCurrentPlaceFragment extends Fragment
 
         createLocationRequest();
 
-        Button button = (Button) view.findViewById(R.id.btn_locateme);
+        Button button = (Button) view.findViewById(R.id.btLocate);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,7 +166,9 @@ public class MapsCurrentPlaceFragment extends Fragment
 
             }
         });
+
         return view;
+
 
     }
 
@@ -203,9 +220,26 @@ public class MapsCurrentPlaceFragment extends Fragment
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync(this);
         }
-
+        //  mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        Log.i(LOG_TAG, "Google Places API connected.");
 
     }
+
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                Log.e(LOG_TAG, "Place query did not complete. Error: " +
+                        places.getStatus().toString());
+                return;
+            }
+            // Selecting the first object buffer.
+            final Place place = places.get(0);
+            CharSequence attributions = places.getAttributions();
+        }
+    };
+
 
     /**
      * Handles failure to connect to the Google Play services client.
@@ -473,11 +507,9 @@ public class MapsCurrentPlaceFragment extends Fragment
                         startActivity(i);
                         getActivity().finish();*/
 
-                    }
-                    else if (getLocationResponse.getResponseCode()==411){
+                    } else if (getLocationResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(getActivity());
-                    }
-                    else if (getLocationResponse.getResponseCode() == 400) {
+                    } else if (getLocationResponse.getResponseCode() == 400) {
 
                         if (getLocationResponse.getValidation() != null) {
                             Validation validation = getLocationResponse.getValidation();
@@ -492,13 +524,12 @@ public class MapsCurrentPlaceFragment extends Fragment
                             }
                             if (validation.getLatitude() != null && validation.getLatitude().length() > 0) {
                                 Toast.makeText(getActivity(), validation.getLatitude(), Toast.LENGTH_LONG).show();
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(getActivity(), getLocationResponse.getResponse(), Toast.LENGTH_LONG).show();
                             }
 
-                        }
-                        else{ Toast.makeText(getActivity(), getLocationResponse.getResponse(), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getActivity(), getLocationResponse.getResponse(), Toast.LENGTH_LONG).show();
 
                         }
 
@@ -542,9 +573,12 @@ public class MapsCurrentPlaceFragment extends Fragment
         if (cFragment != null) {
 
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_main, cFragment);
+           // fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragmentTransaction.replace(R.id.rvContentMainOTP, cFragment);
             fragmentTransaction.commit();
 
         }

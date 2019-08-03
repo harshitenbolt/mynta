@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.GenerateResetPWResponse.Datum;
@@ -26,6 +28,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     private EditText etEmail,etMobile;
     private Button btSubmit;
+    private LinearLayout llBack;
     private ProgressDialog mProgressDialog;
 
     @Override
@@ -38,16 +41,25 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     private void init() {
         mProgressDialog = new ProgressDialog(ForgotPasswordActivity.this);
         mProgressDialog.setMessage("Please wait...");
+        llBack = findViewById(R.id.llBack);
+        llBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         etMobile = findViewById(R.id.etMobile);
-        btSubmit = findViewById(R.id.btSubmit);
+        btSubmit = findViewById(R.id.btSendOTP);
         btSubmit.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.btSubmit:
+            case R.id.btSendOTP:
                 if(isValid(view)){
+                    Constants.hideKeyboardwithoutPopulate(ForgotPasswordActivity.this);
                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                         ApiCallSendOtp();
                     }

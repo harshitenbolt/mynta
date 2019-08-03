@@ -27,7 +27,7 @@ public class ChequeListAdapter extends RecyclerView.Adapter<ChequeListAdapter.It
 
     public List<BankDetailResp.BankDetail> bankDetailList;
     Context mContext;
-
+    final int sdk = android.os.Build.VERSION.SDK_INT;
 
     public ChequeListAdapter(Context ctx, List<BankDetailResp.BankDetail> dataViews) {
         this.bankDetailList = dataViews;
@@ -55,20 +55,38 @@ public class ChequeListAdapter extends RecyclerView.Adapter<ChequeListAdapter.It
 
         if (bankDetail.getStatus().equalsIgnoreCase("0")) {
             holder.tvStauts.setText("pending");
-            holder.tvStauts.setTextColor(mContext.getResources().getColor(R.color.color8));
+            holder.tvStauts.setTextColor(mContext.getResources().getColor(R.color.colorYellow));
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                holder.tvStauts.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_yellow));
+            } else {
+                holder.tvStauts.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_yellow));
+            }
         } else if (bankDetail.getStatus().equalsIgnoreCase("1")) {
             holder.tvStauts.setText("Disabled");
-            holder.tvStauts.setTextColor(mContext.getResources().getColor(R.color.color5));
+            holder.tvStauts.setTextColor(mContext.getResources().getColor(R.color.colorBlue));
             holder.llMain.setBackgroundColor(R.color.color12);
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                holder.tvStauts.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_blue));
+            } else {
+                holder.tvStauts.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_blue));
+            }
 
-        }
-        else if (bankDetail.getStatus().equalsIgnoreCase("2")) {
+        } else if (bankDetail.getStatus().equalsIgnoreCase("2")) {
             holder.tvStauts.setText("Rejected");
             holder.tvStauts.setTextColor(mContext.getResources().getColor(R.color.color1));
-        }
-      else {
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                holder.tvStauts.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_red));
+            } else {
+                holder.tvStauts.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_red));
+            }
+        } else {
             holder.tvStauts.setText("Active");
             holder.tvStauts.setTextColor(mContext.getResources().getColor(R.color.color5));
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                holder.tvStauts.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_green));
+            } else {
+                holder.tvStauts.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_green));
+            }
         }
 //        holder.tvStauts.setText(bankDetail.getStatus());
     }
@@ -89,7 +107,7 @@ public class ChequeListAdapter extends RecyclerView.Adapter<ChequeListAdapter.It
             super(itemView);
             tvPayeeName = itemView.findViewById(R.id.tvPayeeName);
             tvBankName = itemView.findViewById(R.id.tvBankName);
-            tvAccountNo = itemView.findViewById(R.id.tvAccountNo);
+            tvAccountNo = itemView.findViewById(R.id.tvAccountNumber);
             tvStauts = itemView.findViewById(R.id.tvStauts);
             llMain = itemView.findViewById(R.id.llMain);
         }
@@ -106,7 +124,7 @@ public class ChequeListAdapter extends RecyclerView.Adapter<ChequeListAdapter.It
             FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragment.setArguments(bundle);
-            fragmentTransaction.add(R.id.content_main, cFragment);
+            fragmentTransaction.add(R.id.llMain, cFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 

@@ -28,6 +28,12 @@
     <color name="colorShadow">#41000000</color>
     <color name="colorBackground">#2b2b2b</color>
     <color name="colorForeground">#3A3A3A</color>
+
+
+    <color name="line_selected">#5cb946</color>
+
+
+    <color name="line_colors">#a3a3a3</color>
     <!--fab colors-->
 
 
@@ -68,5 +74,17 @@
 
     <!--new Colors-->
     <color name="colorLightGrey">#EFEDEE</color>
+
+    <color name="lightGrey">#F7F4F4</color>
+    <color name="mediumGrey">#7F7E7E</color>
+    <color name="darkGrey">#676666</color>
+
+    <color name="mediumLightGrey">#A9A9A9</color>
+
+    <color name="colorBlue">#446BE4</color>
+
+
+    <color name="colorYellow">#FDAB00</color>
+
 
 </resources>

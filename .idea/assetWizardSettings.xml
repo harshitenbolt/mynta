@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/home/harshit/Documents/Softwares/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_visibility_off_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/home/harshit/Documents/Softwares/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_arrow_drop_down_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -55,7 +55,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_eye_close" />
+                                      <entry key="outputName" value="bottom_arrow" />
                                     </map>
                                   </option>
                                 </PersistentState>

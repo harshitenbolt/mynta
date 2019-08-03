@@ -2,10 +2,15 @@ package com.canvascoders.opaper.fragment;
 
 
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,8 +48,8 @@ public class SupportFragment extends Fragment implements View.OnClickListener {
     Context mContext;
     View v;
     Datum datum;
-    private TextView btOnBoarding, btPayment;
-
+    private TextView tvOnBoarding, tvPayment;
+    Drawable background, background1;
     private RecyclerView rvSupport;
     private SessionManager sessionManager;
 
@@ -62,17 +67,41 @@ public class SupportFragment extends Fragment implements View.OnClickListener {
         DashboardActivity.settitle(Constants.TITLE_SUPPORT);
         init();
         commanFragmentCallWithBackStack(new OnboardingSupportFragment());
+        if (background1 instanceof ShapeDrawable) {
+            ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+            tvOnBoarding.setTextColor(getResources().getColor(R.color.colorWhite));
+        } else if (background1 instanceof GradientDrawable) {
+            ((GradientDrawable) background1).setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+            tvOnBoarding.setTextColor(getResources().getColor(R.color.colorWhite));
+        } else if (background1 instanceof ColorDrawable) {
+            ((ColorDrawable) background1).setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+            tvOnBoarding.setTextColor(getResources().getColor(R.color.colorWhite));
+        }
+
+        if (background instanceof ShapeDrawable) {
+            ((ShapeDrawable) background).getPaint().setColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+            tvPayment.setTextColor(getResources().getColor(R.color.colorBlack));
+        } else if (background instanceof GradientDrawable) {
+            ((GradientDrawable) background).setColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+            tvPayment.setTextColor(getResources().getColor(R.color.colorBlack));
+        } else if (background instanceof ColorDrawable) {
+            ((ColorDrawable) background).setColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+            tvPayment.setTextColor(getResources().getColor(R.color.colorBlack));
+        }
+
 
         return v;
     }
 
     private void init() {
-        btPayment = v.findViewById(R.id.btPayment);
-        btOnBoarding = v.findViewById(R.id.btOnboarding);
-        btOnBoarding.setOnClickListener(this);
-        btPayment.setOnClickListener(this);
+        tvPayment = v.findViewById(R.id.btPayment);
+        tvOnBoarding = v.findViewById(R.id.btOnboarding);
+        tvOnBoarding.setOnClickListener(this);
+        tvPayment.setOnClickListener(this);
         sessionManager = new SessionManager(getActivity());
         //
+        background = tvPayment.getBackground();
+        background1 = tvOnBoarding.getBackground();
 
 
     }
@@ -84,14 +113,60 @@ public class SupportFragment extends Fragment implements View.OnClickListener {
 
             case R.id.btPayment:
                 commanFragmentCallWithBackStack(new PaymentSupportFragment());
-                btPayment.setBackgroundResource(R.drawable.rounded_curve_corner_button);
-                btOnBoarding.setBackgroundResource(R.drawable.rounded_curve_corner_button_white);
+
+                if (background instanceof ShapeDrawable) {
+                    ((ShapeDrawable) background).getPaint().setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                    tvPayment.setTextColor(getResources().getColor(R.color.colorWhite));
+                } else if (background instanceof GradientDrawable) {
+                    ((GradientDrawable) background).setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                    tvPayment.setTextColor(getResources().getColor(R.color.colorWhite));
+                } else if (background instanceof ColorDrawable) {
+                    ((ColorDrawable) background).setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                    tvPayment.setTextColor(getResources().getColor(R.color.colorWhite));
+                }
+
+                if (background1 instanceof ShapeDrawable) {
+                    ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+                    tvOnBoarding.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background1 instanceof GradientDrawable) {
+                    ((GradientDrawable) background1).setColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+                    tvOnBoarding.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background1 instanceof ColorDrawable) {
+                    ((ColorDrawable) background1).setColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+                    tvOnBoarding.setTextColor(getResources().getColor(R.color.colorBlack));
+                }
+
+
                 break;
+
 
             case R.id.btOnboarding:
                 commanFragmentCallWithBackStack(new OnboardingSupportFragment());
-                btOnBoarding.setBackgroundResource(R.drawable.rounded_curve_corner_button);
-                btPayment.setBackgroundResource(R.drawable.rounded_curve_corner_button_white);
+
+
+                if (background1 instanceof ShapeDrawable) {
+                    ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                    tvOnBoarding.setTextColor(getResources().getColor(R.color.colorWhite));
+                } else if (background1 instanceof GradientDrawable) {
+                    ((GradientDrawable) background1).setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                    tvOnBoarding.setTextColor(getResources().getColor(R.color.colorWhite));
+                } else if (background1 instanceof ColorDrawable) {
+                    ((ColorDrawable) background1).setColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
+                    tvOnBoarding.setTextColor(getResources().getColor(R.color.colorWhite));
+                }
+
+                if (background instanceof ShapeDrawable) {
+                    ((ShapeDrawable) background).getPaint().setColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+                    tvPayment.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background instanceof GradientDrawable) {
+                    ((GradientDrawable) background).setColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+                    tvPayment.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background instanceof ColorDrawable) {
+                    ((ColorDrawable) background).setColor(ContextCompat.getColor(mContext, R.color.colorWhite));
+                    tvPayment.setTextColor(getResources().getColor(R.color.colorBlack));
+                }
+
+
                 break;
         }
 

@@ -272,7 +272,7 @@ public class MyCameraActivity extends AppCompatActivity implements
 
                     final File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                             "p_" + System.currentTimeMillis() + ".jpg");
-                    Log.d(TAG, "onPictureTaken " + file.getPath());
+                    Log.e("onPictureTaken" , file.getPath());
                     OutputStream os = null;
                     try {
                         os = new FileOutputStream(file);

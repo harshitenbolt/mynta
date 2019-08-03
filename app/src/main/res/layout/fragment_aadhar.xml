@@ -1,1130 +1,631 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorWhite"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-       android:background="@color/colorGrey"
-        android:layout_width="match_parent"
-        android:layout_margin="@dimen/_10sdp"
-        android:layout_height="@dimen/_40sdp">
-    <Spinner
-        android:id="@+id/snDocType"
-
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_35sdp"
-        android:padding="@dimen/margin_10dp" />
-    </LinearLayout>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/rvAdhar"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:visibility="gone"
-    android:clickable="true">
+    android:background="@color/lightGrey"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/scMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_next"
-        android:layout_below="@id/toolbar"
-        android:padding="@dimen/_5sdp">
-
+        android:layout_weight="1"
+        android:layout_above="@+id/btExtract"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingRight="@dimen/_10sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:orientation="vertical">
 
 
+            <!-- TODO: Update blank fragment layout -->
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_22sdp"
-                android:layout_gravity="center"
-                android:fontFamily="@font/rb_medium"
-                android:gravity="center"
-                android:text="Aadhaar Card Front Side" />
+                style="@style/App_TextViewSmall"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/montemedium"
+                android:text="Select from below doc to upload details" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal">
 
-                <android.support.v7.widget.CardView
+                <LinearLayout
+                    android:id="@+id/llAdharcard"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/_3sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_5sdp"
                     android:layout_weight="1"
-                    app:contentPadding="5dp">
+                    android:background="@drawable/roundedcornergreen"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp">
 
-                    <RelativeLayout
+                    <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/btn_aadhar_front"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_150sdp"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/aadhaar_front"
-                            android:scaleType="centerCrop" />
-
-                        <ImageView
-                            android:id="@+id/btn_aadhar_front_select"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_margin="@dimen/margin_20dp"
-                            android:src="@drawable/done"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Click here"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_22sdp"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:fontFamily="@font/rb_medium"
-                android:gravity="center"
-                android:text="Aadhaar Card Back Side" />
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/_3sdp"
-                android:layout_weight="1"
-                android:visibility="visible"
-                app:contentPadding="5dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/btn_aadhar_back"
-                        android:layout_width="wrap_content"
-                        android:layout_height="180dp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/aadhaar_back"
-                        android:scaleType="centerCrop" />
-
-                    <ImageView
-                        android:id="@+id/btn_aadhar_back_select"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_margin="@dimen/margin_20dp"
-                        android:src="@drawable/done"
-                        android:visibility="gone" />
+                        android:src="@drawable/aadharcard" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        style="@style/TextviewwithoutSize"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/montemedium"
+                        android:text="AADHAR CARD"
+                        android:textSize="@dimen/_7sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDrivingLicence"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_3sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/roundedcornergrey"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:fontFamily="@font/rb_regular"
-                        android:text="Click here"
-                        android:textColor="@color/colorDarkBlack"
-                        android:textSize="20sp" />
-                </RelativeLayout>
+                        android:src="@drawable/drivinglicence" />
+
+                    <TextView
+                        style="@style/TextviewwithoutSize"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/montemedium"
+                        android:singleLine="true"
+                        android:text="DRIVING LICENCE"
+                        android:textSize="@dimen/_7sdp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llVoterID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/roundedcornergrey"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/voterid" />
+
+                    <TextView
+                        style="@style/TextviewwithoutSize"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:fontFamily="@font/montemedium"
+                        android:text="VOTER ID"
+                        android:textSize="@dimen/_7sdp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cdAdharcard"
+                style="@style/CustomCardView"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@color/whitePrimary"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_15sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextviewwithoutSize"
+                                android:layout_width="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/montesemibold"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="AADHAR CARD FRONT SIDE"
+                                android:textColor="@color/colorBlue"
+                                android:textSize="@dimen/_8sdp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">>
+
+                                <TextView
+                                    android:id="@+id/tvAdharFront"
+                                    style="@style/App_TextViewSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:background="@drawable/rounded_corner_view_blue"
+                                    android:fontFamily="@font/montebold"
+                                    android:gravity="center"
+                                    android:focusable="false"
+                                    android:padding="@dimen/_4sdp"
+                                    android:text="CLICK HERE"
+                                    android:textColor="@color/whitePrimary"
+                                    android:textSize="@dimen/_6sdp" />
+
+                                <ImageView
+                                    android:id="@+id/ivCheckAdharSelected"
+                                    android:layout_width="@dimen/_15sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:src="@drawable/bluecheck"
+                                    android:visibility="gone" />
+
+                            </RelativeLayout>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_160sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_20sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/roundedcornergrey">
+
+                            <ImageView
+                                android:id="@+id/ivImageAdharFront"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/_10sdp"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/aadharcardfront" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextviewwithoutSize"
+                                android:layout_width="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/montesemibold"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="AADHAR CARD BACK SIDE"
+                                android:textColor="@color/colorYellow"
+                                android:textSize="@dimen/_8sdp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/tvAdharBack"
+                                    style="@style/App_TextViewSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:background="@drawable/rounded_corner_view_yellow"
+                                    android:fontFamily="@font/montebold"
+                                    android:gravity="center"
+                                    android:padding="@dimen/_4sdp"
+                                    android:text="CLICK HERE"
+                                    android:focusable="false"
+                                    android:textColor="@color/whitePrimary"
+                                    android:textSize="@dimen/_6sdp" />
+
+                                <ImageView
+                                    android:id="@+id/ivCheckAdharBackSelected"
+                                    android:layout_width="@dimen/_15sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:src="@drawable/yellowcheck"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_160sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_20sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/roundedcornergrey">
+
+                            <ImageView
+                                android:id="@+id/ivImageAdharBack"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/_10sdp"
+                                android:src="@drawable/aadhardcardback" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tvScan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:fontFamily="@font/montebold"
+                        android:gravity="center"
+                        android:focusable="false"
+                        android:text="CLICK TO SCAN QR CODE"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
+
+                </LinearLayout>
+
+
             </android.support.v7.widget.CardView>
 
-            <TextView
-                android:id="@+id/tv_review_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_25sdp"
-                android:layout_gravity="center"
-                android:padding="5dp"
-                android:text="Review Aadhar Details"
+            <android.support.v7.widget.CardView
+                android:id="@+id/cdDrivingLicence"
+                style="@style/CustomCardView"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@color/whitePrimary"
+                android:visibility="gone">
 
-                android:textColor="@color/colorPrimary" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_15sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextviewwithoutSize"
+                                android:layout_width="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/montesemibold"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="DRIVING LICENCE FRONT SIDE"
+                                android:textColor="@color/colorBlue"
+                                android:textSize="@dimen/_8sdp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/tvDLFront"
+                                    style="@style/App_TextViewSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:background="@drawable/rounded_corner_view_blue"
+                                    android:fontFamily="@font/montebold"
+                                    android:gravity="center"
+                                    android:padding="@dimen/_4sdp"
+                                    android:text="CLICK HERE"
+                                    android:focusable="false"
+                                    android:textColor="@color/whitePrimary"
+                                    android:textSize="@dimen/_6sdp" />
+
+                                <ImageView
+                                    android:id="@+id/ivCheckDlFront"
+                                    android:layout_width="@dimen/_15sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:src="@drawable/bluecheck"
+                                    android:visibility="gone" />
+
+                            </RelativeLayout>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_160sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_20sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/roundedcornergrey">
+
+                            <ImageView
+                                android:id="@+id/ivDlImageFront"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/_25sdp"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/blfront" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextviewwithoutSize"
+                                android:layout_width="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/montesemibold"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="DRIVING LICENCE BACK SIDE"
+                                android:textColor="@color/colorYellow"
+                                android:textSize="@dimen/_8sdp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/tvDlBackside"
+                                    style="@style/App_TextViewSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:background="@drawable/rounded_corner_view_yellow"
+                                    android:fontFamily="@font/montebold"
+                                    android:gravity="center"
+                                    android:padding="@dimen/_4sdp"
+                                    android:text="CLICK HERE"
+                                    android:focusable="false"
+
+                                    android:textColor="@color/whitePrimary"
+                                    android:textSize="@dimen/_6sdp" />
+
+                                <ImageView
+                                    android:id="@+id/ivCheckDlBack"
+                                    android:layout_width="@dimen/_15sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:src="@drawable/yellowcheck"
+                                    android:visibility="gone" />
+
+                            </RelativeLayout>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_160sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_20sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/roundedcornergrey">
+
+                            <ImageView
+                                android:id="@+id/ivDlImageBack"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/_25sdp"
+                                android:src="@drawable/dlback" />
+                        </LinearLayout>
+                    </LinearLayout>
 
 
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cdVoter"
+                style="@style/CustomCardView"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:background="@color/whitePrimary"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_15sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextviewwithoutSize"
+                                android:layout_width="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/montesemibold"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="VOTER ID FRONT SIDE"
+                                android:textColor="@color/colorBlue"
+                                android:textSize="@dimen/_8sdp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/tvVoterFront"
+                                    style="@style/App_TextViewSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:background="@drawable/rounded_corner_view_blue"
+                                    android:fontFamily="@font/montebold"
+                                    android:gravity="center"
+                                    android:padding="@dimen/_4sdp"
+                                    android:text="CLICK HERE"
+                                    android:focusable="false"
+                                    android:textColor="@color/whitePrimary"
+                                    android:textSize="@dimen/_6sdp" />
+
+                                <ImageView
+                                    android:id="@+id/ivcheckedVoterFront"
+                                    android:layout_width="@dimen/_15sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:src="@drawable/bluecheck"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="@dimen/_200sdp"
+                            android:layout_height="@dimen/_250sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:background="@drawable/roundedcornergrey">
+
+                            <ImageView
+                                android:id="@+id/ivVoterFront"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/_20sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_marginRight="@dimen/_20sdp"
+                                android:layout_marginBottom="@dimen/_10sdp"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/voterfront" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                style="@style/TextviewwithoutSize"
+                                android:layout_width="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:fontFamily="@font/montesemibold"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="VOTER ID BACK SIDE"
+                                android:textColor="@color/colorYellow"
+                                android:textSize="@dimen/_8sdp" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/tvVoterBack"
+                                    style="@style/App_TextViewSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:background="@drawable/rounded_corner_view_yellow"
+                                    android:fontFamily="@font/montebold"
+                                    android:gravity="center"
+                                    android:focusable="false"
+                                    android:padding="@dimen/_4sdp"
+                                    android:text="CLICK HERE"
+                                    android:textColor="@color/whitePrimary"
+                                    android:textSize="@dimen/_6sdp" />
+
+                                <ImageView
+                                    android:id="@+id/ivcheckedVoterBack"
+                                    android:layout_width="@dimen/_15sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:src="@drawable/yellowcheck"
+                                    android:visibility="gone" />
+                            </RelativeLayout>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="@dimen/_200sdp"
+                            android:layout_height="@dimen/_250sdp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:layout_marginBottom="@dimen/_20sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/roundedcornergrey">
+
+                            <ImageView
+                                android:id="@+id/ivVoterBack"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/_25sdp"
+                                android:src="@drawable/voterback" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
         </LinearLayout>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/txt_show_msg_sucess"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:background="#A5D6A7"
-        android:gravity="center"
-        android:padding="15dp"
-        android:text="Sucessfully Done"
-        android:textColor="#1E6023"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/txt_show_msg_fail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:background="#FFCDD2"
-        android:gravity="center"
-        android:padding="15dp"
-        android:text="Sucessfully Done"
-        android:textColor="#F44336"
-        android:visibility="gone" />
+    </ScrollView>
 
     <Button
-        android:id="@+id/btn_next"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
+        android:id="@+id/btExtract"
+        style="@style/Button_withGreen"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/btn_normal"
-        android:enabled="false"
-        android:fontFamily="@font/rb_bold"
-        android:paddingTop="@dimen/margin_10dp"
-        android:text="Click to Scan QR Code"
-        android:textColor="@color/colorPrimaryDark" />
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:text="EXTRACT" />
+
 </RelativeLayout>
-
-
-    <!--<ScrollView
-        android:id="@+id/svAadhar"
-        android:visibility="visible"
-        android:layout_width="match_parent"
-
-        android:layout_above="@+id/btSubmit"
-        android:layout_height="match_parent">
-    <LinearLayout
-        android:id="@+id/llAAdhar"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_5sdp">
-
-
-        <LinearLayout
-            android:id="@+id/lladharfront"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/_3sdp"
-                    android:layout_weight="1"
-                    app:contentPadding="5dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/ivAadharFront"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/_150sdp"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/aadhaar_front"
-                            android:scaleType="centerCrop" />
-
-                        <ImageView
-                            android:id="@+id/ivAadharFront_selected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_margin="@dimen/margin_20dp"
-                            android:src="@drawable/done"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Click here"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-            </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lladharback"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/_3sdp"
-                android:layout_weight="1"
-                app:contentPadding="5dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/ivAadharBack"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_150sdp"
-                        android:adjustViewBounds="true"
-                        android:background="@drawable/aadhaar_front"
-                        android:scaleType="centerCrop" />
-
-                    <ImageView
-                        android:id="@+id/ivAdharBAck_selected"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_margin="@dimen/margin_20dp"
-                        android:src="@drawable/done"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:fontFamily="@font/rb_regular"
-                        android:text="Click here"
-                        android:textColor="@color/colorDarkBlack"
-                        android:textSize="20sp" />
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/etUID"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:background="@drawable/rounded_corner_view"
-                android:fontFamily="@font/rb_regular"
-                android:hint="Uid"
-                android:imeActionLabel="Next"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:maxLength="50"
-                android:maxLines="1"
-                android:paddingBottom="@dimen/margin_15dp"
-                android:paddingLeft="@dimen/margin_20dp"
-                android:paddingRight="@dimen/margin_10dp"
-                android:paddingTop="@dimen/margin_15dp"
-                android:singleLine="true"
-                android:textColor="@color/font_login"
-                android:textColorHint="@color/font_login"
-                android:textSize="@dimen/font_login" />
-            <EditText
-                android:id="@+id/etName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:background="@drawable/rounded_corner_view"
-                android:fontFamily="@font/rb_regular"
-                android:hint="Name"
-                android:imeActionLabel="Next"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:maxLength="50"
-                android:maxLines="1"
-                android:paddingBottom="@dimen/margin_15dp"
-                android:paddingLeft="@dimen/margin_20dp"
-                android:paddingRight="@dimen/margin_10dp"
-                android:paddingTop="@dimen/margin_15dp"
-                android:singleLine="true"
-                android:textColor="@color/font_login"
-                android:textColorHint="@color/font_login"
-                android:textSize="@dimen/font_login" />
-
-            <EditText
-                android:id="@+id/etYearofBirth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:background="@drawable/rounded_corner_view"
-                android:fontFamily="@font/rb_regular"
-                android:hint="Year of Birth"
-                android:imeActionLabel="Next"
-                android:imeOptions="actionNext"
-                android:inputType="number"
-                android:maxLength="50"
-                android:maxLines="1"
-                android:paddingBottom="@dimen/margin_15dp"
-                android:paddingLeft="@dimen/margin_20dp"
-                android:paddingRight="@dimen/margin_10dp"
-                android:paddingTop="@dimen/margin_15dp"
-                android:singleLine="true"
-                android:textColor="@color/font_login"
-                android:textColorHint="@color/font_login"
-                android:textSize="@dimen/font_login" />
-            <EditText
-                android:id="@+id/etPincode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_20dp"
-                android:layout_marginRight="@dimen/margin_20dp"
-                android:layout_marginTop="@dimen/_25sdp"
-                android:background="@drawable/rounded_corner_view"
-                android:fontFamily="@font/rb_regular"
-                android:hint="Pincode"
-                android:imeActionLabel="Next"
-                android:imeOptions="actionNext"
-                android:inputType="number"
-                android:maxLength="10"
-                android:maxLines="1"
-                android:paddingBottom="@dimen/margin_15dp"
-                android:paddingLeft="@dimen/margin_20dp"
-                android:paddingRight="@dimen/margin_10dp"
-                android:paddingTop="@dimen/margin_15dp"
-                android:singleLine="true"
-                android:textColor="@color/font_login"
-                android:textColorHint="@color/font_login"
-                android:textSize="@dimen/font_login" />
-        </LinearLayout>
-
-
-
-            &lt;!&ndash;<AutoCompleteTextView&ndash;&gt;
-            &lt;!&ndash;android:id="@+id/autoCompleteTextView1"&ndash;&gt;
-            &lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;
-            &lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;
-            &lt;!&ndash;android:layout_centerVertical="true"&ndash;&gt;
-            &lt;!&ndash;android:background="#0000"&ndash;&gt;
-            &lt;!&ndash;android:fontFamily="@font/rb_regular"&ndash;&gt;
-            &lt;!&ndash;android:hint="Type DC name to find"&ndash;&gt;
-            &lt;!&ndash;android:maxLines="1"&ndash;&gt;
-            &lt;!&ndash;android:paddingBottom="@dimen/margin_15dp"&ndash;&gt;
-            &lt;!&ndash;android:paddingLeft="@dimen/margin_20dp"&ndash;&gt;
-            &lt;!&ndash;android:paddingRight="@dimen/margin_10dp"&ndash;&gt;
-            &lt;!&ndash;android:paddingTop="@dimen/margin_15dp"&ndash;&gt;
-            &lt;!&ndash;android:textColor="@color/font_login"&ndash;&gt;
-            &lt;!&ndash;android:textSize="@dimen/font_login" />&ndash;&gt;
-
-    </LinearLayout>
-    </ScrollView>-->
-    <RelativeLayout
-        android:id="@+id/rvOther"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/snDocType"
-        android:visibility="visible"
-
-        android:layout_height="match_parent">
-    <ScrollView
-        android:id="@+id/svVoter"
-        android:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_above="@+id/btSubmit"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/llVoter"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp">
-            <LinearLayout
-                android:id="@+id/llvoterFront"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
-                    android:layout_weight="1"
-                    app:contentPadding="5dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/rounded_corner_white"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/ivVoterFront"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_150sdp"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/voterfront"
-                            android:scaleType="fitXY" />
-
-                        <ImageView
-                            android:id="@+id/ivVoterFrontSelected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_margin="@dimen/margin_20dp"
-                            android:src="@drawable/done"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/tvClick"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Click here"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                        <TextView
-                            android:layout_above="@+id/tvClick"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Voter Front"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llvoterBack"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
-                    android:layout_weight="1"
-                    app:contentPadding="5dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/rounded_corner_white"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/ivBackVoter"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_150sdp"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/voterback"
-                            android:scaleType="fitXY" />
-
-                        <ImageView
-                            android:id="@+id/ivBackVoter_selected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_margin="@dimen/margin_20dp"
-                            android:src="@drawable/done"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Click here"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/tvClick2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Click here"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                        <TextView
-                            android:layout_above="@+id/tvClick2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Voter Back Side"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etVoterName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_20dp"
-                    android:layout_marginRight="@dimen/margin_20dp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:background="@drawable/rounded_corner_view"
-                    android:fontFamily="@font/rb_regular"
-                    android:hint="Voter Name"
-                    android:imeActionLabel="Next"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:maxLength="50"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/margin_15dp"
-                    android:paddingLeft="@dimen/margin_20dp"
-                    android:paddingRight="@dimen/margin_10dp"
-                    android:paddingTop="@dimen/margin_15dp"
-                    android:singleLine="true"
-                    android:textColor="@color/font_login"
-                    android:textColorHint="@color/font_login"
-                    android:textSize="@dimen/font_login" />
-                <EditText
-                    android:id="@+id/etVoterFatherName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_20dp"
-                    android:layout_marginRight="@dimen/margin_20dp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:background="@drawable/rounded_corner_view"
-                    android:fontFamily="@font/rb_regular"
-                    android:hint="Father Name"
-                    android:imeActionLabel="Next"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:maxLength="50"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/margin_15dp"
-                    android:paddingLeft="@dimen/margin_20dp"
-                    android:paddingRight="@dimen/margin_10dp"
-                    android:paddingTop="@dimen/margin_15dp"
-                    android:singleLine="true"
-                    android:textColor="@color/font_login"
-                    android:textColorHint="@color/font_login"
-                    android:textSize="@dimen/font_login" />
-
-                <TextView
-                    android:id="@+id/tvVoterDob"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_20dp"
-                    android:layout_marginRight="@dimen/margin_20dp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:background="@drawable/rounded_corner_view"
-                    android:fontFamily="@font/rb_regular"
-                    android:hint="Date of Birth"
-                    android:imeActionLabel="Next"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:editable="false"
-
-                    android:maxLength="50"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/margin_15dp"
-                    android:paddingLeft="@dimen/margin_20dp"
-                    android:paddingRight="@dimen/margin_10dp"
-                    android:paddingTop="@dimen/margin_15dp"
-                    android:singleLine="true"
-                    android:textColor="@color/font_login"
-                    android:textColorHint="@color/font_login"
-                    android:textSize="@dimen/font_login" />
-                <EditText
-                    android:id="@+id/etVoterId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_20dp"
-                    android:layout_marginRight="@dimen/margin_20dp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:background="@drawable/rounded_corner_view"
-                    android:fontFamily="@font/rb_regular"
-                    android:hint="Voter Id"
-                    android:imeActionLabel="Next"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:maxLength="20"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/margin_15dp"
-                    android:paddingLeft="@dimen/margin_20dp"
-                    android:paddingRight="@dimen/margin_10dp"
-                    android:paddingTop="@dimen/margin_15dp"
-                    android:singleLine="true"
-                    android:textColor="@color/font_login"
-                    android:textColorHint="@color/font_login"
-                    android:textSize="@dimen/font_login" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-    <ScrollView
-        android:id="@+id/svDL"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_above="@+id/btSubmit"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/llDL"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp">
-
-            <LinearLayout
-                android:id="@+id/llDLFront"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
-                    android:layout_weight="1"
-                    app:contentPadding="5dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/rounded_corner_white"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/ivDLFront"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_150sdp"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/dlfront"
-                            android:scaleType="fitXY" />
-
-                        <ImageView
-                            android:id="@+id/ivDLFrontSelected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_margin="@dimen/margin_20dp"
-                            android:src="@drawable/done"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/tvClick5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Click here"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                        <TextView
-                            android:layout_above="@+id/tvClick5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Driving Licence Front"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llDlBack"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
-                    android:layout_weight="1"
-                    app:contentPadding="5dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:background="@drawable/rounded_corner_white"
-                        android:layout_height="match_parent"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/ivDlBack"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_150sdp"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/dlback"
-                            android:scaleType="centerCrop" />
-
-                        <ImageView
-                            android:id="@+id/ivDlBackSelected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_margin="@dimen/margin_20dp"
-                            android:src="@drawable/done"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Click here"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:id="@+id/tvClick4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Click here"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                        <TextView
-                            android:layout_above="@+id/tvClick4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Driving Licence Back"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-            </LinearLayout>
-          <!--  <LinearLayout
-                android:id="@+id/llDLFront"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cvDlFront"
-                    android:clickable="true"
-                    android:layout_below="@+id/snDocType"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
-                    android:layout_weight="1"
-                    app:contentPadding="5dp">
-
-                    <RelativeLayout
-                        android:id="@+id/rvfrontDl"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:clickable="true"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/ivDlFront"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_150sdp"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/rounded_corner_white"
-                            android:scaleType="centerCrop" />
-
-                        <ImageView
-                            android:id="@+id/ivDlFrontSelected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_margin="@dimen/margin_20dp"
-                            android:src="@drawable/done"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/tvClick3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Click here"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                        <TextView
-                            android:layout_above="@+id/tvClick3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Driving Licence Front"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llDLback"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center">
-
-                <android.support.v7.widget.CardView
-                    android:id="@+id/cdDLBack"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
-                    android:layout_weight="1"
-                    android:duplicateParentState="true"
-                    app:contentPadding="5dp">
-
-                    <RelativeLayout
-                        android:duplicateParentState="true"
-                        android:id="@+id/rvBackDl"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:id="@+id/ivBackDLBack"
-                            android:layout_width="match_parent"
-                            android:duplicateParentState="true"
-                            android:layout_height="@dimen/_150sdp"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/rounded_corner_white"
-                            android:scaleType="centerCrop" />
-
-                        <ImageView
-                            android:duplicateParentState="true"
-                            android:id="@+id/ivBackDLBack_selected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_margin="@dimen/margin_20dp"
-                            android:src="@drawable/done"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:duplicateParentState="true"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Click here"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-
-                        <TextView
-                            android:duplicateParentState="true"
-                            android:id="@+id/tvClick4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Click here"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                        <TextView
-                            android:duplicateParentState="true"
-                            android:layout_above="@+id/tvClick4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/rb_regular"
-                            android:text="Driving Licence Back Side"
-                            android:textColor="@color/colorDarkBlack"
-                            android:textSize="20sp" />
-                    </RelativeLayout>
-                </android.support.v7.widget.CardView>
-            </LinearLayout>-->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/etNameDl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_20dp"
-                    android:layout_marginRight="@dimen/margin_20dp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:background="@drawable/rounded_corner_view"
-                    android:fontFamily="@font/rb_regular"
-                    android:hint="Name"
-                    android:imeActionLabel="Next"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:maxLength="50"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/margin_15dp"
-                    android:paddingLeft="@dimen/margin_20dp"
-                    android:paddingRight="@dimen/margin_10dp"
-                    android:paddingTop="@dimen/margin_15dp"
-                    android:singleLine="true"
-                    android:textColor="@color/font_login"
-                    android:textColorHint="@color/font_login"
-                    android:textSize="@dimen/font_login" />
-                <EditText
-                    android:id="@+id/etDlFatherName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_20dp"
-                    android:layout_marginRight="@dimen/margin_20dp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:background="@drawable/rounded_corner_view"
-                    android:fontFamily="@font/rb_regular"
-                    android:hint="Father Name"
-                    android:imeActionLabel="Next"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:maxLength="50"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/margin_15dp"
-                    android:paddingLeft="@dimen/margin_20dp"
-                    android:paddingRight="@dimen/margin_10dp"
-                    android:paddingTop="@dimen/margin_15dp"
-                    android:singleLine="true"
-                    android:textColor="@color/font_login"
-                    android:textColorHint="@color/font_login"
-                    android:textSize="@dimen/font_login" />
-
-                <TextView
-                    android:id="@+id/tvDlDob"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_20dp"
-                    android:layout_marginRight="@dimen/margin_20dp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:background="@drawable/rounded_corner_view"
-                    android:fontFamily="@font/rb_regular"
-                    android:hint="Date of Birth"
-                    android:imeActionLabel="Next"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:maxLength="50"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/margin_15dp"
-                    android:paddingLeft="@dimen/margin_20dp"
-                    android:paddingRight="@dimen/margin_10dp"
-                    android:paddingTop="@dimen/margin_15dp"
-                    android:singleLine="true"
-                    android:textColor="@color/font_login"
-                    android:textColorHint="@color/font_login"
-                    android:textSize="@dimen/font_login" />
-                <EditText
-                    android:id="@+id/etDLNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/margin_20dp"
-                    android:layout_marginRight="@dimen/margin_20dp"
-                    android:layout_marginTop="@dimen/_25sdp"
-                    android:background="@drawable/rounded_corner_view"
-                    android:fontFamily="@font/rb_regular"
-                    android:hint="Licence Number"
-                    android:imeActionLabel="Next"
-                    android:imeOptions="actionNext"
-                    android:inputType="text"
-                    android:maxLength="25"
-                    android:maxLines="1"
-                    android:paddingBottom="@dimen/margin_15dp"
-                    android:paddingLeft="@dimen/margin_20dp"
-                    android:paddingRight="@dimen/margin_10dp"
-                    android:paddingTop="@dimen/margin_15dp"
-                    android:singleLine="true"
-                    android:textColor="@color/font_login"
-                    android:textColorHint="@color/font_login"
-                    android:textSize="@dimen/font_login" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
-    <Button
-        android:id="@+id/btSubmit"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/btn_active"
-        android:fontFamily="@font/rb_bold"
-        android:paddingTop="@dimen/margin_10dp"
-        android:text="Submit"
-        android:textColor="@color/colorWhite" />
-    </RelativeLayout>
-
-</LinearLayout>

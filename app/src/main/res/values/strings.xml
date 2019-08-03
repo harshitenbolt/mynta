@@ -62,6 +62,12 @@
         <item>Company/Firm</item>
     </array>
 
+    <array name="year">
+        <item>2019</item>
+        <item>2018</item>
+        <item>2017</item>
+    </array>
+
     <array name="Priority">
         <item>Select Priority</item>
         <item>Low</item>
@@ -165,5 +171,15 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="email_id">Email ID</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="send_otp">Send OTP</string>
+
+    <string name="o_paper_will_send_one_time_password">O-paper will send <b>One Time Password</b> on this mobile number.</string>
+    <string name="please_enter_store_owner_mobile_number">Please enter store owner mobile number</string>
+    <string name="owner_store_information"><![CDATA[Owner & Store Information]]></string>
+    <string name="skip_and_send">Skip &amp; Send</string>
 
 </resources>

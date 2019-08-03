@@ -26,12 +26,39 @@
         android:layout_below="@+id/toolbar"
         android:background="#bebbbb"></View>
 
-    <RadioGroup
-        android:id="@+id/activity_course_rg"
+
+    <LinearLayout
+        android:id="@+id/llIcons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_weight="1"
+            android:src="@drawable/pendingvendorsignature" />
+
+        <ImageView
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_weight="1"
+            android:src="@drawable/invoicesignbyvendor" />
+
+
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/activity_course_rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llIcons"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -40,7 +67,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
             android:checked="true"
             android:fontFamily="@font/rb_light"
             android:gravity="center"
@@ -64,15 +90,23 @@
 
     </RadioGroup>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
+        android:layout_margin="@dimen/_15sdp"
+        style="@style/CustomCardView"
         android:layout_height="match_parent"
-        android:layout_below="@+id/activity_course_rg"
-        android:background="#ffffff">
+        android:layout_below="@+id/activity_course_rg">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:padding="@dimen/_5sdp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff">
+
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v7.widget.CardView>
+
 
     <ImageView
         android:id="@+id/imgnodata"
@@ -80,9 +114,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:src="@drawable/nodata" />
+
     <WebView
         android:id="@+id/wvInvoiceMain"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></WebView>
+        android:layout_height="match_parent"
+        android:visibility="gone"></WebView>
 </RelativeLayout>

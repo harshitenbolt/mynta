@@ -7,11 +7,43 @@
     tools:context=".fragment.OnboardingSupportFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvOnboarding"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
+    <LinearLayout
+        android:id="@+id/llNoData"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:src="@drawable/livevendorphone" />
+
+        <TextView
+            android:id="@+id/tvNoDataMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:fontFamily="@font/monteregular"
+            android:gravity="center_horizontal"
+            android:text="No support are available"
+            android:textColor="@color/colorGrey"
+            android:textSize="@dimen/_15sdp" />
+    </LinearLayout>
 </FrameLayout>

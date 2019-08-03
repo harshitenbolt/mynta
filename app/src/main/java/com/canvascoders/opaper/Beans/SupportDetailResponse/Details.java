@@ -36,6 +36,19 @@ public class Details {
     @SerializedName("attachment")
     @Expose
     private String attachment;
+
+    @SerializedName("attachment_url")
+    @Expose
+    private String attachmentUrl;
+
+    public String getAttachmentUrl() {
+        return attachmentUrl;
+    }
+
+    public void setAttachmentUrl(String attachmentUrl) {
+        this.attachmentUrl = attachmentUrl;
+    }
+
     @SerializedName("assign_to")
     @Expose
     private Integer assignTo;

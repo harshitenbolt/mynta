@@ -55,9 +55,9 @@ import retrofit2.Response;
 
 import static com.canvascoders.opaper.utils.Constants.showAlert;
 
-public class InfoEditFragment extends Fragment implements View.OnClickListener {
+public class InfoEditFragment extends Fragment /*implements View.OnClickListener */{
 
-    CustomAdapter<String> spinnerArrayAdapter;
+   // CustomAdapter<String> spinnerArrayAdapter;
     private Spinner dc;
     private EditText edit_fathername, edit_email, edit_storename, edit_storeaddress, edit_pincode, edit_gstn, edit_city, edit_state, edit_licenceno;
     private Toolbar toolbar;
@@ -77,24 +77,24 @@ public class InfoEditFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_info, container, false);
 
-        mcontext = this.getActivity();
+      /*  mcontext = this.getActivity();
 
         sessionManager = new SessionManager(mcontext);
         str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
 
 
-        initView();
+      //  initView();
         AgreementDetailActivity.settitle(Constants.TITLE_VENDOR_DETAIL_MENSA);
 
         spinnerArrayAdapter = new CustomAdapter<String>(mcontext, android.R.layout.simple_spinner_item, dcLists);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         dc.setAdapter(spinnerArrayAdapter);
-        getUserInfo();
+        getUserInfo();*/
         return view;
     }
 
-    private void initView() {
+   /* private void initView() {
         dc = (Spinner) view.findViewById(R.id.dc);
         btn_next = view.findViewById(R.id.btn_next);
         mProgressDialog = new ProgressDialog(mcontext);
@@ -125,8 +125,8 @@ public class InfoEditFragment extends Fragment implements View.OnClickListener {
         });
         btn_next.setOnClickListener(this);
     }
-
-    @Override
+*/
+ /*   @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_next) {
             Constants.hideKeyboardwithoutPopulate(getActivity());
@@ -451,7 +451,7 @@ public class InfoEditFragment extends Fragment implements View.OnClickListener {
             fragmentTransaction.commit();
 
         }
-    }
+    }*/
 }
 
 

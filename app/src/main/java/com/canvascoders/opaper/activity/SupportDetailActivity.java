@@ -80,9 +80,11 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
     TextView tvTicketNo, tvPriority, tvDesc, tvStatus;
     private String image = "";
     Bitmap bitmap;
+    private ImageView ivVendorImage;
     private RequestPermissionHandler requestPermissionHandler;
     private String apigetComments = Constants.GET_COMMENT_LIST;
     ProgressBar pbBar;
+    private TextView tvNoComment;
 
 
     @Override
@@ -103,13 +105,15 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
         rvCommentList = findViewById(R.id.rvComments);
         rvCommentList.setNestedScrollingEnabled(false);
         tvTicketNo = findViewById(R.id.tvTicketNo);
-        tvPriority = findViewById(R.id.tvPriority);
+        //tvPriority = findViewById(R.id.tvPriority);
         tvStatus = findViewById(R.id.tvStatus);
         ivBack = findViewById(R.id.iv_back);
         pbBar = findViewById(R.id.mProgress);
+        ivVendorImage = findViewById(R.id.iv_vendor_image);
         etComment = findViewById(R.id.etComment);
         ivComment = findViewById(R.id.ivComment);
         ivComment.setOnClickListener(this);
+        tvNoComment = findViewById(R.id.tvNocomment);
         ivUpload = findViewById(R.id.ivImageAdd);
         ivUpload.setOnClickListener(this);
         ivBack.setOnClickListener(this);
@@ -121,7 +125,11 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        new GetCommentList(objectSearch.toString(), apigetComments).execute();
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            new GetCommentList(objectSearch.toString(), apigetComments).execute();
+        } else {
+            Constants.ShowNoInternet(this);
+        }
 
     }
 
@@ -135,7 +143,10 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    @Override
+    public void SingleClick(String popup, int position) {
 
+    }
 
 
     @Override
@@ -160,11 +171,11 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
 
     private boolean isValid() {
 
-        if (image.equalsIgnoreCase("")) {
+        /*if (image.equalsIgnoreCase("")) {
             Toast.makeText(this, "Please select Image", Toast.LENGTH_SHORT).show();
             return false;
 
-        }
+        }*/
 
         if (TextUtils.isEmpty(etComment.getText().toString())) {
             Toast.makeText(this, "Please enter Comment", Toast.LENGTH_SHORT).show();
@@ -199,6 +210,7 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
 
 
     private void ApiCallComment() {
+        Call call;
         showWait();
         ivComment.setVisibility(View.GONE);
 
@@ -209,31 +221,38 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
         params.put(Constants.PARAM_SUPPORT_ID, supportId);
         params.put(Constants.PARAM_COMMENT, etComment.getText().toString());
 
-        File imagefile1 = new File(image);
-        attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(image)), imagefile1));
+
+        if (image.equalsIgnoreCase("")) {
+            call = ApiClient.getClient().create(ApiInterface.class).getCommentResponse("Bearer " + sessionManager.getToken(), params);
+
+        } else {
+            File imagefile1 = new File(image);
+            attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(image)), imagefile1));
+            call = ApiClient.getClient().create(ApiInterface.class).getCommentResponsewithImage("Bearer " + sessionManager.getToken(), params, attachment_part);
+
+        }
 
 
-        ApiClient.getClient().create(ApiInterface.class).getCommentResponse("Bearer " + sessionManager.getToken(), params, attachment_part).enqueue(new Callback<CommentResponse>() {
+        call.enqueue(new Callback<CommentResponse>() {
             @Override
             public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
-            if(response.isSuccessful()){
-                removeWait();
-                CommentResponse commentResponse = response.body();
-                if(commentResponse.getResponseCode()==200){
-                    ivComment.setVisibility(View.VISIBLE);
-                    ivUpload.setImageResource(R.drawable.ic_add);
-                    image="";
-                    etComment.getText().clear();
-                    new GetCommentList(objectSearch.toString(), apigetComments).execute();
-                    Toast.makeText(SupportDetailActivity.this, commentResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(SupportDetailActivity.this, commentResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                if (response.isSuccessful()) {
+                    removeWait();
+                    CommentResponse commentResponse = response.body();
+                    if (commentResponse.getResponseCode() == 200) {
+                        ivComment.setVisibility(View.VISIBLE);
+                        ivUpload.setImageResource(R.drawable.ic_add);
+                        image = "";
+                        etComment.getText().clear();
+                        new GetCommentList(objectSearch.toString(), apigetComments).execute();
+                        //  Toast.makeText(SupportDetailActivity.this, commentResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(SupportDetailActivity.this, commentResponse.getResponse(), Toast.LENGTH_SHORT).show();
+
+                    }
+
 
                 }
-
-
-            }
             }
 
             @Override
@@ -251,15 +270,17 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
                 if (response.isSuccessful()) {
                     SupportDetailResponse supportDetailResponse = response.body();
                     if (supportDetailResponse.getResponseCode() == 200) {
-                        Toast.makeText(SupportDetailActivity.this, supportDetailResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(SupportDetailActivity.this, supportDetailResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         tvDesc.setText(supportDetailResponse.getData().get(0).getDescreption());
                         tvStatus.setText(supportDetailResponse.getData().get(0).getStatus());
                         tvTicketNo.setText(supportDetailResponse.getData().get(0).getTicketNumber());
-                        tvPriority.setText(supportDetailResponse.getData().get(0).getPriority());
+                        Glide.with(SupportDetailActivity.this).load(supportDetailResponse.getData().get(0).getAttachmentUrl()).placeholder(R.drawable.image_placeholder).into(ivVendorImage);
+
+                        //    tvPriority.setText(supportDetailResponse.getData().get(0).getPriority());
                         //  Glide.with(SupportDetailActivity.this).load(supportDetailResponse.getData().get(0).getAttachment()).into(holder.ivAttachment);
 
                     } else {
-                        Toast.makeText(SupportDetailActivity.this, supportDetailResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(SupportDetailActivity.this, supportDetailResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -300,7 +321,6 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
                 pbBar.setVisibility(View.GONE);
         });
     }
-
 
 
     public class GetCommentList extends AsyncTask<String, Void, String> {
@@ -369,7 +389,7 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
 
                     JSONObject jsonObject = new JSONObject(message);
                     if (jsonObject.has("response")) {
-                        Toast.makeText(SupportDetailActivity.this, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
+                        //     Toast.makeText(SupportDetailActivity.this, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
                     }
                     if (jsonObject.has("responseCode")) {
                         if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
@@ -399,6 +419,13 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
 
                             finalList.add(datum);
                         }
+                        if (finalList.size() > 0) {
+                            rvCommentList.setVisibility(View.VISIBLE);
+                            tvNoComment.setVisibility(View.GONE);
+                        } else {
+                            tvNoComment.setVisibility(View.VISIBLE);
+                            rvCommentList.setVisibility(View.GONE);
+                        }
 
 
 //                        rvCommentList.getRecycledViewPool().clear();
@@ -407,7 +434,7 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
                         rvCommentList.setLayoutManager(linearLayoutManager);
                         commentListAdapter = new CommentListAdapter(finalList, SupportDetailActivity.this, SupportDetailActivity.this);
                         rvCommentList.setAdapter(commentListAdapter);
-                       // commentListAdapter.notifyDataSetChanged();
+                        // commentListAdapter.notifyDataSetChanged();
 
                     }
                     commentListAdapter.notifyDataSetChanged();

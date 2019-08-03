@@ -142,6 +142,11 @@ public class Constants {
     //For Vendor Mobile info
     public static String KEY_VENDOR_MOBILE = "vendor_mobile";
 
+    public static String ValidationAPI1 = "submit-details-validation-1";
+    public static String ValidationAPI2 = "submit-details-validation-2";
+    public static String ValidationAPI3 = "submit-details-validation-3";
+
+
     //all api parameter
     public static String PARAM_EMAIL = "email";
     public static String PARAM_SCREEN_NAME = "screen_name";
@@ -161,6 +166,10 @@ public class Constants {
     public static String PARAM_DEVICE_INFO = "device_info";
     public static String PARAM_TOKEN = "token";
     public static String PARAM_AGENT_ID = "agent_id";
+
+    public static String PARAM_YEAR = "year";
+    public static String PARAM_IS_INVOICE = "is_invoice";
+
     public static String PARAM_SEARCH = "search";
     public static String PARAM_ADUMDUM = "addendum";
     public static String PARAM_IMAGE = "image";

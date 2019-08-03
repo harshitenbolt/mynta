@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    android:clickable="true"
-    tools:context=".activity.LoginActivity">
+    android:clickable="true">
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_next"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_above="@+id/btn_next"
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <android.support.v4.widget.SwipeRefreshLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/swipe_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+            android:layout_height="wrap_content">
 
 
             <android.support.v7.widget.RecyclerView
@@ -27,18 +23,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_10dp"></android.support.v7.widget.RecyclerView>
-            </android.support.v4.widget.SwipeRefreshLayout>
-        </LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
 
     <Button
-        android:id="@+id/btn_next"
+        android:layout_height="@dimen/_40sdp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/btn_next"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/btn_active"
-        android:fontFamily="@font/rb_medium"
-        android:paddingTop="@dimen/margin_10dp"
+        android:background="@color/colorPrimary"
+        android:fontFamily="@font/montesemibold"
         android:text="Add Bank Details"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite" />

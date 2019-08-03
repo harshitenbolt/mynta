@@ -119,6 +119,8 @@ public class VendorList implements Serializable {
     @SerializedName("pincode")
     @Expose
     private String pincode;
+
+
     @SerializedName("dc")
     @Expose
     private String dc;
@@ -134,15 +136,39 @@ public class VendorList implements Serializable {
     @SerializedName("store_address")
     @Expose
     private String storeAddress;
+
+
+    @SerializedName("store_address1")
+    @Expose
+    private String storeAddress1;
+
+
+    @SerializedName("store_address_landmark")
+    @Expose
+    private String storeAddressLandmark;
+
     @SerializedName("license_no")
     @Expose
     private Object licenseNo;
     @SerializedName("if_gst")
     @Expose
     private String ifGst;
+
+
+    public String getIsUpdateGst() {
+        return isUpdateGst;
+    }
+
+    public void setIsUpdateGst(String isUpdateGst) {
+        this.isUpdateGst = isUpdateGst;
+    }
+
+    @SerializedName("is_update_gst")
+    @Expose
+    private String isUpdateGst;
     @SerializedName("gstn")
     @Expose
-    private Object gstn;
+    private String gstn;
     @SerializedName("rate")
     @Expose
     private String rate;
@@ -176,6 +202,18 @@ public class VendorList implements Serializable {
     @SerializedName("cheque_verify")
     @Expose
     private String chequeVerify;
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    @SerializedName("expiration_date_format")
+    @Expose
+    private String expirationDate;
     @SerializedName("fill_details")
     @Expose
     private String fillDetails;
@@ -185,6 +223,19 @@ public class VendorList implements Serializable {
     @SerializedName("rate_send_for_approval")
     @Expose
     private String rateSendForApproval;
+
+    @SerializedName("assessment_verify")
+    @Expose
+    private String assessmentverify;
+
+    public String getAssessmentverify() {
+        return assessmentverify;
+    }
+
+    public void setAssessmentverify(String assessmentverify) {
+        this.assessmentverify = assessmentverify;
+    }
+
     @SerializedName("agreement")
     @Expose
     private String agreement;
@@ -214,7 +265,6 @@ public class VendorList implements Serializable {
     @SerializedName("allow_edit")
     @Expose
     private String allowedit;
-
 
 
     @SerializedName("is_add_delivery_boy")
@@ -271,6 +321,7 @@ public class VendorList implements Serializable {
      * @param proccessId
      * @param pincode
      * @param rateSendForApproval
+     * @param assessmentverify
      * @param panNo
      * @param vendorSendForApproval
      * @param cancelledCheque
@@ -316,7 +367,7 @@ public class VendorList implements Serializable {
      * @param mobileNo
      * @param fatherName
      */
-    public VendorList(Integer id, String lmsId, String vendorId, Integer agentId, String mobileNo, String longitude, String latitude, String aadhaarName, String aadhaarDob, String aadhaarNo, String aadhaarPincode, String panName, String panNo, String status, String oracleCsv, String downloadDate, String frankingStatus, String isFrankingDownload, String deleted, String isMassUpload, String isMassDocUpload, String isUpload, String createdAt, String updatedAt, Integer proccessId, String pan, String adharCardFront, String adharCardBack, Object ifShopAct, Object cancelledCheque, String noc, String shopImage, Object massUpload, String name, String fatherName, String storeName, String pincode, String dc, String state, String city, Object email, String storeAddress, Object licenseNo, String ifGst, Object gstn, String rate, String rateApproveDate, Integer approvedBy, String isRateApproved, Object franking, Object zone, String mobileVerify, String locationVerify, String aadhaarVerify, String panVerify, String chequeVerify, String fillDetails, String uploadFiles, String rateSendForApproval, String agreement, String gstdeclaration, String vendorSendForApproval) {
+    public VendorList(Integer id, String lmsId, String vendorId, Integer agentId, String mobileNo, String longitude, String latitude, String aadhaarName, String aadhaarDob, String aadhaarNo, String aadhaarPincode, String panName, String panNo, String status, String oracleCsv, String downloadDate, String frankingStatus, String isFrankingDownload, String deleted, String isMassUpload, String isMassDocUpload, String isUpload, String createdAt, String updatedAt, Integer proccessId, String pan, String adharCardFront, String adharCardBack, Object ifShopAct, Object cancelledCheque, String noc, String shopImage, Object massUpload, String name, String fatherName, String storeName, String pincode, String dc, String state, String city, Object email, String storeAddress, Object licenseNo, String ifGst, String gstn, String rate, String rateApproveDate, Integer approvedBy, String isRateApproved, Object franking, Object zone, String mobileVerify, String locationVerify, String aadhaarVerify, String panVerify, String chequeVerify, String fillDetails, String uploadFiles, String rateSendForApproval, String agreement, String gstdeclaration, String vendorSendForApproval) {
         super();
         this.id = id;
         this.lmsId = lmsId;
@@ -473,6 +524,22 @@ public class VendorList implements Serializable {
     public String getPanName() {
         return panName;
     }
+    public String getStoreAddress1() {
+        return storeAddress1;
+    }
+
+    public void setStoreAddress1(String storeAddress1) {
+        this.storeAddress1 = storeAddress1;
+    }
+
+    public String getStoreAddressLandmark() {
+        return storeAddressLandmark;
+    }
+
+    public void setStoreAddressLandmark(String storeAddressLandmark) {
+        this.storeAddressLandmark = storeAddressLandmark;
+    }
+
 
     public void setPanName(String panName) {
         this.panName = panName;
@@ -734,11 +801,11 @@ public class VendorList implements Serializable {
         this.ifGst = ifGst;
     }
 
-    public Object getGstn() {
+    public String getGstn() {
         return gstn;
     }
 
-    public void setGstn(Object gstn) {
+    public void setGstn(String gstn) {
         this.gstn = gstn;
     }
 

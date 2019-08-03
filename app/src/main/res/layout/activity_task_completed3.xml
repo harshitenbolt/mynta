@@ -1,183 +1,113 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-
-<LinearLayout android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android" >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <ImageView
             android:id="@+id/iv_back_task_completed"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:srcCompat="@drawable/ic_arrow_back_black_24dp"
-            />
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/back" />
 
         <TextView
-            android:id="@+id/tv_title_task_complted"
+            android:id="@+id/tv_title_Process"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:fontFamily="@font/rb_medium"
-            android:gravity="start|center"
-            android:padding="5dp"
-            android:text="Onboard Successfully"
-            android:textColor="@color/colorWhite"
-            android:textSize="20dp" />
-    </android.support.v7.widget.Toolbar>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montesemibold"
+            android:gravity="center"
+            android:paddingRight="@dimen/_45sdp"
+            android:text="Document Verification"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:clickable="true">
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="2"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/_10sdp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            style="@style/CustomCardView"
+            android:layout_height="match_parent"
+            android:clipToPadding="true"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+
+
+                <ImageView
+                    android:layout_width="@dimen/_150sdp"
+                    android:layout_height="@dimen/_150sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:src="@drawable/documentverify" />
+
+
+                <TextView
+                    android:id="@+id/lbl_your_name"
+                    style="@style/TextviewwithoutSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:fontFamily="@font/montesemibold"
+                    android:textColor="@color/colorPrimary"
+                    android:text="All Documents Signed"
+                    android:textSize="@dimen/_15sdp" />
+
+                <TextView
+                    style="@style/TextviewwithoutSize"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_35sdp"
+                    android:text="All Documents Signed Successfully.\nPlease ask City Manager for approval"/>
+
+
+
+
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:orientation="vertical">
+        android:layout_marginTop="@dimen/_10sdp">
+
+        <Button
+            android:id="@+id/btn_onboard"
+            style="@style/Button_withGreen"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="GO TO DASHBOARD" />
 
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/color5"
-            android:src="@drawable/ic_fab_play"
-            android:visibility="gone" />
-
-        <view
-            android:id="@+id/determinate"
-            class="mbanje.kurt.fabbutton.FabButton"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:color="?attr/colorPrimaryDark"
-            android:indeterminate="false"
-            android:max="100"
-            android:src="@drawable/ic_fab_play"
-            android:visibility="visible"
-            app:fbb_autoStart="true"
-            app:fbb_endBitmap="@drawable/ic_fab_complete"
-            app:fbb_hideProgressOnComplete="true"
-            app:fbb_progressColor="?attr/colorAccent"
-            app:fbb_progressWidthRatio="0.1"
-            app:fbb_showEndBitmap="true"
-            app:fbb_showShadow="true"
-            app:layout_anchorGravity="bottom|right|end" />
-
-        <TextView
-            android:id="@+id/tt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/rb_bold"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="Vendor Onboarded sucessfully"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18dp" />
-
-        <TextView
-
-            android:id="@+id/ttl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/determinate"
-            android:fontFamily="@font/rb_bold"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="Ask City Manager to Approve"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18dp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:elevation="5dp"
-                android:padding="5dp"
-                android:visibility="gone">
-
-                <Button
-                    android:id="@+id/btn_onboard_vendor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:background="#00000000"
-                    android:drawableLeft="@drawable/viewdashboard"
-                    android:drawablePadding="15dp"
-                    android:fontFamily="@font/rb_medium"
-                    android:gravity="left|center"
-                    android:padding="20dp"
-                    android:text="ONBOARD VENDOR" />
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:elevation="5dp"
-                android:padding="5dp"
-                android:visibility="gone">
-
-                <Button
-                    android:id="@+id/btn_vendor_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:layout_marginTop="20dp"
-                    android:background="#00000000"
-                    android:drawableLeft="@drawable/viewdashboard"
-                    android:drawablePadding="15dp"
-                    android:fontFamily="@font/rb_medium"
-                    android:gravity="left|center"
-                    android:padding="20dp"
-                    android:text="onboarded vendors" />
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:elevation="5dp"
-                android:padding="5dp">
-
-                <Button
-                    android:id="@+id/btn_onboard"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:background="#00000000"
-                    android:drawableLeft="@drawable/viewdashboard"
-                    android:drawablePadding="15dp"
-                    android:fontFamily="@font/rb_medium"
-                    android:gravity="left|center"
-                    android:padding="20dp"
-                    android:text="GO TO DASHBOARD" />
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
     </LinearLayout>
 
-</ScrollView>
+
+    <!--<include layout="@layout/base_nav_drawer"></include>-->
 </LinearLayout>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CustomCardView"
+    android:layout_width="match_parent"
+    android:background="@color/whitePrimary"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/whitePrimary"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/lineardata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/montesemibold"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:text="Account Details" />
+
+                <ImageView
+                    android:id="@+id/ivClose"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:src="@drawable/close" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/lightGrey" />
+
+            <LinearLayout
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/etAccountNum"
+                    style="@style/App_EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:hint="Account Number"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/etPayeeName"
+                    />
+
+                <EditText
+                    android:id="@+id/etPayeeName"
+                    style="@style/App_EditTextStyle"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:hint="Payee Name"
+                    android:textAllCaps="true"
+                    android:nextFocusDown="@+id/etIfscCode"
+                    />
+
+                <EditText
+                    android:id="@+id/etIfscCode"
+                    android:maxLength="12"
+                    style="@style/App_EditTextStyle"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:hint="IFSC code "
+                    android:imeOptions="actionDone"
+                    android:textAllCaps="true"
+                    />
+
+                <EditText
+                    android:id="@+id/etBankName"
+                    style="@style/App_EditTextStyle"
+                    android:editable="false"
+                    android:textAllCaps="true"
+                    android:enabled="false"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:hint="Bank Name"
+                    android:clickable="false"
+                    />
+
+                <EditText
+                    android:id="@+id/etBranchName"
+                    android:editable="false"
+                    style="@style/App_EditTextStyle"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:hint="Branch Name"
+                    android:enabled="false"
+                    android:clickable="false"
+                    android:textAllCaps="true"
+                    />
+
+                <EditText
+                    android:id="@+id/etBankAddress"
+                    android:editable="false"
+                    style="@style/App_EditTextStyle"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:hint="Bank Address"
+                    android:clickable="false"
+                    android:enabled="false"
+                    android:textAllCaps="true"
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/cbAgreeTC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10dp"
+                        android:checked="false"
+                        android:padding="5dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_10dp"
+                        android:text="I have verified above data with physical copy of cheque." />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btSubmitChequeDetail"
+            android:layout_below="@+id/lineardata"
+            android:text="Submit"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/rounded_bottom_corner_view_green"
+            style="@style/Button_withGreen" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

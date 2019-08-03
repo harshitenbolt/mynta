@@ -52,7 +52,7 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }
             }
-        }, 5000);
+        }, 2000);
 
     }
 
@@ -137,4 +137,9 @@ public class SplashActivity extends AppCompatActivity {
 //
 //    }// EO function
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }

@@ -65,14 +65,15 @@ public class DebitInvoiceMainFragment extends Fragment {
     private RecyclerView recyclerview;
     private RadioGroup rg_vendor_list;
     private String apiName = "get-invoice1";
-    private String type_name="debit";
+    private String type_name = "debit";
     Context mcontext;
     View view;
     String invoice_pdf = "";
     JSONObject jsonObject = new JSONObject();
     String status;
-    int signed,page = 0;
+    int signed, page = 0;
     WebView webView;
+
     public DebitInvoiceMainFragment() {
         // Required empty public constructor
     }
@@ -94,7 +95,7 @@ public class DebitInvoiceMainFragment extends Fragment {
         sessionManager = new SessionManager(mcontext);
         progressDialog = new ProgressDialog(mcontext);
         progressDialog.setMessage("please wait loading tax invoice...");
-
+        progressDialog.setCancelable(false);
 
         try {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
@@ -157,14 +158,13 @@ public class DebitInvoiceMainFragment extends Fragment {
 
         } else {
             webView.setVisibility(View.GONE);
-            page=1;
+            page = 1;
             apiName = "get-invoice";
             progressDialog.setMessage("please wait loading Pending vendor signature...");
             new GetInvoice1(object.toString(), apiName).execute();
         }
 
     }
-
 
 
     private void intView() {
@@ -180,8 +180,8 @@ public class DebitInvoiceMainFragment extends Fragment {
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if(!apiName.equalsIgnoreCase(""))
-                new GetInvoice1(object.toString(), apiName).execute();
+                if (!apiName.equalsIgnoreCase(""))
+                    new GetInvoice1(object.toString(), apiName).execute();
             }
         };
         recyclerview.addOnScrollListener(scrollListener);
@@ -194,16 +194,15 @@ public class DebitInvoiceMainFragment extends Fragment {
             public void onClick(View view, final int position) {
 
 //                commanFragmentCallWithBackStack(new InvoiceEsignActivity(), String.valueOf(billLists.get(position).getId()));
-                if(signed == 0) {
+                if (signed == 0) {
                     Intent intent = new Intent(getActivity(), InvoiceEsignActivity.class);
                     intent.putExtra(Constants.KEY_INVOICE_ID, String.valueOf(billLists.get(position).getId()));
                     intent.putExtra(Constants.INVOICE_TYPE, type_name);
-                    intent.putExtra(Constants.KEY_NAME,billLists.get(position).getStore_name());
+                    intent.putExtra(Constants.KEY_NAME, billLists.get(position).getStore_name());
                     intent.putExtra(Constants.INVOICE_NUMBER, status);
                     intent.putExtra(Constants.SIGNED, signed);
                     startActivity(intent);
-                }
-                else{
+                } else {
                     try {
                         jsonObject.put(Constants.PARAM_TOKEN, sessionManager.getToken());
                         jsonObject.put(Constants.PARAMS_INVOICE_TYPE, type_name);
@@ -225,6 +224,13 @@ public class DebitInvoiceMainFragment extends Fragment {
             public void onLongClick(View view, final int position) {
 
             }
+
+            @Override
+            public void SingleClick(String popup, int position) {
+
+            }
+
+
         }
 
         ));
@@ -253,18 +259,17 @@ public class DebitInvoiceMainFragment extends Fragment {
                 MediaType mediaType = MediaType.parse("application/json");
                 RequestBody body = RequestBody.create(mediaType, s);
                 Request requestLogin = null;
-                if(signed == 0){
+                if (signed == 0) {
                     requestLogin = new Request.Builder()
                             .url(Constants.BaseURL + "get-single-invoice")
                             .post(body)
-                            .addHeader("Authorization","Bearer "+sessionManager.getToken())
+                            .addHeader("Authorization", "Bearer " + sessionManager.getToken())
                             .build();
-                }
-                else{
+                } else {
                     requestLogin = new Request.Builder()
                             .url(Constants.BaseURL + "get-single-signed-invoice")
                             .post(body)
-                            .addHeader("Authorization","Bearer "+sessionManager.getToken())
+                            .addHeader("Authorization", "Bearer " + sessionManager.getToken())
                             .build();
                 }
 
@@ -312,7 +317,7 @@ public class DebitInvoiceMainFragment extends Fragment {
                         startActivity(browserIntent);*/
                         webView.setVisibility(View.VISIBLE);
                         webView.getSettings().setJavaScriptEnabled(true);
-                     //   String pdf = "http://www.adobe.com/devnet/acrobat/pdfs/pdf_open_parameters.pdf";
+                        //   String pdf = "http://www.adobe.com/devnet/acrobat/pdfs/pdf_open_parameters.pdf";
                         webView.loadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + pdf);
                        /* mWebView.loadData(result.getString("invoice_html"), "text/html; charset=utf-8", "UTF-8");
                         if (status.equals("1")) {
@@ -330,6 +335,7 @@ public class DebitInvoiceMainFragment extends Fragment {
             }
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -337,7 +343,6 @@ public class DebitInvoiceMainFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 
     public class GetInvoice1 extends AsyncTask<String, Void, String> {
@@ -356,7 +361,7 @@ public class DebitInvoiceMainFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog.show();
-            if(page == 1){
+            if (page == 1) {
                 billLists.clear();
             }
         }
@@ -371,7 +376,7 @@ public class DebitInvoiceMainFragment extends Fragment {
                 Request requestLogin = new Request.Builder()
                         .url(Constants.BaseURL + apinumber)
                         .post(body)
-                        .addHeader("Authorization","Bearer "+sessionManager.getToken())
+                        .addHeader("Authorization", "Bearer " + sessionManager.getToken())
                         .build();
 
                 Response responseLogin = client.newCall(requestLogin).execute();
@@ -390,20 +395,19 @@ public class DebitInvoiceMainFragment extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(message);
                 Mylogger.getInstance().Logit(TAG, message);
-                if(jsonObject.has("responseCode")) {
+                if (jsonObject.has("responseCode")) {
                     if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
                         sessionManager.logoutUser(getActivity());
                     }
                 }
-                if(jsonObject.has("response")){
+                if (jsonObject.has("response")) {
                     Toast.makeText(mcontext, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
-                }
-                else {
+                } else {
                     String next_Url = jsonObject.getString("next_page_url");
-                    if(!next_Url.equalsIgnoreCase("")&& !next_Url.equals("null")) {
+                    if (!next_Url.equalsIgnoreCase("") && !next_Url.equals("null")) {
                         String[] separated = next_Url.split("api3/");
                         apiName = separated[1];
-                    }else{
+                    } else {
                         apiName = "";
                     }
                     JSONArray result = jsonObject.getJSONArray("data");
@@ -457,8 +461,6 @@ public class DebitInvoiceMainFragment extends Fragment {
             }
         }
     }
-
-
 
 
     public void commanFragmentCallWithBackStack(Fragment fragment, String invoice_id) {

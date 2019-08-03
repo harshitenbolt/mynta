@@ -761,7 +761,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
 
                         }
 
-                       CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(AddDeliveryBoysActivity.this, android.R.layout.simple_spinner_item, dcLists);
+                        CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(AddDeliveryBoysActivity.this, android.R.layout.simple_spinner_item, dcLists);
                         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         dc.setAdapter(spinnerArrayAdapter);
                         dc.setSelection(0);

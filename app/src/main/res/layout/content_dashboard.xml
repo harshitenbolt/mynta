@@ -2,313 +2,368 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_main"
+    android:id="@+id/rvContentMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@color/lightGrey"
     android:clickable="true"
     tools:context=".activity.DashboardActivity">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
-        android:layout_below="@+id/toolbar"
-        android:background="#bebbbb"></View>
-
-    <TextView
-        android:id="@+id/txt_mail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="30dp"
-        android:fontFamily="@font/rb_light"
-        android:gravity="right"
-        android:padding="5dp"
-        android:textColor="#000000"
-        android:visibility="gone" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/toolbar"
-        android:background="#bebbbb"></View>
-
-    <TextView
-        android:id="@+id/txt_my_addr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:fontFamily="@font/rb_light"
-        android:gravity="right"
-        android:padding="5dp"
-        android:text="Current Version : 1"
-        android:textColor="@color/colorAccent"
-        android:textSize="18sp"
-        android:visibility="gone" />
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:fillViewport="true"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_gravity="top"
-        android:layout_margin="8dp"
-        android:orientation="vertical"
-        android:padding="5dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/_10sdp"
+       android:layout_marginLeft="@dimen/_10sdp"
+        android:orientation="vertical">
 
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/llOnboardNewVendor"
+                style="@style/LinearLaoutCarviewStyle"
+                android:layout_height="@dimen/_140sdp"
+                android:layout_marginRight="@dimen/_3sdp"
                 android:layout_weight="1">
 
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cdOnBoard"
+                    style="@style/CustomCardView"
+                    android:layout_height="@dimen/_140sdp">
 
-                    <android.support.v7.widget.CardView
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_140sdp"
-                        android:layout_margin="5dp"
-                        android:elevation="5dp"
-                        android:padding="5dp"
-                        app:cardElevation="5dp">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                        <Button
-                            android:id="@+id/btn_onboard_vendor"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="@dimen/_3sdp"
-                            android:background="#00000000"
-                            android:drawableTop="@drawable/vendor"
-                            android:elevation="@dimen/_3sdp"
-                            android:fontFamily="@font/rb_medium"
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_gravity="center|center_vertical"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:src="@drawable/onboardnewvendormain" />
+
+                        <TextView
+                            style="@style/TextviewwithoutSize"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:fontFamily="@font/montesemibold"
                             android:gravity="center"
-                            android:padding="@dimen/_15sdp"
-                            android:text="ONBOARD VENDOR"
-                            android:textSize="@dimen/_13sdp" />
-                    </android.support.v7.widget.CardView>
+                            android:clickable="false"
+                            android:text="ONBOARD NEW VENDOR" />
+                    </RelativeLayout>
 
-
+                </android.support.v7.widget.CardView>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:id="@+id/llNotification"
+                style="@style/LinearLaoutCarviewStyle"
+                android:layout_height="@dimen/_140sdp"
+                android:layout_marginLeft="@dimen/_3sdp"
                 android:layout_weight="1">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cdNotification"
+                    style="@style/CustomCardView"
                     android:layout_height="@dimen/_140sdp"
-                    android:layout_marginTop="@dimen/margin_10dp"
-                    android:orientation="horizontal"
-                    android:visibility="visible"
-                    android:weightSum="1">
+                    android:layout_weight="1">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:orientation="vertical">
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="5dp"
-                            android:elevation="5dp"
-                            android:padding="5dp"
-                            app:cardElevation="5dp">
-
-                            <Button
-                                android:id="@+id/btn_onboard_vendor_list"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:background="#00000000"
-                                android:drawableTop="@drawable/vendor_list"
-                                android:fontFamily="@font/rb_medium"
-                                android:gravity="center"
-                                android:padding="@dimen/_15sdp"
-                                android:text="VENDOR LIST"
-                                android:textSize="@dimen/_13sdp" />
-                        </android.support.v7.widget.CardView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:orientation="vertical">
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="5dp"
-                            android:elevation="5dp"
-                            android:padding="5dp"
-                            app:cardElevation="5dp">
-
-                            <Button
-                                android:id="@+id/btn_onboard_invoice"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center"
-                                android:background="#00000000"
-                                android:drawableTop="@drawable/invoice"
-                                android:fontFamily="@font/rb_medium"
-                                android:gravity="center"
-                                android:padding="@dimen/_15sdp"
-                                android:text="INVOICE"
-                                android:textSize="@dimen/_13sdp" />
-                        </android.support.v7.widget.CardView>
-                    </LinearLayout>
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_140sdp"
-                    android:layout_marginBottom="@dimen/margin_20dp"
-                    android:layout_marginTop="@dimen/margin_10dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    >
-
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.5"
                         android:orientation="vertical">
 
-                        <android.support.v7.widget.CardView
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerInParent="true"
+                            android:layout_centerHorizontal="true">
+
+
+                            <TextView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_marginLeft="@dimen/_35sdp"
+                                android:layout_marginTop="@dimen/_15sdp"
+                                android:text="12"
+                                android:visibility="gone"
+                                android:fontFamily="@font/montesemibold"
+                                android:gravity="center"
+                                android:textColor="@color/whitePrimary"
+                                android:background="@drawable/backgroundshapecirclefilled" />
+
+
+                            <ImageView
+                                android:id="@+id/ivNotification"
+                                android:layout_width="@dimen/_45sdp"
+                                android:layout_height="@dimen/_45sdp"
+
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:src="@drawable/notificationmain" />
+                        </RelativeLayout>
+
+
+                        <TextView
+                            style="@style/TextviewwithoutSize"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="5dp"
-                            android:elevation="5dp"
-                            android:padding="5dp"
-                            android:visibility="visible"
-                            app:cardElevation="5dp">
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:fontFamily="@font/montesemibold"
+                            android:gravity="top|center"
+                            android:lines="2"
+                            android:clickable="false"
+                            android:text="NOTIFICATIONS" />
+                    </RelativeLayout>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <Button
-                                    android:id="@+id/btn_notification"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center"
-                                    android:background="#00000000"
-                                    android:drawableTop="@drawable/noti"
-                                    android:fontFamily="@font/rb_medium"
-                                    android:gravity="center"
-                                    android:padding="@dimen/_15sdp"
-                                    android:text="NOTIFICATION"
-                                    android:textSize="@dimen/_13sdp" />
-
-
-                                <TextView
-                                    android:id="@+id/txt_notification"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerInParent="true"
-                                    android:layout_margin="@dimen/_15sdp"
-                                    android:background="@drawable/ccc"
-                                    android:fontFamily="@font/rb_light"
-                                    android:gravity="center"
-                                    android:padding="5dp"
-                                    android:text="10"
-                                    android:textColor="#000000"
-                                    android:textSize="12sp"
-                                    android:visibility="gone" />
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:orientation="vertical">
-
-                        <android.support.v7.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_margin="5dp"
-                            android:elevation="5dp"
-                            android:padding="5dp"
-                            android:visibility="visible"
-                            app:cardElevation="5dp">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <Button
-                                    android:id="@+id/btn_report"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center"
-                                    android:background="#00000000"
-                                    android:drawableTop="@drawable/report"
-                                    android:fontFamily="@font/rb_medium"
-                                    android:gravity="center"
-                                    android:padding="@dimen/_15sdp"
-                                    android:text="REPORTS"
-                                    android:textSize="@dimen/_13sdp" />
-                            </RelativeLayout>
-                        </android.support.v7.widget.CardView>
-                    </LinearLayout>
-
-                </LinearLayout>
+                </android.support.v7.widget.CardView>
             </LinearLayout>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_3sdp"
-                android:elevation="@dimen/_3sdp"
-                android:padding="@dimen/_3sdp">
-
-                <Button
-                    android:id="@+id/btn_logout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="3dp"
-                    android:layout_marginTop="20dp"
-                    android:background="#00000000"
-                    android:drawablePadding="15dp"
-                    android:fontFamily="@font/rb_medium"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="Logout"
-                    android:visibility="gone" />
-            </android.support.v7.widget.CardView>
-
-            <TextView
-                android:id="@+id/tv_current_version"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar"
-                android:fontFamily="@font/rb_regular"
-                android:gravity="center"
-                android:padding="5dp"
-
-                android:text="Version :"
-                android:textColor="@color/colorAccent"
-                android:textSize="18sp"
-                android:visibility="gone" />
         </LinearLayout>
 
-    </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/llLiveVendor"
+                style="@style/LinearLaoutCarviewStyle"
+                android:layout_height="@dimen/_140sdp"
+                android:layout_marginRight="@dimen/_3sdp"
+                android:layout_weight="1">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cdLivevendor"
+                    style="@style/CustomCardView"
+                    android:layout_height="@dimen/_140sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerInParent="true"
+                            android:layout_centerHorizontal="true">
+
+                            <TextView
+                                android:id="@+id/tvLiveVendorCount"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_marginLeft="@dimen/_65sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="12"
+                                android:visibility="gone"
+                                android:gravity="center"
+                                android:textColor="@color/whitePrimary"
+                                android:background="@drawable/backgroundshapecirclefilled" />
+
+                            <ImageView
+                                android:layout_width="@dimen/_45sdp"
+                                android:layout_height="@dimen/_45sdp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center|center_vertical"
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:src="@drawable/livevendorsmain" />
+                        </RelativeLayout>
+
+
+
+
+                        <TextView
+                            style="@style/TextviewwithoutSize"
+                            android:layout_width="match_parent"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:fontFamily="@font/montesemibold"
+                            android:gravity="top|center"
+                            android:lines="2"
+                            android:clickable="false"
+                            android:text="LIVE VENDORS" />
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llInProgressVendor"
+                style="@style/LinearLaoutCarviewStyle"
+                android:layout_height="@dimen/_140sdp"
+                android:layout_marginLeft="@dimen/_3sdp"
+                android:layout_weight="1">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cdInProgressVendor"
+                    style="@style/CustomCardView"
+                    android:layout_height="@dimen/_140sdp"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerInParent="true"
+                            android:layout_centerHorizontal="true">
+
+                            <TextView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_marginLeft="@dimen/_65sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="10"
+                                android:id="@+id/tvInProgressCount"
+                                android:visibility="gone"
+                                android:gravity="center"
+                                android:textColor="@color/whitePrimary"
+                                android:background="@drawable/backgroundshapecirclefilled" />
+
+                            <ImageView
+                                android:layout_width="@dimen/_45sdp"
+                                android:layout_height="@dimen/_45sdp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center|center_vertical"
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:src="@drawable/inprogressvendormain" />
+                        </RelativeLayout>
+
+
+
+                        <TextView
+                            style="@style/TextviewwithoutSize"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:fontFamily="@font/montesemibold"
+                            android:gravity="center"
+                            android:clickable="false"
+                            android:text="IN-PROGRESS VENDOR" />
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/llReports"
+                style="@style/LinearLaoutCarviewStyle"
+                android:layout_height="@dimen/_140sdp"
+                android:layout_marginRight="@dimen/_3sdp"
+                android:layout_weight="1">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cdReports"
+                    style="@style/CustomCardView"
+                    android:layout_height="@dimen/_140sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerInParent="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:src="@drawable/reportmain" />
+
+                        <TextView
+                            style="@style/TextviewwithoutSize"
+                            android:layout_width="match_parent"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:fontFamily="@font/montesemibold"
+                            android:gravity="top|center"
+                            android:lines="2"
+                            android:clickable="false"
+                            android:text="REPORTS" />
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llInvoice"
+                style="@style/LinearLaoutCarviewStyle"
+                android:layout_height="@dimen/_140sdp"
+                android:layout_marginLeft="@dimen/_3sdp"
+                android:layout_weight="1">
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cdInvoice"
+                    style="@style/CustomCardView"
+                    android:layout_height="@dimen/_140sdp"
+                    android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/_45sdp"
+                            android:layout_height="@dimen/_45sdp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerInParent="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:src="@drawable/invoicemain" />
+
+                        <TextView
+                            style="@style/TextviewwithoutSize"
+                            android:layout_width="match_parent"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:fontFamily="@font/montesemibold"
+                            android:gravity="top|center"
+                            android:lines="2"
+                            android:clickable="false"
+                            android:text="INVOICE" />
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

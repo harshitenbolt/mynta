@@ -2,46 +2,142 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    android:clickable="true"
     android:background="@color/colorWhite"
+    android:clickable="true"
+    android:orientation="vertical"
     tools:context=".activity.LoginActivity">
 
     <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/llSearch"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_3sdp"
+        android:background="@drawable/roundedcornergrey"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:src="@drawable/magnifiertool" />
+
+        <AutoCompleteTextView
+            android:id="@+id/etSearchPlace"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:background="@null"
+            android:hint="Search"
+            android:paddingLeft="@dimen/_5sdp"
+            android:singleLine="true" />
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvDelBoyList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llSearch"
+        android:layout_marginTop="@dimen/_5sdp" />
 
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
+        android:id="@+id/llNoData"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llButton"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <android.support.v7.widget.CardView
+            style="@style/CustomCardView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:clipToPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+
+                <ImageView
+                    android:layout_width="@dimen/_160sdp"
+                    android:layout_height="@dimen/_160sdp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/delieveryboy" />
+
+
+                <TextView
+                    android:id="@+id/lbl_your_name"
+                    style="@style/TextviewwithoutSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:fontFamily="@font/monteregular"
+
+                    android:gravity="center"
+                    android:text="You don't have any \ndelivery boys yet."
+                    android:textColor="@color/mediumGrey"
+                    android:textSize="@dimen/_15sdp" />
+
+                <TextView
+                    style="@style/TextviewwithoutSize"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_35sdp"
+                    android:fontFamily="@font/montesemibold"
+                    android:text="Please add Delivery Boy"
+                    android:textSize="@dimen/_15sdp" />
+
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/btAddDelBoy"
+            style="@style/Button_withGreen"
             android:layout_weight="1"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/whitePrimary"
-            android:background="@drawable/rounded_corner_button"
-            android:text="Add Delivery Boy"/>
+            android:background="@color/colorYellow"
+            android:text="ADD DELIVERY BOYS" />
 
         <Button
             android:id="@+id/btSubmit"
-            android:enabled="false"
-            android:layout_weight="1"
-            android:layout_marginRight="@dimen/_5sdp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_weight="1"
+            android:textSize="@dimen/_12sdp"
+            android:background="@color/colorPrimary"
+            android:fontFamily="@font/montebold"
+            android:text="SUBMIT"
             android:textColor="@color/whitePrimary"
-            android:background="@drawable/rounded_corner_button_grey"
-            android:text="Submit"/>
+            android:visibility="visible" />
     </LinearLayout>
 
 

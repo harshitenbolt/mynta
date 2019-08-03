@@ -54,12 +54,6 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
     SwipeRefreshLayout mSwipeRefreshLayout;
     SessionManager sessionManager;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        sessionManager = new SessionManager(getContext());
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -70,12 +64,13 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
             vendor = (VendorList) bundle.getSerializable("data");
             str_process_id = String.valueOf(vendor.getProccessId());
         }
+        sessionManager = new SessionManager(mcontext);
         init(view);
         return view;
     }
 
     private void init(View view) {
-        DashboardActivity.settitle(Constants.TITLE_BANK_DETAILS);
+//        DashboardActivity.settitle(Constants.TITLE_BANK_DETAILS);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
@@ -108,13 +103,11 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
     }
 
 
-
-
     @Override
     public void onResume() {
         super.onResume();
         getBankDetails();
-        DashboardActivity.settitle(Constants.TITLE_BANK_DETAILS);
+//        DashboardActivity.settitle(Constants.TITLE_BANK_DETAILS);
 
     }
 
@@ -133,7 +126,7 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
         dataObj.addProperty(Constants.KEY_AGENT_ID, sessionManager.getAgentID());
 
         Retrofit retrofit = ApiClient.getClient();
-        retrofit.create(ApiInterface.class).getBankDetails("Bearer "+sessionManager.getToken(),dataObj).enqueue(new Callback<BankDetailResp>() {
+        retrofit.create(ApiInterface.class).getBankDetails("Bearer " + sessionManager.getToken(), dataObj).enqueue(new Callback<BankDetailResp>() {
             @Override
             public void onResponse(Call<BankDetailResp> call, retrofit2.Response<BankDetailResp> response) {
                 if (response.isSuccessful()) {
@@ -158,11 +151,10 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
                         } else if (response.code() == 405) {
                             mSwipeRefreshLayout.setRefreshing(false);
                             sessionManager.logoutUser(getContext());
-                        }
-                        else if (response.code() == 411) {
+                        } else if (response.code() == 411) {
                             mSwipeRefreshLayout.setRefreshing(false);
                             sessionManager.logoutUser(getContext());
-                        }else {
+                        } else {
                             mSwipeRefreshLayout.setRefreshing(false);
                             Toast.makeText(getContext(), response.body().getResponse(), Toast.LENGTH_LONG).show();
                         }
@@ -196,7 +188,7 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragment.setArguments(bundle);
-            fragmentTransaction.add(R.id.content_main, cFragment);
+            fragmentTransaction.add(R.id.rvMain, cFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -208,4 +200,6 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
     public void onRefresh() {
         getBankDetails();
     }
+
+
 }

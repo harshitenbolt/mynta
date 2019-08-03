@@ -33,9 +33,22 @@ public class Datum {
     @SerializedName("created_at")
     @Expose
     private String createdAt;
+    @SerializedName("created_at_format")
+    @Expose
+    private String createdatformat;
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+
+    public String getCreatedatformat() {
+
+        return createdatformat;
+    }
+
+    public void setCreatedatformat(String createdatformat) {
+        this.createdatformat = createdatformat;
+    }
+
     @SerializedName("attachment_url")
     @Expose
     private String attachmentUrl;

@@ -3,175 +3,173 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_height="match_parent"
     tools:context=".activity.ChangeMobileActivity">
+
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <ImageView
             android:id="@+id/iv_back_process"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:srcCompat="@drawable/ic_arrow_back_black_24dp"
-            />
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/back" />
 
         <TextView
             android:id="@+id/tv_title_Process"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            android:fontFamily="@font/rb_medium"
-            android:gravity="start|center"
-            android:padding="5dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montesemibold"
+            android:gravity="center"
+            android:paddingRight="@dimen/_45sdp"
             android:text="Change Mobile"
-            android:textColor="@color/colorWhite"
-            android:textSize="20dp" />
-    </android.support.v7.widget.Toolbar>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cvfirst"
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- **** Place Your Content Here **** -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_3sdp"
+            android:background="@drawable/toolbarshadow" />
+
+    </FrameLayout>
+
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/_17sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_17sdp"
+        android:layout_marginBottom="@dimen/_35sdp"
+        android:clipToPadding="true"
+
+        app:cardCornerRadius="@dimen/_8sdp">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar"
-            android:visibility="visible"
-            android:layout_margin="@dimen/margin_10dp"
-            android:background="@color/colorWhite"
-            app:cardElevation="5dp">
+            android:orientation="vertical"
+            android:padding="@dimen/_15sdp">
 
-            <ScrollView
-                android:id="@+id/svMain"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <FrameLayout
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="@dimen/_95sdp"
+                    android:src="@drawable/mobileauthentication" />
 
-                    <RelativeLayout
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_25sdp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_2sdp"
+                        android:src="@drawable/caution" />
+
+                    <TextView
+                        style="@style/TextviewwithoutSize"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="3dp">
+                        android:layout_marginLeft="@dimen/_4sdp"
+                        android:fontFamily="@font/montelight"
+                        android:text="@string/o_paper_will_send_one_time_password"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_11sdp" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/margin_10dp"
-                            android:orientation="vertical">
+                </LinearLayout>
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:src="@drawable/mobile" />
+            </LinearLayout>
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/rb_medium"
-                                android:gravity="center"
-                                android:visibility="gone"
-                                android:paddingBottom="10dp"
-                                android:text="Mobile Connected to Aadhaar"
-                                android:textColor="@color/colorDarkBlack" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/rb_medium"
-                                android:gravity="center"
-                                android:paddingBottom="10dp"
-                                android:text="Please provide mobile number"
-                                android:textColor="@color/colorDarkBlack"
-                                android:textSize="@dimen/font_login" />
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="horizontal"
-                                android:paddingLeft="25dp"
-                                android:paddingRight="25dp">
-
-                                <EditText
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:enabled="false"
-                                    android:fontFamily="@font/rb_medium"
-                                    android:inputType="phone"
-                                    android:maxLength="10"
-                                    android:maxLines="1"
-                                    android:padding="15dp"
-                                    android:text="+91"
-                                    android:textColor="@color/colorDarkBlack" />
-
-                                <EditText
-                                    android:id="@+id/edit_mobile"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/rb_regular"
-                                    android:hint="0000000000"
-                                    android:inputType="phone"
-                                    android:maxLength="10"
-                                    android:maxLines="1"
-                                    android:padding="15dp"
-                                    android:textColor="@color/colorDarkBlack"
-                                    android:textColorHint="@color/colorDarkBlack" />
+                <TextView
+                    style="@style/TextviewwithoutSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/montesemibold"
+                    android:gravity="top"
+                    android:text="@string/please_enter_store_owner_mobile_number"
+                    android:textColor="@color/colorYellow"
+                    android:textSize="@dimen/_11sdp" />
 
 
-                            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
+                    <EditText
+                        android:id="@+id/edit_mobile"
+                        style="@style/App_EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:hint="Enter mobile"
+                        android:inputType="phone"
+                        android:maxLength="10" />
+                </LinearLayout>
 
-                            <android.support.design.widget.FloatingActionButton
-                                android:id="@+id/btn_next"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="bottom|center_horizontal"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-                                android:layout_marginBottom="50dp"
-                                android:layout_marginTop="@dimen/margin_80dp"
-                                android:tint="@android:color/white"
-                                android:visibility="gone"
-                                app:backgroundTint="@color/colorPrimary"
-                                app:srcCompat="@drawable/ic_arrow_right_black" />
-                        </LinearLayout>
+                    <Button
+                        android:id="@+id/btn_next"
+                        style="@style/Button_withGreen"
+                        android:layout_width="match_parent"
+                        android:text="SEND OTP" />
+                </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/txt_show_msg_sucess"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#A5D6A7"
-                            android:gravity="center"
-                            android:padding="15dp"
-                            android:text="Sucessfully Done"
-                            android:textColor="#1E6023"
-                            android:visibility="gone" />
+                <TextView
+                    android:id="@+id/txt_show_msg_sucess"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#A5D6A7"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="Sucessfully Done"
+                    android:textColor="#1E6023"
+                    android:visibility="gone" />
 
-                        <TextView
-                            android:id="@+id/txt_show_msg_fail"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="#FFCDD2"
-                            android:gravity="center"
-                            android:padding="15dp"
-                            android:text="Sucessfully Done"
-                            android:textColor="#F44336"
-                            android:visibility="gone" />
-                    </RelativeLayout>
+                <TextView
+                    android:id="@+id/txt_show_msg_fail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#FFCDD2"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="Sucessfully Done"
+                    android:textColor="#F44336"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
 
-                </FrameLayout>
-            </ScrollView>
-        </android.support.v7.widget.CardView>
-
-    </LinearLayout>
-
+    </android.support.v7.widget.CardView>
 </LinearLayout>

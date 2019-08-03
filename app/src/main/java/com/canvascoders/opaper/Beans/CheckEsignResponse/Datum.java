@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Datum {
 
+    @SerializedName("if_gst")
+    @Expose
+    private String ifGst;
     @SerializedName("proccess_id")
     @Expose
     private String proccessId;
@@ -15,6 +18,14 @@ public class Datum {
     @SerializedName("screen_msg")
     @Expose
     private String screenMsg;
+
+    public String getIfGst() {
+        return ifGst;
+    }
+
+    public void setIfGst(String ifGst) {
+        this.ifGst = ifGst;
+    }
 
     public String getProccessId() {
         return proccessId;

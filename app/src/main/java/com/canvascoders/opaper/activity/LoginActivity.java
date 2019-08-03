@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_new);
 
         gps = new GPSTracker(LoginActivity.this);
         initView();
@@ -132,10 +132,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mProgressDialog = new ProgressDialog(LoginActivity.this);
         mProgressDialog.setMessage("Please wait authenticating store executive");
+        mProgressDialog.setCancelable(false);
 
-        edt_email_id = (EditText) findViewById(R.id.edt_email);
-        edt_password = (EditText) findViewById(R.id.edit_password);
-        btn_login = (Button) findViewById(R.id.btn_login);
+        edt_email_id = (EditText) findViewById(R.id.etEmail);
+        edt_password = (EditText) findViewById(R.id.etPassword);
+        btn_login = (Button) findViewById(R.id.btLogin);
 
         edt_email_id.setTextSize(TypedValue.COMPLEX_UNIT_PX, 11f * AppApplication.dip);
         edt_password.setTextSize(TypedValue.COMPLEX_UNIT_PX, 11f * AppApplication.dip);
@@ -378,7 +379,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_login) {
+        if (v.getId() == R.id.btLogin) {
             Constants.hideKeyboardwithoutPopulate(LoginActivity.this);
             getPermitionGrant(v);
         }
@@ -450,6 +451,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
+        finishAffinity();
     }
 }

@@ -29,7 +29,6 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_rate_type"
                     android:layout_width="match_parent"
-
                     android:layout_height="wrap_content" />
 
                 <LinearLayout
@@ -62,23 +61,26 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:orientation="horizontal">
 
-                <android.support.design.widget.FloatingActionButton
+                <Button
                     android:id="@+id/btn_next"
-                    android:layout_width="wrap_content"
+                    style="@style/Button_withGreen"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/margin_20dp"
                     android:layout_margin="10dp"
+                    android:text="UPDATE"
+                    android:layout_weight="1"
                     android:tint="@android:color/white"
                     app:backgroundTint="@color/colorPrimary"
                     app:srcCompat="@drawable/ic_arrow_right_black" />
 
                 <Button
                     android:id="@+id/btn_skip_to_addendum"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/margin_10dp"

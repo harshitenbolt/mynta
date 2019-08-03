@@ -187,7 +187,7 @@ public class CropImage2Activity extends AppCompatActivity {
         File imageDir = null;
         File extStorageDir = Environment.getExternalStorageDirectory();
         if (extStorageDir.canWrite()) {
-            imageDir = new File(extStorageDir.getPath() + "/simplecropview");
+            imageDir = new File(extStorageDir.getPath() + "/.simplecropview");
         }
         if (imageDir != null) {
             if (!imageDir.exists()) {

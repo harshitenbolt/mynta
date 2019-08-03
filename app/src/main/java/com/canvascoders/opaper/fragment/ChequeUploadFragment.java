@@ -2,11 +2,13 @@ package com.canvascoders.opaper.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +22,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +46,7 @@ import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.DialogUtil;
 import com.canvascoders.opaper.utils.DialogueUtils;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
@@ -85,12 +89,14 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     Pattern pattern = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}");
     ProgressDialog progressDialog;
     private String TAG = "ChequeUpload";
-    private Button btn_next;
-    private String cancelChequeImagepath = "";
+    private Button btExtract;
+    private String cancelChequeImagepath = "", imagecamera = "";
     private Uri imgURI;
+    private static Dialog dialog;
     GPSTracker gps;
-    private String lattitude="",longitude="";
-    private ImageView btn_cheque_card;
+    private String lattitude = "", longitude = "";
+    private TextView btn_cheque_card;
+    private ImageView ivChequeImage;
     private ImageView btn_cheque_card_select;
     private SessionManager sessionManager;
     private boolean isPanSelected = false;
@@ -98,6 +104,9 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     private TextRecognizer detector;
     Context mcontext;
     View view;
+    String bank_name = "";
+    String bank_branch = "";
+    String branch_address = "";
     private RequestPermissionHandler requestPermissionHandler;
     private CheckBox cd_aggre_terms_condition;
     private String str_process_id;
@@ -147,33 +156,6 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!AppApplication.networkConnectivity.isNetworkAvailable()) {
-
-            Constants.ShowNoInternet(mcontext);
-
-        }
-        edit_ifsc.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().length() > 5) {
-                    getBankDetails(s.toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
 
     private void showMSG(boolean b, String msg) {
         final TextView txt_show_msg_sucess = (TextView) view.findViewById(R.id.txt_show_msg_sucess);
@@ -200,37 +182,40 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
     private void initView() {
 
-        btn_next = view.findViewById(R.id.btn_next);
-        btn_cheque_card = (ImageView) view.findViewById(R.id.btn_cheque_cards);
-        btn_cheque_card_select = (ImageView) view.findViewById(R.id.btn_cheque_cards_done);
-        cd_aggre_terms_condition = view.findViewById(R.id.cbAgreeTC);
+        btExtract = view.findViewById(R.id.btExtract);
+        btn_cheque_card = (TextView) view.findViewById(R.id.tvClickCheque);
+        btn_cheque_card_select = (ImageView) view.findViewById(R.id.tvClickChequeSelected);
+        btn_cheque_card_select.setOnClickListener(this);
+        ivChequeImage = view.findViewById(R.id.ivChequeImage);
+        /*cd_aggre_terms_condition = view.findViewById(R.id.cbAgreeTC);
         edit_ac_no = (EditText) view.findViewById(R.id.edit_ac_no);
         edit_ac_name = (EditText) view.findViewById(R.id.edit_ac_name);
         edit_ifsc = (EditText) view.findViewById(R.id.edit_ifsc);
         edit_bank_name = (EditText) view.findViewById(R.id.edit_bank_name);
         edit_bank_branch_name = (EditText) view.findViewById(R.id.edit_bank_branch_name);
-        edit_bank_address = (EditText) view.findViewById(R.id.edit_bank_address);
+        edit_bank_address = (EditText) view.findViewById(R.id.edit_bank_address);*/
 
-        edit_bank_name.setEnabled(false);
+       /* edit_bank_name.setEnabled(false);
         edit_bank_branch_name.setEnabled(false);
         edit_bank_address.setEnabled(false);
         edit_ac_no.setEnabled(false);
         edit_ac_name.setEnabled(false);
         edit_ifsc.setEnabled(false);
+*/
 
-
-        btn_next.setOnClickListener(this);
+        btExtract.setOnClickListener(this);
         btn_cheque_card.setOnClickListener(this);
         detector = new TextRecognizer.Builder(mcontext).build();
         progressDialog = new ProgressDialog(mcontext);
+        progressDialog.setCancelable(false);
 
 
-        setButtonImage();
+//        setButtonImage();
 
 
     }
 
-    private void setButtonImage() {
+   /* private void setButtonImage() {
         if (isPanSelected == true) {
             btn_next.setBackground(getResources().getDrawable(R.drawable.btn_active));
             btn_next.setEnabled(true);
@@ -242,7 +227,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             btn_next.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
             btn_cheque_card_select.setVisibility(View.GONE);
         }
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -254,11 +239,15 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_next) {
+        if (v.getId() == R.id.btExtract) {
             Constants.hideKeyboardwithoutPopulate(getActivity());
             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
 
-                if (validation()) storeCheque();/*{
+                if (validation())
+                    CallMerekApi();
+
+                /*storeCheque()*/
+                ;/*{
                     DialogueUtils.failedPayment(getActivity(), new DialogListner() {
                         @Override
                         public void onClickPositive() {
@@ -291,10 +280,12 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                 Constants.ShowNoInternet(getActivity());
             }
 
-        } else if (v.getId() == R.id.btn_cheque_cards) {
+        } else if (v.getId() == R.id.tvClickCheque) {
 
             capture_cheque_image();
 
+        } else if (v.getId() == R.id.tvClickChequeSelected) {
+            capture_cheque_image();
         }
 
     }
@@ -326,27 +317,9 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     }
 
     private boolean validation() {
-        if (TextUtils.isEmpty(edit_ac_no.getText().toString())) {
-            edit_ac_no.requestFocus();
-            edit_ac_no.setError("Provide Accout Number");
-            return false;
-        }
-        if (TextUtils.isEmpty(edit_ac_name.getText().toString())) {
-            edit_ac_name.requestFocus();
-            edit_ac_name.setError("Provide Accout Name");
-            showMSG(false, "Provide Accout Name");
-            return false;
-        }
-        if (TextUtils.isEmpty(edit_ifsc.getText().toString())) {
-            edit_ifsc.requestFocus();
-            showMSG(false, "Provide IFSCode");
-            return false;
-        }
-        if (!cd_aggre_terms_condition.isChecked()) {
-            showMSG(false, "Please verify all details with physical evidence.");
-            return false;
-        }
+
         if (!isPanSelected) {
+            Toast.makeText(mcontext, "Please select Cheque Image", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -359,104 +332,33 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent data) {
 
-        //super.onActivityResult(requestCode, resultCode, data);
-       /* if (requestCode == IMAGE_CHEQUE && resultCode == RESULT_OK) {
-            if (requestCode == IMAGE_CHEQUE) {
-
-
-                    Constants.hideKeyboardwithoutPopulate(getActivity());
-
-
-                    Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                    cancelChequeImagepath = ImagePicker.getBitmapPath(bitmap, getActivity());
-
-                    HashMap<String, String> fileMap = new HashMap<>();
-                    fileMap.put("image", cancelChequeImagepath);
-                    final ProgressDialog pd = new ProgressDialog(getActivity());
-                    pd.setTitle("Loading . . .");
-                    new ImageUploadTask(OCRMEREK, null, fileMap, new OnTaskCompleted() {
-                        @Override
-                        public void onTaskCompleted(String result) {
-                            pd.dismiss();
-                            try {
-                                JSONObject jsonObject = new JSONObject(result);
-                                if (jsonObject.optInt("success") == 1) {
-                                    JSONObject dataObj = jsonObject.getJSONObject("data");
-                                    if (dataObj != null) {
-                                        String ifscCode = dataObj.optString("ifsc_code");
-                                        String accountNumber = dataObj.optString("account_number");
-                                        String bank_name = dataObj.optString("bank_name");
-                                        String bank_branch = dataObj.optString("bank_branch");
-                                        String branch_address = dataObj.optString("branch_address");
-
-                                        edit_ac_no.setText(accountNumber);
-                                        edit_ifsc.setText(ifscCode);
-                                        edit_bank_name.setText(bank_name);
-                                        edit_bank_branch_name.setText(bank_branch);
-                                        edit_bank_address.setText(branch_address);
-
-                                        JSONArray payeeNames = dataObj.optJSONArray("payee_name");
-                                        if (payeeNames != null && payeeNames.length() > 0) {
-                                            String payeeName = payeeNames.getString(0);
-                                            edit_ac_name.setText(payeeName);
-                                        }
-                                        request_id = jsonObject.optInt("request_id");
-                                    }
-                                } else {
-                                    Toast.makeText(mcontext, "There is some issue retrieving data from cheque image, Reselect image or enter manually", Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                Toast.makeText(mcontext, "There is some issue retrieving data from cheque image, Reselect image or enter manually", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }).execute();
-
-
-
-
-                    Glide.with(ChequeUploadFragment.this).load(Uri.fromFile(new File(cancelChequeImagepath))).placeholder(R.drawable.placeholder)
-                            .into(btn_cheque_card);
-
-                    isPanSelected = true;
-
-
-                }
-                setButtonImage();
-
-            }
-
-        }*/
-        /*if (requestCode == IMAGE_CHEQUE && resultCode == Activity.RESULT_OK) {
-            CropImage.activity(Uri.fromFile(new File(data.getStringExtra(MyCameraActivity.FILEURI)))).start(getContext(), this);
-
-        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-
-                CallMerekApi(data);
-            }
-        }*/
-
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_CHEQUE) {
-
+                deleteImages();
                 Constants.hideKeyboardwithoutPopulate(getActivity());
                 Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                cancelChequeImagepath = ImagePicker.getBitmapPath(bitmap, getActivity());
-               /* Glide.with(getActivity()).load(panImagepath).into(btn_pan_card);
-                isPanSelected = true;
-                btn_pan_card_select.setVisibility(View.VISIBLE);
-                Log.e("Pan image path", panImagepath);*/
+                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(cancelChequeImagepath)).toString());
+                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
                 startActivityForResult(intent, CROPPED_IMAGE);
 
-                //new ResizeAsync().execute();
+
             }
             if (requestCode == CROPPED_IMAGE) {
                 imgURI = Uri.parse(data.getStringExtra("uri"));
                 cancelChequeImagepath = RealPathUtil.getPath(getActivity(), imgURI);
-                CallMerekApi();
+                Glide.with(getActivity()).load(cancelChequeImagepath).placeholder(R.drawable.placeholder)
+                        .into(ivChequeImage);
+                isPanSelected = true;
+                btn_cheque_card.setVisibility(View.GONE);
+                btn_cheque_card_select.setVisibility(View.VISIBLE);
+                File casted_image6 = new File(imagecamera);
+                if (casted_image6.exists()) {
+                    casted_image6.delete();
+                }
+
+
             }
         }
     }
@@ -464,16 +366,12 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     int tryCount = 0;
 
     public void CallMerekApi() {
-        /*CropImage.ActivityResult result = CropImage.getActivityResult(data);
-        Constants.hideKeyboardwithoutPopulate(getActivity());
-        imgURI = result.getUri();
-        cancelChequeImagepath = imgURI.getPath();*/
-
 
         HashMap<String, String> fileMap = new HashMap<>();
         fileMap.put("image", cancelChequeImagepath);
         final ProgressDialog pd = new ProgressDialog(getActivity());
         pd.setTitle("Loading . . .");
+        pd.show();
         Log.e("Merak", "API Called");
         new ImageUploadTask(Constants.OCRMEREK, null, fileMap, new OnTaskCompleted() {
             @Override
@@ -481,62 +379,106 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                 Log.e("MERAK RESULT", tryCount + "::" + result);
                 pd.dismiss();
                 try {
-                    edit_ac_no.setEnabled(true);
-                    edit_ac_name.setEnabled(true);
-                    edit_ifsc.setEnabled(true);
-                    edit_bank_name.setEnabled(true);
-                    edit_bank_branch_name.setEnabled(true);
-                    edit_bank_address.setEnabled(true);
 
                     JSONObject jsonObject = new JSONObject(result);
                     if (jsonObject.optInt("success") == 1) {
                         JSONObject dataObj = jsonObject.getJSONObject("data");
                         if (dataObj != null) {
-                            String ifscCode = dataObj.optString("ifsc_code");
+                            String ifsccode = "";
+                            ifsccode = dataObj.optString("ifsc_code");
+                            getBankDetails(ifsccode);
                             String accountNumber = dataObj.optString("account_number");
-                            String bank_name = dataObj.optString("bank_name");
-                            String bank_branch = dataObj.optString("bank_branch");
-                            String branch_address = dataObj.optString("branch_address");
+                            bank_name = dataObj.optString("bank_name");
+                            bank_branch = dataObj.optString("bank_branch");
+                            branch_address = dataObj.optString("branch_address");
+                            String payeeName = "";
                             try {
                                 request_id = jsonObject.optInt("request_id");
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-                            edit_ac_no.setText(accountNumber);
+                            JSONArray payeeNames = dataObj.optJSONArray("payee_name");
+                            if (payeeNames != null && payeeNames.length() > 0) {
+                                payeeName = payeeNames.getString(0);
+                                // edit_ac_name.setText(payeeName);
+                            }
+
+                            DialogUtil.chequeDetail(getActivity(), accountNumber, payeeName, ifsccode, str_process_id, bank_name, bank_branch, branch_address, new DialogListner() {
+                                @Override
+                                public void onClickPositive() {
+
+                                }
+
+                                @Override
+                                public void onClickNegative() {
+
+                                }
+
+                                @Override
+                                public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                                }
+
+                                @Override
+                                public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+                                    storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
+                                }
+                            });
+                           /* edit_ac_no.setText(accountNumber);
                             edit_ifsc.setText(ifscCode);
                             edit_bank_name.setText(bank_name);
                             edit_bank_branch_name.setText(bank_branch);
-                            edit_bank_address.setText(branch_address);
+                            edit_bank_address.setText(branch_address);*/
 
-                            JSONArray payeeNames = dataObj.optJSONArray("payee_name");
-                            if (payeeNames != null && payeeNames.length() > 0) {
-                                String payeeName = payeeNames.getString(0);
-                                edit_ac_name.setText(payeeName);
-                            }
+
                         }
                     } else {
+                        DialogUtil.chequeDetail(getActivity(), "", "", "", str_process_id, "", "", "", new DialogListner() {
+                            @Override
+                            public void onClickPositive() {
+
+                            }
+
+                            @Override
+                            public void onClickNegative() {
+
+                            }
+
+                            @Override
+                            public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+                                storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
+                            }
+                        });
                         Toast.makeText(getActivity(), "There is some issue retrieving data from cheque image, Reselect image or enter manually", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
+                    pd.dismiss();
                     e.printStackTrace();
+                    cancelChequeImagepath = "";
+                    Glide.with(getActivity()).load(cancelChequeImagepath).placeholder(R.drawable.checkimage)
+                            .into(ivChequeImage);
+                    isPanSelected = false;
+                    btn_cheque_card.setVisibility(View.VISIBLE);
+                    btn_cheque_card_select.setVisibility(View.GONE);
                     Toast.makeText(getActivity(), "There is some issue retrieving data from cheque image, Reselect image or enter manually", Toast.LENGTH_SHORT).show();
+
                 }
-//                tryCount++;
-//                if (tryCount <= 100) {
-//                    CallMerekApi(data);
-//                }
+
             }
         }).execute();
 
-//                OCRGetDetails(imgURI);
         Glide.with(getActivity()).load(cancelChequeImagepath).placeholder(R.drawable.placeholder)
-                .into(btn_cheque_card);
+                .into(ivChequeImage);
         isPanSelected = true;
 
-        setButtonImage();
     }
 
-    public void storeCheque() {
+    public void storeCheque(String acname, String payeename, String ifsc, String bankname, String branchname, String branchAddress) {
         gps = new GPSTracker(getActivity());
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
@@ -545,12 +487,8 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             longitude = String.valueOf(gps.getLongitude());
             Log.e("Lattitude", lattitude);
             Log.e("Longitude", longitude);
-
-
         } else {
-            // can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
+
             gps.showSettingsAlert();
         }
 
@@ -567,9 +505,9 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             params.put(Constants.PARAM_PROCESS_ID, str_process_id);
             params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-            params.put(Constants.PARAM_AC_NAME, "" + edit_ac_name.getText());
-            params.put(Constants.PARAM_BANK_AC, "" + edit_ac_no.getText());
-            params.put(Constants.PARAM_IFSC, "" + edit_ifsc.getText());
+            params.put(Constants.PARAM_AC_NAME, "" + payeename);
+            params.put(Constants.PARAM_BANK_AC, "" + acname);
+            params.put(Constants.PARAM_IFSC, "" + ifsc);
             params.put(Constants.PARAM_REQUEST_ID, "" + request_id);
             params.put(Constants.PARAM_LATITUDE, lattitude);
             params.put(Constants.PARAM_LONGITUDE, longitude);
@@ -593,6 +531,8 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                             CommonResponse chequeDetail = response.body();
 
                             if (chequeDetail.getResponseCode() == 200) {
+                                deleteImages();
+                                DialogUtil.dismiss();
                                 showAlert(response.body().getResponse());
                             }
                             if (chequeDetail.getResponseCode() == 411) {
@@ -603,18 +543,18 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                                 if (chequeDetail.getValidation() != null) {
                                     Validation validation = chequeDetail.getValidation();
                                     if (validation.getIfsc() != null && validation.getIfsc().length() > 0) {
-                                        edit_ifsc.setError(validation.getIfsc());
-                                        edit_ifsc.requestFocus();
+                                        DialogUtil.etIfscCode.setError(validation.getIfsc());
+                                        DialogUtil.etIfscCode.requestFocus();
                                         // return false;
                                     }
                                     if (validation.getBankAc() != null && validation.getBankAc().length() > 0) {
-                                        edit_ac_no.setError(validation.getBankAc());
-                                        edit_ac_no.requestFocus();
+                                        DialogUtil.etChequeNumber.setError(validation.getBankAc());
+                                        DialogUtil.etChequeNumber.requestFocus();
 
                                     }
                                     if (validation.getAcName() != null && validation.getAcName().length() > 0) {
-                                        edit_ac_name.setError(validation.getAcName());
-                                        edit_ac_name.requestFocus();
+                                        DialogUtil.etPayeeName.setError(validation.getAcName());
+                                        DialogUtil.etPayeeName.requestFocus();
 
                                         // Toast.makeText(getActivity(),validation.getAgentId(),Toast.LENGTH_LONG).show();
                                     }
@@ -639,8 +579,8 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
                                 // ErrorResponsePanCard errorResponsePanCard = response.body();
                             } else {
-
-                                Constants.showAlert(edit_ac_name.getRootView(), chequeDetail.getResponse(), true);
+                                Toast.makeText(getActivity(), chequeDetail.getResponse(), Toast.LENGTH_LONG).show();
+                                // Constants.showAlert(edit_ac_name.getRootView(), chequeDetail.getResponse(), true);
                             }
 
                         } else {
@@ -648,7 +588,6 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                         }
                     } catch (Exception e) {
                         progressDialog.dismiss();
-                        Toast.makeText(mcontext, response.message(), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
 
@@ -669,17 +608,46 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
 
     private void showAlert(String msg) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mcontext);
-        alertDialog.setTitle("Cheque Details");
-        alertDialog.setMessage(msg);
-        alertDialog.setCancelable(false);
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
 
+        Button btSubmit;
+        TextView tvMessage, tvTitle;
+
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mcontext);
+        dialog = new Dialog(getActivity(), R.style.DialogLSideBelow);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_success);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        btSubmit = dialog.findViewById(R.id.btSubmit);
+        tvMessage = dialog.findViewById(R.id.tvMessage);
+        tvTitle = dialog.findViewById(R.id.tvTitle);
+        tvTitle.setText("Cheque Details");
+
+        tvMessage.setText(msg);
+
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
                 commanFragmentCallWithoutBackStack(new InfoFragment());
+
             }
         });
-        alertDialog.show();
+
+        dialog.setCancelable(false);
+
+        dialog.show();
     }
 
     public void getBankDetails(String ifsc) {
@@ -703,15 +671,14 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                             if (jsonObject.has("responseCode")) {
                                 if (jsonObject.getInt("responseCode") == 200) {
                                     JSONObject result = jsonObject.getJSONArray("data").getJSONObject(0);
-                                    edit_bank_name.setText(result.getString("bank_name").toString());
-                                    edit_bank_branch_name.setText(result.getString("bank_branch_name").toString());
-                                    edit_bank_address.setText(result.getString("bank_address").toString());
+                                    bank_name = result.getString("bank_name").toString();
+                                    bank_branch = result.getString("bank_branch_name").toString();
+                                    branch_address = result.getString("bank_address").toString();
                                 } else if (jsonObject.getInt("responseCode") == 405) {
                                     sessionManager.logoutUser(mcontext);
-                                }
-                                else if (jsonObject.getInt("responseCode")==411){
+                                } else if (jsonObject.getInt("responseCode") == 411) {
                                     sessionManager.logoutUser(mcontext);
-                                }else {
+                                } else {
                                 }
                             }
                         } else {
@@ -742,7 +709,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.content_main, cFragment);
+            fragmentTransaction.replace(R.id.rvContentMainOTP, cFragment);
             fragmentTransaction.commit();
 
         }
@@ -772,4 +739,44 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
         }
 
     }*/
+
+
+    @Override
+    public void onResume() {
+        if (!AppApplication.networkConnectivity.isNetworkAvailable()) {
+            Constants.ShowNoInternet(mcontext);
+        }
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    deleteImages();
+
+                    getActivity().finish();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+
+        super.onResume();
+    }
+
+    private void deleteImages() {
+
+        File casted_image = new File(cancelChequeImagepath);
+        if (casted_image.exists()) {
+            casted_image.delete();
+        }
+
+        File casted_image6 = new File(imagecamera);
+        if (casted_image6.exists()) {
+            casted_image6.delete();
+        }
+
+    }
 }

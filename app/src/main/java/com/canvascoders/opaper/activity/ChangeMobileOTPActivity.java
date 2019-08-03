@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.ChangeMobileResponse.ChangeMobileResponse;
 import com.canvascoders.opaper.Beans.otp.GetOTP;
+import com.canvascoders.opaper.OtpView.PinView;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
@@ -47,10 +49,10 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
     private EditText edt_otp_2;
     private EditText edt_otp_3;
     private EditText edt_otp_4;
-    private FloatingActionButton btn_next;
+    private Button btn_next;
     private SessionManager sessionManager;
     private String TAG = "OTPActivity";
-    private String otp, mobile,str_process_id;
+    private String otp, mobile, str_process_id;
     private TextView txt_mobile;
     private ProgressDialog mProgressDialog;
     private TextView tv_resent_otp;
@@ -58,8 +60,9 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
     private int countDown = 30;
     static TextView tv_title;
     private Toolbar toolbar;
+    private PinView pvOTP;
     private String processID;
-    private String lattitude="",longitude="";
+    private String lattitude = "", longitude = "";
     private int chqCount = 0;
     String status_page;
     ImageView ivBack;
@@ -95,71 +98,15 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
             }
         });
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        pvOTP = findViewById(R.id.secondPinView);
 
-        edt_otp_1 = (EditText) findViewById(R.id.edt_otp_1);
-        edt_otp_2 = (EditText) findViewById(R.id.edt_otp_2);
-        edt_otp_3 = (EditText) findViewById(R.id.edt_otp_3);
-        edt_otp_4 = (EditText) findViewById(R.id.edt_otp_4);
-        edt_otp_1.addTextChangedListener(this);
-        edt_otp_2.addTextChangedListener(this);
-        edt_otp_3.addTextChangedListener(this);
-        edt_otp_4.addTextChangedListener(this);
+
         txt_mobile = (TextView) findViewById(R.id.tv_mobile);
-        btn_next = (FloatingActionButton) findViewById(R.id.btn_next);
+        btn_next = (Button) findViewById(R.id.btn_next);
         txt_mobile.setText("+91 " + mobile);
-        ImageView img_edit_mobile = (ImageView) findViewById(R.id.img_edit_mobile);
-        img_edit_mobile.setOnClickListener(this);
+        TextView tvEditMobile = (TextView) findViewById(R.id.tvChangeMobile);
+        tvEditMobile.setOnClickListener(this);
         btn_next.setOnClickListener(this);
-
-        edt_otp_1.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-
-            public boolean onKey(View view, int keycode, KeyEvent keyEvent) {
-                String first = edt_otp_1.getText().toString().trim();
-                if (keycode == KeyEvent.KEYCODE_DEL && keyEvent.getAction() == 0 && first.trim().length() == 0) {
-                    edt_otp_1.setText("");
-                    edt_otp_1.requestFocus();
-                }
-                return false;
-            }
-        });
-        edt_otp_2.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-
-            public boolean onKey(View view, int keycode, KeyEvent keyEvent) {
-                String second = edt_otp_2.getText().toString().trim();
-                if (keycode == KeyEvent.KEYCODE_DEL && keyEvent.getAction() == 0 && second.trim().length() == 0) {
-                    edt_otp_2.setText("");
-                    edt_otp_1.requestFocus();
-
-                }
-                return false;
-            }
-        });
-        edt_otp_3.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-
-            public boolean onKey(View view, int keycode, KeyEvent keyEvent) {
-                String three = edt_otp_3.getText().toString().trim();
-                if (keycode == KeyEvent.KEYCODE_DEL && keyEvent.getAction() == 0 && three.trim().length() == 0) {
-                    edt_otp_3.setText("");
-                    edt_otp_2.requestFocus();
-                }
-                return false;
-            }
-        });
-        edt_otp_4.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-
-            public boolean onKey(View view, int keycode, KeyEvent keyEvent) {
-                String four = edt_otp_4.getText().toString().trim();
-                if (keycode == KeyEvent.KEYCODE_DEL && keyEvent.getAction() == 0 && four.trim().length() == 0) {
-                    edt_otp_4.setText("");
-                    edt_otp_3.requestFocus();
-                }
-                return false;
-            }
-        });
         tv_resent_otp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -227,7 +174,7 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
         user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
 
         Mylogger.getInstance().Logit(TAG, user.toString());
-        ApiClient.getClient().create(ApiInterface.class).sendOTP("Bearer "+sessionManager.getToken(),user).enqueue(new Callback<GetOTP>() {
+        ApiClient.getClient().create(ApiInterface.class).sendOTP("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetOTP>() {
             @Override
             public void onResponse(Call<GetOTP> call, Response<GetOTP> response) {
                 mProgressDialog.dismiss();
@@ -241,8 +188,7 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
                         showMSG(false, getOTP.getResponse());
                         if (getOTP.getResponseCode() == 405) {
                             sessionManager.logoutUser(ChangeMobileOTPActivity.this);
-                        }
-                        else if (getOTP.getResponseCode()==411){
+                        } else if (getOTP.getResponseCode() == 411) {
                             sessionManager.logoutUser(ChangeMobileOTPActivity.this);
                         }
                     }
@@ -286,7 +232,8 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
     public void onClick(View view) {
         if (view.getId() == R.id.btn_next) {
             if (validate(view)) {
-                String userOTp = edt_otp_1.getText().toString() + edt_otp_2.getText().toString() + edt_otp_3.getText().toString() + edt_otp_4.getText().toString();
+                //String userOTp = edt_otp_1.getText().toString() + edt_otp_2.getText().toString() + edt_otp_3.getText().toString() + edt_otp_4.getText().toString();
+                String userOTp = pvOTP.getText().toString();
                 if (userOTp.equals(otp)) {
                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                        /* GPSTracker gps = new GPSTracker(ChangeMobileOTPActivity.this);
@@ -310,11 +257,12 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
                         Constants.ShowNoInternet(this);
                     }
                 } else {
-                    edt_otp_1.setText("");
+                    /*edt_otp_1.setText("");
                     edt_otp_2.setText("");
                     edt_otp_3.setText("");
                     edt_otp_4.setText("");
-                    edt_otp_1.requestFocus();
+                    edt_otp_1.requestFocus();*/
+                    pvOTP.requestFocus();
                     showMSG(false, "OTP not matched");
                 }
             }
@@ -328,29 +276,28 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
 
             Map<String, String> params = new HashMap<String, String>();
 
-            params.put(Constants.PARAM_AGENT_ID,sessionManager.getAgentID());
+            params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
             params.put(Constants.PARAM_PROCESS_ID, str_process_id);
-            params.put(Constants.PARAM_MOBILE_NO,mobile);
+            params.put(Constants.PARAM_MOBILE_NO, mobile);
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
             mProgressDialog.setMessage("Please wait getting details...");
             mProgressDialog.show();
 
-            Call<ChangeMobileResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).changeMobile("Bearer " + sessionManager.getToken(),params);
+            Call<ChangeMobileResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).changeMobile("Bearer " + sessionManager.getToken(), params);
             callUpload.enqueue(new Callback<ChangeMobileResponse>() {
                 @Override
                 public void onResponse(Call<ChangeMobileResponse> call, Response<ChangeMobileResponse> response) {
                     mProgressDialog.dismiss();
-                    if(response.isSuccessful()){
+                    if (response.isSuccessful()) {
 
                         ChangeMobileResponse changeMobileResponse = response.body();
-                        if(changeMobileResponse.getResponseCode() == 200){
+                        if (changeMobileResponse.getResponseCode() == 200) {
                             Toast.makeText(ChangeMobileOTPActivity.this, changeMobileResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(ChangeMobileOTPActivity.this,MobileChangedSuccessActivity.class);
-                            i.putExtra("data",changeMobileResponse.getResponse());
+                            Intent i = new Intent(ChangeMobileOTPActivity.this, MobileChangedSuccessActivity.class);
+                            i.putExtra("data", changeMobileResponse.getResponse());
                             startActivity(i);
                             finish();
-                        }
-                        else{
+                        } else {
                             Toast.makeText(ChangeMobileOTPActivity.this, changeMobileResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -358,15 +305,15 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
 
                 @Override
                 public void onFailure(Call<ChangeMobileResponse> call, Throwable t) {
-                mProgressDialog.dismiss();
+                    mProgressDialog.dismiss();
                 }
             });
         }
-        }
+    }
 
 
     private boolean validate(View v) {
-        if (TextUtils.isEmpty(edt_otp_1.getText().toString())) {
+       /* if (TextUtils.isEmpty(edt_otp_1.getText().toString())) {
             edt_otp_1.requestFocus();
             showMSG(false, "Provide OTP");
             return false;
@@ -380,6 +327,12 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
             return false;
         } else if (TextUtils.isEmpty(edt_otp_4.getText().toString())) {
             edt_otp_4.requestFocus();
+            showMSG(false, "Provide OTP");
+            return false;
+        }*/
+
+
+        if (pvOTP.getText().toString().equalsIgnoreCase("")) {
             showMSG(false, "Provide OTP");
             return false;
         }

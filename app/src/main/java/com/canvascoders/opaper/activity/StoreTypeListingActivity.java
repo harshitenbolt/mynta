@@ -1,8 +1,13 @@
 package com.canvascoders.opaper.activity;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +32,8 @@ import com.canvascoders.opaper.adapters.RejectedStoreListAdapter;
 import com.canvascoders.opaper.adapters.StoreReListingAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.fragment.RateFragment;
+import com.canvascoders.opaper.fragment.TaskCompletedFragment2;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
@@ -69,7 +76,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
     ArrayList<StoreTypeBean> approvedStoreList;
     ArrayList<StoreTypeBean> rejectedStoreList;
     ArrayList<StoreTypeBean> neutralStoreList;
-
+    private static Dialog dialog;
     Button btn_update_store_details, btn_skip_to_addendum;
 
     LinearLayout llApproved, llRejected, llNeutral;
@@ -195,9 +202,9 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                         try {
 //                        float rate = Float.parseFloat(neutralStoreList.get(i).getRate());
 //                        if (rate > 0)
-                            if(neutralStoreList.get(i).getRate().equalsIgnoreCase("0")||neutralStoreList.get(i).getRate().equalsIgnoreCase("0.0")){
+                            if (neutralStoreList.get(i).getRate().equalsIgnoreCase("0") || neutralStoreList.get(i).getRate().equalsIgnoreCase("0.0")) {
                                 Toast.makeText(this, "Please enter valid rate", Toast.LENGTH_SHORT).show();
-                            }else{
+                            } else {
                                 jsonObject.addProperty("rate", "" + neutralStoreList.get(i).getRate());
                             }
 
@@ -228,14 +235,12 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rejectedStoreList.get(i).getStoreTypeId());
                 if (rejectedStoreList.get(i).getRate() != null && rejectedStoreList.get(i).getRate().length() > 0) {
-                    if(rejectedStoreList.get(i).getRate().equals("0")){
-                        Constants.showAlert(getWindow().getDecorView(),"Please enter valid amount",false);
+                    if (rejectedStoreList.get(i).getRate().equals("0")) {
+                        Constants.showAlert(getWindow().getDecorView(), "Please enter valid amount", false);
                         Toast.makeText(this, "Please enter valid amount", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                    jsonObject.addProperty("rate", rejectedStoreList.get(i).getRate());
-                }
-                else {
+                    } else
+                        jsonObject.addProperty("rate", rejectedStoreList.get(i).getRate());
+                } else {
                     Toast.makeText(StoreTypeListingActivity.this, "Issue with Rate:" + rejectedStoreList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -263,7 +268,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
         dataObj.add(Constants.KEY_STORES, jsonArray);
 
         Retrofit retrofit = ApiClient.getClient();
-        retrofit.create(ApiInterface.class).setStoreTypeListing("Bearer "+sessionManager.getToken(),dataObj).enqueue(new Callback<ResponseBody>() {
+        retrofit.create(ApiInterface.class).setStoreTypeListing("Bearer " + sessionManager.getToken(), dataObj).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
@@ -285,11 +290,9 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                                     showDialogApproval(jsonObject.optString("response"));
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(StoreTypeListingActivity.this);
-                                }
-                                else if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
+                                } else if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
                                     sessionManager.logoutUser(StoreTypeListingActivity.this);
-                                }
-                                else{
+                                } else {
                                     showDialogApproval2(jsonObject.optString("response"));
                                 }
                             } else if (response.code() == 202) {
@@ -325,7 +328,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
 
     public void showDialogApproval(String Msg) {
         // Display message in dialog box if you have not internet connection
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(StoreTypeListingActivity.this);
+       /* AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(StoreTypeListingActivity.this);
         alertDialogBuilder.setTitle("Approval Pending");
         alertDialogBuilder.setMessage(Msg);
         alertDialogBuilder.setCancelable(false);
@@ -334,12 +337,59 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
             public void onClick(DialogInterface arg0, int arg1) {
                 finish();
                 arg0.dismiss();
+                lkdsajdsaj
             }
         });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+*/
+
+        Button btSubmit;
+        TextView tvMessage, tvTitle;
+
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(this);
+        dialog = new Dialog(this, R.style.DialogLSideBelow);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_success);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        btSubmit = dialog.findViewById(R.id.btSubmit);
+        tvMessage = dialog.findViewById(R.id.tvMessage);
+        tvTitle = dialog.findViewById(R.id.tvTitle);
+        tvTitle.setText("Approval pending");
+
+        tvMessage.setText(Msg);
+
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TaskCompletedFragment2 taskCompletedFragment2 = new TaskCompletedFragment2();
+                taskCompletedFragment2.setMesssge(Msg);
+                commanFragmentCallWithoutBackStack(taskCompletedFragment2);
+                dialog.dismiss();
+
+
+            }
+        });
+
+        dialog.setCancelable(false);
+
+        dialog.show();
     }
+
+
     public void showDialogApproval2(String Msg) {
         // Display message in dialog box if you have not internet connection
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(StoreTypeListingActivity.this);
@@ -358,8 +408,6 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
     }
 
 
-
-
     private void getStoreListing(Integer proccessId) {
         JsonObject dataObj = new JsonObject();
         dataObj.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
@@ -371,7 +419,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
 
 
         Retrofit retrofit = ApiClient.getClient();
-        retrofit.create(ApiInterface.class).getOldStoreTypeListing("Bearer "+sessionManager.getToken(),dataObj).enqueue(new Callback<ResponseBody>() {
+        retrofit.create(ApiInterface.class).getOldStoreTypeListing("Bearer " + sessionManager.getToken(), dataObj).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 /////
@@ -423,11 +471,15 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
 //                                    }
                                     }
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
+
+
+
+                                 //   dialog.dismiss();
+
                                     showDialogApproval(jsonObject.optString("response"));
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(StoreTypeListingActivity.this);
-                                }
-                                else if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
+                                } else if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
                                     sessionManager.logoutUser(StoreTypeListingActivity.this);
                                 }
 
@@ -535,5 +587,19 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
 //
 //        }
 //    }
+
+    public void commanFragmentCallWithoutBackStack(Fragment fragment) {
+
+        Fragment cFragment = fragment;
+        if (cFragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            //fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragmentTransaction.replace(R.id.llMain, cFragment);
+            fragmentTransaction.commit();
+
+        }
+    }
 
 }
