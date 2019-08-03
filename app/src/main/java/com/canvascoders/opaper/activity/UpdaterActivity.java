@@ -75,7 +75,7 @@ public class UpdaterActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Please wait till app update", Toast.LENGTH_SHORT).show();
     }
 
-
+//version 23
 
 
     private void appUpdate() {
