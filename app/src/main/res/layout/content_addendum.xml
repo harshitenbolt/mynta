@@ -126,7 +126,7 @@
             android:paddingLeft="2dp"
             android:paddingRight="25dp"
             android:textSize="@dimen/margin_15dp"
-            android:text="EDIT Rate"
+            android:text="EDIT RATE"
             android:textColor="@color/colorWhite"
             app:fontFamily="@font/rb_medium" />
     </LinearLayout>

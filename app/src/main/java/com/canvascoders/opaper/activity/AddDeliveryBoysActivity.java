@@ -140,13 +140,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         btn_add_deliveryboy.setOnClickListener(this);
         rv_deliveryboy_list = findViewById(R.id.rv_deliveryboylist);
         checkedItems = new boolean[select_language.length];
-      /*  deliveryBoysAdapter = new DeliveryBoysAdapter(delivery_boys_list,this);
-        if(delivery_boys_list.isEmpty()){
-            tv_note.setVisibility(View.VISIBLE);
-            btnSubmit.setVisibility(View.GONE);
-        }
-        rv_deliveryboy_list.setLayoutManager(new LinearLayoutManager(this));
-        rv_deliveryboy_list.setAdapter(deliveryBoysAdapter);*/
+
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
         // getBankDetails(mContext,s.toString(),processId);
             ApiCallGetLists();

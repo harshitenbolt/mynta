@@ -62,7 +62,7 @@
                     android:fontFamily="@font/montebold"
                     android:gravity="bottom"
                     android:textColor="@color/darkGrey"
-                    android:text="Harshit Jain"
+                    android:text=""
                     android:textSize="@dimen/_15sdp" />
 
                 <TextView
@@ -85,6 +85,21 @@
         <!--android:text="Name"-->
         <!--android:textColor="#fff"-->
         <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1" />-->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_gravity="right"
+    android:gravity="end"
+    android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/ivHome"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:fontFamily="@font/monteregular"
+            android:src="@drawable/home"
+            android:visibility="visible" />
 
         <ImageView
 
@@ -96,6 +111,7 @@
             android:fontFamily="@font/monteregular"
             android:src="@drawable/setting"
             android:visibility="visible" />
+</LinearLayout>
 
 
     </LinearLayout>

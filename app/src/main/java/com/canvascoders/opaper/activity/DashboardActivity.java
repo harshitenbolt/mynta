@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -55,6 +56,7 @@ import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.maps.model.Dash;
 
 import java.util.HashMap;
@@ -69,7 +71,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class DashboardActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     Button btn_onboard_vendor;
     Button btn_onboard_vendor_list;
@@ -92,10 +94,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     private TextView tv_current_version;
     static TextView tv_title, tvUsername;
     DrawerLayout drawer;
-    ImageView ivSupport, imageView;
+    ImageView ivSupport, imageView, ivHome;
     View v, vHeader;
     TextView tvInProgressVendorCount, tvLiveVendorCount;
     Button ivSelect;
+    SwipeRefreshLayout swLayout;
     Bitmap b, converted;
     RelativeLayout rvMainWithRect;
     RequestPermissionHandler requestPermissionHandler;
@@ -168,6 +171,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         llNotification.setOnClickListener(this);
         llLiveVendors.setOnClickListener(this);
         llInProgressVendors.setOnClickListener(this);
+        swLayout =findViewById(R.id.swLayout);
+        swLayout.setOnRefreshListener(this);
         llReports.setOnClickListener(this);
         llInvoice.setOnClickListener(this);
 
@@ -176,6 +181,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         vHeader = navigationView.findViewById(R.id.nav_headerLayout);
         tvHeaderName = vHeader.findViewById(R.id.tvHeaderName);
         tvHeaderEmail = vHeader.findViewById(R.id.tvHeaderEmail);
+
+        ivHome = vHeader.findViewById(R.id.ivHome);
+        ivHome.setOnClickListener(this);
 
         tvHeaderEmail.setText(sessionManager.getEmail());
         tvHeaderName.setText(sessionManager.getName());
@@ -190,6 +198,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         llNavReport = v.findViewById(R.id.llNavReports);
         llNavLogut = v.findViewById(R.id.llNavLogout);
         llNavSupports = v.findViewById(R.id.llNavSuppors);
+
+
         llNavSupports.setOnClickListener(this);
 
         llNavonBoardNewVendor.setOnClickListener(this);
@@ -322,7 +332,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 llInvoice.setBackgroundResource(0);
                 commanFragmentCallWithBackStack(new VendorInProgressList());
                 break;
-
+            case R.id.ivHome:
+                Intent i = new Intent(DashboardActivity.this, DashboardActivity.class);
+                startActivity(i);
+                finish();
+                break;
 
             case R.id.llLiveVendor:
                 tv_title.setText("Live Vendors");
@@ -510,7 +524,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     public void getNotification() {
 
-
+        swLayout.setRefreshing(false);
         Mylogger.getInstance().Logit(TAG, "getUserInfo");
 
 
@@ -641,7 +655,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-          //  fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+            //  fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
             fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
 
             fragmentTransaction.replace(R.id.rvContentMain, cFragment);
@@ -680,9 +694,10 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     public void onBackPressed() {
 
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left).commit();
+        fm.beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).commit();
         if (fm.getBackStackEntryCount() > 0) {
             tv_title.setText(Constants.TITLE_DASHBOARD);
+            getNotification();
             Log.i("MainActivity", "popping backstack");
             fm.popBackStack();
         } else {
@@ -726,6 +741,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     @Override
     protected void onResume() {
         super.onResume();
+        getNotification();
         //tv_title.setText("Dashboard");
+    }
+
+    @Override
+    public void onRefresh() {
+        getNotification();
     }
 }

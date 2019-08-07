@@ -354,7 +354,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_PAN) {
                 deleteImages();
-                Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
+//                Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                 Bitmap bitmap = ImagePicker.getImageFromResult(EditPanCardActivity.this, resultCode, data);
                 cameraimage = ImagePicker.getBitmapPath(bitmap, EditPanCardActivity.this);
                /* Glide.with(getActivity()).load(panImagepath).into(btn_pan_card);
