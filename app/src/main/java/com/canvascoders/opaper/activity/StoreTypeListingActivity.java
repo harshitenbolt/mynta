@@ -107,7 +107,12 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
 //        rv_store_list.setLayoutManager(linearLayoutManager);
 
 
-        getStoreListing(vendor.getProccessId());
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            getStoreListing(vendor.getProccessId());
+        } else {
+            Constants.ShowNoInternet(this);
+        }
+
     }
 
 
@@ -254,8 +259,12 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
             Toast.makeText(this, "Nothing to Update or press Skip to sign adendum", Toast.LENGTH_LONG).show();
             return;
         }
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            submitStoreUpdateDetails(jsonArray);
+        } else {
+            Constants.ShowNoInternet(this);
+        }
 
-        submitStoreUpdateDetails(jsonArray);
     }
 
     private void submitStoreUpdateDetails(JsonArray jsonArray) {

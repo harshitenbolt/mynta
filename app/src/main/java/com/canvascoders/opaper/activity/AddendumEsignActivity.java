@@ -132,7 +132,13 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
         btn_resend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                apiCallResend();
+                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                    apiCallResend();
+                } else {
+                    Constants.ShowNoInternet(AddendumEsignActivity.this);
+                }
+
+
             }
         });
 

@@ -117,7 +117,16 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
         ivUpload = findViewById(R.id.ivImageAdd);
         ivUpload.setOnClickListener(this);
         ivBack.setOnClickListener(this);
-        ApiCallGetSupportDetails();
+
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            ApiCallGetSupportDetails();
+        } else {
+            Constants.ShowNoInternet(this);
+        }
+
+
+
 
         // Api Call for getting Comment List...
         try {
@@ -158,8 +167,14 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
 
             case R.id.ivComment:
 
-                if (isValid())
-                    ApiCallComment();
+                if (isValid()) {
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        ApiCallComment();
+                    } else {
+                        Constants.ShowNoInternet(this);
+                    }
+                }
+
                 break;
 
             case R.id.ivImageAdd:

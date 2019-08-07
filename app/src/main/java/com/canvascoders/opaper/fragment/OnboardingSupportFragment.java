@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.canvascoders.opaper.Beans.SupportListResponse.Datum;
 import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.SupportDetailActivity;
 import com.canvascoders.opaper.adapters.SupportListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
@@ -98,7 +99,13 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
         };
         rvOnboardingSupport.addOnScrollListener(scrollListener);
 
-        ApiCallgetReports();
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            ApiCallgetReports();
+        } else {
+            Constants.ShowNoInternet(getActivity());
+        }
+       // ApiCallgetReports();
 
     }
 
@@ -182,7 +189,12 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
     public void onRefresh() {
         supportList.clear();
         next_page_url = "support-listing";
-        ApiCallgetReports();
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            ApiCallgetReports();
+        } else {
+            Constants.ShowNoInternet(getActivity());
+        }
+       // ApiCallgetReports();
 
     }
 }

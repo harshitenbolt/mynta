@@ -167,6 +167,8 @@ public class Constants {
     public static String PARAM_TOKEN = "token";
     public static String PARAM_AGENT_ID = "agent_id";
 
+    public static String PARAM_IS_DOC = "is_doc";
+
     public static String PARAM_YEAR = "year";
     public static String PARAM_IS_INVOICE = "is_invoice";
 

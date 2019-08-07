@@ -93,7 +93,12 @@ public class ReportIssueActivity extends AppCompatActivity {
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ApiCallSubmitReport();
+                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                    ApiCallSubmitReport();
+                } else {
+                    Constants.ShowNoInternet(ReportIssueActivity.this);
+                }
+
             }
         });
 
@@ -133,7 +138,13 @@ public class ReportIssueActivity extends AppCompatActivity {
             }
         });
 
-        ApiCallGetSubject();
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            ApiCallGetSubject();
+        } else {
+            Constants.ShowNoInternet(ReportIssueActivity.this);
+        }
+
     }
 
     private void ApiCallSubmitReport() {

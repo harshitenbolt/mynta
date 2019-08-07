@@ -171,9 +171,14 @@ public interface ApiInterface {
 
 
     //-----------------------------------------------------------------------------
-    @Headers({"Content-type: application/json", "Accept: */*"})
-    @POST("rate-update")
-    Call<GetUserDetailResponse> submitRate(@Body JsonObject data);
+
+    //@Headers({"Content-type: application/json", "Accept: */*"})
+   /* @POST("resign-rate-update")
+    Call<GetUserDetailResponse> submitRateUpdate(@Body JsonObject data);*/
+
+
+    @POST("resign-rate-update")
+    Call<ResponseBody> submitRateUpdate(@Header("Authorization") String token, @Body JsonObject data);
     //-----------------------------------------------------------------------------
 
 
@@ -396,10 +401,10 @@ public interface ApiInterface {
     //@Headers("Content-Type: application/json")
     @POST("store-type")
     Call<ResponseBody> getStoreTypeListing(@Header("Authorization") String token, @Body JsonObject data);
+
+
     @POST("store-type-resign")
     Call<ResponseBody> getStoreTypeListing2(@Header("Authorization") String token, @Body JsonObject data);
-
-
 
 
     @POST("rate-update")

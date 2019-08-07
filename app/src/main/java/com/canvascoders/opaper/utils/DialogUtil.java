@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.helper.DialogListner;
@@ -450,7 +451,15 @@ public class DialogUtil {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().length() > 5) {
-                    getBankDetails(mContext,s.toString(),processId);
+
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        getBankDetails(mContext,s.toString(),processId);
+                    }
+                    else {
+                        Constants.ShowNoInternet(mContext);
+                    }
+
+
                 }
             }
 

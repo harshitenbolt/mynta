@@ -97,7 +97,14 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
         rvDelBoysList =view.findViewById(R.id.rvDelBoyList);
         llNoData =view.findViewById(R.id.llNoData);
 
-        ApiCallGetLists();
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            ApiCallGetLists();
+        }
+        else {
+            Constants.ShowNoInternet(getActivity());
+        }
+
+
     }
 
     private void ApiCallGetLists() {

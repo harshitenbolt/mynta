@@ -335,7 +335,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_CHEQUE) {
                 deleteImages();
-                Constants.hideKeyboardwithoutPopulate(getActivity());
+//                Constants.hideKeyboardwithoutPopulate(getActivity());
                 Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
 

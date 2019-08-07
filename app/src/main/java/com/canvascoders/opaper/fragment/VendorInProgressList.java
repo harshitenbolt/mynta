@@ -37,6 +37,7 @@ import com.canvascoders.opaper.Beans.SearchListResponse.Datum;
 import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.DashboardActivity;
 import com.canvascoders.opaper.activity.VendorDetailActivity;
 import com.canvascoders.opaper.adapters.VendorListInProgressAdapter;
@@ -188,7 +189,15 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
         new GetVendorList(object.toString(), apiName).execute();
 
 
-        ApiCallgetReports();
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+
+            ApiCallgetReports();
+        } else {
+            Constants.ShowNoInternet(getActivity());
+        }
+
+
         actv = (AutoCompleteTextView) view.findViewById(R.id.etSearchPlace);
 
         actv.addTextChangedListener(new TextWatcher() {

@@ -21,6 +21,8 @@ import com.canvascoders.opaper.Beans.BankDetailResp;
 import com.canvascoders.opaper.Beans.StoreTypeBean;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AddendumEsignActivity;
+import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.DashboardActivity;
 import com.canvascoders.opaper.activity.StoreTypeListingActivity;
 import com.canvascoders.opaper.adapters.ChequeListAdapter;
@@ -97,7 +99,12 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
                 mSwipeRefreshLayout.setRefreshing(true);
 
                 // Fetching data from server
-                getBankDetails();
+                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                    getBankDetails();
+                } else {
+                    Constants.ShowNoInternet(getActivity());
+                }
+
             }
         });
     }
@@ -106,7 +113,12 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
     @Override
     public void onResume() {
         super.onResume();
-        getBankDetails();
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            getBankDetails();
+        } else {
+            Constants.ShowNoInternet(getActivity());
+        }
+
 //        DashboardActivity.settitle(Constants.TITLE_BANK_DETAILS);
 
     }
@@ -199,7 +211,12 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        getBankDetails();
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            getBankDetails();
+        } else {
+            Constants.ShowNoInternet(getActivity());
+        }
+       // getBankDetails();
     }
 
 

@@ -269,7 +269,13 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
         btn_send_link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                apicallSendLink();
+                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                    apicallSendLink();
+                } else {
+                    Constants.ShowNoInternet(InvoiceEsignActivity.this);
+                }
+
+
             }
         });
 

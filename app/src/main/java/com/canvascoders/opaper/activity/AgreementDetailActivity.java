@@ -585,6 +585,7 @@ public class AgreementDetailActivity extends AppCompatActivity implements Naviga
 
                     JSONObject jsonObject = new JSONObject(message);
                     documentId = jsonObject.getString("id");
+
                     callLogBeforeDigioSign(documentId);
                     try {
                         digio.esign(documentId, str_mobile_no);

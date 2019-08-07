@@ -57,8 +57,8 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     GPSTracker gps;
     ImageView ivBack;
-    Button btSkip;
-    String lattitude,longitude;
+    Button btSkip, btn_next;
+    String lattitude, longitude;
     private static Dialog dialog;
     ProgressDialog mPogress;
 
@@ -87,58 +87,53 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
 
     private void init() {
         btSkip = findViewById(R.id.btn_skip_to_addendum);
-
+        btn_next = findViewById(R.id.btn_next);
         recyclerView = (RecyclerView) findViewById(R.id.rv_rate_type);
         LinearLayoutManager approvedLinearLayoutManager = new LinearLayoutManager(this);
         approvedLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(approvedLinearLayoutManager);
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            getStoreListing(processId);
+        } else {
+            Constants.ShowNoInternet(this);
+        }
+
+
         btSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                    ApiCallResendAgreement();
+                    //ApiCallResendAgreement();
                 } else {
                     Constants.ShowNoInternet(EditRateWhileResigAgreeActivity.this);
                 }
             }
         });
 
-        getStoreListing(processId);
-    }
-
-
-    private void ApiCallResendAgreement() {
-
-        mProgressDialog.show();
-        ApiClient.getClient().create(ApiInterface.class).ResignAgreement("Bearer " + sessionManager.getToken(), processId).enqueue(new Callback<ResignAgreementResponse>() {
+        btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<ResignAgreementResponse> call, Response<ResignAgreementResponse> response) {
-                if (response.isSuccessful()) {
-                    mProgressDialog.dismiss();
-                    ResignAgreementResponse resignAgreementResponse = response.body();
-                    if (resignAgreementResponse.getResponseCode() == 200) {
-                        Toast.makeText(EditRateWhileResigAgreeActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                    } else if (resignAgreementResponse.getResponseCode() == 411) {
-                        sessionManager.logoutUser(EditRateWhileResigAgreeActivity.this);
-                    } else {
-                        Toast.makeText(EditRateWhileResigAgreeActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                    }
+            public void onClick(View view) {
+                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                    checkAndPrepareObj();
+                } else {
+                    Constants.ShowNoInternet(EditRateWhileResigAgreeActivity.this);
                 }
 
             }
-
-            @Override
-            public void onFailure(Call<ResignAgreementResponse> call, Throwable t) {
-                mProgressDialog.dismiss();
-
-            }
         });
+
+
     }
+
+
     private void getStoreListing(String proccessId) {
+        mProgressDialog.show();
         JsonObject dataObj = new JsonObject();
         dataObj.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
         dataObj.addProperty(Constants.KEY_PROCESS_ID, proccessId);
         dataObj.addProperty(Constants.KEY_AGENT_ID, sessionManager.getAgentID());
+        dataObj.addProperty(Constants.PARAM_IS_DOC, "0");
 
 
         Retrofit retrofit = ApiClient.getClient();
@@ -147,6 +142,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
                 if (response.isSuccessful()) {
+                    mProgressDialog.dismiss();
                     try {
                         String res = response.body().toString();
                         Log.e("REsponse", "" + response.body().toString());
@@ -224,8 +220,10 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
                         }
 
                     } catch (JSONException e) {
+                        mProgressDialog.dismiss();
                         e.printStackTrace();
                     } catch (IOException e) {
+                        mProgressDialog.dismiss();
                         e.printStackTrace();
                     }
 
@@ -234,9 +232,67 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                mProgressDialog.dismiss();
                 Toast.makeText(EditRateWhileResigAgreeActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+
+    private void checkAndPrepareObj() {
+        // mProgressDialog.show();
+        JsonArray jsonArray = new JsonArray();
+        // checking from neutral stores to get updated data.
+        for (int i = 0; i < rateTypeBeans.size(); i++) {
+
+            if (rateTypeBeans.get(i).isSelected() && !rateTypeBeans.get(i).getIsApproved().equalsIgnoreCase("1")) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
+                if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE)) {
+                    if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
+                        if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
+                            try {
+//                        float rate = Float.parseFloat(rateTypeBeans.get(i).getRate());
+//                        if(rate>0)
+                                jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
+                                //  mProgressDialog.dismiss();
+
+//                        else
+//                        {
+//                            Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(this, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        } else {
+                            mProgressDialog.dismiss();
+                            Toast.makeText(this, "Issue with Rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    } else {
+                        Toast.makeText(this, "Issue with Rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                } else {
+                    jsonObject.addProperty("rate", "0");
+                }
+                jsonArray.add(jsonObject);
+            }
+        }
+
+        if (jsonArray.size() <= 0) {
+            Toast.makeText(this, "Nothing to Update or press Skip to sign addendum", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            submitStoreUpdateDetails(jsonArray);
+        } else {
+            Constants.ShowNoInternet(this);
+        }
+
     }
 
 
@@ -270,7 +326,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
         dataObj.add(Constants.KEY_STORES, jsonArray);
 
         Retrofit retrofit = ApiClient.getClient();
-        retrofit.create(ApiInterface.class).setStoreTypeListing("Bearer " + sessionManager.getToken(), dataObj).enqueue(new Callback<ResponseBody>() {
+        retrofit.create(ApiInterface.class).submitRateUpdate("Bearer " + sessionManager.getToken(), dataObj).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
@@ -288,9 +344,9 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
                                    /* Intent i = new Intent(getActivity(), AgreementDetailActivity.class);
                                     startActivity(i);*/
 
-                                   finish();
-                                   Toast.makeText(EditRateWhileResigAgreeActivity.this,jsonObject.getString("response"),Toast.LENGTH_LONG).show();
-                                  // showAlert1(jsonObject.getString("response"));
+                                    finish();
+                                    Toast.makeText(EditRateWhileResigAgreeActivity.this, jsonObject.getString("response"), Toast.LENGTH_LONG).show();
+                                    // showAlert1(jsonObject.getString("response"));
 
 
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
@@ -332,6 +388,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
         });
 
     }
+
     private void showAlert(String msg) {
 
 

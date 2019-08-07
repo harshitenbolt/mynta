@@ -101,14 +101,14 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@drawable/roundedcornergreythick"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/_20sdp"
-                        android:paddingTop="@dimen/_18sdp"
-                        android:paddingBottom="@dimen/_15sdp">
+                        android:gravity="center">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_20sdp"
+                            android:layout_marginTop="@dimen/_18sdp"
+                            android:layout_marginBottom="@dimen/_20sdp"
                             android:orientation="horizontal">
 
                             <ImageView
@@ -117,14 +117,10 @@
                                 android:layout_height="@dimen/_80sdp"
                                 android:background="@drawable/dotted_bg"
                                 android:padding="@dimen/_30sdp"
+
                                 android:src="@drawable/photocamera" />
 
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/rvImageBillsMultiple"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginLeft="@dimen/_15sdp"
-                                android:visibility="gone"></android.support.v7.widget.RecyclerView>
+
 
 
                                 <android.support.v7.widget.CardView
@@ -132,8 +128,7 @@
                                     android:layout_height="match_parent"
                                     android:background="@drawable/roundedcornergreythick"
                                     android:elevation="@dimen/_5sdp"
-                                    android:layout_marginTop="@dimen/_2sdp"
-                                    android:layout_marginBottom="@dimen/_2sdp"
+                                    android:visibility="gone"
                                     android:layout_marginLeft="@dimen/_15sdp"
                                     android:layout_marginRight="@dimen/_15sdp"
                                     app:cardCornerRadius="@dimen/_5sdp">
@@ -144,8 +139,12 @@
                                         android:layout_height="match_parent"
                                         android:scaleType="centerCrop" />-->
 
+
+
+
                                     <android.support.v4.view.ViewPager
                                         android:id="@+id/pager"
+                                        android:visibility="gone"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:layout_alignParentTop="true"
@@ -154,6 +153,12 @@
                                 </android.support.v7.widget.CardView>
 
                         </LinearLayout>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rvImageBillsMultiple"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:visibility="visible"></android.support.v7.widget.RecyclerView>
 
                     </LinearLayout>
                 </LinearLayout>

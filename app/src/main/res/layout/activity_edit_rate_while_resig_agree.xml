@@ -18,6 +18,7 @@
             android:id="@+id/iv_back_process"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
+            android:focusable="false"
             android:src="@drawable/back" />
 
         <TextView
@@ -27,7 +28,7 @@
             android:fontFamily="@font/montesemibold"
             android:gravity="center"
             android:paddingRight="@dimen/_45sdp"
-            android:text="Resign Agreement"
+            android:text="Change Rate"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_14sdp" />
 
@@ -120,10 +121,12 @@
                     app:srcCompat="@drawable/ic_arrow_right_black" />
 
                 <Button
+
                     style="@style/Button_withGreen"
                     android:id="@+id/btn_skip_to_addendum"
                     android:layout_width="match_parent"
                     android:layout_weight="1"
+
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginRight="@dimen/_10sdp"
@@ -132,7 +135,7 @@
                     android:text="@string/skip_and_send"
                     android:textAllCaps="false"
                     android:tint="@android:color/white"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     />
             </LinearLayout>
 

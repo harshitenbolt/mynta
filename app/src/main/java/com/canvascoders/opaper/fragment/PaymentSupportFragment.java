@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.canvascoders.opaper.Beans.SupportListResponse.Datum;
 import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.SupportDetailActivity;
 import com.canvascoders.opaper.adapters.SupportListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
@@ -89,15 +90,31 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
         rvPayment.setAdapter(supportListAdapter);
 
 
-        ApiCallgetReports();
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            ApiCallgetReports();
+        } else {
+            Constants.ShowNoInternet(getActivity());
+        }
+
+
+
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
 
                 // this condition  is for pagination in both with Search and without search
-                if (!next_page_url.equalsIgnoreCase("")) ;
-                ApiCallgetReports();
+                if (!next_page_url.equalsIgnoreCase("")){
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        ApiCallgetReports();
+                    } else {
+                        Constants.ShowNoInternet(getActivity());
+                    }
+                }
+
+
+
 
             }
         };
@@ -191,7 +208,12 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
     public void onRefresh() {
         list.clear();
         next_page_url = "support-listing";
-        ApiCallgetReports();
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            ApiCallgetReports();
+        } else {
+            Constants.ShowNoInternet(getActivity());
+        }
+
 
     }
 }

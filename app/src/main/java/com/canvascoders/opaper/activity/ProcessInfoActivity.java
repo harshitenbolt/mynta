@@ -98,7 +98,14 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
         pR = llAgreement.getPaddingRight();
         pB = llAgreement.getPaddingBottom();
 
-        ApiCallCheckEsign();
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            ApiCallCheckEsign();
+        } else {
+            Constants.ShowNoInternet(ProcessInfoActivity.this);
+        }
+
+
     }
 
     @Override
@@ -602,6 +609,8 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
 
                 @Override
                 public void onFailure(Call<CheckEsignResponse> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(ProcessInfoActivity.this,"Something went wrong",Toast.LENGTH_LONG);
                     Mylogger.getInstance().Logit(TAG, t.toString());
                 }
             });

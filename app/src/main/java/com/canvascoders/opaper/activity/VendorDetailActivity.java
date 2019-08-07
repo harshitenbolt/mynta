@@ -264,7 +264,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                 } else {
                     Constants.ShowNoInternet(VendorDetailActivity.this);
                 }*/
-                Intent i = new Intent(VendorDetailActivity.this,EditRateWhileResigAgreeActivity.class);
+                Intent i = new Intent(VendorDetailActivity.this,ResignAgreementActivity.class);
                 i.putExtra("data", vendor);
                 startActivity(i);
 

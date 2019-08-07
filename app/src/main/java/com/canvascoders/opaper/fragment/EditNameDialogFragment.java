@@ -84,19 +84,6 @@ public class EditNameDialogFragment extends DialogFragment {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                         /*AadharVerificationFragment.name = edit_aname.getText().toString().trim();
                         AadharVerificationFragment.udi = edit_anumber.getText().toString().trim();
                         AadharVerificationFragment.year = edit_ayear.getText().toString().trim();

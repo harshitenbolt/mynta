@@ -125,7 +125,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <TextView
                             style="@style/App_TextViewSmall"
@@ -228,7 +228,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <TextView
                             style="@style/App_TextViewSmall"
@@ -312,6 +312,7 @@
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="number"
                             android:maxLength="6"
+                            android:textSize="@dimen/_10sdp"
                             android:nextFocusDown="@+id/etPermShopNo" />
 
                         <TextView
@@ -327,6 +328,7 @@
                             android:layout_marginTop="@dimen/_3sdp"
                             android:enabled="false"
                             android:inputType="text"
+                            android:textSize="@dimen/_10sdp"
                             android:nextFocusDown="@+id/etCurrentState" />
 
                         <TextView
@@ -341,6 +343,7 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:enabled="false"
+                            android:textSize="@dimen/_10sdp"
                             android:inputType="text" />
 
 
@@ -384,6 +387,7 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
+                            android:textSize="@dimen/_10sdp"
                             android:nextFocusDown="@id/etPerStreet" />
 
 
@@ -399,6 +403,7 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
+                            android:textSize="@dimen/_10sdp"
                             android:nextFocusDown="@id/etPerLandmark" />
 
 
@@ -414,6 +419,7 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
+                            android:textSize="@dimen/_10sdp"
                             android:nextFocusDown="@id/etPerPincode" />
 
 
@@ -430,6 +436,7 @@
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="number"
                             android:maxLength="6"
+                            android:textSize="@dimen/_10sdp"
                             android:nextFocusDown="@id/etPerCity" />
 
 
@@ -445,6 +452,7 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
+                            android:textSize="@dimen/_10sdp"
                             android:nextFocusDown="@id/etPerState" />
 
                         <TextView
@@ -458,6 +466,7 @@
                             style="@style/App_EditTextStyle"
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
+                            android:textSize="@dimen/_10sdp"
                             android:imeOptions="actionDone"
                             android:inputType="text" />
 
@@ -504,7 +513,6 @@
                         <EditText
                             android:id="@+id/etLicenceNumber"
                             style="@style/App_EditTextStyle"
-
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:layout_marginBottom="@dimen/_10sdp" />
@@ -542,7 +550,7 @@
                                 android:id="@+id/tvLanguage"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/montesemibold"
+                                android:fontFamily="@font/monteregular"
                                 android:singleLine="true"
                                 android:text="Select Language" />
 

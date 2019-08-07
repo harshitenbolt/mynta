@@ -43,6 +43,7 @@ import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
 import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.DashboardActivity;
 import com.canvascoders.opaper.activity.VendorDetailActivity;
 import com.canvascoders.opaper.adapters.VendorAdapter;
@@ -159,7 +160,15 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
         recyclerview.setAdapter(vendorAdapter);
 
 
-        ApiCallgetReports();
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            ApiCallgetReports();
+        } else {
+            Constants.ShowNoInternet(getActivity());
+        }
+
+
+
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override

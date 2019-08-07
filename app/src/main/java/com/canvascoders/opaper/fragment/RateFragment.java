@@ -128,8 +128,12 @@ public class RateFragment extends Fragment implements View.OnClickListener {
         approvedLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(approvedLinearLayoutManager);
 
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            getStoreListing(str_process_id);
+        } else {
+            Constants.ShowNoInternet(getActivity());
+        }
 
-        getStoreListing(str_process_id);
 //        edit_rate.addTextChangedListener(new TextWatcher() {
 //            @Override
 //            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -357,7 +361,12 @@ public class RateFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(mcontext, "Nothing to Update or press Skip to sign addendum", Toast.LENGTH_LONG).show();
             return;
         }
-        submitStoreUpdateDetails(jsonArray);
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            submitStoreUpdateDetails(jsonArray);
+        } else {
+            Constants.ShowNoInternet(getActivity());
+        }
+
     }
 
     private void submitStoreUpdateDetails(JsonArray jsonArray) {

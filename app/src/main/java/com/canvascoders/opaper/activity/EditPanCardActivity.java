@@ -129,7 +129,15 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         tvPanFatherName = findViewById(R.id.tvPanFatherName);
         tvPanNo = findViewById(R.id.tvPanNo);
         ivStoreImage = findViewById(R.id.ivStoreImage);
-        ApiCallGetDetails();
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            // getBankDetails(mContext,s.toString(),processId);
+            ApiCallGetDetails();
+        }
+        else {
+            Constants.ShowNoInternet(EditPanCardActivity.this);
+        }
+      //  ApiCallGetDetails();
     }
 
 

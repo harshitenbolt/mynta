@@ -147,7 +147,14 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         }
         rv_deliveryboy_list.setLayoutManager(new LinearLayoutManager(this));
         rv_deliveryboy_list.setAdapter(deliveryBoysAdapter);*/
-        ApiCallGetLists();
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+        // getBankDetails(mContext,s.toString(),processId);
+            ApiCallGetLists();
+        }
+        else {
+            Constants.ShowNoInternet(this);
+        }
+
     }
 
 
@@ -222,7 +229,14 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                     AddDelBoyResponse addDelBoyResponse = response.body();
                     if (addDelBoyResponse.getResponseCode() == 200) {
                         b.dismiss();
-                        ApiCallGetLists();
+                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                            // getBankDetails(mContext,s.toString(),processId);
+                            ApiCallGetLists();
+                        }
+                        else {
+                            Constants.ShowNoInternet(AddDeliveryBoysActivity.this);
+                        }
+
                         Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
                     if (addDelBoyResponse.getResponseCode()==411){
@@ -424,7 +438,17 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() == 6) {
-                    addDC(s.toString());
+
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        // getBankDetails(mContext,s.toString(),processId);
+                        addDC(s.toString());
+                    }
+                    else {
+                        Constants.ShowNoInternet(AddDeliveryBoysActivity.this);
+                    }
+
+
+
                 }
             }
         });

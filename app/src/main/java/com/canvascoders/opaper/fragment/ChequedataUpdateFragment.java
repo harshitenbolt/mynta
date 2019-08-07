@@ -45,6 +45,7 @@ import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.Beans.VendorBankDetail;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.CropImage2Activity;
 import com.canvascoders.opaper.activity.OTPActivity;
 import com.canvascoders.opaper.camera.MyCameraActivity;
@@ -450,7 +451,12 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
 
                         @Override
                         public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
-                            storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
+                            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
+                            }
+                            else {
+                                Constants.ShowNoInternet(getActivity());
+                            }
                         }
                     });
 

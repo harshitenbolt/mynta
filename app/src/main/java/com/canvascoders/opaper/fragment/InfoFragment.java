@@ -53,6 +53,7 @@ import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AddNewDeliveryBoy;
 import com.canvascoders.opaper.adapters.CustomPopupAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupApproachAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupLocalityAdapter;
@@ -356,7 +357,13 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             public void afterTextChanged(Editable s) {
                 pincode = "1";
                 if (s.length() == 6) {
-                    addDC(s.toString(), pincode);
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        // getBankDetails(mContext,s.toString(),processId);
+                        addDC(s.toString(), pincode);
+                    } else {
+                        Constants.ShowNoInternet(getActivity());
+                    }
+
                 }
             }
         });
@@ -412,7 +419,13 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             public void afterTextChanged(Editable s) {
                 pincode = "2";
                 if (s.length() == 6) {
-                    addDC(s.toString(), pincode);
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        // getBankDetails(mContext,s.toString(),processId);
+                        addDC(s.toString(), pincode);
+                    } else {
+                        Constants.ShowNoInternet(getActivity());
+                    }
+                    //addDC(s.toString(), pincode);
                 }
             }
         });
@@ -433,7 +446,13 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             public void afterTextChanged(Editable s) {
                 pincode = "3";
                 if (s.length() == 6) {
-                    addDC(s.toString(), pincode);
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        // getBankDetails(mContext,s.toString(),processId);
+                        addDC(s.toString(), pincode);
+                    } else {
+                        Constants.ShowNoInternet(getActivity());
+                    }
+                    //  addDC(s.toString(), pincode);
                 }
             }
         });
@@ -548,7 +567,13 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                         i = 1;
                         validationapiUrl = "1";
                         hideKeyboardwithoutPopulate(getActivity());
-                        ApiCallValidationCheck(validationapiUrl, 1);
+                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                            // getBankDetails(mContext,s.toString(),processId);
+                            ApiCallValidationCheck(validationapiUrl, 1);
+                        } else {
+                            Constants.ShowNoInternet(getActivity());
+                        }
+
 
                     }
                 } else if (i == 1) {
@@ -556,12 +581,26 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                         i = 2;
                         validationapiUrl = "2";
                         hideKeyboardwithoutPopulate(getActivity());
-                        ApiCallValidationCheck(validationapiUrl, 2);
+                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                            // getBankDetails(mContext,s.toString(),processId);
+                            ApiCallValidationCheck(validationapiUrl, 2);
+                        } else {
+                            Constants.ShowNoInternet(getActivity());
+                        }
+
                     }
                 } else {
                     if (validation(3)) {
                         hideKeyboardwithoutPopulate(getActivity());
-                        bizDetailsSubmit(view);
+
+                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                            // getBankDetails(mContext,s.toString(),processId);
+                            bizDetailsSubmit(view);
+                        } else {
+                            Constants.ShowNoInternet(getActivity());
+                        }
+
+
                     }
                 }
                 break;
@@ -572,7 +611,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 RecyclerView rvItems;
                 ImageView ivClose;
                 Button btSubmit;
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity(),R.style.CustomDialog);
 
                 LayoutInflater inflater = this.getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.dialogue_popup_list, null);
@@ -650,7 +689,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 RecyclerView rvItems1;
                 Button btSubmit1;
                 ImageView ivClose1;
-                AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(getActivity(),R.style.CustomDialog);
 
                 LayoutInflater inflater1 = this.getLayoutInflater();
                 View dialogView1 = inflater1.inflate(R.layout.dialogue_popup_list, null);
@@ -697,7 +736,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 RecyclerView rvItemsLocality;
                 Button btSubmitLocality;
                 ImageView ivCloseLocality;
-                AlertDialog.Builder mBuilderLocality = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder mBuilderLocality = new AlertDialog.Builder(getActivity(),R.style.CustomDialog);
 
                 LayoutInflater inflaterLocality = this.getLayoutInflater();
                 View dialogViewLocality = inflaterLocality.inflate(R.layout.dialogue_popup_list, null);
@@ -746,11 +785,13 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 RecyclerView rvItemsAproach;
                 Button btSubmitAproach;
                 ImageView ivCloseAproach;
-                AlertDialog.Builder mBuilderAproach = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder mBuilderAproach = new AlertDialog.Builder(getActivity(),R.style.CustomDialog);
 
                 LayoutInflater inflaterAproach = this.getLayoutInflater();
                 View dialogViewAproach = inflaterAproach.inflate(R.layout.dialogue_popup_list, null);
+
                 mBuilderAproach.setView(dialogViewAproach);
+
                 tvtitleApproach = dialogViewAproach.findViewById(R.id.tvTitleListPopup);
                 tvtitleApproach.setText("Select Approach");
                 rvItemsAproach = dialogViewAproach.findViewById(R.id.rvListPopup);
@@ -794,7 +835,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 RecyclerView rvItemsShipment;
                 Button btSubmitShipment;
                 ImageView ivCloseShipment;
-                AlertDialog.Builder mBuilderShipment = new AlertDialog.Builder(getActivity());
+                AlertDialog.Builder mBuilderShipment = new AlertDialog.Builder(getActivity(),R.style.CustomDialog);
 
                 LayoutInflater inflaterShipment = this.getLayoutInflater();
                 View dialogViewShipment = inflaterShipment.inflate(R.layout.dialogue_popup_list, null);
@@ -1227,8 +1268,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = super.getView(position, convertView, parent);
             if (view instanceof TextView) {
-                ((TextView) view).setTextSize(12);
-                Typeface typeface = ResourcesCompat.getFont(parent.getContext(), R.font.rb_regular);
+                ((TextView) view).setTextSize(10);
+                Typeface typeface = ResourcesCompat.getFont(parent.getContext(), R.font.monteregular);
                 ((TextView) view).setTypeface(typeface);
             }
             return view;
@@ -1457,11 +1498,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 edit_gstn.requestFocus();
                 return false;
             }
-            if (etLicenceNumeber.getText().toString().equalsIgnoreCase("")) {
+           /* if (etLicenceNumeber.getText().toString().equalsIgnoreCase("")) {
                 etLicenceNumeber.setError("Provide Licence no.");
                 etLicenceNumeber.requestFocus();
                 return false;
-            }
+            }*/
 
 
             if (listStoreType.size() == 0) {

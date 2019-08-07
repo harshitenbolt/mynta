@@ -187,7 +187,15 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() == 6) {
-                    addDC(s.toString());
+
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        // getBankDetails(mContext,s.toString(),processId);
+                        addDC(s.toString());
+                    }
+                    else {
+                        Constants.ShowNoInternet(AddNewDeliveryBoy.this);
+                    }
+                    //addDC(s.toString());
                 }
             }
         });
@@ -387,14 +395,27 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                     if (validation(1)) {
                         i = 1;
                         validationapiUrl = "1";
-                        ApiCallValidationCheck(validationapiUrl, 1);
+                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                            // getBankDetails(mContext,s.toString(),processId);
+                            ApiCallValidationCheck(validationapiUrl, 1);
+                        }
+                        else {
+                            Constants.ShowNoInternet(AddNewDeliveryBoy.this);
+                        }
+
 
                     }
                 } else if (i == 1) {
                     if (validation(2)) {
                         i = 2;
                         validationapiUrl = "2";
-                        ApiCallValidationCheck(validationapiUrl, 2);
+                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                            // getBankDetails(mContext,s.toString(),processId);
+                            ApiCallValidationCheck(validationapiUrl, 2);
+                        }
+                        else {
+                            Constants.ShowNoInternet(AddNewDeliveryBoy.this);
+                        }
 
                     }
                 } else {

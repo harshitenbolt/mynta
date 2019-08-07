@@ -56,6 +56,8 @@ import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
 import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
+import com.canvascoders.opaper.activity.AddNewDeliveryBoy;
 import com.canvascoders.opaper.activity.CropImage2Activity;
 import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.DialogUtil;
@@ -548,7 +550,15 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                             ivVoterBackSelected.setVisibility(View.VISIBLE);
                             tvVoterBack.setVisibility(View.GONE);
                             if (!voterImagePathFront.equals("") && !voterImagePathBack.equalsIgnoreCase("")) {
-                                ApiCallOCRVoter(voterImagePathFront, voterImagePathBack);
+
+                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                    // getBankDetails(mContext,s.toString(),processId);
+                                    ApiCallOCRVoter(voterImagePathFront, voterImagePathBack);
+                                }
+                                else {
+                                    Constants.ShowNoInternet(getActivity());
+                                }
+
                                 // ApiCallSubmitOcr();
                                 // ApiCallSubmitKYC();
 
@@ -568,7 +578,14 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                             ivVoterBackSelected.setVisibility(View.VISIBLE);
                             tvVoterBack.setVisibility(View.GONE);*/
                             if (!dlImageOathFront.equalsIgnoreCase("") && !dlImagePathBack.equalsIgnoreCase("")) {
-                                ApiCallGetDetailLicence(dlImageOathFront);
+                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                    // getBankDetails(mContext,s.toString(),processId);
+                                    ApiCallGetDetailLicence(dlImageOathFront);
+                                }
+                                else {
+                                    Constants.ShowNoInternet(getActivity());
+                                }
+
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -876,8 +893,14 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
                                 @Override
                                 public void onClickDetails(String name, String fathername, String dob, String id) {
-                                    ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
-                                    ApiCallSubmitKYC(name, fathername, dob, id);
+                                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                        // getBankDetails(mContext,s.toString(),processId);
+                                        ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
+                                        ApiCallSubmitKYC(name, fathername, dob, id);
+                                    } else {
+                                        Constants.ShowNoInternet(getActivity());
+                                    }
+
                                 }
 
                                 @Override
@@ -991,8 +1014,16 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                 @Override
                                 public void onClickDetails(String name, String fathername, String dob, String id) {
 
-                                    ApiCallSubmitOcr(name, fathername, dob, id, dlIdDetailId, filename, fileUrl);
-                                    ApiCallSubmitKYC(name, fathername, dob, id);
+                                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                        // getBankDetails(mContext,s.toString(),processId);
+                                        ApiCallSubmitOcr(name, fathername, dob, id, dlIdDetailId, filename, fileUrl);
+                                        ApiCallSubmitKYC(name, fathername, dob, id);
+                                    }
+                                    else {
+                                        Constants.ShowNoInternet(getActivity());
+                                    }
+
+
 
 
                                 }
@@ -1021,7 +1052,14 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                 public void onClickDetails(String name, String fathername, String dob, String id) {
 
                                     //ApiCallSubmitOcr(name,fathername,dob,id,dlIdDetailId,filename,fileUrl);
-                                    ApiCallSubmitKYC(name, fathername, dob, id);
+
+                                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                        ApiCallSubmitKYC(name, fathername, dob, id);
+                                    }
+                                    else {
+                                        Constants.ShowNoInternet(getActivity());
+                                    }
+
 
 
                                 }
@@ -1137,6 +1175,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
     public void storeAadhar() {
+
         gps = new GPSTracker(getActivity());
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
@@ -1194,6 +1233,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             callUpload.enqueue(new Callback<CommonResponse>() {
                 @Override
                 public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
+
                     if (mProgressDialog != null) {
                         mProgressDialog.dismiss();
                     }
@@ -1202,6 +1242,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
                         if (getaadhardetail.getResponseCode() == 200) {
+
 
                             File casted_image = new File(aadharImagepathFront);
                             if (casted_image.exists()) {

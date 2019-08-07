@@ -40,6 +40,7 @@ import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.adapters.CustomPopupAdapter;
+import com.canvascoders.opaper.adapters.MyAdapterforRecycler;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.ImageUtils;
@@ -77,7 +78,6 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
     private Button btn_next;
     private static final int IMAGE_SHPO_ACT = 103;
     private static final int IMAGE_SHPO_ACT_MULTIPLE = 104;
-
     private static final int IMAGE_SHOP_IMG = 105, IMAGE_OWNER_IMG = 106;
     private static int IMAGE_SELCTED_IMG = 0;
     private Uri imgURI;
@@ -90,6 +90,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
     private static final String IMAGE_DIRECTORY_NAME = "oppr";
     private SessionManager sessionManager;
     private String shop_act = "shop_act";
+    RecyclerView rvImages;
     //private PermissionUtil.PermissionRequestObject mALLPermissionRequest;
 
     ImageView img_doc_upload_2, ivImage2Selected;
@@ -100,11 +101,13 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
     private static ViewPager mPager;
 
     private MyAdapter myAdapter;
+    private MyAdapterforRecycler myAdapterforRecycler;
 
     RelativeLayout img_select;
     TextView tv_pick_image;
 
     TextView tv_pick_image2;
+
     Context mcontext;
     View view;
     String text = "Electricity Bill/Water Bill/Store Agreement";
@@ -115,7 +118,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
     String str_process_id, delBoyScreen;
 
     ImageView ivShopImageSingle, ivAddressProofSelected, ivStoreImage, ivOwnerImage, ivOwnerImageSelected, ivStoreImageSelected, ivShopImage;
-    RecyclerView rvImageListBills;
+
     Button btSubmit;
     int side = 1;
 
@@ -163,14 +166,21 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
 
 
         mPager = (ViewPager) view.findViewById(R.id.pager);
+        rvImages = view.findViewById(R.id.rvImageBillsMultiple);
+
         myAdapter = new MyAdapter(mcontext, shopActImage);
+        myAdapterforRecycler = new MyAdapterforRecycler(mcontext, shopActImage);
+
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rvImages.setLayoutManager(horizontalLayoutManager);
+
+        rvImages.setAdapter(myAdapterforRecycler);
         mPager.setAdapter(myAdapter);
 
 
         tvTitleAddressProof = view.findViewById(R.id.tvShopActTitle);
         //  ivShopImageSingle = view.findViewById(R.id.ivShopImageSingle);
 
-        rvImageListBills = view.findViewById(R.id.rvImageBillsMultiple);
 
       /*  switch_shopact.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -343,6 +353,9 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                         shopActImage.clear();
                         myAdapter = new MyAdapter(mcontext, shopActImage);
                         mPager.setAdapter(myAdapter);
+
+                        myAdapterforRecycler = new MyAdapterforRecycler(mcontext, shopActImage);
+                        rvImages.setAdapter(myAdapterforRecycler);
                     }
                     shop_act = "shop_act";
                     tvTitleAddressProof.setText("Choose shop act image");
@@ -351,6 +364,8 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                         shopActImage.clear();
                         myAdapter = new MyAdapter(mcontext, shopActImage);
                         mPager.setAdapter(myAdapter);
+                        myAdapterforRecycler = new MyAdapterforRecycler(mcontext, shopActImage);
+                        rvImages.setAdapter(myAdapterforRecycler);
                     }
                     shop_act = "bill_proof[]";
                     tvTitleAddressProof.setText("Electricity Bill/Water Bill/Store Rent Agreement");
@@ -425,6 +440,8 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                             shopActImage.clear();
                             myAdapter = new MyAdapter(mcontext, shopActImage);
                             mPager.setAdapter(myAdapter);
+                            myAdapterforRecycler = new MyAdapterforRecycler(mcontext, shopActImage);
+                            rvImages.setAdapter(myAdapterforRecycler);
                         }
                     }
 
@@ -779,8 +796,9 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
 
                     shopActImage.add(shoap_act_image_path);
 
-                    Log.e("size", String.valueOf(shopActImage.size()));
 
+                    Log.e("size", String.valueOf(shopActImage.size()));
+                    myAdapterforRecycler.notifyDataSetChanged();
                     myAdapter.notifyDataSetChanged();
 
 //                    Bitmap photo = (Bitmap) data.getExtras().get("data");

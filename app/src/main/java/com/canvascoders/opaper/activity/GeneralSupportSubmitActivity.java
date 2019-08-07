@@ -92,7 +92,16 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
         tvAgentId = findViewById(R.id.tvAgentId);
         tvAgentId.setText(sessionManager.getAgentID());
         ivBack.setOnClickListener(this);
-        ApiCallGetSubject();
+
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            // getBankDetails(mContext,s.toString(),processId);
+            ApiCallGetSubject();
+        }
+        else {
+            Constants.ShowNoInternet(this);
+        }
+
         priorityList = Arrays.asList(getResources().getStringArray(R.array.Priority));
         CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(GeneralSupportSubmitActivity.this, android.R.layout.simple_spinner_item, priorityList);
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -115,7 +124,12 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
             @Override
             public void onClick(View view) {
                 if (isValid(view)) {
-                    ApiCallSubmitReport();
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        ApiCallSubmitReport();
+                    } else {
+                        Constants.ShowNoInternet(GeneralSupportSubmitActivity.this);
+                    }
+
                 }
             }
         });
