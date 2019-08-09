@@ -181,5 +181,6 @@
     <string name="please_enter_store_owner_mobile_number">Please enter store owner mobile number</string>
     <string name="owner_store_information"><![CDATA[Owner & Store Information]]></string>
     <string name="skip_and_send">Skip &amp; Send</string>
+    <string name="notice">If you want to change rate or store type please tap on change rate and if you want to continue with current working rate than tap on resign agreement.</string>
 
 </resources>

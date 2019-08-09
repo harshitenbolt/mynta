@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.canvascoders.opaper.R;
@@ -43,10 +44,10 @@ public class ReportAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
 
-        ((ItemHolder) holder).t1.setText(String.valueOf(dataViews.get(position).getProccess_id()));
+        ((ItemHolder) holder).bt1.setText(String.valueOf(dataViews.get(position).getProccess_id()));
         ((ItemHolder) holder).t2.setText(String.valueOf(dataViews.get(position).getStore_name()));
         ((ItemHolder) holder).t3.setText(String.valueOf(dataViews.get(position).getBill_period()));
-        ((ItemHolder) holder).t4.setText(String.valueOf(dataViews.get(position).getDc()));
+        ((ItemHolder) holder).bt4.setText(String.valueOf(dataViews.get(position).getDc()));
         ((ItemHolder) holder).t5.setText(String.valueOf(dataViews.get(position).getStore_address()));
         ((ItemHolder) holder).t6.setText(String.valueOf(dataViews.get(position).getAmt()));
 
@@ -65,14 +66,14 @@ public class ReportAdapter extends RecyclerView.Adapter {
 
     public class ItemHolder extends RecyclerView.ViewHolder {
         TextView t1, t2, t3, t4, t5, t6, t7;
-
+        Button bt1,bt4;
 
         public ItemHolder(View itemView) {
             super(itemView);
-            this.t1 = (TextView) itemView.findViewById(R.id.txt1);
+            this.bt1 = (Button) itemView.findViewById(R.id.txt1);
             this.t2 = (TextView) itemView.findViewById(R.id.txt2);
             this.t3 = (TextView) itemView.findViewById(R.id.txt3);
-            this.t4 = (TextView) itemView.findViewById(R.id.txt4);
+            this.bt4 = (Button) itemView.findViewById(R.id.txt4);
             this.t5 = (TextView) itemView.findViewById(R.id.txt5);
             this.t6 = (TextView) itemView.findViewById(R.id.txt6);
             this.t7 = (TextView) itemView.findViewById(R.id.txt7);

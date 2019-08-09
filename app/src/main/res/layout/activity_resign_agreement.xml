@@ -6,7 +6,6 @@
     android:layout_height="match_parent">
 
 
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -33,6 +32,7 @@
             android:textSize="@dimen/_14sdp" />
 
     </android.support.v7.widget.Toolbar>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,25 +52,134 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/relative_buttom"
-
         android:layout_below="@id/toolbar"
-        android:layout_margin="@dimen/margin_10dp"
-        app:contentPadding="5dp">
+        android:layout_margin="@dimen/_10sdp"
+        android:elevation="@dimen/_5sdp">
 
         <WebView
             android:id="@+id/web_view_id"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></WebView>
+            android:layout_height="match_parent"
+            android:visibility="gone"></WebView>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_10sdp">
+
+                    <TextView
+                        android:id="@+id/tvAgreementName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/montesemibold"
+                        android:text="July-2018 Agreement" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:src="@drawable/eye" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@color/colorLightGrey" />
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvAddedndum"
+                    android:layout_width="match_parent"
+                    android:paddingBottom="@dimen/_15sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@color/colorLightGrey" />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="@font/montesemibold"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:text="Current Working Rate" />
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBlue"
+                    android:clipToPadding="true"
+                    android:elevation="@dimen/_5sdp"
+                    android:padding="@dimen/_10sdp"
+                    app:cardCornerRadius="@dimen/_20sdp">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvRateList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_15sdp">
+
+                    </android.support.v7.widget.RecyclerView>
+                </android.support.v7.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_15sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montesemibold"
+                        android:text="Note :" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/monteregular"
+                        android:text="@string/notice" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
     </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:id="@+id/relative_buttom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        >
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/linear_bottom"
@@ -82,35 +191,30 @@
 
             <Button
                 android:id="@+id/btChangeRate"
-
                 style="@style/Button_withGreen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/margin_20dp"
-                android:layout_margin="10dp"
-                android:text="Change Rate ?"
                 android:layout_weight="1"
+                android:text="Change Rate ?"
                 android:tint="@android:color/white"
-                app:backgroundTint="@color/colorYellow"
-                app:srcCompat="@drawable/ic_arrow_right_black" />
+                android:background="@color/colorBlue"
+                 />
 
             <Button
 
-                style="@style/Button_withGreen"
                 android:id="@+id/btResign"
+                style="@style/Button_withGreen"
                 android:layout_width="match_parent"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:background="@drawable/chip_selected"
-                app:backgroundTint="@color/colorPrimary"
+                android:layout_weight="1"
+
                 android:text="RESIGN "
                 android:textAllCaps="false"
                 android:tint="@android:color/white"
                 android:visibility="visible"
-                />
+                android:background="@color/colorPrimary" />
         </LinearLayout>
     </LinearLayout>
 

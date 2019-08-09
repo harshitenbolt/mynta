@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -29,6 +32,8 @@ import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.fragment.PanApprovalPending;
+import com.canvascoders.opaper.fragment.TaskCompletedFragment2;
 import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.DialogUtil;
@@ -114,6 +119,8 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Please wait");
         mProgressDialog.setCancelable(false);
+
+
         etFatherName = findViewById(R.id.etFatherName);
         etPanName = findViewById(R.id.etPanName);
         etpanNumber = findViewById(R.id.etPanNumber);
@@ -133,11 +140,10 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
             // getBankDetails(mContext,s.toString(),processId);
             ApiCallGetDetails();
-        }
-        else {
+        } else {
             Constants.ShowNoInternet(EditPanCardActivity.this);
         }
-      //  ApiCallGetDetails();
+        //  ApiCallGetDetails();
     }
 
 
@@ -210,6 +216,10 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                         catch (Exception e){
                        //     Toast.makeText(EditPanCardActivity.this, "Server has no image ", Toast.LENGTH_SHORT).show();
                         }                     */   // ExtractPanDetail();
+                    } else if (updatePanDetailResponse.getResponseCode() == 202) {
+                        PanApprovalPending panApprovalPending = new PanApprovalPending();
+                        panApprovalPending.setMesssge("", str_process_id);
+                        commanFragmentCallWithoutBackStack(panApprovalPending);
                     } else if (updatePanDetailResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(EditPanCardActivity.this);
                     } else {
@@ -551,6 +561,20 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         File casted_image6 = new File(panImagepath);
         if (casted_image6.exists()) {
             casted_image6.delete();
+        }
+    }
+
+    public void commanFragmentCallWithoutBackStack(Fragment fragment) {
+
+        Fragment cFragment = fragment;
+        if (cFragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragmentTransaction.replace(R.id.rvmain, cFragment);
+            fragmentTransaction.commit();
+
         }
     }
 

@@ -43,6 +43,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
+
 public class SupportFragment extends Fragment implements View.OnClickListener {
 
     Context mContext;
@@ -165,7 +166,6 @@ public class SupportFragment extends Fragment implements View.OnClickListener {
                     ((ColorDrawable) background).setColor(ContextCompat.getColor(mContext, R.color.colorWhite));
                     tvPayment.setTextColor(getResources().getColor(R.color.colorBlack));
                 }
-
 
                 break;
         }

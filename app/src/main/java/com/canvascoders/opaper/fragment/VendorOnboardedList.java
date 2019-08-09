@@ -86,6 +86,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
     RecyclerView recyclerview;
     VendorListOnboardedAdapter vendorAdapter;
     String TAG = "VendorLis";
+    Context context1;
     SessionManager sessionManager;
     SwipeRefreshLayout mSwipeRefreshLayout;
     JSONObject object = new JSONObject();
@@ -160,14 +161,11 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
         recyclerview.setAdapter(vendorAdapter);
 
 
-
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
             ApiCallgetReports();
         } else {
             Constants.ShowNoInternet(getActivity());
         }
-
-
 
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -837,6 +835,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
                             }
                         });
 
+
                         actv.setOnTouchListener(new View.OnTouchListener() {
                             @Override
                             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -887,19 +886,30 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
         public CustomAdapter(Context context, int textViewResourceId,
                              List<T> objects) {
             super(context, textViewResourceId, objects);
+
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+
             View view = super.getView(position, convertView, parent);
+
             if (view instanceof TextView) {
-                ((TextView) view).setTextSize(18);
-                Typeface typeface = ResourcesCompat.getFont(parent.getContext(), R.font.monteregular);
+                ((TextView) view).setTextSize(15);
+                ((TextView) view).setTransformationMethod(null);
+                Typeface typeface = ResourcesCompat.getFont(parent.getContext(), R.font.montesemibold);
+
                 ((TextView) view).setTypeface(typeface);
             }
             return view;
         }
     }
+
+
+
+
+
+
 
 
 }

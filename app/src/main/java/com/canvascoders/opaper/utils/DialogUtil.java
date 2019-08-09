@@ -130,6 +130,11 @@ public class DialogUtil {
         etVotername = dialog.findViewById(R.id.etVotername);
         etVoterFatherName = dialog.findViewById(R.id.etVoterFathername);
         etVoterDateofBirth = dialog.findViewById(R.id.etDateofBorthvoter);
+        etVoterIdNumber = dialog.findViewById(R.id.etVoterNumber);
+        etVotername.setText(name);
+        etVoterFatherName.setText(fathername);
+        etVoterIdNumber.setText(id);
+        etVoterDateofBirth.setText(birthdate);
         ivClose = dialog.findViewById(R.id.ivClose);
 
         etVoterDateofBirth.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +187,7 @@ public class DialogUtil {
 
             }
         });
-        etVoterIdNumber = dialog.findViewById(R.id.etVoterNumber);
+
 
         btSubmit = dialog.findViewById(R.id.btSubmitVoterdetail);
         btSubmit.setOnClickListener(new View.OnClickListener() {

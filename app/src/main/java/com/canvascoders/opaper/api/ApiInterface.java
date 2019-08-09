@@ -24,6 +24,7 @@ import com.canvascoders.opaper.Beans.PanImageResponse.PanImageResponse;
 import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.Beans.ResendOTPResponse.ResendOTPResponse;
 import com.canvascoders.opaper.Beans.ResetPassResponse.ResetPassResponse;
+import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ResignAgreeDetailResponse;
 import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResponse;
 import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
 import com.canvascoders.opaper.Beans.SendInvoiceEsignResponse.SendInvoiceLinkresponse;
@@ -337,6 +338,12 @@ public interface ApiInterface {
     @POST("get-pan-details")
     Call<UpdatePanDetailResponse> pandetailResponse(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
 
+
+    @FormUrlEncoded
+    @POST("send-msg-for-pan-agreement-link")
+    Call<com.canvascoders.opaper.Beans.CommonResponse> sendmsgForAgreementLink(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
+
+
     //@FormUrlEncodedz
     @POST("get-delivery-boys")
     Call<DeliveryboyListResponse> getDelivery_boys(@Header("Authorization") String token, @QueryMap Map<String, String> params);
@@ -481,6 +488,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("all-completed-vendors")
     Call<SearchListResponse> getSearchListResponse(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+    @FormUrlEncoded
+    @POST("resign-agreement-detail")
+    Call<ResignAgreeDetailResponse> getDetailsResignAgreement(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
 
 }

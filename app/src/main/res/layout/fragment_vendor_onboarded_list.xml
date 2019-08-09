@@ -36,7 +36,7 @@
                 android:layout_marginLeft="@dimen/_40sdp"
                 android:background="@null"
                 android:hint="Search"
-                android:text=""
+                android:textAllCaps="false"
                 android:dropDownHeight="wrap_content"
                 android:paddingLeft="@dimen/_10sdp"
                 android:singleLine="true" />

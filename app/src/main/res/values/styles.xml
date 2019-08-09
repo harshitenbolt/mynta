@@ -112,6 +112,11 @@
     </style>
 
 
+    <style name="CustomPopup" parent="TextAppearance.AppCompat.Widget.DropDownItem">
+        <item name="android:textSize">@dimen/_12sdp</item>
+       <item name="android:fontFamily">@font/montesemibold</item>
+    </style>
+
 
     <style name="TextviewwithoutSize" parent="Widget.AppCompat.AutoCompleteTextView">
         <item name="android:layout_height">wrap_content</item>
@@ -151,6 +156,18 @@
         <item name="android:padding">@dimen/_8sdp</item>
         <item name="android:layout_height">@dimen/_35sdp</item>
     </style>
+
+    <style name="MyRadioButtonStyleLeft" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:background">@drawable/custom_btn_radio</item>
+    </style>
+
+    <style name="MyRadioButtonStyleRight" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:background">@drawable/custom_btn_radio_right</item>
+    </style>
+    <style name="MyRadioButtonStyleMiddle" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:background">@drawable/custom_btn_radio_middle</item>
+    </style>
+
 
 
 </resources>
