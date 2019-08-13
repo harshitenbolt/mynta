@@ -547,6 +547,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
     }
 
 
+
     public class GetVendorList extends AsyncTask<String, Void, String> {
 
         String jsonReq;

@@ -492,9 +492,10 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                             } else {
                                 if (getPanDetailsResponse.getReselectImage() != null && getPanDetailsResponse.getReselectImage().equalsIgnoreCase("1")) {
                                     panImagepath = "";
-                                    Glide.with(EditPanCardActivity.this).load(panImagepath).into(ivPanImage);
+                                    Glide.with(EditPanCardActivity.this).load(panImagepath).placeholder(R.drawable.pancard).into(ivPanImage);
                                     isPanSelected = false;
                                     ivPanImageSelected.setVisibility(View.GONE);
+                                    tvPanClick.setVisibility(View.VISIBLE);
 
                                 } else {
 

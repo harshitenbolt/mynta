@@ -31,6 +31,17 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_14sdp" />
 
+        <ImageView
+            android:id="@+id/ivSupport"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/support" />
+
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
@@ -48,175 +59,357 @@
     </FrameLayout>
 
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/relative_buttom"
+    <RelativeLayout
+        android:id="@+id/rvMain"
         android:layout_below="@id/toolbar"
-        android:layout_margin="@dimen/_10sdp"
-        android:elevation="@dimen/_5sdp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <WebView
-            android:id="@+id/web_view_id"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"></WebView>
+            android:layout_above="@+id/relative_buttom"
 
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_margin="@dimen/_10sdp"
+            android:elevation="@dimen/_5sdp">
 
-            <LinearLayout
+            <WebView
+                android:id="@+id/web_view_id"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:visibility="gone"></WebView>
 
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/nestedMain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_5sdp"
-                    android:paddingRight="@dimen/_10sdp">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tvAgreementName"
+
+                    <LinearLayout
+                        android:id="@+id/llAgreement"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_10sdp">
+
+                        <TextView
+                            android:id="@+id/tvAgreementName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/montesemibold"
+                            android:text="" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:src="@drawable/eye" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/colorLightGrey" />
+
+                    <TextView
+                        android:id="@+id/tvNoAddedndum"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_15sdp"
                         android:fontFamily="@font/montesemibold"
-                        android:text="July-2018 Agreement" />
-
-                    <ImageView
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="@dimen/_20sdp"
-                        android:layout_marginRight="@dimen/_5sdp"
-                        android:src="@drawable/eye" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@color/colorLightGrey" />
-
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvAddedndum"
-                    android:layout_width="match_parent"
-                    android:paddingBottom="@dimen/_15sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_5sdp">
-
-                </android.support.v7.widget.RecyclerView>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@color/colorLightGrey" />
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:fontFamily="@font/montesemibold"
-                    android:paddingLeft="@dimen/_10sdp"
-                    android:text="Current Working Rate" />
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorBlue"
-                    android:clipToPadding="true"
-                    android:elevation="@dimen/_5sdp"
-                    android:padding="@dimen/_10sdp"
-                    app:cardCornerRadius="@dimen/_20sdp">
+                        android:text="No Addendum available"
+                        android:textColor="@color/text_color_dark_grey"
+                        android:textSize="@dimen/_10sdp" />
 
                     <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvRateList"
+                        android:id="@+id/rvAddedndum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_15sdp">
+                        android:layout_margin="@dimen/_10sdp"
+                        android:paddingBottom="@dimen/_15sdp"
+                        android:visibility="gone">
 
                     </android.support.v7.widget.RecyclerView>
-                </android.support.v7.widget.CardView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_15sdp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/montesemibold"
-                        android:text="Note :" />
-
-                    <TextView
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/colorLightGrey" />
+
+
+                    <TextView
+                        android:id="@+id/tvRateTextCurrent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/monteregular"
-                        android:text="@string/notice" />
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:fontFamily="@font/montesemibold"
+                        android:text="Current Working Rate"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:background="@color/colorBlue"
+                        android:clipToPadding="true"
+                        android:elevation="@dimen/_5sdp"
+                        android:padding="@dimen/_10sdp"
+                        app:cardBackgroundColor="@color/colorBlue"
+                        app:cardCornerRadius="@dimen/_20sdp">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rvRateList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_20sdp"></android.support.v7.widget.RecyclerView>
+                    </android.support.v7.widget.CardView>
+
+
+                    <LinearLayout
+                        android:id="@+id/llUpdated"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/_20sdp"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:layout_marginRight="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_15sdp"
+                            android:fontFamily="@font/montesemibold"
+                            android:text="Your request for rate change is under approval please wait till approve."
+                            android:textColor="@color/text_color_dark_grey"
+                            android:textSize="@dimen/_10sdp" />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:background="@color/colorLightGrey" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_15sdp"
+                            android:fontFamily="@font/montesemibold"
+                            android:text="If you wants to continue with same rate tap on skip to resign agreement"
+                            android:textColor="@color/text_color_dark_grey"
+                            android:textSize="@dimen/_10sdp" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/montesemibold"
+                            android:text="Current Working Rate"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_15sdp"
+                            android:background="@color/colorBlue"
+                            android:clipToPadding="true"
+                            android:elevation="@dimen/_5sdp"
+                            android:padding="@dimen/_10sdp"
+                            app:cardBackgroundColor="@color/colorRateBackground"
+                            app:cardCornerRadius="@dimen/_20sdp">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/rvPreviousRate"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/_20sdp">
+
+                            </android.support.v7.widget.RecyclerView>
+                        </android.support.v7.widget.CardView>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llNotice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_15sdp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/montesemibold"
+                            android:text="Note :" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_2sdp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/monteregular"
+                            android:text="@string/notice" />
+                    </LinearLayout>
+
                 </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
 
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-
-    </android.support.v7.widget.CardView>
-
-    <LinearLayout
-        android:id="@+id/relative_buttom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:orientation="horizontal">
+        </android.support.v7.widget.CardView>
 
         <LinearLayout
-            android:id="@+id/linear_bottom"
+            android:id="@+id/relative_buttom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btChangeRate"
-                style="@style/Button_withGreen"
+            <LinearLayout
+                android:id="@+id/linear_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:text="Change Rate ?"
-                android:tint="@android:color/white"
-                android:background="@color/colorBlue"
-                 />
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:orientation="horizontal">
 
-            <Button
+                <Button
+                    android:id="@+id/btChangeRate"
+                    style="@style/Button_withGreen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@color/colorBlue"
+                    android:text="Change Rate ?"
+                    android:tint="@android:color/white" />
 
-                android:id="@+id/btResign"
-                style="@style/Button_withGreen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
+                <Button
+                    android:id="@+id/btResign"
+                    style="@style/Button_withGreen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
 
-                android:text="RESIGN "
-                android:textAllCaps="false"
-                android:tint="@android:color/white"
-                android:visibility="visible"
-                android:background="@color/colorPrimary" />
+                    android:background="@color/colorPrimary"
+                    android:text="RESIGN "
+                    android:textAllCaps="false"
+                    android:tint="@android:color/white"
+                    android:visibility="visible" />
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rvCaptured"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:visibility="gone">
+
+
+        <RelativeLayout
+            android:id="@+id/rlWithMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/flImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/ivImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tverror"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:gravity="center"
+                android:text="Select area to show error..."
+                android:textColor="#ffffff"
+                android:visibility="visible" />
+
+            <com.canvascoders.opaper.Screenshot.DragRectView
+                android:id="@+id/dragRect"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/llButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/ivSelect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/_15sdp"
+                    android:text="Select" />
+
+                <Button
+                    android:id="@+id/ivClose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/_15sdp"
+                    android:text="Cancel" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
 
     <ProgressBar
         android:id="@+id/activity_thread_progress"

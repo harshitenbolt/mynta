@@ -40,6 +40,9 @@
     <color name="colorAccentIcons">#edb537</color>
 
 
+    <color name="colorRateBackground">#A8ACB5</color>
+
+
     <!--chat-->
     <!--text colors-->
     <color name="colorTextPrimary">#D9FFFFFF</color>

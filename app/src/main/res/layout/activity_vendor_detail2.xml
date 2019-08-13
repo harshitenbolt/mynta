@@ -32,6 +32,16 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_14sdp" />
 
+        <ImageView
+            android:id="@+id/ivSupport"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/support" />
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
@@ -514,6 +524,7 @@
                                                 android:layout_marginTop="@dimen/_5sdp"
                                                 android:fontFamily="@font/montemedium"
                                                 android:text="PAN"
+                                                android:clickable="false"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
                                         </LinearLayout>
@@ -554,6 +565,7 @@
                                                 android:lines="2"
                                                 android:maxLines="2"
                                                 android:text="MOBILE NO"
+                                                android:clickable="false"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
                                         </LinearLayout>
@@ -591,6 +603,7 @@
                                                 android:fontFamily="@font/montemedium"
                                                 android:singleLine="true"
                                                 android:text="CHEQUE"
+                                                android:clickable="false"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
                                         </LinearLayout>
@@ -638,6 +651,7 @@
                                                 android:layout_marginTop="@dimen/_3sdp"
                                                 android:fontFamily="@font/montemedium"
                                                 android:gravity="center"
+                                                android:clickable="false"
                                                 android:text="RATE/ADD\nSTORE TYPE"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
@@ -682,6 +696,7 @@
                                                 android:lines="2"
                                                 android:maxLines="2"
                                                 android:text="GST"
+                                                android:clickable="false"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
                                         </LinearLayout>
@@ -721,6 +736,7 @@
                                                 android:gravity="center"
                                                 android:lines="2"
                                                 android:maxLines="2"
+                                                android:clickable="false"
                                                 android:text="RESIGN\n AGREEMENT"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
@@ -1121,4 +1137,85 @@
         </android.support.v4.widget.NestedScrollView>
 
     </RelativeLayout>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rvCaptured"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:visibility="gone">
+
+
+        <RelativeLayout
+            android:id="@+id/rlWithMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/flImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/ivImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tverror"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:gravity="center"
+                android:text="Select area to show error..."
+                android:textColor="#ffffff"
+                android:visibility="visible" />
+
+            <com.canvascoders.opaper.Screenshot.DragRectView
+                android:id="@+id/dragRect"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/llButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/ivSelect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/_15sdp"
+                    android:text="Select" />
+
+                <Button
+                    android:id="@+id/ivClose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/_15sdp"
+                    android:text="Cancel" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
 </LinearLayout>

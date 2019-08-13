@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.canvascoders.opaper.Beans.BankDetailResp;
+import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.BasicDetailRateDetail;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.utils.Constants;
 
@@ -22,13 +23,15 @@ import java.util.List;
 
 public class CurrentRateListAdapter extends RecyclerView.Adapter<CurrentRateListAdapter.ItemHolder> {
 
-    public List<BankDetailResp.BankDetail> bankDetailList;
+    public List<BasicDetailRateDetail> bankDetailList;
     Context mContext;
     final int sdk = android.os.Build.VERSION.SDK_INT;
+    String main;
 
-    public CurrentRateListAdapter(Context ctx, List<BankDetailResp.BankDetail> dataViews) {
+    public CurrentRateListAdapter(Context ctx, List<BasicDetailRateDetail> dataViews, String s) {
         this.bankDetailList = dataViews;
         mContext = ctx;
+        main = s;
 
     }
 
@@ -36,55 +39,49 @@ public class CurrentRateListAdapter extends RecyclerView.Adapter<CurrentRateList
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         mContext = parent.getContext();
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_raw_cheque, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.current_rate_list, parent, false);
         return new CurrentRateListAdapter.ItemHolder(view);
 
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(ItemHolder holder, final int position) {
+        if (main.equalsIgnoreCase("1")) {
+            holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.colorBlue));
+        } else {
+            holder.llMain.setBackgroundColor(mContext.getResources().getColor(R.color.colorRateBackground));
+        }
+        holder.tvRateName.setText(bankDetailList.get(position).getStoreType());
+        holder.tvRate.setText(mContext.getResources().getString(R.string.Rs) + " " + bankDetailList.get(position).getRate());
 
-//        holder.tvStauts.setText(bankDetail.getStatus());
+        if (position == bankDetailList.size() - 1) {
+            holder.view.setVisibility(View.GONE);
+
+        }
     }
 
     @Override
     public int getItemCount() {
 
-        return bankDetailList == null ? 0 : bankDetailList.size();
+        return bankDetailList.size();
     }
 
 
     public class ItemHolder extends RecyclerView.ViewHolder {
 
-        public AppCompatTextView tvPayeeName, tvBankName, tvAccountNo, tvStauts;
+        public AppCompatTextView tvRateName, tvRate, tvAccountNo, tvStauts;
         public LinearLayout llMain;
+        View view;
 
         public ItemHolder(View itemView) {
             super(itemView);
-            tvPayeeName = itemView.findViewById(R.id.tvPayeeName);
-            tvBankName = itemView.findViewById(R.id.tvBankName);
-            tvAccountNo = itemView.findViewById(R.id.tvAccountNumber);
-            tvStauts = itemView.findViewById(R.id.tvStauts);
+            tvRateName = itemView.findViewById(R.id.tvRateName);
+            tvRate = itemView.findViewById(R.id.tvRate);
             llMain = itemView.findViewById(R.id.llMain);
-        }
-    }
-
-    public void commanFragmentCallWithBackStack(Fragment fragment, String mobileno) {
-
-        Fragment cFragment = fragment;
-
-        if (cFragment != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString(Constants.KEY_EMP_MOBILE, mobileno);
-
-            FragmentManager fragmentManager = ((AppCompatActivity) mContext).getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragment.setArguments(bundle);
-            fragmentTransaction.add(R.id.llMain, cFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+            view = itemView.findViewById(R.id.viewBelow);
 
         }
     }
+
+
 }

@@ -2,14 +2,19 @@ package com.canvascoders.opaper.activity;
 
 import android.Manifest;
 import android.accessibilityservice.GestureDescription;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -34,6 +39,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +51,8 @@ import com.canvascoders.opaper.Beans.SignedDocDetailResponse.Result;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.Screenshot.DragRectView;
+import com.canvascoders.opaper.Screenshot.Screenshot;
 import com.canvascoders.opaper.adapters.ChequeListAdapter;
 import com.canvascoders.opaper.adapters.DocumentListAdapter;
 import com.canvascoders.opaper.adapters.SupportListAdapter;
@@ -107,7 +115,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     private static Dialog dialog;
     ProgressDialog mProgress;
     CardView cvPan, cvMobile, cvCheque, cvRate, cvResignAgreement;
-    ImageView ivBack;
+    private ImageView ivBack, ivSupport;
     RecyclerView rvDocuments;
     AppCompatSpinner spYear;
     ProgressBar pbBar;
@@ -116,6 +124,11 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     LinearLayout llEnable;
     private TextView tvStoreName, tvAddress, tvNoData;
     boolean expand = false;
+    Bitmap b, converted;
+    RelativeLayout rvMainWithRect, rvMain;
+    ImageView imageView, ivHome;
+    Button ivSelect;
+    FrameLayout flImage;
 
 
     @Override
@@ -133,7 +146,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         tv_Name = findViewById(R.id.tv_name);
         pbBar = findViewById(R.id.mProgress);
         llDisable = findViewById(R.id.llExapandDisable);
-
+        ivSupport = findViewById(R.id.ivSupport);
         rvDocuments = findViewById(R.id.rvDocuments);
         ivVendorImage = findViewById(R.id.iv_vendor_image);
         btn_update_cheque = findViewById(R.id.btn_update_cheque);
@@ -155,6 +168,90 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         llEdit = findViewById(R.id.llExapand);
         cdEdit = findViewById(R.id.cvEdit);
         tvExpand = findViewById(R.id.tvExpand);
+
+
+        // support System...
+
+        imageView = findViewById(R.id.ivImage);
+        ivSupport = findViewById(R.id.ivSupport);
+        ivSelect = findViewById(R.id.ivSelect);
+        rvMain = findViewById(R.id.rvMain);
+        flImage = findViewById(R.id.flImage);
+        rvMainWithRect = findViewById(R.id.rlWithMain);
+
+        ivSupport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int color = 0x90000000;
+                final Drawable drawable = new ColorDrawable(color);
+                b = Screenshot.takescreenshotOfRootView(imageView);
+                imageView.setImageBitmap(b);
+                findViewById(R.id.rvCaptured).setVisibility(View.VISIBLE);
+                rvMain.setVisibility(View.GONE);
+                //ivSupport.setVisibility(View.GONE);
+                flImage.setForeground(drawable);
+                //  btn_next.setForeground(drawable);
+               /* findViewById(R.id.btn_next).setVisibility(View.GONE);
+                findViewById(R.id.scView).setVisibility(View.GONE);*/
+            }
+        });
+        findViewById(R.id.ivClose).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              /*  final int color = 0xFFFFFF;
+                final Drawable drawable = new ColorDrawable(color);
+                imageView.setImageResource(android.R.color.transparent);*/
+                //  ivSupport.setVisibility(View.GONE);
+                findViewById(R.id.rvCaptured).setVisibility(View.GONE);
+                findViewById(R.id.rvMain).setVisibility(View.VISIBLE);
+
+                // rvMain.setForeground(drawable);
+             /* //  findViewById(R.id.btn_next).setVisibility(View.VISIBLE);
+              //  rvMain.setForeground(drawable);
+              //  btn_next.setForeground(drawable);*/
+            }
+        });
+        ivSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*View v1 = rvMainWithRect.getRootView();
+                v1.setDrawingCacheEnabled(true);
+                Bitmap bitmap = v1.getDrawingCache();
+                BitmapDrawable drawable=new BitmapDrawable(bitmap);*/
+
+                final int color = 0xFFFFFF;
+                final Drawable drawable = new ColorDrawable(color);
+                flImage.setForeground(drawable);
+                findViewById(R.id.llButton).setVisibility(View.GONE);
+                findViewById(R.id.tverror).setVisibility(View.GONE);
+                Bitmap bitmap = viewToBitmap(rvMainWithRect);
+                converted = getResizedBitmap(bitmap, 400);
+                Intent i = new Intent(VendorDetailActivity.this, GeneralSupportSubmitActivity.class);
+                i.putExtra("BitmapImage", converted);
+                i.putExtra(Constants.PARAM_SCREEN_NAME, "VendorProfile");
+                startActivity(i);
+                findViewById(R.id.rvCaptured).setVisibility(View.GONE);
+                findViewById(R.id.rvMain).setVisibility(View.VISIBLE);
+                findViewById(R.id.llButton).setVisibility(View.VISIBLE);
+                findViewById(R.id.tverror).setVisibility(View.VISIBLE);
+            }
+        });
+        final DragRectView view = (DragRectView) findViewById(R.id.dragRect);
+
+        if (null != view) {
+            view.setOnUpCallback(new DragRectView.OnUpCallback() {
+                @Override
+                public void onRectFinished(final Rect rect) {
+                    // view.setForeground(drawable);
+
+                }
+            });
+        }
+
+
+
+
+
        /* tvExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -264,10 +361,9 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                 } else {
                     Constants.ShowNoInternet(VendorDetailActivity.this);
                 }*/
-                Intent i = new Intent(VendorDetailActivity.this,ResignAgreementActivity.class);
+                Intent i = new Intent(VendorDetailActivity.this, ResignAgreementActivity.class);
                 i.putExtra("data", vendor);
-                startActivity(i);
-
+                startActivityForResult(i, 1);
 
 
             }
@@ -475,10 +571,26 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     }
 
 
-    @Override
+   /* @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CHEQUE_UPDATE_INTENT && resultCode == RESULT_OK) {
+        }
+    }*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                String result = data.getStringExtra("result");
+                if (result.equalsIgnoreCase("1")) {
+                    finish();
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
         }
     }
 
@@ -646,6 +758,29 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         dialog.show();
 
 
+    }
+
+
+    public Bitmap viewToBitmap(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        return bitmap;
+    }
+
+    public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        float bitmapRatio = (float) width / (float) height;
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+        return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
 

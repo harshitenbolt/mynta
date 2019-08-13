@@ -208,6 +208,7 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
             @Override
             public void onResponse(Call<SupportSubjectResponse> call, Response<SupportSubjectResponse> response) {
                 if (response.isSuccessful()) {
+
                     SupportSubjectResponse supportSubjectResponse = response.body();
                     if (supportSubjectResponse.getResponseCode() == 200) {
                         for (int i = 0; i < supportSubjectResponse.getData().size(); i++) {

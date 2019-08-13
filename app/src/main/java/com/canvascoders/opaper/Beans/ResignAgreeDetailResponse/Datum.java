@@ -10,6 +10,19 @@ public class Datum {
     @SerializedName("resign_agreement_title")
     @Expose
     private String resignAgreementTitle;
+
+    @SerializedName("show_agreement")
+    @Expose
+    private String ShowAgreement;
+
+    public String getShowAgreement() {
+        return ShowAgreement;
+    }
+
+    public void setShowAgreement(String showAgreement) {
+        ShowAgreement = showAgreement;
+    }
+
     @SerializedName("e_sign_document_detail")
     @Expose
     private ESignDocumentDetail eSignDocumentDetail;
