@@ -364,6 +364,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                 Intent i = new Intent(VendorDetailActivity.this, ResignAgreementActivity.class);
                 i.putExtra("data", vendor);
                 startActivityForResult(i, 1);
+                finish();
 
 
             }
@@ -391,6 +392,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                 Intent i = new Intent(VendorDetailActivity.this, EditPanCardActivity.class);
                 i.putExtra("data", vendor);
                 startActivity(i);
+
             }
         });
 

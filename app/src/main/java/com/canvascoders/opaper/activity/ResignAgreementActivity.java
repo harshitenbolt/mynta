@@ -48,6 +48,7 @@ import com.canvascoders.opaper.adapters.NewRateListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.PanVerificationFragment;
+import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
@@ -72,7 +73,7 @@ import static android.content.Intent.ACTION_ANSWER;
 import static android.content.Intent.ACTION_VIEW;
 import static android.content.Intent.EXTRA_PROCESS_TEXT_READONLY;
 
-public class ResignAgreementActivity extends AppCompatActivity {
+public class ResignAgreementActivity extends AppCompatActivity implements RecyclerViewClickListener {
 
 
     private ProgressDialog progressDialog;
@@ -186,26 +187,8 @@ public class ResignAgreementActivity extends AppCompatActivity {
             }
         });
 
-        btResign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-
-                    showAlert();
-
-
-                } else {
-                    Constants.ShowNoInternet(ResignAgreementActivity.this);
-                }
-
-            }
-        });
-
 
         tvTitleCurrentrate = findViewById(R.id.tvRateTextCurrent);
-
-
-
 
 
         //support System...
@@ -308,24 +291,31 @@ public class ResignAgreementActivity extends AppCompatActivity {
 
                         //condition for agreement Screen after Approved New rates...
                         if (resignAgreeDetailResponse.getData().get(0).getShowAgreement().equalsIgnoreCase("1")) {
+
                             mWebView.setVisibility(View.VISIBLE);
                             nestedScrollView.setVisibility(View.GONE);
                             btChangeRate.setVisibility(View.VISIBLE);
                             btResign.setText("SIGN AGREEMENT");
                             btResign.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                            if (resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetail().size() > 0) {
-
-                                basicDetailRateDetails = resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetail();
-                                currentRateListAdapter = new CurrentRateListAdapter(ResignAgreementActivity.this, basicDetailRateDetails, "0");
-                                LinearLayoutManager horizontalLayoutManager2 = new LinearLayoutManager(ResignAgreementActivity.this, LinearLayoutManager.VERTICAL, false);
-                                rvPreviousRate.setLayoutManager(horizontalLayoutManager2);
-                                rvPreviousRate.setAdapter(currentRateListAdapter);
-
+                            if (resignAgreeDetailResponse.getData().get(0).getApprovalRateDetail().size() > 0) {
+                                approvalRateDetails = resignAgreeDetailResponse.getData().get(0).getApprovalRateDetail();
                             }
+                            btResign.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    showAlert("1");
+                                }
+                            });
 
                         } else {
                             mWebView.setVisibility(View.GONE);
                             nestedScrollView.setVisibility(View.VISIBLE);
+                            btResign.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    showAlert("0");
+                                }
+                            });
 
                             tvAgreementName.setText(resignAgreeDetailResponse.getData().get(0).getResignAgreementTitle());
                             String pdf_url = Constants.BaseImageURL + resignAgreeDetailResponse.getData().get(0).getESignDocumentDetail().getEsignDoc();
@@ -344,7 +334,7 @@ public class ResignAgreementActivity extends AppCompatActivity {
                                 rvAddendumList.setVisibility(View.VISIBLE);
                                 tvNoAddedndum.setVisibility(View.GONE);
                                 addendumDetailsList = resignAgreeDetailResponse.getData().get(0).getAddendumDetail();
-                                adddendumListAdapter = new AdddendumListAdapter(ResignAgreementActivity.this, addendumDetailsList);
+                                adddendumListAdapter = new AdddendumListAdapter(ResignAgreementActivity.this, addendumDetailsList, ResignAgreementActivity.this);
                                 LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(ResignAgreementActivity.this, LinearLayoutManager.VERTICAL, false);
                                 rvAddendumList.setLayoutManager(horizontalLayoutManager1);
                                 rvAddendumList.setAdapter(adddendumListAdapter);
@@ -434,6 +424,27 @@ public class ResignAgreementActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View view, int position) {
+
+
+        Intent browserIntent = new Intent(ACTION_VIEW);
+        browserIntent.setDataAndType(Uri.parse(Constants.BaseImageURL+addendumDetailsList.get(position).getAddendum()), "application/pdf");
+        startActivity(browserIntent);
+
+
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+
+    }
+
+    @Override
+    public void SingleClick(String popup, int position) {
+
+    }
+
     public class GetPDFfromServer extends AsyncTask<String, Void, String> {
         String myRes;
         String s = "";
@@ -520,8 +531,8 @@ public class ResignAgreementActivity extends AppCompatActivity {
                     if (resignAgreementResponse.getResponseCode() == 200) {
 
                         Intent returnIntent = new Intent();
-                        returnIntent.putExtra("result","1");
-                        setResult(Activity.RESULT_OK,returnIntent);
+                        returnIntent.putExtra("result", "1");
+                        setResult(Activity.RESULT_OK, returnIntent);
 
                         finish();
 
@@ -545,7 +556,7 @@ public class ResignAgreementActivity extends AppCompatActivity {
     }
 
 
-    private void showAlert() {
+    private void showAlert(String s) {
         Button btSubmit;
         TextView tvMessage, tvTitle;
         ImageView ivClose;
@@ -570,18 +581,27 @@ public class ResignAgreementActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-
-
-        currentRateListAdapter = new CurrentRateListAdapter(ResignAgreementActivity.this, basicDetailRateDetails, "1");
-
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(ResignAgreementActivity.this, LinearLayoutManager.VERTICAL, false);
         rvRateList.setLayoutManager(horizontalLayoutManager);
-        rvRateList.setAdapter(currentRateListAdapter);
+
+
+        if (s.equalsIgnoreCase("1")) {
+            newRateListAdapter = new NewRateListAdapter(ResignAgreementActivity.this, approvalRateDetails);
+            rvRateList.setAdapter(newRateListAdapter);
+        } else {
+            currentRateListAdapter = new CurrentRateListAdapter(ResignAgreementActivity.this, basicDetailRateDetails, "1");
+            rvRateList.setAdapter(currentRateListAdapter);
+        }
+
 
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ApiCallResendAgreement();
+                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                    ApiCallResendAgreement();
+                } else {
+                    Constants.ShowNoInternet(ResignAgreementActivity.this);
+                }
 
             }
         });

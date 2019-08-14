@@ -2,6 +2,7 @@ package com.canvascoders.opaper.activity;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +31,7 @@ import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
+import com.google.android.gms.maps.model.Dash;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -75,6 +77,8 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+                startActivity(new Intent(EditRateWhileResigAgreeActivity.this, DashboardActivity.class));
+
             }
         });
 
@@ -375,7 +379,6 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-
                     /////
                 }
             }
@@ -450,5 +453,11 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
             fragmentTransaction.commit();
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

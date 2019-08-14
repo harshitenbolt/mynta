@@ -2,6 +2,8 @@ package com.canvascoders.opaper.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,19 +20,24 @@ import android.widget.TextView;
 import com.canvascoders.opaper.Beans.BankDetailResp;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.AddendumDetail;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 
 import java.util.List;
+
+import static android.content.Intent.ACTION_VIEW;
 
 public class AdddendumListAdapter extends RecyclerView.Adapter<AdddendumListAdapter.ItemHolder> {
 
     public List<AddendumDetail> bankDetailList;
     Context mContext;
     final int sdk = android.os.Build.VERSION.SDK_INT;
+    RecyclerViewClickListener recyclerViewClickListener1;
 
-    public AdddendumListAdapter(Context ctx, List<AddendumDetail> dataViews) {
+    public AdddendumListAdapter(Context ctx, List<AddendumDetail> dataViews, RecyclerViewClickListener recyclerViewClickListener){
         this.bankDetailList = dataViews;
         mContext = ctx;
+        recyclerViewClickListener1 = recyclerViewClickListener;
 
     }
 
@@ -43,10 +50,16 @@ public class AdddendumListAdapter extends RecyclerView.Adapter<AdddendumListAdap
 
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(ItemHolder holder, final int position) {
         holder.tvAddedndum.setText("Addendum "+position+1);
+        holder.llMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerViewClickListener1.onClick(view,position);
+            }
+        });
+
 
     }
 
@@ -65,7 +78,6 @@ public class AdddendumListAdapter extends RecyclerView.Adapter<AdddendumListAdap
         public ItemHolder(View itemView) {
             super(itemView);
             tvAddedndum = itemView.findViewById(R.id.tvAddendum);
-
             llMain = itemView.findViewById(R.id.llMain);
         }
     }
