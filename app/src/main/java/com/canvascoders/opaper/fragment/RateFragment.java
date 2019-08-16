@@ -218,8 +218,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                                     for (int i = 0; i < rateJsonArray.length(); i++) {
                                         StoreTypeBean rateTypeBean = new StoreTypeBean(rateJsonArray.getJSONObject(i));
                                         tempList.add(rateTypeBean);
-                                        if (rateTypeBean.getIsApproved().equalsIgnoreCase("1") ||
-                                                rateTypeBean.getIsApproved().equalsIgnoreCase("2")) {
+                                        if (rateTypeBean.getIsApproved().equalsIgnoreCase("1") || rateTypeBean.getIsApproved().equalsIgnoreCase("2")) {
                                             isSecondTime = true;
                                         }
                                         if (rateTypeBean.getIsApproved().equalsIgnoreCase("1")) {
@@ -362,7 +361,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
             return;
         }
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-            submitStoreUpdateDetails(jsonArray);
+           // submitStoreUpdateDetails(jsonArray);
         } else {
             Constants.ShowNoInternet(getActivity());
         }

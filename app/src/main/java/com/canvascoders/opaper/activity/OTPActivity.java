@@ -923,4 +923,3 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
 
 
 }
-

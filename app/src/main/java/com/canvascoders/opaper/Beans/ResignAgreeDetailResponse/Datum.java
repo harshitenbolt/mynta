@@ -2,6 +2,8 @@
 package com.canvascoders.opaper.Beans.ResignAgreeDetailResponse;
 
 import java.util.List;
+
+import com.canvascoders.opaper.Beans.BasicDetailRateDetailFromResign;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -75,5 +77,19 @@ public class Datum {
     public void setApprovalRateDetail(List<ApprovalRateDetail> approvalRateDetail) {
         this.approvalRateDetail = approvalRateDetail;
     }
+
+    @SerializedName("basic_detail_rate_detail_from_resign")
+    @Expose
+    private List<BasicDetailRateDetailFromResign> basicDetailRateDetailFromResign = null;
+
+    public List<BasicDetailRateDetailFromResign> getBasicDetailRateDetailFromResign() {
+        return basicDetailRateDetailFromResign;
+    }
+
+    public void setBasicDetailRateDetailFromResign(List<BasicDetailRateDetailFromResign> basicDetailRateDetailFromResign) {
+        this.basicDetailRateDetailFromResign = basicDetailRateDetailFromResign;
+    }
+
+
 
 }

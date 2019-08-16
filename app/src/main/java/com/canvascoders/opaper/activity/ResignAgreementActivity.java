@@ -30,6 +30,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canvascoders.opaper.Beans.BasicDetailRateDetailFromResign;
 import com.canvascoders.opaper.Beans.DelBoysResponse.DelBoyResponse;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.AddendumDetail;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ApprovalRateDetail;
@@ -41,6 +42,7 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.Screenshot.DragRectView;
 import com.canvascoders.opaper.Screenshot.Screenshot;
 import com.canvascoders.opaper.adapters.AdddendumListAdapter;
+import com.canvascoders.opaper.adapters.ApprovedRateListWhileotherPendingAdapter;
 import com.canvascoders.opaper.adapters.CommentListAdapter;
 import com.canvascoders.opaper.adapters.CurrentRateListAdapter;
 import com.canvascoders.opaper.adapters.DeliveryBoysListAdapter;
@@ -92,7 +94,9 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     List<AddendumDetail> addendumDetailsList = new ArrayList<>();
     List<BasicDetailRateDetail> basicDetailRateDetails = new ArrayList<>();
     List<ApprovalRateDetail> approvalRateDetails = new ArrayList<>();
+    List<BasicDetailRateDetailFromResign> basicDetailRateDetailFromResign = new ArrayList<>();
     CurrentRateListAdapter currentRateListAdapter;
+    ApprovedRateListWhileotherPendingAdapter approvedRateListWhileotherPendingAdapter;
     NewRateListAdapter newRateListAdapter;
     private TextView tvAgreementName, tvTitleCurrentrate, tvNoAddedndum;
     private LinearLayout llAgreement;
@@ -100,7 +104,9 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     NestedScrollView nestedScrollView;
     ImageView imageView, ivHome;
     Bitmap b, converted;
-
+    RecyclerView rvApprovedRatesPending;
+    View viewSeperate;
+        TextView tvPendingRates,tvApprovedRates;
     LinearLayout llUpdated, llNotice;
 
     @Override
@@ -113,7 +119,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
     private void init() {
         vendor = (VendorList) getIntent().getSerializableExtra("data");
-
+        viewSeperate = findViewById(R.id.viewSeperate);
         btChangeRate = findViewById(R.id.btChangeRate);
         nestedScrollView = findViewById(R.id.nestedMain);
         btResign = findViewById(R.id.btResign);
@@ -128,6 +134,9 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
         llUpdated = findViewById(R.id.llUpdated);
         llNotice = findViewById(R.id.llNotice);
         tvNoAddedndum = findViewById(R.id.tvNoAddedndum);
+        rvApprovedRatesPending = findViewById(R.id.rvRatePendingRates);
+        tvPendingRates = findViewById(R.id.tvPendingRates);
+        tvApprovedRates = findViewById(R.id.tvApprovedrates);
 
         rvPreviousRate = findViewById(R.id.rvPreviousRate);
         ivBack = findViewById(R.id.ivBack);
@@ -366,6 +375,18 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
                                     LinearLayoutManager horizontalLayoutManager2 = new LinearLayoutManager(ResignAgreementActivity.this, LinearLayoutManager.VERTICAL, false);
                                     rvPreviousRate.setLayoutManager(horizontalLayoutManager2);
                                     rvPreviousRate.setAdapter(currentRateListAdapter);
+
+                                }
+
+                                if(resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetailFromResign().size()>0){
+                                    basicDetailRateDetailFromResign = resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetailFromResign();
+                                    approvedRateListWhileotherPendingAdapter = new ApprovedRateListWhileotherPendingAdapter(ResignAgreementActivity.this, basicDetailRateDetailFromResign, "1");
+                                    LinearLayoutManager horizontalLayoutManager2 = new LinearLayoutManager(ResignAgreementActivity.this, LinearLayoutManager.VERTICAL, false);
+                                    rvApprovedRatesPending.setLayoutManager(horizontalLayoutManager2);
+                                    rvApprovedRatesPending.setAdapter(approvedRateListWhileotherPendingAdapter);
+                                    tvPendingRates.setVisibility(View.VISIBLE);
+                                    tvApprovedRates.setVisibility(View.VISIBLE);
+                                    viewSeperate.setVisibility(View.VISIBLE);
 
                                 }
 

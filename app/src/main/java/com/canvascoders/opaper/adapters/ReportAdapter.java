@@ -51,7 +51,6 @@ public class ReportAdapter extends RecyclerView.Adapter {
         ((ItemHolder) holder).t5.setText(String.valueOf(dataViews.get(position).getStore_address()));
         ((ItemHolder) holder).t6.setText(String.valueOf(dataViews.get(position).getAmt()));
 
-
     }
 
     @Override

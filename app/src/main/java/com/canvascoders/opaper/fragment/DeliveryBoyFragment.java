@@ -97,14 +97,7 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
         rvDelBoysList =view.findViewById(R.id.rvDelBoyList);
         llNoData =view.findViewById(R.id.llNoData);
 
-        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-            ApiCallGetLists();
-        }
-        else {
-            Constants.ShowNoInternet(getActivity());
-        }
-
-
+        ApiCallGetLists();
     }
 
     private void ApiCallGetLists() {
@@ -126,12 +119,13 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
                         mProgressDialog.dismiss();
 //                        Toast.makeText(AddDeliveryBoysActivity.this,deliveryBoysList.getResponse(),Toast.LENGTH_SHORT).show();
                         delivery_boys_list.addAll(deliveryBoysList.getData());
+                      //  deliveryBoysListAdapter.notifyDataSetChanged();
                     }
                     else if (deliveryBoysList.getResponseCode()==411){
                         sessionManager.logoutUser(getActivity());
                     }else {
                         mProgressDialog.dismiss();
-                      //  Toast.makeText(getActivity(), deliveryBoysList.getResponse(), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(getActivity(), deliveryBoysList.getResponse(), Toast.LENGTH_SHORT).show();
                     }
 
                     if (delivery_boys_list.isEmpty()) {

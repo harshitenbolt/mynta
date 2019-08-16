@@ -946,9 +946,9 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == LICENCEIMAGE) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
+                Bitmap bitmap = ImagePicker.getImageFromResult(AddNewDeliveryBoy.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
-                licenceImagePath = ImagePicker.getBitmapPath(bitmap, this);
+                licenceImagePath = ImagePicker.getBitmapPath(bitmap, AddNewDeliveryBoy.this);
                 ivDriving_Licence.setPadding(0,0,0,0);
                 // ImageUtils.getInstant().getImageUri(getActivity(), photo);
                 Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
@@ -1011,9 +1011,10 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
     }
 
+
+
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        deleteImages();
+    protected void onResume() {
+        super.onResume();
     }
 }

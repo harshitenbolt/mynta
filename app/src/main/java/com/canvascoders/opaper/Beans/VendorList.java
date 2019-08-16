@@ -104,6 +104,18 @@ public class VendorList implements Serializable {
     @SerializedName("shop_image")
     @Expose
     private String shopImage;
+    @SerializedName("delivery_boy")
+    @Expose
+    private String deliveryBoy;
+
+    public String getDeliveryBoy() {
+        return deliveryBoy;
+    }
+
+    public void setDeliveryBoy(String deliveryBoy) {
+        this.deliveryBoy = deliveryBoy;
+    }
+
     @SerializedName("mass_upload")
     @Expose
     private Object massUpload;

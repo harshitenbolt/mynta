@@ -529,6 +529,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
                             vList.setName(vendorList.getName());
                             vList.setRate(vendorList.getRate());
                             vList.setAssessmentverify(vendorList.getAssessmentverify());
+                            vList.setDeliveryBoy(vendorList.getDeliveryBoy());
                             vList.setNoc(vendorList.getNoc());
                             vList.setIsAgreementUpdationRequire(vendorList.getIsAgreementUpdationRequire());
                             vList.setAllowedit(vendorList.getAllowedit());
@@ -689,6 +690,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
                             vList.setRate(vendorList.getRate());
                             vList.setNoc(vendorList.getNoc());
                             vList.setAssessmentverify(vendorList.getAssessmentverify());
+                            vList.setDeliveryBoy(vendorList.getDeliveryBoy());
                             vList.setStatus(vendorList.getStatus());
                             vList.setIsAgreementUpdationRequire(vendorList.getIsAgreementUpdationRequire());
                             vList.setAllowedit(vendorList.getAllowedit());

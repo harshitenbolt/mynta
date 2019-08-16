@@ -26,6 +26,14 @@
             android:textColor="@color/colorWhite"
             android:textSize="20dp" />
     </android.support.v7.widget.Toolbar>-->
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:fillViewport="true"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:padding="@dimen/_10sdp"
@@ -89,6 +97,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerview"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/activity_course_rg"
@@ -102,4 +111,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:src="@drawable/nodata" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>
