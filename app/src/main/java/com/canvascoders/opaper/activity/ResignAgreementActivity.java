@@ -355,7 +355,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
                             //condition for approval rates available or not ////
 
-                            if (resignAgreeDetailResponse.getData().get(0).getApprovalRateDetail().size() > 0) {
+                            if ((resignAgreeDetailResponse.getData().get(0).getApprovalRateDetail().size() > 0) || resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetailFromResign().size()>0) {
                                 btChangeRate.setVisibility(View.GONE);
                                 btResign.setBackgroundColor(getResources().getColor(R.color.colorYellow));
                                 btResign.setText("SKIP TO RESIGN AGREEMENT");
@@ -367,7 +367,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
                                 LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(ResignAgreementActivity.this, LinearLayoutManager.VERTICAL, false);
                                 rvRateList.setLayoutManager(horizontalLayoutManager);
                                 rvRateList.setAdapter(newRateListAdapter);
-
+                                tvPendingRates.setVisibility(View.GONE);
                                 if (resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetail().size() > 0) {
 
                                     basicDetailRateDetails = resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetail();
