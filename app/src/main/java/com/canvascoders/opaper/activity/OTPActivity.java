@@ -53,6 +53,7 @@ import com.canvascoders.opaper.fragment.DebitInvoiceMainFragment;
 
 import com.canvascoders.opaper.fragment.DeliveryBoyFragment;
 import com.canvascoders.opaper.fragment.GSTInvoiceMainFragment;
+import com.canvascoders.opaper.fragment.KYCVerificationFragment;
 import com.canvascoders.opaper.fragment.SupportFragment;
 import com.canvascoders.opaper.fragment.VendorInProgressList;
 import com.canvascoders.opaper.fragment.VendorOnboardedList;
@@ -302,7 +303,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
 
         } else if (screen == 2) {
 
-            commanFragmentCallWithoutBackStack(new AadharVerificationFragment());
+            commanFragmentCallWithoutBackStack(new KYCVerificationFragment());
 
 
         } else if (screen == 3) {

@@ -361,7 +361,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
             return;
         }
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-           // submitStoreUpdateDetails(jsonArray);
+           submitStoreUpdateDetails(jsonArray);
         } else {
             Constants.ShowNoInternet(getActivity());
         }

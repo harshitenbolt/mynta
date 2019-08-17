@@ -501,7 +501,7 @@ public class MapsCurrentPlaceFragment extends Fragment
                     Mylogger.getInstance().Logit(TAG, getLocationResponse.getResponse());
                     if (getLocationResponse.getResponseCode() == 200) {
 
-                        commanFragmentCallWithoutBackStack(new AadharVerificationFragment());
+                        commanFragmentCallWithoutBackStack(new KYCVerificationFragment());
 
                         /*Intent i = new Intent(mcontext, AadharVerificationFragment.class);
                         startActivity(i);

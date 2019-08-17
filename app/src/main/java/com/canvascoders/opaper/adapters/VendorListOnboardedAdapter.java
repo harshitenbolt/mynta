@@ -60,7 +60,15 @@ public class VendorListOnboardedAdapter extends RecyclerView.Adapter<VendorListO
         holder.tvLiveFrom.setText(vendorLists.get(position).getRateApproveDate());
         holder.tvStoreName.setText(vendorLists.get(position).getStoreName());
         //  holder.tvStatus.setText(vendorLists.get(position).getStatus());
-        if (vendorLists.get(position).getStatus().equalsIgnoreCase("1")) {
+
+
+
+        if(vendorLists.get(0).getIsAgreementUpdationRequire().equalsIgnoreCase("1")){
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorRed));
+            holder.tvStatus.setText("Expired");
+
+        }
+        else if (vendorLists.get(position).getStatus().equalsIgnoreCase("1")) {
             holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             holder.tvStatus.setText("Active");
             holder.ivStatusImage.setImageResource(R.drawable.active);

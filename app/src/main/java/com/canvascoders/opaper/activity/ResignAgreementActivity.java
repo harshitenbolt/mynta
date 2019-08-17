@@ -30,23 +30,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.canvascoders.opaper.Beans.BasicDetailRateDetailFromResign;
 import com.canvascoders.opaper.Beans.DelBoysResponse.DelBoyResponse;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.AddendumDetail;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ApprovalRateDetail;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.BasicDetailRateDetail;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ResignAgreeDetailResponse;
 import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResponse;
+import com.canvascoders.opaper.Beans.SubmitPopValue;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.Screenshot.DragRectView;
 import com.canvascoders.opaper.Screenshot.Screenshot;
 import com.canvascoders.opaper.adapters.AdddendumListAdapter;
-import com.canvascoders.opaper.adapters.ApprovedRateListWhileotherPendingAdapter;
 import com.canvascoders.opaper.adapters.CommentListAdapter;
 import com.canvascoders.opaper.adapters.CurrentRateListAdapter;
 import com.canvascoders.opaper.adapters.DeliveryBoysListAdapter;
 import com.canvascoders.opaper.adapters.NewRateListAdapter;
+import com.canvascoders.opaper.adapters.PopupRateListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.PanVerificationFragment;
@@ -93,20 +93,24 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     AdddendumListAdapter adddendumListAdapter;
     List<AddendumDetail> addendumDetailsList = new ArrayList<>();
     List<BasicDetailRateDetail> basicDetailRateDetails = new ArrayList<>();
+    List<SubmitPopValue> popupValueList = new ArrayList<>();
     List<ApprovalRateDetail> approvalRateDetails = new ArrayList<>();
-    List<BasicDetailRateDetailFromResign> basicDetailRateDetailFromResign = new ArrayList<>();
+    View viewSeperate;
+    TextView tvPending, tvApprove;
+
+    List<ApprovalRateDetail> approvedList = new ArrayList<>();
+    List<ApprovalRateDetail> approvalRateUnderPending = new ArrayList<>();
     CurrentRateListAdapter currentRateListAdapter;
-    ApprovedRateListWhileotherPendingAdapter approvedRateListWhileotherPendingAdapter;
     NewRateListAdapter newRateListAdapter;
+    PopupRateListAdapter popupRateListAdapter;
     private TextView tvAgreementName, tvTitleCurrentrate, tvNoAddedndum;
     private LinearLayout llAgreement;
     private static Dialog dialog;
     NestedScrollView nestedScrollView;
     ImageView imageView, ivHome;
     Bitmap b, converted;
-    RecyclerView rvApprovedRatesPending;
-    View viewSeperate;
-        TextView tvPendingRates,tvApprovedRates;
+    RecyclerView rvRateAgain;
+
     LinearLayout llUpdated, llNotice;
 
     @Override
@@ -119,7 +123,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
     private void init() {
         vendor = (VendorList) getIntent().getSerializableExtra("data");
-        viewSeperate = findViewById(R.id.viewSeperate);
+
         btChangeRate = findViewById(R.id.btChangeRate);
         nestedScrollView = findViewById(R.id.nestedMain);
         btResign = findViewById(R.id.btResign);
@@ -134,9 +138,10 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
         llUpdated = findViewById(R.id.llUpdated);
         llNotice = findViewById(R.id.llNotice);
         tvNoAddedndum = findViewById(R.id.tvNoAddedndum);
-        rvApprovedRatesPending = findViewById(R.id.rvRatePendingRates);
-        tvPendingRates = findViewById(R.id.tvPendingRates);
-        tvApprovedRates = findViewById(R.id.tvApprovedrates);
+        rvRateAgain = findViewById(R.id.rvRateAgainProcess);
+        tvPending = findViewById(R.id.tvPending);
+        tvApprove = findViewById(R.id.tvApproved);
+        viewSeperate = findViewById(R.id.viewSeperate);
 
         rvPreviousRate = findViewById(R.id.rvPreviousRate);
         ivBack = findViewById(R.id.ivBack);
@@ -298,6 +303,9 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
                     if (resignAgreeDetailResponse.getResponseCode() == 200) {
                         progressDialog.dismiss();
 
+
+                        popupValueList = resignAgreeDetailResponse.getData().get(0).getSubmitPopValue();
+
                         //condition for agreement Screen after Approved New rates...
                         if (resignAgreeDetailResponse.getData().get(0).getShowAgreement().equalsIgnoreCase("1")) {
 
@@ -355,40 +363,72 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
                             //condition for approval rates available or not ////
 
-                            if ((resignAgreeDetailResponse.getData().get(0).getApprovalRateDetail().size() > 0) || resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetailFromResign().size()>0) {
+                            if (resignAgreeDetailResponse.getData().get(0).getApprovalRateDetail().size() > 0) {
                                 btChangeRate.setVisibility(View.GONE);
                                 btResign.setBackgroundColor(getResources().getColor(R.color.colorYellow));
                                 btResign.setText("SKIP TO RESIGN AGREEMENT");
                                 llNotice.setVisibility(View.GONE);
                                 llUpdated.setVisibility(View.VISIBLE);
                                 tvTitleCurrentrate.setText("New Working Rate");
+
+
                                 approvalRateDetails = resignAgreeDetailResponse.getData().get(0).getApprovalRateDetail();
-                                newRateListAdapter = new NewRateListAdapter(ResignAgreementActivity.this, approvalRateDetails);
+
+
+                                for (int i = 0; i < approvalRateDetails.size(); i++) {
+                                    if (approvalRateDetails.get(i).getStatus().equalsIgnoreCase("1")) {
+                                        approvedList.add(approvalRateDetails.get(i));
+                                    } else {
+                                        approvalRateUnderPending.add(approvalRateDetails.get(i));
+                                    }
+                                }
+
+                                newRateListAdapter = new NewRateListAdapter(ResignAgreementActivity.this, approvedList);
                                 LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(ResignAgreementActivity.this, LinearLayoutManager.VERTICAL, false);
                                 rvRateList.setLayoutManager(horizontalLayoutManager);
                                 rvRateList.setAdapter(newRateListAdapter);
-                                tvPendingRates.setVisibility(View.GONE);
+
+
+                                if (approvalRateUnderPending.size() > 0 && approvedList.size() > 0) {
+                                    tvPending.setVisibility(View.VISIBLE);
+                                    tvApprove.setVisibility(View.VISIBLE);
+                                    viewSeperate.setVisibility(View.VISIBLE);
+                                    btChangeRate.setVisibility(View.VISIBLE);
+                                    btResign.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                    btResign.setText("RESIGN AGREEMENT");
+                                   // llNotice.setVisibility(View.VISIBLE);
+                                    tvTitleCurrentrate.setText("Current Working Rate");
+                                   // llUpdated.setVisibility(View.GONE);
+                                } else {
+                                    rvRateList.setVisibility(View.GONE);
+                                }
+
+                                if (approvalRateUnderPending.size() > 0) {
+                                    newRateListAdapter = new NewRateListAdapter(ResignAgreementActivity.this, approvalRateUnderPending);
+                                    LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(ResignAgreementActivity.this, LinearLayoutManager.VERTICAL, false);
+                                    rvRateAgain.setLayoutManager(horizontalLayoutManager1);
+                                    rvRateAgain.setAdapter(newRateListAdapter);
+
+                                }
+
                                 if (resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetail().size() > 0) {
 
                                     basicDetailRateDetails = resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetail();
                                     currentRateListAdapter = new CurrentRateListAdapter(ResignAgreementActivity.this, basicDetailRateDetails, "0");
-                                    LinearLayoutManager horizontalLayoutManager2 = new LinearLayoutManager(ResignAgreementActivity.this, LinearLayoutManager.VERTICAL, false);
-                                    rvPreviousRate.setLayoutManager(horizontalLayoutManager2);
+                                    LinearLayoutManager horizontalLayoutManager3 = new LinearLayoutManager(ResignAgreementActivity.this, LinearLayoutManager.VERTICAL, false);
+                                    rvPreviousRate.setLayoutManager(horizontalLayoutManager3);
                                     rvPreviousRate.setAdapter(currentRateListAdapter);
 
                                 }
 
-                                if(resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetailFromResign().size()>0){
-                                    basicDetailRateDetailFromResign = resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetailFromResign();
-                                    approvedRateListWhileotherPendingAdapter = new ApprovedRateListWhileotherPendingAdapter(ResignAgreementActivity.this, basicDetailRateDetailFromResign, "1");
+                               /* if (resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetail().size() > 0) {
+                                    basicDetailRateDetails = resignAgreeDetailResponse.getData().get(0).getBasicDetailRateDetail();
+                                    currentRateListAdapter = new CurrentRateListAdapter(ResignAgreementActivity.this, basicDetailRateDetails, "1");
                                     LinearLayoutManager horizontalLayoutManager2 = new LinearLayoutManager(ResignAgreementActivity.this, LinearLayoutManager.VERTICAL, false);
-                                    rvApprovedRatesPending.setLayoutManager(horizontalLayoutManager2);
-                                    rvApprovedRatesPending.setAdapter(approvedRateListWhileotherPendingAdapter);
-                                    tvPendingRates.setVisibility(View.VISIBLE);
-                                    tvApprovedRates.setVisibility(View.VISIBLE);
-                                    viewSeperate.setVisibility(View.VISIBLE);
+                                    rvRateList.setLayoutManager(horizontalLayoutManager2);
+                                    rvRateList.setAdapter(currentRateListAdapter);
 
-                                }
+                                }*/
 
                             } else {
                                 btChangeRate.setVisibility(View.VISIBLE);
@@ -405,8 +445,6 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
                                     rvRateList.setAdapter(currentRateListAdapter);
 
                                 }
-
-
                             }
 
 
@@ -450,7 +488,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
 
         Intent browserIntent = new Intent(ACTION_VIEW);
-        browserIntent.setDataAndType(Uri.parse(Constants.BaseImageURL+addendumDetailsList.get(position).getAddendum()), "application/pdf");
+        browserIntent.setDataAndType(Uri.parse(addendumDetailsList.get(position).getAddendum()), "application/pdf");
         startActivity(browserIntent);
 
 
@@ -606,13 +644,17 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
         rvRateList.setLayoutManager(horizontalLayoutManager);
 
 
-        if (s.equalsIgnoreCase("1")) {
+       /* if (s.equalsIgnoreCase("1")) {
             newRateListAdapter = new NewRateListAdapter(ResignAgreementActivity.this, approvalRateDetails);
             rvRateList.setAdapter(newRateListAdapter);
         } else {
             currentRateListAdapter = new CurrentRateListAdapter(ResignAgreementActivity.this, basicDetailRateDetails, "1");
-            rvRateList.setAdapter(currentRateListAdapter);
-        }
+
+        }*/
+
+
+        popupRateListAdapter = new PopupRateListAdapter(ResignAgreementActivity.this, popupValueList, "1");
+        rvRateList.setAdapter(popupRateListAdapter);
 
 
         btSubmit.setOnClickListener(new View.OnClickListener() {

@@ -918,9 +918,13 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             View view = super.getView(position, convertView, parent);
+
             if (view instanceof TextView) {
-                ((TextView) view).setTextSize(18);
-                Typeface typeface = ResourcesCompat.getFont(parent.getContext(), R.font.monteregular);
+                ((TextView) view).setTextSize(15);
+                ((TextView)view).setPadding(15,15,0,5);
+                ((TextView) view).setTransformationMethod(null);
+                Typeface typeface = ResourcesCompat.getFont(parent.getContext(), R.font.montesemibold);
+
                 ((TextView) view).setTypeface(typeface);
             }
             return view;

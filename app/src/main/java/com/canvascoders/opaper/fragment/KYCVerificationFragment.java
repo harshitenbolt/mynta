@@ -1,7 +1,6 @@
 package com.canvascoders.opaper.fragment;
 
 import android.Manifest;
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,21 +8,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
@@ -34,15 +27,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,48 +39,40 @@ import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.AadhaarCard;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
-import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
 import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
 import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.activity.CropImage2Activity;
-import com.canvascoders.opaper.helper.DialogListner;
-import com.canvascoders.opaper.utils.DialogUtil;
-import com.canvascoders.opaper.utils.GPSTracker;
-import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.activity.CropImage2Activity;
 import com.canvascoders.opaper.activity.OTPActivity;
 import com.canvascoders.opaper.activity.ScannerActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.AadhaarXMLParser;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.DataAttributes;
+import com.canvascoders.opaper.utils.DialogUtil;
+import com.canvascoders.opaper.utils.GPSTracker;
+import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
@@ -103,14 +83,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
-import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
-import static com.canvascoders.opaper.fragment.PanVerificationFragment.CROPPED_IMAGE;
-import static com.canvascoders.opaper.utils.Constants.hideKeyboardwithoutPopulate;
-import static com.canvascoders.opaper.utils.Constants.showAlert;
 
 
-public class AadharVerificationFragment extends Fragment implements View.OnClickListener {
+public class KYCVerificationFragment extends Fragment implements View.OnClickListener {
 
     private static final int IMAGE_AADHAR_FRONT = 1021;
     private static final int IMAGE_AADHAR_BACK = 1022, IMAGE_VOTER_FRONT = 1023, IMAGE_VOTER_BACK = 1024, IMAGE_DL_FRONT = 1025, IMAGE_DL_BACK = 1026;
@@ -548,7 +524,15 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                             ivVoterBackSelected.setVisibility(View.VISIBLE);
                             tvVoterBack.setVisibility(View.GONE);
                             if (!voterImagePathFront.equals("") && !voterImagePathBack.equalsIgnoreCase("")) {
-                                ApiCallOCRVoter(voterImagePathFront, voterImagePathBack);
+
+                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                    // getBankDetails(mContext,s.toString(),processId);
+                                    ApiCallOCRVoter(voterImagePathFront, voterImagePathBack);
+                                }
+                                else {
+                                    Constants.ShowNoInternet(getActivity());
+                                }
+
                                 // ApiCallSubmitOcr();
                                 // ApiCallSubmitKYC();
 
@@ -568,7 +552,14 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                             ivVoterBackSelected.setVisibility(View.VISIBLE);
                             tvVoterBack.setVisibility(View.GONE);*/
                             if (!dlImageOathFront.equalsIgnoreCase("") && !dlImagePathBack.equalsIgnoreCase("")) {
-                                ApiCallGetDetailLicence(dlImageOathFront);
+                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                    // getBankDetails(mContext,s.toString(),processId);
+                                    ApiCallGetDetailLicence(dlImageOathFront);
+                                }
+                                else {
+                                    Constants.ShowNoInternet(getActivity());
+                                }
+
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -656,7 +647,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this);
+                EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(KYCVerificationFragment.this);
                 editNameDialogFragment.setCancelable(false);
                 editNameDialogFragment.show(getChildFragmentManager(), "fragment_edit_name");
             }
@@ -876,8 +867,14 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
                                 @Override
                                 public void onClickDetails(String name, String fathername, String dob, String id) {
-                                    ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
-                                    ApiCallSubmitKYC(name, fathername, dob, id);
+                                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                        // getBankDetails(mContext,s.toString(),processId);
+                                        ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
+                                        ApiCallSubmitKYC(name, fathername, dob, id);
+                                    } else {
+                                        Constants.ShowNoInternet(getActivity());
+                                    }
+
                                 }
 
                                 @Override
@@ -991,8 +988,16 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                 @Override
                                 public void onClickDetails(String name, String fathername, String dob, String id) {
 
-                                    ApiCallSubmitOcr(name, fathername, dob, id, dlIdDetailId, filename, fileUrl);
-                                    ApiCallSubmitKYC(name, fathername, dob, id);
+                                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                        // getBankDetails(mContext,s.toString(),processId);
+                                        ApiCallSubmitOcr(name, fathername, dob, id, dlIdDetailId, filename, fileUrl);
+                                        ApiCallSubmitKYC(name, fathername, dob, id);
+                                    }
+                                    else {
+                                        Constants.ShowNoInternet(getActivity());
+                                    }
+
+
 
 
                                 }
@@ -1021,7 +1026,14 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                 public void onClickDetails(String name, String fathername, String dob, String id) {
 
                                     //ApiCallSubmitOcr(name,fathername,dob,id,dlIdDetailId,filename,fileUrl);
-                                    ApiCallSubmitKYC(name, fathername, dob, id);
+
+                                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                        ApiCallSubmitKYC(name, fathername, dob, id);
+                                    }
+                                    else {
+                                        Constants.ShowNoInternet(getActivity());
+                                    }
+
 
 
                                 }
@@ -1137,6 +1149,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
     public void storeAadhar() {
+
         gps = new GPSTracker(getActivity());
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
@@ -1193,7 +1206,8 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadhar("Bearer " + sessionManager.getToken(), params, aadharcard_front_part, aadharcard_back_part);
             callUpload.enqueue(new Callback<CommonResponse>() {
                 @Override
-                public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
+                public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+
                     if (mProgressDialog != null) {
                         mProgressDialog.dismiss();
                     }
@@ -1202,6 +1216,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
                         if (getaadhardetail.getResponseCode() == 200) {
+
 
                             File casted_image = new File(aadharImagepathFront);
                             if (casted_image.exists()) {

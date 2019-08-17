@@ -4,6 +4,7 @@ package com.canvascoders.opaper.Beans.ResignAgreeDetailResponse;
 import java.util.List;
 
 import com.canvascoders.opaper.Beans.BasicDetailRateDetailFromResign;
+import com.canvascoders.opaper.Beans.SubmitPopValue;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -70,6 +71,20 @@ public class Datum {
         this.basicDetailRateDetail = basicDetailRateDetail;
     }
 
+
+
+
+    @SerializedName("submit_pop_value")
+    @Expose
+    private List<SubmitPopValue> submitPopValue = null;
+
+    public List<SubmitPopValue> getSubmitPopValue() {
+        return submitPopValue;
+    }
+
+    public void setSubmitPopValue(List<SubmitPopValue> submitPopValue) {
+        this.submitPopValue = submitPopValue;
+    }
     public List<ApprovalRateDetail> getApprovalRateDetail() {
         return approvalRateDetail;
     }

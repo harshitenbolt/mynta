@@ -892,17 +892,41 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-
             View view = super.getView(position, convertView, parent);
 
             if (view instanceof TextView) {
                 ((TextView) view).setTextSize(15);
+                ((TextView)view).setPadding(15,15,0,5);
                 ((TextView) view).setTransformationMethod(null);
                 Typeface typeface = ResourcesCompat.getFont(parent.getContext(), R.font.montesemibold);
 
                 ((TextView) view).setTypeface(typeface);
             }
             return view;
+           /* View row = null;
+            LayoutInflater inflater = (LayoutInflater) getActivity()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            if (convertView == null) {
+                row = inflater.inflate(R.layout.spinner_item_search, parent,
+                        false);
+            } else {
+                row = convertView;
+            }
+            Datum detail = searchList.get(position);
+            TextView name = (TextView) row.findViewById(R.id.tv1);
+            name.setText(detail.getName());
+            name.setText(detail.getMobileNo());
+           *//* TextView email = (TextView) row.findViewById(R.id.tvClientEmail);
+            email.setText(detail.email);
+            TextView id = (TextView) row.findViewById(R.id.tvClientID);
+            id.setText("ID : " + detail.id);
+            TextView company = (TextView) row
+                    .findViewById(R.id.tvClientCompanyName);
+            company.setText(detail.company);
+            TextView status = (TextView) row.findViewById(R.id.tvClientStatus);
+            status.setText("Status:" + detail.status);*//*
+            return row;*/
+
         }
     }
 

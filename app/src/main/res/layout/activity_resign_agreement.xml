@@ -159,7 +159,7 @@
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:fontFamily="@font/montesemibold"
-                        android:text="Current Working Rate"
+                        android:text="Current Approval Rate"
                         android:textSize="@dimen/_10sdp" />
 
                     <android.support.v7.widget.CardView
@@ -176,29 +176,31 @@
                         app:cardCornerRadius="@dimen/_20sdp">
 
                         <LinearLayout
-                            android:layout_width="338dp"
+                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/tvPendingRates"
+                                android:visibility="gone"
+                                android:id="@+id/tvPending"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_20sdp"
-                                android:layout_marginTop="@dimen/_20sdp"
+                                android:layout_margin="@dimen/_10sdp"
                                 android:fontFamily="@font/montesemibold"
-                                android:text="Pending Rates.."
+                                android:text="Pending Rates for Approval"
                                 android:textColor="@color/colorRed"
-                                android:visibility="gone" />
+                                android:textSize="@dimen/_10sdp" />
 
                             <android.support.v7.widget.RecyclerView
-                                android:id="@+id/rvRateList"
+                                android:id="@+id/rvRateAgainProcess"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/_20sdp"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_marginRight="@dimen/_20sdp"
                                 android:layout_marginBottom="@dimen/_20sdp"></android.support.v7.widget.RecyclerView>
+
 
                             <View
                                 android:visibility="gone"
@@ -208,24 +210,22 @@
                                 android:background="@color/whitePrimary" />
 
                             <TextView
-                                android:id="@+id/tvApprovedrates"
+                                android:visibility="gone"
+                                android:id="@+id/tvApproved"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_20sdp"
-                                android:layout_marginTop="@dimen/_20sdp"
+                                android:layout_margin="@dimen/_10sdp"
                                 android:fontFamily="@font/montesemibold"
-                                android:text="Approved Rates.."
-                                android:textColor="@color/colorYellow"
-                                android:visibility="gone" />
+                                android:text="Rate Approved"                               android:textColor="@color/colorYellow"
+                                android:textSize="@dimen/_10sdp" />
 
                             <android.support.v7.widget.RecyclerView
-                                android:id="@+id/rvRatePendingRates"
+                                android:id="@+id/rvRateList"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/_20sdp"></android.support.v7.widget.RecyclerView>
 
                         </LinearLayout>
-
                     </android.support.v7.widget.CardView>
 
 
