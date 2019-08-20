@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightGrey"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btExtract"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/llMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="vertical">
+
+
+            <!-- TODO: Update blank fragment layout -->
+            <TextView
+                style="@style/App_TextViewSmall"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/montemedium"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:text="Select from below doc to upload details" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp">
+
+                <RadioGroup
+                    android:id="@+id/rgMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+
+                    <RadioButton
+                        android:id="@+id/rbAdharCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        style="@style/KycRadioButton"
+                        android:button="@android:color/transparent"
+                        android:checked="true"
+                        android:drawableTop="@drawable/aadharcard"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:padding="@dimen/_10sdp"
+                        android:text="AADHAR CARD"
+                        android:textSize="@dimen/_7sdp">
+
+                    </RadioButton>
+
+
+                    <RadioButton
+                        android:id="@+id/rbDriving"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginRight="@dimen/_3sdp"
+                        android:layout_weight="1"
+                        style="@style/KycRadioButton"
+                        android:button="@android:color/transparent"
+                        android:drawableTop="@drawable/drivinglicence"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:gravity="center"
+                        android:padding="@dimen/_10sdp"
+                        android:text="DRIVING LICENCE"
+                        android:textSize="@dimen/_7sdp">
+
+                    </RadioButton>
+
+
+                    <RadioButton
+                        android:id="@+id/rbVoter"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_3sdp"
+                        android:layout_marginRight="@dimen/_3sdp"
+                        android:layout_weight="1"
+                        style="@style/KycRadioButton"
+                        android:button="@android:color/transparent"
+                        android:drawableTop="@drawable/voterid"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="@dimen/_8sdp"
+                        android:text="VOTER ID"
+                        android:textSize="@dimen/_7sdp">
+
+                    </RadioButton>
+
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+
+            <FrameLayout
+                android:id="@+id/flViewMain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></FrameLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <Button
+
+        android:id="@+id/btExtract"
+        style="@style/Button_withGreen"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_alignParentBottom="true"
+        android:text="EXTRACT" />
+
+</RelativeLayout>

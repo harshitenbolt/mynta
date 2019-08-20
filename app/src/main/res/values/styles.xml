@@ -168,6 +168,10 @@
         <item name="android:background">@drawable/custom_btn_radio_middle</item>
     </style>
 
+    <style name="KycRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:background">@drawable/custom_radio_kyc</item>
+    </style>
+
 
 
 </resources>

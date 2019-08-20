@@ -41,6 +41,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -167,7 +169,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
     CardView cdAdhar, cdVoter, cdDriving;
     LinearLayout llAdhar, llVoter, llDriving;
-
+    RadioGroup rg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -197,9 +199,9 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         mProgressDialog = new ProgressDialog(mcontext);
         mProgressDialog.setTitle("Please wait updating vendor details");
         mProgressDialog.setCancelable(false);
-        llAdhar = view.findViewById(R.id.llAdharcard);
-        llDriving = view.findViewById(R.id.llDrivingLicence);
-        llVoter = view.findViewById(R.id.llVoterID);
+
+
+        rg = view.findViewById(R.id.rgMain);
         cdAdhar = view.findViewById(R.id.cdAdharcard);
         cdDriving = view.findViewById(R.id.cdDrivingLicence);
         cdVoter = view.findViewById(R.id.cdVoter);
@@ -242,9 +244,103 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         tvDlFront.setOnClickListener(this);
 
 
-        llAdhar.setOnClickListener(this);
-        llVoter.setOnClickListener(this);
-        llDriving.setOnClickListener(this);
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                RadioButton rb = (RadioButton) view.findViewById(checkedId);
+                if (rb.getId() == R.id.rbAdharCard) {
+                    kyc_type = "1";
+
+                    Log.e("Done", "Adhar");
+
+                    cdAdhar.setVisibility(View.VISIBLE);
+                    cdDriving.setVisibility(View.GONE);
+                    cdVoter.setVisibility(View.GONE);
+
+                    dlImagePathBack = "";
+                    ivDlBackSelected.setVisibility(View.GONE);
+                    tvDlBack.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(dlImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
+
+                    dlImageOathFront = "";
+                    ivDlFrontSelected.setVisibility(View.GONE);
+                    tvDlBack.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(dlImageOathFront).placeholder(R.drawable.blfront).into(ivDlImageFront);
+
+                    voterImagePathBack = "";
+                    ivVoterBackSelected.setVisibility(View.GONE);
+                    tvVoterBack.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
+
+                    voterImagePathFront = "";
+                    ivVoterFrontSelected.setVisibility(View.GONE);
+                    tvVoterFront.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
+                    // new ReportFragment.GetReports(object.toString(), "?report_type=daily").execute();
+
+                }
+                if (rb.getId() == R.id.rbDriving) {
+                    kyc_type = "3";
+
+                    cdAdhar.setVisibility(View.GONE);
+                    cdDriving.setVisibility(View.VISIBLE);
+                    cdVoter.setVisibility(View.GONE);
+                    Log.e("Done", "Driving");
+
+                    voterImagePathBack = "";
+                    ivVoterBackSelected.setVisibility(View.GONE);
+                    tvVoterBack.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
+
+                    voterImagePathFront = "";
+                    ivVoterFrontSelected.setVisibility(View.GONE);
+                    tvVoterFront.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
+
+                    aadharImagepathFront = "";
+                    ivAdharFrontSelected.setVisibility(View.GONE);
+                    tvAdharBack.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+
+                    aadharImagepathBack = "";
+                    ivAdharABackSelected.setVisibility(View.GONE);
+                    tvAdharBack.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                    // new ReportFragment.GetReports(object.toString(), "?report_type=monthly").execute();
+
+                }
+                if (rb.getId() == R.id.rbVoter) {
+                    kyc_type = "2";
+
+                    Log.e("Done", "Voter");
+                    cdAdhar.setVisibility(View.GONE);
+                    cdDriving.setVisibility(View.GONE);
+                    cdVoter.setVisibility(View.VISIBLE);
+
+                    dlImagePathBack = "";
+                    ivDlBackSelected.setVisibility(View.GONE);
+                    tvDlBack.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(dlImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
+
+                    dlImageOathFront = "";
+                    ivDlFrontSelected.setVisibility(View.GONE);
+                    tvDlBack.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(dlImageOathFront).placeholder(R.drawable.blfront).into(ivDlImageFront);
+
+                    aadharImagepathFront = "";
+                    ivAdharFrontSelected.setVisibility(View.GONE);
+                    tvAdharBack.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+
+                    aadharImagepathBack = "";
+                    ivAdharABackSelected.setVisibility(View.GONE);
+                    tvAdharBack.setVisibility(View.VISIBLE);
+                    Glide.with(getActivity()).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                    //new ReportFragment.GetReports(object.toString(), "").execute();
+                }
+            }
+        });
 
 
         btn_next = view.findViewById(R.id.btExtract);
@@ -412,121 +508,6 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                     Constants.ShowNoInternet(getActivity());
                 }
                 break;
-
-
-            case R.id.llAdharcard: {
-                deleteImages();
-                kyc_type = "1";
-                llAdhar.setBackground(getResources().getDrawable(R.drawable.roundedcornergreen));
-                cdAdhar.setVisibility(View.VISIBLE);
-                cdDriving.setVisibility(View.GONE);
-                cdVoter.setVisibility(View.GONE);
-                llDriving.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
-                llVoter.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
-
-                dlImagePathBack = "";
-                ivDlBackSelected.setVisibility(View.GONE);
-                tvDlFront.setVisibility(View.VISIBLE);
-                ivDlImageBack.setImageResource(R.drawable.dlback);
-
-
-                dlImageOathFront = "";
-                ivDlFrontSelected.setVisibility(View.GONE);
-                ivDlImageFront.setImageResource(R.drawable.dlback);
-                tvDlBack.setVisibility(View.VISIBLE);
-
-
-                voterImagePathBack = "";
-                ivVoterFrontSelected.setVisibility(View.GONE);
-                tvVoterFront.setVisibility(View.VISIBLE);
-                ivVoterImageFront.setImageResource(R.drawable.voterfront);
-
-                voterImagePathFront = "";
-                ivVoterBackSelected.setVisibility(View.GONE);
-                tvVoterBack.setVisibility(View.VISIBLE);
-                ivVoterImageBack.setImageResource(R.drawable.voterback);
-
-
-            }
-
-            break;
-
-            case R.id.llVoterID: {
-                deleteImages();
-
-                kyc_type = "2";
-
-                llVoter.setBackground(getResources().getDrawable(R.drawable.roundedcornergreen));
-                cdAdhar.setVisibility(View.GONE);
-                cdDriving.setVisibility(View.GONE);
-                cdVoter.setVisibility(View.VISIBLE);
-
-                llAdhar.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
-                llDriving.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
-
-
-                aadharImagepathFront = "";
-                ivAdharFrontSelected.setVisibility(View.GONE);
-                tvAdharFront.setVisibility(View.VISIBLE);
-                ivAdharIamgeFront.setImageResource(R.drawable.aadharcardfront);
-
-
-                aadharImagepathBack = "";
-                ivAdharABackSelected.setVisibility(View.GONE);
-                tvAdharBack.setVisibility(View.VISIBLE);
-                ivAdharImageBack.setImageResource(R.drawable.aadhardcardback);
-
-
-                dlImagePathBack = "";
-                ivDlBackSelected.setVisibility(View.GONE);
-                tvDlFront.setVisibility(View.VISIBLE);
-                ivDlImageBack.setImageResource(R.drawable.dlback);
-
-
-                dlImageOathFront = "";
-                ivDlFrontSelected.setVisibility(View.GONE);
-                ivDlImageFront.setImageResource(R.drawable.dlback);
-                tvDlBack.setVisibility(View.VISIBLE);
-
-
-            }
-            break;
-
-            case R.id.llDrivingLicence: {
-                deleteImages();
-                kyc_type = "3";
-                llDriving.setBackground(getResources().getDrawable(R.drawable.roundedcornergreen));
-                cdAdhar.setVisibility(View.GONE);
-                cdDriving.setVisibility(View.VISIBLE);
-                cdVoter.setVisibility(View.GONE);
-
-                llAdhar.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
-                llVoter.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
-
-
-                aadharImagepathFront = "";
-                ivAdharFrontSelected.setVisibility(View.GONE);
-                tvAdharFront.setVisibility(View.VISIBLE);
-                ivAdharIamgeFront.setImageResource(R.drawable.aadharcardfront);
-
-                aadharImagepathBack = "";
-                ivAdharABackSelected.setVisibility(View.GONE);
-                tvAdharBack.setVisibility(View.VISIBLE);
-                ivAdharImageBack.setImageResource(R.drawable.aadhardcardback);
-
-                voterImagePathBack = "";
-                ivVoterFrontSelected.setVisibility(View.GONE);
-                tvVoterFront.setVisibility(View.VISIBLE);
-                ivVoterImageFront.setImageResource(R.drawable.voterfront);
-
-                voterImagePathFront = "";
-                ivVoterBackSelected.setVisibility(View.GONE);
-                tvVoterBack.setVisibility(View.VISIBLE);
-                ivVoterImageBack.setImageResource(R.drawable.voterback);
-
-            }
-
-            break;
 
 
             case R.id.btExtract:

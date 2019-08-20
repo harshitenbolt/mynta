@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cdVoter"
+            style="@style/CustomCardView"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:background="@color/whitePrimary"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/_15sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextviewwithoutSize"
+                            android:layout_width="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/montesemibold"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="VOTER ID FRONT SIDE"
+                            android:textColor="@color/colorBlue"
+                            android:textSize="@dimen/_8sdp" />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tvVoterFront"
+                                style="@style/App_TextViewSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/rounded_corner_view_blue"
+                                android:focusable="false"
+                                android:fontFamily="@font/montebold"
+                                android:gravity="center"
+                                android:padding="@dimen/_4sdp"
+                                android:text="CLICK HERE"
+                                android:textColor="@color/whitePrimary"
+                                android:textSize="@dimen/_6sdp" />
+
+                            <ImageView
+                                android:id="@+id/ivcheckedVoterFront"
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/bluecheck"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="@dimen/_200sdp"
+                        android:layout_height="@dimen/_250sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:background="@drawable/roundedcornergrey">
+
+                        <ImageView
+                            android:id="@+id/ivVoterFront"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/_20sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_20sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/voterfront" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="5"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextviewwithoutSize"
+                            android:layout_width="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:fontFamily="@font/montesemibold"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="VOTER ID BACK SIDE"
+                            android:textColor="@color/colorYellow"
+                            android:textSize="@dimen/_8sdp" />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tvVoterBack"
+                                style="@style/App_TextViewSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/rounded_corner_view_yellow"
+                                android:focusable="false"
+                                android:fontFamily="@font/montebold"
+                                android:gravity="center"
+                                android:padding="@dimen/_4sdp"
+                                android:text="CLICK HERE"
+                                android:textColor="@color/whitePrimary"
+                                android:textSize="@dimen/_6sdp" />
+
+                            <ImageView
+                                android:id="@+id/ivcheckedVoterBack"
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/yellowcheck"
+                                android:visibility="gone" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="@dimen/_200sdp"
+                        android:layout_height="@dimen/_250sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/roundedcornergrey">
+
+                        <ImageView
+                            android:id="@+id/ivVoterBack"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="@dimen/_25sdp"
+                            android:src="@drawable/voterback" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

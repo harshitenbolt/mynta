@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -29,8 +30,11 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,7 +90,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
 
 
-public class KYCVerificationFragment extends Fragment implements View.OnClickListener {
+public class KYCVerificationFragment extends Fragment implements View.OnClickListener /*implements View.OnClickListener*/ {
 
     private static final int IMAGE_AADHAR_FRONT = 1021;
     private static final int IMAGE_AADHAR_BACK = 1022, IMAGE_VOTER_FRONT = 1023, IMAGE_VOTER_BACK = 1024, IMAGE_DL_FRONT = 1025, IMAGE_DL_BACK = 1026;
@@ -96,7 +100,7 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
     public String udi = "";
     private static Dialog dialog;
     public String name = "", fathername = "";
-
+    private RadioGroup rg;
     String dob = "", dlnumber = "";
     Button btSubmit;
     private TextView tvMessage, tvTitle, tvScan;
@@ -125,7 +129,7 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
     Context mcontext;
 
     private Spinner snDocType;
-
+    FrameLayout flViewMain;
 
     View view;
     String VoteridDetailId, filename, fileUrl, backsideFileUrl, backsidefilename, dlIdDetailId;
@@ -148,64 +152,94 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_aadhar, container, false);
+        view = inflater.inflate(R.layout.fragment_kyc, container, false);
 
-        mcontext = this.getActivity();
+//        mcontext = this.getActivity();
 
         requestPermissionHandler = new RequestPermissionHandler();
 
         initView();
 
 
-        sessionManager = new SessionManager(getActivity());
+        sessionManager = new SessionManager(getContext());
 
         str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
 
         Log.e("process_id", "Process_id" + str_process_id);
         OTPActivity.settitle("KYC Verification");
 
-
+        // commanFragmentCallWithoutBackStack(new AdharFragment());
         return view;
     }
 
-
     private void initView() {
-        mProgressDialog = new ProgressDialog(mcontext);
+        rg = (RadioGroup) view.findViewById(R.id.rgMain);
+        mProgressDialog = new ProgressDialog(getActivity());
         mProgressDialog.setTitle("Please wait updating vendor details");
         mProgressDialog.setCancelable(false);
-        llAdhar = view.findViewById(R.id.llAdharcard);
+       /* llAdhar = view.findViewById(R.id.llAdharcard);
         llDriving = view.findViewById(R.id.llDrivingLicence);
         llVoter = view.findViewById(R.id.llVoterID);
-        cdAdhar = view.findViewById(R.id.cdAdharcard);
-        cdDriving = view.findViewById(R.id.cdDrivingLicence);
-        cdVoter = view.findViewById(R.id.cdVoter);
+*/
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-        tvAdharFront = view.findViewById(R.id.tvAdharFront);
-        tvAdharBack = view.findViewById(R.id.tvAdharBack);
-        ivAdharFrontSelected = view.findViewById(R.id.ivCheckAdharSelected);
+                RadioButton rb = (RadioButton) view.findViewById(checkedId);
+
+                if (rb.getId() == R.id.rbAdharCard) {
+                    Log.e("Done", "Adhar");
+                    commanFragmentCallWithoutBackStack(new AdharFragment());
+
+                    // new ReportFragment.GetReports(object.toString(), "?report_type=daily").execute();
+
+                } else if (rb.getId() == R.id.rbDriving) {
+                    commanFragmentCallWithoutBackStack(new DrivingFragment());
+                    Log.e("Done", "Driving");
+                    // new ReportFragment.GetReports(object.toString(), "?report_type=monthly").execute();
+
+                } else {
+                    Log.e("Done", "Voter");
+                    commanFragmentCallWithoutBackStack(new VoterFragment());
+                    //new ReportFragment.GetReports(object.toString(), "").execute();
+                }
+            }
+        });
+        /*cdAdhar = view.findViewById(R.id.cdAdharcard);
+        cdDriving = view.findViewById(R.id.cdDrivingLicence);
+        cdVoter = view.findViewById(R.id.cdVoter);*/
+
+        /*tvAdharFront = view.findViewById(R.id.tvAdharFront);
+        tvAdharBack = view.findViewById(R.id.tvAdharBack);*/
+       /* ivAdharFrontSelected = view.findViewById(R.id.ivCheckAdharSelected);
         ivAdharFrontSelected.setOnClickListener(this);
         ivAdharABackSelected = view.findViewById(R.id.ivCheckAdharBackSelected);
         ivAdharABackSelected.setOnClickListener(this);
         ivAdharImageBack = view.findViewById(R.id.ivImageAdharBack);
-        ivAdharIamgeFront = view.findViewById(R.id.ivImageAdharFront);
-        tvScan = view.findViewById(R.id.tvScan);
+        ivAdharIamgeFront = view.findViewById(R.id.ivImageAdharFront);*/
+       /* tvScan = view.findViewById(R.id.tvScan);
         tvScan.setOnClickListener(this);
+*/
+      /*  tvAdharBack.setOnClickListener(this);
+        tvAdharFront.setOnClickListener(this);*/
 
-        tvAdharBack.setOnClickListener(this);
-        tvAdharFront.setOnClickListener(this);
-
-        tvVoterFront = view.findViewById(R.id.tvVoterFront);
+       /* tvVoterFront = view.findViewById(R.id.tvVoterFront);
         tvVoterBack = view.findViewById(R.id.tvVoterBack);
         ivVoterFrontSelected = view.findViewById(R.id.ivcheckedVoterFront);
         ivVoterFrontSelected.setOnClickListener(this);
         ivVoterBackSelected = view.findViewById(R.id.ivcheckedVoterBack);
         ivVoterBackSelected.setOnClickListener(this);
         ivVoterImageBack = view.findViewById(R.id.ivVoterBack);
-        ivVoterImageFront = view.findViewById(R.id.ivVoterFront);
-        tvVoterBack.setOnClickListener(this);
-        tvVoterFront.setOnClickListener(this);
+        ivVoterImageFront = view.findViewById(R.id.ivVoterFront);*/
 
-        tvDlFront = view.findViewById(R.id.tvDLFront);
+        flViewMain = view.findViewById(R.id.flViewMain);
+
+
+
+       /* tvVoterBack.setOnClickListener(this);
+        tvVoterFront.setOnClickListener(this);*/
+
+       /* tvDlFront = view.findViewById(R.id.tvDLFront);
         tvDlBack = view.findViewById(R.id.tvDlBackside);
         ivDlBackSelected = view.findViewById(R.id.ivCheckDlBack);
         ivDlBackSelected.setOnClickListener(this);
@@ -215,14 +249,14 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
         ivDlImageBack = view.findViewById(R.id.ivDlImageBack);
 
         tvDlBack.setOnClickListener(this);
-        tvDlFront.setOnClickListener(this);
+        tvDlFront.setOnClickListener(this);*/
 
 
-        llAdhar.setOnClickListener(this);
+       /* llAdhar.setOnClickListener(this);
         llVoter.setOnClickListener(this);
-        llDriving.setOnClickListener(this);
+        llDriving.setOnClickListener(this);*/
 
-
+/*
         btn_next = view.findViewById(R.id.btExtract);
         btn_next.setOnClickListener(this);
 
@@ -235,8 +269,11 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
                 }
                 return false;
             }
-        });
+        });*/
     }
+
+
+   /*
 
     private void capture_aadhar_front_and_back_image(int imageSide) {
         requestPermissionHandler.requestPermission(getActivity(), new String[]{
@@ -510,7 +547,7 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
                 if (kyc_type.equalsIgnoreCase("1")) {
                     if (!aadharImagepathFront.equals("") && !aadharImagepathBack.equalsIgnoreCase("")) {
 
-                        showEditDialog();
+                        //showEditDialog();
                     } else {
                         Toast.makeText(getActivity(), "Please upload Both Images.", Toast.LENGTH_SHORT).show();
                     }
@@ -548,9 +585,9 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
                     if (!dlImageOathFront.equals("") && !dlImagePathBack.equalsIgnoreCase("")) {
 
                         try {
-                          /*  Glide.with(getActivity()).load(voterImagePathBack).into(ivVoterImageBack);
+                          *//*  Glide.with(getActivity()).load(voterImagePathBack).into(ivVoterImageBack);
                             ivVoterBackSelected.setVisibility(View.VISIBLE);
-                            tvVoterBack.setVisibility(View.GONE);*/
+                            tvVoterBack.setVisibility(View.GONE);*//*
                             if (!dlImageOathFront.equalsIgnoreCase("") && !dlImagePathBack.equalsIgnoreCase("")) {
                                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                     // getBankDetails(mContext,s.toString(),processId);
@@ -643,17 +680,17 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
     }
 
 
-    private void showEditDialog() {
+ *//*   private void showEditDialog() {
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(KYCVerificationFragment.this);
+                EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this);
                 editNameDialogFragment.setCancelable(false);
                 editNameDialogFragment.show(getChildFragmentManager(), "fragment_edit_name");
             }
         });
     }
-
+*//*
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -694,11 +731,11 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
                 intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_BACK);
-               /* File casted_image = new File(aadharImagepathFront);
+               *//* File casted_image = new File(aadharImagepathFront);
                 if (casted_image.exists()) {
                     casted_image.delete();
                 }
-*/
+*//*
             }
 
             if (requestCode == CROPPED_IMAGE_ADHAR_BACK) {
@@ -945,9 +982,9 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
 
-       /* File imagefile = new File(voterImagePathFront);
+       *//* File imagefile = new File(voterImagePathFront);
         voter_front_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathFront)), imagefile));
-*/
+*//*
         File imagefile1 = new File(drivingLicencePath);
         driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
 
@@ -1143,7 +1180,7 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
         }
 
 
-        showEditDialog();
+        //showEditDialog();
 
     }
 
@@ -1350,21 +1387,7 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
     }
 
 
-    public void commanFragmentCallWithoutBackStack(Fragment fragment) {
 
-        Fragment cFragment = fragment;
-
-        if (cFragment != null) {
-
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-            fragmentTransaction.replace(R.id.rvContentMainOTP, cFragment);
-            fragmentTransaction.commit();
-
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -1591,8 +1614,8 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
                                         DialogUtil.etVoterIdNumber.setError(validation.getVoterIdNum());
                                     }
                                     if (validation.getDlCardFront() != null && validation.getDlCardFront().length() > 0) {
-                                        /*DialogUtil.etDlNumber.setError(validation.getVoterIdNum());
-                                        showAlertValidation(validation.getDlCardFront());*/
+                                        *//*DialogUtil.etDlNumber.setError(validation.getVoterIdNum());
+                                        showAlertValidation(validation.getDlCardFront());*//*
 
                                     }
                                     if (validation.getDlCardBack() != null && validation.getDlCardBack().length() > 0) {
@@ -1703,5 +1726,82 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
         if (casted_image5.exists()) {
             casted_image5.delete();
         }
+    }*/
+
+
+    public void commanFragmentCallWithoutBackStack(Fragment fragment) {
+
+        Fragment cFragment = fragment;
+
+        if (cFragment != null) {
+
+            FragmentManager fragmentManager = getChildFragmentManager();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            //fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragmentTransaction.add(R.id.flViewMain, cFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
+           /* transaction.hide(currentFragment);
+            transaction.show(detailScreen);
+            transaction.addToBackStack(null);
+            transaction.commit();
+            */
+
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+           /* case R.id.llAdharcard:
+                commanFragmentCallWithoutBackStack(new AdharFragment());
+                llAdhar.setBackground(getResources().getDrawable(R.drawable.roundedcornergreen));
+                llDriving.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                llVoter.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                dlImagePathBack = "";
+                dlImageOathFront = "";
+                voterImagePathBack = "";
+                voterImagePathFront = "";
+
+                break;
+            case R.id.llDrivingLicence:
+                commanFragmentCallWithoutBackStack(new DrivingFragment());
+                llDriving.setBackground(getResources().getDrawable(R.drawable.roundedcornergreen));
+                llAdhar.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                llVoter.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                aadharImagepathFront = "";
+                aadharImagepathBack = "";
+                dlImagePathBack = "";
+                dlImageOathFront = "";
+
+                break;
+            case R.id.llVoterID:
+                commanFragmentCallWithoutBackStack(new VoterFragment());
+                llVoter.setBackground(getResources().getDrawable(R.drawable.roundedcornergreen));
+                llAdhar.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                llDriving.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                break;*/
+        }
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<Fragment> fragments = getChildFragmentManager().getFragments();
+        if (fragments != null) {
+            for (Fragment fragment : fragments) {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
+        }
+        Log.e("123", "1234");
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 }

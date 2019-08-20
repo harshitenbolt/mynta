@@ -49,6 +49,7 @@ import com.canvascoders.opaper.Screenshot.DragRectView;
 import com.canvascoders.opaper.Screenshot.Screenshot;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.fragment.AdharFragment;
 import com.canvascoders.opaper.fragment.DebitInvoiceMainFragment;
 
 import com.canvascoders.opaper.fragment.DeliveryBoyFragment;
@@ -303,7 +304,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
 
         } else if (screen == 2) {
 
-            commanFragmentCallWithoutBackStack(new KYCVerificationFragment());
+            commanFragmentCallWithoutBackStack(new AadharVerificationFragment());
 
 
         } else if (screen == 3) {
@@ -839,7 +840,6 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.rvContentMainOTP, cFragment);
             fragmentTransaction.commit();
-
         }
     }
 
@@ -921,6 +921,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
         }
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
+
 
 
 }
