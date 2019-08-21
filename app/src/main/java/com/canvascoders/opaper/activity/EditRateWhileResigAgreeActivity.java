@@ -63,6 +63,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
     String lattitude, longitude;
     private static Dialog dialog;
     ProgressDialog mPogress;
+    String s = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +77,14 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-                startActivity(new Intent(EditRateWhileResigAgreeActivity.this, DashboardActivity.class));
+                if (s.equalsIgnoreCase("2")) {
+                    setResult(RESULT_OK, null);
+                    finish();
+                } else {
+
+                    finish();
+                    //  startActivity(new Intent(EditRateWhileResigAgreeActivity.this, DashboardActivity.class));
+                }
 
             }
         });
@@ -428,6 +435,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
                 taskCompletedFragment2.setMesssge(msg);
                 commanFragmentCallWithoutBackStack(taskCompletedFragment2);
 
+                s = "2";
                 dialog.dismiss();
 
             }
@@ -457,7 +465,15 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+//        super.onBackPressed();
+
+        if (s.equalsIgnoreCase("2")) {
+            setResult(RESULT_OK, null);
+            finish();
+        } else {
+
+            finish();
+            //  startActivity(new Intent(EditRateWhileResigAgreeActivity.this, DashboardActivity.class));
+        }
     }
 }
