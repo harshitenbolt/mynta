@@ -363,7 +363,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                 }*/
                 Intent i = new Intent(VendorDetailActivity.this, ResignAgreementActivity.class);
                 i.putExtra("data", vendor);
-                startActivityForResult(i, 1);
+                startActivity(i);
                 finish();
 
 
@@ -495,6 +495,8 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                         dialog.dismiss();
 
                         Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    } else if (resignAgreementResponse.getResponseCode() == 400) {
+                        Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     } else if (resignAgreementResponse.getResponseCode() == 411) {
                         dialog.dismiss();
                         sessionManager.logoutUser(VendorDetailActivity.this);
@@ -580,8 +582,9 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         }
     }*/
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("Hello","hello");
 
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
@@ -594,7 +597,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                 //Write your code if there's no result
             }
         }
-    }
+    }*/
 
     public void commanFragmentCallWithBackStack(Fragment fragment, VendorList vendor) {
 

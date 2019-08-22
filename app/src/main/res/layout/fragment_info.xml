@@ -9,10 +9,10 @@
 
 
     <ScrollView
+        android:id="@+id/scMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-
         android:fillViewport="true">
 
         <LinearLayout
@@ -332,6 +332,7 @@
                         android:visibility="gone">
 
                         <TextView
+                            android:id="@+id/tvAddressInfo"
                             style="@style/App_TextViewSmall"
                             android:layout_marginTop="@dimen/_20sdp"
                             android:fontFamily="@font/montesemibold"
@@ -582,6 +583,7 @@
                         android:visibility="gone">
 
                         <TextView
+                            android:id="@+id/tvGeneralInfo"
                             style="@style/App_TextViewSmall"
                             android:layout_marginTop="@dimen/_20sdp"
                             android:fontFamily="@font/montesemibold"

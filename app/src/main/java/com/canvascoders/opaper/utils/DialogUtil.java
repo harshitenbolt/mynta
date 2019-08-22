@@ -5,9 +5,11 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -28,8 +30,12 @@ import android.widget.Toast;
 
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.activity.DashboardActivity;
+import com.canvascoders.opaper.activity.LoginActivity;
+import com.canvascoders.opaper.activity.SplashActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.fragment.PanVerificationFragment;
 import com.canvascoders.opaper.helper.DialogListner;
 
 import org.json.JSONException;
@@ -411,6 +417,86 @@ public class DialogUtil {
 
 
         dialog.show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                PanVerificationFragment.llGoback.setEnabled(true);
+            }
+        }, 2000);
+
+    }
+
+
+    public static void PanDetail2(Context mContext, String name, String fathername, String pannumber, final DialogListner dialogInterface) {
+
+        ImageView ivClose;
+        Button btSubmit;
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialoguepan_detail);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
+        dialog.findViewById(R.id.ivClose);
+        etPanName = dialog.findViewById(R.id.etPanName);
+        etPanName.setText(name);
+        etPanFatherName = dialog.findViewById(R.id.etFatherName);
+        etPanNumber = dialog.findViewById(R.id.etPanNumber);
+        ivClose = dialog.findViewById(R.id.ivClose);
+        etPanFatherName.setText(fathername);
+        etPanNumber.setText(pannumber);
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        btSubmit = dialog.findViewById(R.id.btSubmitDlDetail);
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (validation(v)) {
+                                                //dialog.dismiss();
+                                                dialogInterface.onClickDetails(etPanName.getText().toString(), etPanFatherName.getText().toString(), "", etPanNumber.getText().toString());
+                                            }
+                                        }
+
+                                        private boolean validation(View v) {
+                                            if (etPanName.getText().toString().equalsIgnoreCase("")) {
+                                                etPanName.setError("Provide name");
+                                                etPanName.requestFocus();
+                                                return false;
+                                            }
+                                            if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
+                                                etPanFatherName.setError("Provide Father name");
+                                                etPanFatherName.requestFocus();
+                                                return false;
+                                            }
+                                            Matcher matcher = Constants.PAN_PATTERN.matcher(etPanNumber.getText().toString());
+                                            if (TextUtils.isEmpty(etPanNumber.getText().toString()) || etPanNumber.getText().toString().length() < 5) {
+                                                etPanNumber.setError("Provide Number");
+                                                etPanNumber.requestFocus();
+                                                return false;
+                                            } else if (!matcher.matches()) {
+                                                etPanNumber.setError("Provide Valid Pan Number");
+                                                etPanNumber.requestFocus();
+                                                return false;
+                                            }
+                                            return true;
+                                        }
+                                    }
+        );
+
+
+        dialog.show();
+
+
     }
 
 
@@ -439,7 +525,6 @@ public class DialogUtil {
         etBranchName = dialog.findViewById(R.id.etBranchName);
         etBankAddress = dialog.findViewById(R.id.etBankAddress);
         cbMain = dialog.findViewById(R.id.cbAgreeTC);
-
         ivClose = dialog.findViewById(R.id.ivClose);
         etChequeNumber.setText(AccNumber);
         etPayeeName.setText(payeename);

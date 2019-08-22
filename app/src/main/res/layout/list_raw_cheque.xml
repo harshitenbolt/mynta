@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_10dp"
+    android:background="@drawable/roundedcornergreythick"
     android:paddingTop="@dimen/_5sdp"
     android:paddingBottom="@dimen/_5sdp"
-    android:background="@drawable/roundedcornergreythick"
     app:cardCornerRadius="@dimen/_5sdp"
     app:cardMaxElevation="@dimen/_5sdp">
 
@@ -78,12 +78,23 @@
                 android:text="Status" />
         </android.support.v7.widget.LinearLayoutCompat>
 
-        <ImageView
-            android:id="@+id/ivAccImage"
-            android:layout_width="@dimen/_65sdp"
-            android:layout_height="@dimen/_65sdp"
+        <android.support.v7.widget.CardView
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_width="@dimen/_55sdp"
+            android:layout_height="@dimen/_55sdp"
             android:layout_gravity="center"
-            android:background="@drawable/roundedcornergreythick" />
+            android:clipToPadding="true"
+            android:elevation="@dimen/_5sdp"
+            app:cardCornerRadius="@dimen/_5sdp">
+
+            <ImageView
+                android:id="@+id/ivAccImage"
+                android:scaleType="fitCenter"
+                android:layout_width="@dimen/_55sdp"
+                android:layout_height="@dimen/_55sdp" />
+        </android.support.v7.widget.CardView>
+
 
         <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/linear_one"
@@ -161,9 +172,9 @@
                     android:fontFamily="@font/monteregular"
                     android:gravity="center|left"
                     android:maxLines="1"
-                    android:textSize="@dimen/_8sdp"
                     android:singleLine="true"
                     android:text="State Bank of India -"
+                    android:textSize="@dimen/_8sdp"
                     app:fontFamily="@font/monteregular" />
 
 
@@ -174,12 +185,12 @@
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:textSize="@dimen/_8sdp"
                     android:fontFamily="@font/monteregular"
                     android:gravity="center|left"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:text="20101010101010"
+                    android:textSize="@dimen/_8sdp"
                     android:visibility="visible" />
             </LinearLayout>
 

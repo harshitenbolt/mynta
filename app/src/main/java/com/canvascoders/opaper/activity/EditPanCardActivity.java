@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
 import com.canvascoders.opaper.Beans.PanCardOcrResponse.PanCardSubmitResponse;
 import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
@@ -323,6 +324,41 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                         Toast.makeText(EditPanCardActivity.this, updatePancardResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         finish();
+                    }
+                    if (updatePancardResponse.getResponseCode() == 400) {
+                        mProgressDialog.dismiss();
+                        try {
+                            if (updatePancardResponse.getValidation() != null) {
+
+                                Validation validation = updatePancardResponse.getValidation();
+                                if (validation.getPanName() != null && validation.getPanName().length() > 0) {
+
+                                    DialogUtil.etPanName.setError(validation.getPanName());
+
+                                }
+                                if (validation.getFatherName() != null && validation.getFatherName().length() > 0) {
+
+                                    DialogUtil.etPanFatherName.setError(validation.getFatherName());
+                                }
+                                if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getAgentId(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getProccessId(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getPanNo() != null && validation.getPanNo().length() > 0) {
+                                    DialogUtil.etPanNumber.setError(validation.getPanNo());
+                                }
+                                if (validation.getPanCardFront() != null && validation.getPanCardFront().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getPanCardFront(), Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Toast.makeText(EditPanCardActivity.this, updatePancardResponse.getResponse(), Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            Toast.makeText(EditPanCardActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        // ErrorResponsePanCard errorResponsePanCard = response.body();
                     } else {
                         Toast.makeText(EditPanCardActivity.this, updatePancardResponse.getResponse(), Toast.LENGTH_SHORT).show();
 
@@ -459,7 +495,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                 Toast.makeText(EditPanCardActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
 
-                                DialogUtil.PanDetail(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
+                                DialogUtil.PanDetail2(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
                                     @Override
                                     public void onClickPositive() {
 
@@ -502,7 +538,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                                     Toast.makeText(EditPanCardActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
-                                    DialogUtil.PanDetail(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
+                                    DialogUtil.PanDetail2(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
                                         @Override
                                         public void onClickPositive() {
 

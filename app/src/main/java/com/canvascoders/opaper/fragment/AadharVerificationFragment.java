@@ -1470,7 +1470,6 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             File imagefile1 = new File(voterImagePathBack);
             aadharcard_back_part = MultipartBody.Part.createFormData(Constants.PARAM_VOTER_CARD_BACK, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathBack)), imagefile1));
 
-
         }
         if (kyc_type.equalsIgnoreCase("3")) {
 

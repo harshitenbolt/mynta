@@ -73,7 +73,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
         ivActionBarBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // finish();
+                 finish();
                 startActivity(new Intent(ProcessInfoActivity.this, DashboardActivity.class));
             }
         });
@@ -602,6 +602,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
 
                         sessionManager.logoutUser(ProcessInfoActivity.this);
                     } else {
+                        progressDialog.dismiss();
                         Constants.showAlert(tv_message.getRootView(), checkEsignResponse.getStatus(), false);
                         // Toast.makeText(ProcessInfoActivity.this, object.getStatus(), Toast.LENGTH_LONG).show();
                     }
@@ -610,7 +611,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onFailure(Call<CheckEsignResponse> call, Throwable t) {
                     progressDialog.dismiss();
-                    Toast.makeText(ProcessInfoActivity.this,"Something went wrong",Toast.LENGTH_LONG);
+                    Toast.makeText(ProcessInfoActivity.this, "Something went wrong", Toast.LENGTH_LONG);
                     Mylogger.getInstance().Logit(TAG, t.toString());
                 }
             });

@@ -108,7 +108,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     private String panImagepath = "", imagecamera = "", identityType = "", identityEmail = "", identityCallbackUrl = "", identityAccessToken = "", identityID = "", identityPatronId = "";
     private Uri imgURI;
     private static Dialog dialog;
-    private LinearLayout llGoback;
+    public static LinearLayout llGoback;
     private ImageView ivPanImage;
     Context mcontext;
     private boolean isedit = false;
@@ -205,6 +205,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         btn_extract = view.findViewById(R.id.bgtExtractPan);
         tvClickPan = view.findViewById(R.id.tvClickPan);
         tvClickPan.setOnClickListener(this);
+      //  tvGoBack= view.findViewById(R.id.tvGoBack);
         llGoback = view.findViewById(R.id.llGonext);
         llGoback.setOnClickListener(this);
 
@@ -222,6 +223,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                     isedit = true;
                     llGoback.setVisibility(View.VISIBLE);
+                    llGoback.setEnabled(false);
                     ApiCallGetDetails();
                 } else {
                     Constants.ShowNoInternet(mcontext);
@@ -243,13 +245,13 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                     UpdatePanDetailResponse updatePanDetailResponse = response.body();
                     if (updatePanDetailResponse.getResponseCode() == 200) {
                         mProgressDialog.dismiss();
+
                         Glide.with(getActivity()).load(Constants.BaseImageURL + updatePanDetailResponse.getData().get(0).getPan()).placeholder(R.drawable.pancard).into(ivPanImage);
                         isPanSelected = true;
                         btn_pan_card_select.setVisibility(View.VISIBLE);
-
                         Bitmap bitmap = ImagePicker.getBitmapFromURL(Constants.BaseImageURL + updatePanDetailResponse.getData().get(0).getPan());
                         panImagepath = ImagePicker.getBitmapPath(bitmap, getActivity());
-
+                       // llGoback.setEnabled(true);
                         DialogUtil.PanDetail(getActivity(), updatePanDetailResponse.getData().get(0).getPanName(), updatePanDetailResponse.getData().get(0).getFatherName(), updatePanDetailResponse.getData().get(0).getPanNo(), new DialogListner() {
                             @Override
                             public void onClickPositive() {
@@ -285,6 +287,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                     } else if (updatePanDetailResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(getActivity());
                     } else {
+
                         DialogUtil.PanDetail(getActivity(), updatePanDetailResponse.getData().get(0).getPanName(), updatePanDetailResponse.getData().get(0).getFatherName(), updatePanDetailResponse.getData().get(0).getPanNo(), new DialogListner() {
                             @Override
                             public void onClickPositive() {
@@ -320,6 +323,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
             @Override
             public void onFailure(Call<UpdatePanDetailResponse> call, Throwable t) {
+                llGoback.setEnabled(true);
 
             }
         });

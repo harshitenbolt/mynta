@@ -4,6 +4,7 @@ package com.canvascoders.opaper.api;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 
 import com.canvascoders.opaper.Beans.BankDetailResp;
+import com.canvascoders.opaper.Beans.BankDetailsResponse.BankDetailsResponse;
 import com.canvascoders.opaper.Beans.ChangeMobileResponse.ChangeMobileResponse;
 import com.canvascoders.opaper.Beans.CheckEsignResponse.CheckEsignResponse;
 import com.canvascoders.opaper.Beans.CommentListResponse.CommentListResponse;
@@ -435,6 +436,9 @@ public interface ApiInterface {
     //@FormUrlEncoded
     @POST("check-esign")
     Call<CheckEsignResponse> checkEsign(@Header("Authorization") String token, @QueryMap Map<String, String> data);
+
+    @POST("get-bank-details")
+    Call<BankDetailsResponse> getBankkDetails(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 
     //@FormUrlEncoded
     @POST("resend-otp-link")

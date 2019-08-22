@@ -1013,6 +1013,17 @@
                                 </LinearLayout>
 
 
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:textSize="@dimen/_10sdp"
+                                    android:fontFamily="@font/monteregular"
+                                    android:layout_marginLeft="@dimen/_7sdp"
+                                    android:textColor="@color/text_color_dark_grey"
+                                    android:text="For access above mentioned option you needs to login from supervisor account."/>
+
                             </LinearLayout>
                         </LinearLayout>
                     </android.support.v7.widget.CardView>

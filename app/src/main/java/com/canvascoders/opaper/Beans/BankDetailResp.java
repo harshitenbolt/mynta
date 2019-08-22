@@ -78,6 +78,19 @@ public class BankDetailResp {
         @SerializedName("bank_branch_name")
         @Expose
         private String bankBranchName;
+
+        @SerializedName("cancelled_cheque_img")
+        @Expose
+        private String cancelledcheque;
+
+        public String getCancelledcheque() {
+            return cancelledcheque;
+        }
+
+        public void setCancelledcheque(String cancelledcheque) {
+            this.cancelledcheque = cancelledcheque;
+        }
+
         @SerializedName("bank_address")
         @Expose
         private String bankAddress;

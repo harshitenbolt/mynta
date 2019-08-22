@@ -930,11 +930,4 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
         }
     }
 
-
-
-
-
-
-
-
 }

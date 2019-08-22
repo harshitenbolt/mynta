@@ -117,7 +117,6 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resign_agreement);
-
         init();
     }
 
@@ -191,7 +190,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
                 Intent i = new Intent(ResignAgreementActivity.this, EditRateWhileResigAgreeActivity.class);
                 i.putExtra("data", vendor);
-                startActivity(i);
+                startActivityForResult(i, 1);
 
                /* if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                     ApiCallResendAgreement();
@@ -396,9 +395,9 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
                                     btChangeRate.setVisibility(View.VISIBLE);
                                     btResign.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                                     btResign.setText("RESIGN AGREEMENT");
-                                   // llNotice.setVisibility(View.VISIBLE);
+                                    // llNotice.setVisibility(View.VISIBLE);
                                     tvTitleCurrentrate.setText("Current Working Rate");
-                                   // llUpdated.setVisibility(View.GONE);
+                                    // llUpdated.setVisibility(View.GONE);
                                 } else {
                                     rvRateList.setVisibility(View.GONE);
                                 }
@@ -696,5 +695,17 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
             width = (int) (height * bitmapRatio);
         }
         return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                this.finish();
+
+            }
+        }
     }
 }

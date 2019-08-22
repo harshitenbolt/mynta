@@ -348,6 +348,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
         switch_shopact.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 if (isChecked) {
                     if (!shopActImage.isEmpty()) {
                         shopActImage.clear();
@@ -437,7 +438,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
 
                     if (switch_shopact.isChecked()) {
                         if (shopActImage.size() > 0) {
-                            shopActImage.clear();
+                           // shopActImage.clear();
                             myAdapter = new MyAdapter(mcontext, shopActImage);
                             mPager.setAdapter(myAdapter);
                             myAdapterforRecycler = new MyAdapterforRecycler(mcontext, shopActImage);
@@ -938,9 +939,9 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
     }
 
 
-    @Override
+   /* @Override
     public void onResume() {
-     /*   if (!AppApplication.networkConnectivity.isNetworkAvailable()) {
+     *//*   if (!AppApplication.networkConnectivity.isNetworkAvailable()) {
             Constants.ShowNoInternet(mcontext);
         }
 
@@ -957,11 +958,11 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                 }
                 return false;
             }
-        });*/
+        });*//*
 
 
         super.onResume();
-    }
+    }*/
 
     private void deleteImages() {
 

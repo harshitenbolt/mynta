@@ -39,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -108,6 +109,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     private SessionManager sessionManager;
     private Button btn_next, btChangeChaque;
     private int mYear, mMonth, mDay, mHour, mMinute;
+    private TextView tvGeneralInfo,tvAddressInfo;
     private LinearLayout llDOB;
     DatePicker datePicker;
     CustomPopupAdapter customPopupAdapter;
@@ -142,6 +144,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         }
     };
     private Spinner dc;
+    private ScrollView scMain;
 
     private Spinner spLocality, spTypeofVendor, spTypeofVendorDetail, spApproach, spShipment, spLanguage;
     /*  private List<String> shipmentmodeltype = new ArrayList<>();
@@ -238,7 +241,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         llOwnerInfo = view.findViewById(R.id.llOwnerInfo);
         llGeneraInfo = view.findViewById(R.id.llGeneralInfo);
         llAddrssInfo = view.findViewById(R.id.llAddressInfo);
-
+        scMain = view.findViewById(R.id.scMain);
         rvVendorType = view.findViewById(R.id.rvTypeVendor);
         rvVendorType.setOnClickListener(this);
         rvStoreType = view.findViewById(R.id.rvStoreType);
@@ -248,6 +251,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         rvSelectLanguage = view.findViewById(R.id.rvSelectLanguage);
         rvSelectLanguage.setOnClickListener(this);
         rvShipmentTransfer = view.findViewById(R.id.rvShipment);
+        tvGeneralInfo = view.findViewById(R.id.tvGeneralInfo);
+        tvAddressInfo = view.findViewById(R.id.tvAddressInfo);
         rvShipmentTransfer.setOnClickListener(this);
         rvLocality.setOnClickListener(this);
         rvApproach.setOnClickListener(this);
@@ -1014,11 +1019,13 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             llOwnerInfo.setVisibility(View.GONE);
                             view2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             llAddrssInfo.setVisibility(View.VISIBLE);
+                            focusOnView("1");
                         } else if (i1 == 2) {
                             view3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             llAddrssInfo.setVisibility(View.GONE);
                             llOwnerInfo.setVisibility(View.GONE);
                             llGeneraInfo.setVisibility(View.VISIBLE);
+                            focusOnView("2");
                         }
 
                     } else {
@@ -1913,6 +1920,23 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
         dialog.show();
 
+    }
+
+
+
+    private final void focusOnView(String selectedString){
+        scMain.post(new Runnable() {
+            @Override
+            public void run() {
+                if(selectedString.equalsIgnoreCase("1")){
+                    scMain.scrollTo(0, tvAddressInfo.getBottom());
+                }
+                else{
+                    scMain.scrollTo(0, tvGeneralInfo.getBottom());
+                }
+
+            }
+        });
     }
 }
 

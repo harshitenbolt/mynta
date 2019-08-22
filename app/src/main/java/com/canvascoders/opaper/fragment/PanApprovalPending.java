@@ -151,6 +151,7 @@ public class PanApprovalPending extends Fragment {
                 if (response.isSuccessful()) {
                     UpdatePanDetailResponse updatePanDetailResponse = response.body();
                     if (updatePanDetailResponse.getResponseCode() == 200) {
+                        getActivity().finish();
 
                     } else if (updatePanDetailResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(getActivity());

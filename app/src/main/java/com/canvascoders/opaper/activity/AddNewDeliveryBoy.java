@@ -571,10 +571,10 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                                 if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
                                     //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     Toast.makeText(AddNewDeliveryBoy.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
-                                } else {
+                                } /*else {
                                     Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
                                 }
-
+*/
                             } else {
                                 Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
 

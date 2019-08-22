@@ -9,13 +9,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.BankDetailResp;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
@@ -52,6 +55,7 @@ public class ChequeListAdapter extends RecyclerView.Adapter<ChequeListAdapter.It
         holder.tvAccountNo.setText("" + bankDetail.getBankAc());
         holder.tvBankName.setText("" + bankDetail.getBankName());
         holder.tvPayeeName.setText("" + bankDetail.getPayeeName());
+        Glide.with(mContext).load(Constants.BaseImageURL+bankDetail.getCancelledcheque()).placeholder(R.drawable.checkimage).into(holder.ivChequeImage);
 
         if (bankDetail.getStatus().equalsIgnoreCase("0")) {
             holder.tvStauts.setText("pending");
@@ -102,6 +106,7 @@ public class ChequeListAdapter extends RecyclerView.Adapter<ChequeListAdapter.It
 
         public AppCompatTextView tvPayeeName, tvBankName, tvAccountNo, tvStauts;
         public LinearLayout llMain;
+        private ImageView ivChequeImage;
 
         public ItemHolder(View itemView) {
             super(itemView);
@@ -110,6 +115,7 @@ public class ChequeListAdapter extends RecyclerView.Adapter<ChequeListAdapter.It
             tvAccountNo = itemView.findViewById(R.id.tvAccountNumber);
             tvStauts = itemView.findViewById(R.id.tvStauts);
             llMain = itemView.findViewById(R.id.llMain);
+            ivChequeImage = itemView.findViewById(R.id.ivAccImage);
         }
     }
 
