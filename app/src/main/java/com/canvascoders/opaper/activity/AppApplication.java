@@ -43,7 +43,7 @@ public class AppApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-       // Fabric.with(this, new Crashlytics());
+        Fabric.with(this, new Crashlytics());
 
         mInstance = this;
 

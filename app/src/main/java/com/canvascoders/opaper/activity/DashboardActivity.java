@@ -622,7 +622,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 }
             });
         } else {
-            Constants.ShowNoInternet(getApplicationContext());
+            Constants.ShowNoInternet(this);
         }
 
     }

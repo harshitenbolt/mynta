@@ -88,11 +88,11 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     private static final int IMAGE_LICENCE = 101;
     private static final int IMAGE_PROFILE = 1021;
     private RecyclerView rv_deliveryboy_list;
-    DeliveryBoysAdapter deliveryBoysAdapter;
+    private DeliveryBoysAdapter deliveryBoysAdapter;
     private List<Datum> delivery_boys_list = new ArrayList<>();
-    Button btn_add_deliveryboy, btnSubmit;
+    private Button btn_add_deliveryboy, btnSubmit;
     private String profImage = "";
-    ImageView iv_image, iv_driving;
+    private ImageView iv_image, iv_driving;
     private Uri imgURI;
     private Spinner dc;
     private ArrayList<String> dcLists = new ArrayList<>();
@@ -111,7 +111,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     SessionManager sessionManager;
     TextView tv_note;
     ImageView iv_back;
-    String str_process_id;
+    private String str_process_id;
     private RequestPermissionHandler requestPermissionHandler;
 
     @Override

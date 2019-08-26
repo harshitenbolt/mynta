@@ -27,7 +27,7 @@
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_weight="4"
             android:gravity="end|bottom"
-            android:text="V 2.1.0"
+            android:text="@string/version_23"
             android:textColor="@color/mediumGrey" />
 
         <LinearLayout

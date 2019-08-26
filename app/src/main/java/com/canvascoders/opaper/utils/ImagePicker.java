@@ -305,6 +305,7 @@ public class ImagePicker {
     }
 
     public static String getImagePath() {
+        Log.e("file",filePath);
         return filePath;
     }
 
@@ -378,6 +379,7 @@ public class ImagePicker {
             Cursor cursor = mContext.getContentResolver().query(tempUri, null, null, null, null);
             cursor.moveToFirst();
             int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            Log.e("file",cursor.getString(idx));
             return cursor.getString(idx);
         } catch (Exception e) {
             e.printStackTrace();
