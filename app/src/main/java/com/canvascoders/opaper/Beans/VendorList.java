@@ -166,6 +166,18 @@ public class VendorList implements Serializable {
     @Expose
     private String ifGst;
 
+    public String getStoreType() {
+        return storeType;
+    }
+
+    public void setStoreType(String storeType) {
+        this.storeType = storeType;
+    }
+
+    @SerializedName("store_type")
+    @Expose
+    private String storeType;
+
 
     public String getIsUpdateGst() {
         return isUpdateGst;

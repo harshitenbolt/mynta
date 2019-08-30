@@ -27,12 +27,13 @@ public class DeliveryBoysListAdapter extends RecyclerView.Adapter<DeliveryBoysLi
 
     private List<Datum> moreitemList;
     Context context;
-    String value = "1";
+    String value = "1",flag;
 
 
-    public DeliveryBoysListAdapter(List<Datum> moreitemList, Context context) {
+    public DeliveryBoysListAdapter(List<Datum> moreitemList, Context context,String flag) {
         this.moreitemList = moreitemList;
         this.context = context;
+        this.flag = flag;
     }
 
     @NonNull
@@ -52,6 +53,14 @@ public class DeliveryBoysListAdapter extends RecyclerView.Adapter<DeliveryBoysLi
 
         Log.e("URL", "" + Constants.BaseImageURL + moreitemList.get(position).getImage());
         Glide.with(context).load(Constants.BaseImageURL+moreitemList.get(position).getImage()).placeholder(R.drawable.image_placeholder).into(holder.ivProfile);
+
+        if(flag.equalsIgnoreCase("1")){
+            holder.ivDelete.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.ivDelete.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -60,7 +69,7 @@ public class DeliveryBoysListAdapter extends RecyclerView.Adapter<DeliveryBoysLi
     }
 
     public class RecordHolder extends RecyclerView.ViewHolder {
-        ImageView ivProfile;
+        ImageView ivProfile,ivDelete;
         TextView tvName, tvMobile,tvRoute,tvVehicle;
         LinearLayout linear_item;
 
@@ -70,6 +79,7 @@ public class DeliveryBoysListAdapter extends RecyclerView.Adapter<DeliveryBoysLi
             tvName = view.findViewById(R.id.tvName);
             tvMobile = view.findViewById(R.id.tvMobile);
             tvRoute = view.findViewById(R.id.tvRoute);
+            ivDelete = view.findViewById(R.id.ivDelete);
        //     tvVehicle = view.findViewById(R.id.tvVehicle);
         }
     }

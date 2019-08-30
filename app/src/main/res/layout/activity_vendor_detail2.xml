@@ -484,7 +484,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:visibility="gone">
+                                android:visibility="visible">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -703,7 +703,62 @@
 
                                     </android.support.v7.widget.CardView>
                                     <android.support.v7.widget.CardView
-                                        android:id="@+id/cvResign"
+                                        android:id="@+id/cvDelivery"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_margin="@dimen/_4sdp"
+                                        android:layout_weight="1"
+                                        android:clipToPadding="true"
+                                        android:elevation="@dimen/_5sdp"
+                                        android:visibility="gone"
+                                        app:cardCornerRadius="@dimen/_5sdp">
+
+
+                                        <LinearLayout
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="@dimen/_3sdp"
+                                            android:gravity="center"
+                                            android:orientation="vertical"
+                                            android:padding="@dimen/_10sdp">
+
+                                            <ImageView
+                                                android:layout_width="@dimen/_35sdp"
+                                                android:layout_height="@dimen/_35sdp"
+                                                android:src="@drawable/delivery" />
+
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:layout_gravity="center"
+                                                android:layout_marginTop="@dimen/_3sdp"
+                                                android:fontFamily="@font/montemedium"
+                                                android:gravity="center"
+                                                android:lines="2"
+                                                android:maxLines="2"
+                                                android:clickable="false"
+                                                android:text="DELIVERY\n BOYS"
+                                                android:textColor="@color/colorBlack"
+                                                android:textSize="@dimen/_8sdp" />
+                                        </LinearLayout>
+
+                                    </android.support.v7.widget.CardView>
+
+
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:id="@+id/llResign"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:gravity="center"
+                                    android:visibility="visible"
+                                    android:orientation="horizontal"
+                                    android:padding="@dimen/_3sdp">
+                                    <android.support.v7.widget.CardView
+
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:layout_margin="@dimen/_4sdp"
@@ -743,6 +798,90 @@
                                         </LinearLayout>
 
                                     </android.support.v7.widget.CardView>
+
+                                    <android.support.v7.widget.CardView
+                                        android:id="@+id/cvResign"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_margin="@dimen/_4sdp"
+                                        android:layout_weight="1"
+                                        android:clipToPadding="true"
+                                        android:elevation="@dimen/_5sdp"
+                                        android:visibility="visible"
+                                        app:cardCornerRadius="@dimen/_5sdp">
+
+
+                                        <LinearLayout
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="@dimen/_3sdp"
+                                            android:gravity="center"
+                                            android:orientation="vertical"
+                                            android:padding="@dimen/_10sdp">
+
+                                            <ImageView
+                                                android:layout_width="@dimen/_35sdp"
+                                                android:layout_height="@dimen/_35sdp"
+                                                android:src="@drawable/agreement" />
+
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:layout_gravity="center"
+                                                android:layout_marginTop="@dimen/_3sdp"
+                                                android:fontFamily="@font/montemedium"
+                                                android:gravity="center"
+                                                android:lines="2"
+                                                android:maxLines="2"
+                                                android:clickable="false"
+                                                android:text="RESIGN\n AGREEMENT"
+                                                android:textColor="@color/colorBlack"
+                                                android:textSize="@dimen/_8sdp" />
+                                        </LinearLayout>
+
+                                    </android.support.v7.widget.CardView>
+                                    <android.support.v7.widget.CardView
+
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_margin="@dimen/_4sdp"
+                                        android:layout_weight="1"
+                                        android:clipToPadding="true"
+                                        android:elevation="@dimen/_5sdp"
+                                        android:visibility="invisible"
+                                        app:cardCornerRadius="@dimen/_5sdp">
+
+
+                                        <LinearLayout
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="@dimen/_3sdp"
+                                            android:gravity="center"
+                                            android:orientation="vertical"
+                                            android:padding="@dimen/_10sdp">
+
+                                            <ImageView
+                                                android:layout_width="@dimen/_35sdp"
+                                                android:layout_height="@dimen/_35sdp"
+                                                android:src="@drawable/agreement" />
+
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:layout_gravity="center"
+                                                android:layout_marginTop="@dimen/_3sdp"
+                                                android:fontFamily="@font/montemedium"
+                                                android:gravity="center"
+                                                android:lines="2"
+                                                android:maxLines="2"
+                                                android:clickable="false"
+                                                android:text="RESIGN\n AGREEMENT"
+                                                android:textColor="@color/colorBlack"
+                                                android:textSize="@dimen/_8sdp" />
+                                        </LinearLayout>
+
+                                    </android.support.v7.widget.CardView>
+
 
 
 
@@ -968,6 +1107,59 @@
 
                                     </android.support.v7.widget.CardView>
                                     <android.support.v7.widget.CardView
+                                        android:id="@+id/cvDelBoy1"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_margin="@dimen/_4sdp"
+                                        android:layout_weight="1"
+                                        android:clipToPadding="true"
+                                        android:elevation="@dimen/_5sdp"
+                                        android:visibility="visible"
+                                        app:cardCornerRadius="@dimen/_5sdp">
+
+
+                                        <LinearLayout
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_marginLeft="@dimen/_3sdp"
+                                            android:gravity="center"
+                                            android:orientation="vertical"
+                                            android:padding="@dimen/_10sdp">
+
+                                            <ImageView
+                                                android:layout_width="@dimen/_35sdp"
+                                                android:layout_height="@dimen/_35sdp"
+                                                android:src="@drawable/deliverygrey" />
+
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:layout_gravity="center"
+                                                android:layout_marginTop="@dimen/_3sdp"
+                                                android:fontFamily="@font/montemedium"
+                                                android:gravity="center"
+                                                android:lines="2"
+                                                android:maxLines="2"
+                                                android:text="DELIVERY\n BOY"
+                                                android:textColor="@color/colorGrey"
+                                                android:textSize="@dimen/_8sdp" />
+                                        </LinearLayout>
+
+                                    </android.support.v7.widget.CardView>
+
+
+
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:gravity="center"
+                                    android:orientation="horizontal"
+                                    android:padding="@dimen/_3sdp">
+
+                                    <android.support.v7.widget.CardView
                                         android:id="@+id/cvResign1"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
@@ -1007,7 +1199,6 @@
                                         </LinearLayout>
 
                                     </android.support.v7.widget.CardView>
-
 
 
                                 </LinearLayout>

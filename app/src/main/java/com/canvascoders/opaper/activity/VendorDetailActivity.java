@@ -120,8 +120,9 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     AppCompatSpinner spYear;
     ProgressBar pbBar;
     LinearLayout llDisable;
-    CardView cvGST;
+    CardView cvGST,cvDeliveryBoy;
     LinearLayout llEnable;
+    LinearLayout llResign;
     private TextView tvStoreName, tvAddress, tvNoData;
     boolean expand = false;
     Bitmap b, converted;
@@ -156,7 +157,9 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         cvMobile = findViewById(R.id.cvMobileNo);
         cvCheque = findViewById(R.id.cvCheque);
         cvRate = findViewById(R.id.cvRate);
+        llResign = findViewById(R.id.llResign);
         cvGST = findViewById(R.id.cvGST);
+        cvDeliveryBoy = findViewById(R.id.cvDelivery);
         cvResignAgreement = findViewById(R.id.cvResign);
         spYear = findViewById(R.id.spYear);
 
@@ -291,29 +294,45 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             isUpdationRequired = vendor.getIsAgreementUpdationRequire();
             tvAddress.setText(vendor.getStoreAddress() + "," + vendor.getStoreAddress1() + "," + vendor.getStoreAddressLandmark() + "," + vendor.getCity() + "," + vendor.getState());
 
-
             if (isUpdationRequired.equalsIgnoreCase("1")) {
                 cvResignAgreement.setVisibility(View.VISIBLE);
+                llResign.setVisibility(View.VISIBLE);
             } else {
-                cvResignAgreement.setVisibility(View.INVISIBLE);
+                cvResignAgreement.setVisibility(View.GONE);
+                llResign.setVisibility(View.GONE);
             }
+
+
             allowDEdit = vendor.getAllowedit();
             allowEditDelBoy = vendor.getIsAddDeliveryBoy();
 
+
+            // this condtition is for allow edit or not if not it shows disable buttons
             if (allowDEdit.equalsIgnoreCase("1")) {
+                llEdit.setVisibility(View.VISIBLE);
+                llDisable.setVisibility(View.GONE);
+                // GST Button Condition
                 if (vendor.getIsUpdateGst().equalsIgnoreCase("1")) {
                     cvGST.setVisibility(View.VISIBLE);
                 } else {
                     cvGST.setVisibility(View.GONE);
                 }
-                llEdit.setVisibility(View.VISIBLE);
-                // cdEdit.setVisibility(View.VISIBLE);
-                llDisable.setVisibility(View.GONE);
-                //linear_check.setVisibility(View.VISIBLE);
+
+
+                // delivery Boys Button Codndition
+                if(vendor.getStoreType().contains("Mensa - Delivery")){
+                    cvDeliveryBoy.setVisibility(View.VISIBLE);
+                }
+                else{
+                    cvDeliveryBoy.setVisibility(View.GONE);
+                }
+
             } else {
                 llDisable.setVisibility(View.VISIBLE);
                 llEdit.setVisibility(View.GONE);
             }
+
+
 
             if (allowEditDelBoy.equalsIgnoreCase("1")) {
                 cdEdit.setVisibility(View.VISIBLE);
@@ -382,6 +401,15 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             public void onClick(View v) {
 //                commanFragmentCallWithBackStack(new ChequedataUpdateFragment(),vendor);
                 commanFragmentCallWithBackStack(new ChequeDataListingFragment(), vendor);
+            }
+        });
+
+        cvDeliveryBoy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(VendorDetailActivity.this,DelBoyListingActivity.class);
+                i.putExtra("Data",process_id);
+                startActivity(i);
             }
         });
 
