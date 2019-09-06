@@ -156,7 +156,7 @@ public class DialogUtil {
                 Calendar c3 = Calendar.getInstance();
                 c3.setTime(today1);
                 c3.add(Calendar.YEAR, -18); // Subtract 18 year
-                long minDate1 = c2.getTime().getTime(); //
+                long minDate1 = c3.getTime().getTime(); //
                 DatePickerDialog datePickerDialog1 = new DatePickerDialog(mContext,
                         new DatePickerDialog.OnDateSetListener() {
 

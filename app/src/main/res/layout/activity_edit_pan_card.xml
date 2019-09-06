@@ -146,7 +146,7 @@
                                     android:fontFamily="@font/montesemibold"
                                     android:gravity="start"
                                     android:singleLine="true"
-                                    android:text="Krishnan Aiyar"
+                                    android:text=""
                                     android:textSize="@dimen/_7sdp" />
 
                                 <TextView
@@ -166,7 +166,7 @@
                                     android:layout_marginTop="@dimen/_3sdp"
                                     android:fontFamily="@font/montesemibold"
                                     android:singleLine="true"
-                                    android:text="Krishnan Aiyar"
+                                    android:text=""
                                     android:textSize="@dimen/_7sdp" />
                             </LinearLayout>
 
@@ -193,7 +193,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_3sdp"
                                     android:fontFamily="@font/montesemibold"
-                                    android:text="AXMPJ04367H"
+                                    android:text=""
                                     android:textSize="@dimen/_7sdp" />
 
                             </LinearLayout>

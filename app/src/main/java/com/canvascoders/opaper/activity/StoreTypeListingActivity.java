@@ -368,8 +368,8 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
             dialog = null;
         }
 
-        dialog = new Dialog(this);
-        dialog = new Dialog(this, R.style.DialogLSideBelow);
+        dialog = new Dialog(StoreTypeListingActivity.this);
+        dialog = new Dialog(StoreTypeListingActivity.this, R.style.DialogLSideBelow);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialogue_success);
         dialog.setCanceledOnTouchOutside(false);

@@ -104,7 +104,7 @@
                             android:layout_marginLeft="@dimen/_4sdp"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/montesemibold"
-                            android:text="+91 83838 38833"
+                            android:text="+91 "
                             android:textColor="@color/colorBlack"
                             android:textSize="@dimen/_12sdp" />
 

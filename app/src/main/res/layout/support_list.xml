@@ -65,7 +65,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:fontFamily="@font/rb_light"
-                        android:text="dspoki"
+                        android:text=""
                         android:clickable="false"
                         android:textSize="@dimen/_15sdp"
                         app:fontFamily="@font/montesemibold" />
@@ -129,7 +129,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="dspoki"
+                        android:text=""
                         android:clickable="false"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:lines="2"

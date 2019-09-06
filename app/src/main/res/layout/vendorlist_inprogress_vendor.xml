@@ -63,7 +63,7 @@
                         android:gravity="center|left"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:text="Jdlajsdl"
+                        android:text=""
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_8sdp" />
 
@@ -103,7 +103,7 @@
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:clickable="false"
                         android:fontFamily="@font/montesemibold"
-                        android:text="sdljsadlf"
+                        android:text=""
                         android:textSize="@dimen/_8sdp" />
                 </LinearLayout>
 

@@ -487,7 +487,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
 
         Intent browserIntent = new Intent(ACTION_VIEW);
-        browserIntent.setDataAndType(Uri.parse(addendumDetailsList.get(position).getAddendum()), "application/pdf");
+        browserIntent.setDataAndType(Uri.parse(Constants.BaseImageURL + addendumDetailsList.get(position).getAddendum()), "application/pdf");
         startActivity(browserIntent);
 
 

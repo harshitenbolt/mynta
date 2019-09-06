@@ -73,7 +73,7 @@
                     android:fontFamily="@font/monteregular"
                     android:gravity="top"
                     android:lines="2"
-                    android:text="Harshit@enbolt.com"
+                    android:text=""
                     android:textColor="@color/mediumGrey"
                     android:textSize="@dimen/_10sdp" />
             </LinearLayout>

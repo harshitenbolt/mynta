@@ -112,7 +112,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_delivery_boy);
-        isUpdate = getIntent().getStringExtra("Data");
+       // isUpdate = getIntent().getStringExtra("Data");
 
         init();
     }
@@ -124,9 +124,9 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         sessionManager = new SessionManager(this);
         str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
 
-        if(isUpdate.equalsIgnoreCase("1")){
+      /*  if(isUpdate.equalsIgnoreCase("1")){
             str_process_id = getIntent().getStringExtra("process");
-        }
+        }*/
        /* addDelBoy = findViewById(R.id.btSubmitDelBoy);
         addDelBoy.setOnClickListener(this);
        */
@@ -647,9 +647,9 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
         params.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
         params.put(Constants.ROUTE_NUMBER, etRoute.getText().toString().trim());
-        if(isUpdate.equalsIgnoreCase("1")){
+        /*if(isUpdate.equalsIgnoreCase("1")){
             params.put(Constants.PARAM_IS_EDIT,"1");
-        }
+        }*/
         params.put(Constants.PARAM_DRIVING_LICENCE_NUM, etDrivingNumber.getText().toString().trim());
         params.put(Constants.PARAM_DRIVING_LICENCE_DOB, dob.getText().toString().trim());
         params.put(Constants.PARAM_DRIVING_LICENCE_VEHICLE, etVehicle.getText().toString().trim());

@@ -126,7 +126,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/_5sdp"
                                         android:fontFamily="@font/monteregular"
-                                        android:text="925684549875" />
+                                        android:text="" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -185,7 +185,7 @@
                                     android:layout_marginTop="@dimen/_2sdp"
                                     android:fontFamily="@font/monteregular"
                                     android:lines="2"
-                                    android:text="sdfpsad" />
+                                    android:text="" />
                             </LinearLayout>
 
 
