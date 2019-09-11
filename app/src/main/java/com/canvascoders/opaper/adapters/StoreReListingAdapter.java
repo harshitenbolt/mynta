@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.StoreTypeBean;
@@ -47,10 +48,46 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
         holder.check_box_store.setEnabled(true);
         holder.check_box_store.setChecked(false);
 
-        if (!store.getStoreType().contains("Alteration") && !store.getStoreType().contains("Rental")) {
-            holder.check_box_store.setOnClickListener(new View.OnClickListener() {
+
+
+        if(store.getStoreType().contains(Constants.ASSISTED)){
+            holder.edt_store_amount.setHint("");
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
+        else{
+            holder.rvSeperateRight.setVisibility(View.VISIBLE);
+            holder.vSeperate.setVisibility(View.VISIBLE);
+        }
+
+
+        if (store.getStoreType().contains(Constants.CAC_STORE)) {
+            holder.check_box_store.setChecked(true);
+            holder.check_box_store.setEnabled(true);
+            holder.edt_store_amount.setText("10%/3% GMV");
+            holder.edt_store_amount.setEnabled(false);
+        }
+
+
+        holder.check_box_store.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    if(store.getStoreType().contains(Constants.ASSISTED)){
+                        holder.edt_store_amount.setHint("");
+                        holder.edt_store_amount.setText("     ");
+                        holder.edt_store_amount.setEnabled(false);
+                        holder.rvSeperateRight.setVisibility(View.GONE);
+                        holder.vSeperate.setVisibility(View.GONE);
+                    }
+                    else{
+                        holder.rvSeperateRight.setVisibility(View.VISIBLE);
+                        holder.vSeperate.setVisibility(View.VISIBLE);
+                    }
+
+
 
                     if (holder.check_box_store.isChecked()) {
                         holder.edt_store_amount.setEnabled(true);
@@ -59,6 +96,16 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                         holder.edt_store_amount.setEnabled(false);
                         dataViews.get(position).setSelected(false);
                     }
+
+
+                    if (store.getStoreType().contains(Constants.CAC_STORE)) {
+                       /* holder.check_box_store.setChecked(true);
+                        holder.check_box_store.setEnabled(true);
+                        holder.edt_store_amount.setText("10%/3% GMV");*/
+                        holder.edt_store_amount.setEnabled(false);
+                    }
+
+
 // remove other selected
                     for (int i = 0; i < dataViews.size(); i++) {
                         if (i != position)
@@ -75,10 +122,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
             holder.check_box_store.setChecked(store.isSelected());
             holder.edt_store_amount.setEnabled(store.isSelected());
             holder.edt_store_amount.setText(store.getRate());
-        } else {
-            holder.check_box_store.setEnabled(false);
-            holder.edt_store_amount.setEnabled(false);
-        }
+
 
         if (store.isSelected()) {
 
@@ -136,11 +180,17 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
 //            holder.check_box_store.setEnabled(true);
 //            holder.check_box_store.setChecked(true);
 //        }
+
         if (store.getStoreType().contains(Constants.CAC_STORE)) {
-            holder.check_box_store.setChecked(true);
-            holder.check_box_store.setEnabled(true);
+            /*holder.check_box_store.setChecked(true);
+            holder.check_box_store.setEnabled(true);*/
             holder.edt_store_amount.setText("10%/3% GMV");
             holder.edt_store_amount.setEnabled(false);
+        }
+
+
+        if(store.getStoreType().contains(Constants.RENTAL)){
+            holder.check_box_store.setEnabled(false);
         }
     }
 
@@ -154,10 +204,13 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
         public AppCompatCheckBox check_box_store;
         public AppCompatTextView tv_store_name;
         public AppCompatEditText edt_store_amount;
-
+        public RelativeLayout rvSeperateRight;
+        public View vSeperate;
 
         public ItemHolder(View itemView) {
             super(itemView);
+            vSeperate = itemView.findViewById(R.id.viewSeperate);
+            rvSeperateRight = itemView.findViewById(R.id.rvRightMain);
             check_box_store = itemView.findViewById(R.id.check_box_store);
             tv_store_name = itemView.findViewById(R.id.tv_store_name);
             edt_store_amount = itemView.findViewById(R.id.edt_store_amount);

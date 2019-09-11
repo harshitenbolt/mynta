@@ -259,7 +259,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
             if (rateTypeBeans.get(i).isSelected() && !rateTypeBeans.get(i).getIsApproved().equalsIgnoreCase("1")) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
-                if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE)) {
+                if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE)&& !rateTypeBeans.get(i).getStoreType().contains(Constants.ASSISTED)) {
                     if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
                         if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
                             try {

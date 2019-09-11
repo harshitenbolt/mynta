@@ -21,27 +21,33 @@
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/check_box_store"
             android:layout_width="@dimen/_25sdp"
+
             android:layout_height="wrap_content" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_store_name"
-            android:layout_width="@dimen/_150sdp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_weight="1"
             android:maxLines="1"
             android:padding="5dp"
             android:textColor="@color/colorBlack"
             android:textSize="15dp" />
 
         <View
+            android:id="@+id/viewSeperate"
+
             android:layout_width="@dimen/_1sdp"
             android:layout_height="match_parent"
             android:background="@color/colorLightGrey" />
 
         <RelativeLayout
+            android:id="@+id/rvRightMain"
             android:layout_width="@dimen/_105sdp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
+
             android:background="@color/colorLightGrey"
             android:gravity="center">
 

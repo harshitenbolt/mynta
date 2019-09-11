@@ -202,7 +202,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
             if (neutralStoreList.get(i).isSelected()) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", neutralStoreList.get(i).getStoreTypeId());
-                if (!neutralStoreList.get(i).getStoreType().contains(Constants.CAC_STORE)) {
+                if (!neutralStoreList.get(i).getStoreType().contains(Constants.CAC_STORE)&& !neutralStoreList.get(i).getStoreType().contains(Constants.ASSISTED)) {
                     if (neutralStoreList.get(i).getRate() != null && neutralStoreList.get(i).getRate().length() > 0) {
                         try {
 //                        float rate = Float.parseFloat(neutralStoreList.get(i).getRate());

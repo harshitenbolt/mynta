@@ -33,19 +33,21 @@ public class Constants {
     public final static String DATA = "data";
     public static final String KEY_DOCUMENT_ID = "document_id";
     public static final String KEY_STORES = "stores";
-    public static final CharSequence CAC_STORE = "CAC Store";
+    public static final CharSequence CAC_STORE = "Bet - CAC";
+    public static final CharSequence RENTAL = "Rental";
+    public static final CharSequence ASSISTED = "Assisted";
     public static final String KEY_IS_EDIT_ADDENDUM_FLAG = "is_addendum_rate_edit";
 
     //Whole App Base URL for API manage n Call
 
-  public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
- //    public static String BaseURL = "https://mystaging.opaper.in/api3/";  // test server 2
+      public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+   // public static String BaseURL = "https://mystaging.opaper.in/api3/";  // test server 2
 
-  //  public final static String APP_NAME = "my_stage"; //stage
-    public final static String APP_NAME = "my_live"; //live
+  // public final static String APP_NAME = "my_stage"; //stage
+     public final static String APP_NAME = "my_live"; //live
 
-    public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
-   // public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
+   public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+ //   public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
 

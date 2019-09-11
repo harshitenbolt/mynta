@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.RateTypeBean;
@@ -48,20 +49,43 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
         holder.edt_store_amount.setText(store.getRate());
         holder.check_box_store.setEnabled(true);
         holder.check_box_store.setChecked(false);
+        if(store.getStoreType().contains(Constants.ASSISTED)){
+            holder.edt_store_amount.setHint("");
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
 
-        if (!store.getStoreType().contains("Alteration") && !store.getStoreType().contains("Rental")) {
-            holder.check_box_store.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    if (holder.check_box_store.isChecked()) {
-                        if (!store.getStoreType().contains(Constants.CAC_STORE))
-                            holder.edt_store_amount.setEnabled(true);
-                        dataViews.get(position).setSelected(true);
-                    } else {
-                        holder.edt_store_amount.setEnabled(false);
-                        dataViews.get(position).setSelected(false);
-                    }
+
+
+        if(store.getStoreType().contains(Constants.RENTAL)){
+            holder.check_box_store.setEnabled(false);
+        }
+
+
+        holder.check_box_store.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if(store.getStoreType().contains(Constants.ASSISTED)){
+                    holder.edt_store_amount.setHint("");
+                    holder.edt_store_amount.setText("     ");
+                    holder.edt_store_amount.setEnabled(false);
+                    holder.rvSeperateRight.setVisibility(View.GONE);
+                    holder.vSeperate.setVisibility(View.GONE);
+                }
+
+                if (holder.check_box_store.isChecked()) {
+                    if (!store.getStoreType().contains(Constants.CAC_STORE))
+                        holder.edt_store_amount.setEnabled(true);
+                    dataViews.get(position).setSelected(true);
+                } else {
+                    holder.edt_store_amount.setEnabled(false);
+                    dataViews.get(position).setSelected(false);
+                }
 
 // If the last one is selected
 //                    if (dataViews.size() > 5 && position != 5 && dataViews.get(5).isSelected()) {
@@ -70,16 +94,16 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
 //                        notifyItemChanged(5);
 //                    }
 
-                    // If Third sel then deselct Fifth
-                    if (position == 3) {
+                // If Third sel then deselct Fifth
+                   /* if (position == 3) {
 //                        if (dataViews.get(5).isSelected()) {
                         dataViews.get(5).setSelected(false);
                         dataViews.get(5).setRate("0");
                         notifyItemChanged(5);
 //                        }
-                    }
-                    //IF Fifth selected deselect third
-                    if (position == 5) {
+                    }*/
+                //IF Fifth selected deselect third
+                  /*  if (position == 5) {
 //                        for (int i = 0; i <= 4; i++) {
 //                        if (dataViews.get(3).isSelected()) {
                         dataViews.get(3).setSelected(false);
@@ -87,13 +111,10 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                         notifyItemChanged(3);
 //                        }
 //                        }
-                    }
-                }
-            });
-        } else {
-            holder.check_box_store.setEnabled(false);
-            holder.edt_store_amount.setEnabled(false);
-        }
+                    }*/
+            }
+        });
+
 
         if (store.isSelected()) {
             {
@@ -168,13 +189,16 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
         public AppCompatCheckBox check_box_store;
         public AppCompatTextView tv_store_name;
         public AppCompatEditText edt_store_amount;
-
+        public RelativeLayout rvSeperateRight;
+        public View vSeperate;
 
         public ItemHolder(View itemView) {
             super(itemView);
             check_box_store = itemView.findViewById(R.id.check_box_store);
             tv_store_name = itemView.findViewById(R.id.tv_store_name);
             edt_store_amount = itemView.findViewById(R.id.edt_store_amount);
+            vSeperate = itemView.findViewById(R.id.viewSeperate);
+            rvSeperateRight = itemView.findViewById(R.id.rvRightMain);
             edt_store_amount.setEnabled(false);
         }
     }
