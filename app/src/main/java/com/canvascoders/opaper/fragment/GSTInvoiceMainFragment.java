@@ -67,7 +67,7 @@ public class GSTInvoiceMainFragment extends Fragment {
     private RadioGroup rg_vendor_list;
     JSONObject jsonObject = new JSONObject();
     private String apiName = "get-invoice1";
-    private String type_name="gst";
+    private String type_name="tax";
     Context mcontext;
     View view;
     String invoice_pdf = "";
@@ -99,7 +99,7 @@ public class GSTInvoiceMainFragment extends Fragment {
         try {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-            object.put(Constants.PARAMS_INVOICE_TYPE, "gst");
+            object.put(Constants.PARAMS_INVOICE_TYPE, type_name);
         } catch (JSONException e) {
         }
 
@@ -307,7 +307,7 @@ public class GSTInvoiceMainFragment extends Fragment {
                     Intent intent = new Intent(getActivity(), InvoiceEsignActivity.class);
                     intent.putExtra(Constants.KEY_INVOICE_ID, String.valueOf(billLists.get(position).getId()));
                     intent.putExtra(Constants.KEY_NAME,billLists.get(position).getStore_name());
-                    intent.putExtra(Constants.INVOICE_TYPE, type_name);
+                    intent.putExtra(Constants.INVOICE_TYPE, "1");
                     intent.putExtra(Constants.INVOICE_NUMBER,status);
                     intent.putExtra(Constants.SIGNED,signed);
                     startActivity(intent);

@@ -41,6 +41,19 @@
 
         </android.support.v7.widget.Toolbar>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- **** Place Your Content Here **** -->
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_3sdp"
+                android:background="@drawable/toolbarshadow" />
+
+        </FrameLayout>
+
         <include
             layout="@layout/content_deleivery_boy"
             android:layout_width="match_parent"

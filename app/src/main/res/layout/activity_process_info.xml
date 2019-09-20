@@ -309,7 +309,7 @@
             style="@style/Button_withGreen"
             android:layout_weight="1"
             android:background="@color/colorBlue"
-            android:text="RESEND" />
+            android:text="GENERATE LINK" />
 
         <Button
             android:id="@+id/btnCheckSign"

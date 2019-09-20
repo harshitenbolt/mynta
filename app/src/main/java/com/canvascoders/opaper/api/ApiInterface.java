@@ -11,6 +11,7 @@ import com.canvascoders.opaper.Beans.CommentListResponse.CommentListResponse;
 import com.canvascoders.opaper.Beans.CommentResponse.CommentResponse;
 import com.canvascoders.opaper.Beans.DelBoysNextScreenResponse.DelBoysNextResponse;
 import com.canvascoders.opaper.Beans.DelBoysResponse.DelBoyResponse;
+import com.canvascoders.opaper.Beans.DeleteDeliveryResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.DeliveryboyListResponse;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.EditUserResponse.EditUserResponse;
@@ -472,6 +473,13 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("support-detail")
     Call<SupportDetailResponse> getSupportDetails(@Header("Authorization") String token, @Field("support_id") String data);
+
+
+    @FormUrlEncoded
+    @POST("delivery-boy-delete")
+    Call<DeleteDeliveryResponse> deleteDeliveryBoy(@Header("Authorization") String token, @FieldMap Map<String, String> data);
+
+
 
 
     @FormUrlEncoded

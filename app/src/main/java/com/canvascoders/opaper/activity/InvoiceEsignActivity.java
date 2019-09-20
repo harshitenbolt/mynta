@@ -161,7 +161,7 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
         Log.e("invoice_num",status);
         signed = getIntent().getIntExtra(Constants.SIGNED,0);
         storename = getIntent().getStringExtra(Constants.KEY_NAME);
-        if(invoice_type.equalsIgnoreCase("gst")){
+        if(invoice_type.equalsIgnoreCase("1")){
             relative_buttom.setVisibility(View.VISIBLE);
             btn_send_link.setVisibility(View.VISIBLE);
         }

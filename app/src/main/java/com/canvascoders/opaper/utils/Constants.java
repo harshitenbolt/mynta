@@ -40,14 +40,15 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
 
-      public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
-   // public static String BaseURL = "https://mystaging.opaper.in/api3/";  // test server 2
+   //   public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+    public static String BaseURL = "https://mystaging.opape" +
+           "r.in/api3/";  // test server 2
 
-  // public final static String APP_NAME = "my_stage"; //stage
-     public final static String APP_NAME = "my_live"; //live
+   public final static String APP_NAME = "my_stage"; //stage
+    // public final static String APP_NAME = "my_live"; //live
 
-   public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
- //   public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
+ //  public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+    public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
 
@@ -179,6 +180,24 @@ public class Constants {
     public static String PARAM_IMAGE = "image";
     public static String PARAM_BACKSIDE_IMAGE = "back_side_image";
     public static String PARAM_CURRENT_RESIDENTIAL = "current_residential_address";
+    public static String PARAM_CURRENT_ADDRESS = "current_address";
+    public static String PARAM_CURRENT_ADDRESS1 = "current_address1";
+
+    public static String PARAM_CURRENT_ADDRESS_LANDMARK = "current_address_landmark";
+
+    public static String PARAM_CURRENT_ADDRESS_PINCODE = "current_address_picode";
+
+    public static String PARAM_CURRENT_ADDRESS_CITY = "current_address_city";
+    public static String PARAM_CURRENT_ADDRESS_STATE = "current_address_state";
+    public static String PARAM_PERMANENT_RESIDENTIAL_ADDRESS = "permanent_residential_address";
+    public static String PARAM_PERMANENT_RESIDENTIAL_ADDRESS1 = "permanent_residential_address1";
+    public static String PARAM_PERMANENT_RESIDENTIAL_ADDRESS_LANDMARK = "permanent_residential_address_landmark";
+    public static String PARAM_PERMANENT_RESIDENTIAL_ADDRESS_PINCODE = "permanent_residential_address_picode";
+
+    public static String PARAM_PERMANENT_RESIDENTIAL_ADDRESS_CITY = "permanent_residential_address_city";
+    public static String PARAM_PERMANENT_RESIDENTIAL_ADDRESS_STATE = "permanent_residential_address_state";
+
+    public static String PARAM_DELIVERY_BOY_ID="delivery_boy_id";
     public static String PARAM_PERMANENT_ADDRESS = "permanent_address";
     public static String PARAM_PERMANENT_ADDRESS1 = "permanent_address1";
     public static String PARAM_PERMANENT_ADDRESS_LANDMARK = "permanent_address_landmark";
@@ -190,6 +209,8 @@ public class Constants {
     public static String NAME = "name";
     public static String ROUTE_NUMBER = "route_number";
     public static String PARAMS_INVOICE_TYPE = "invoice_type";
+   public static String PARAMS_FROM_DATE = "from_date";
+   public static String PARAMS_TO_DATE = "to_date";
     public static String PARAM_MOBILE_NO = "mobile_no";
 
     public static String PARAM_DRIVING_LICENCE_NUM = "driving_licence_num";

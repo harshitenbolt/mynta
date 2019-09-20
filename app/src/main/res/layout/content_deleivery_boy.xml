@@ -11,10 +11,10 @@
             android:id="@+id/linear_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/btn_submit_final"
+            android:layout_above="@+id/llButton"
             android:orientation="vertical">
 
-            <Button
+           <!-- <Button
                 android:id="@+id/btn_add_boy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
                 android:padding="10dp"
                 android:text="Add Delivery boy"
                 android:textAllCaps="false"
-                android:textColor="@color/whitePrimary" />
+                android:textColor="@color/whitePrimary" />-->
 
             <!-- TODO: Update blank fragment layout -->
 
@@ -48,14 +48,33 @@
         </LinearLayout>
 
 
-        <Button
-            android:id="@+id/btn_submit_final"
+
+        <LinearLayout
+            android:id="@+id/llButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:fontFamily="@font/rb_medium"
-            android:text="Done"
-            style="@style/Button_withGreen"
-            android:textColor="@color/colorWhite" />
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_add_boy"
+                style="@style/Button_withGreen"
+                android:layout_weight="1"
+                android:background="@color/colorYellow"
+                android:text="ADD DELIVERY BOYS" />
+
+            <Button
+                android:id="@+id/btn_submit_final"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_weight="1"
+                android:textSize="@dimen/_12sdp"
+                android:background="@color/colorPrimary"
+                android:fontFamily="@font/montebold"
+                android:text="SUBMIT"
+                android:textColor="@color/whitePrimary"
+                android:visibility="visible" />
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

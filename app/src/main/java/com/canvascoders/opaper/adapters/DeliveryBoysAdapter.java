@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.Datum;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 
 import java.util.List;
@@ -28,11 +29,14 @@ public class DeliveryBoysAdapter extends RecyclerView.Adapter<DeliveryBoysAdapte
     private List<Datum> moreitemList;
     Context context;
     String value = "1";
+    boolean undoOn;
+    RecyclerViewClickListener recyclerViewClickListener;
 
 
-    public DeliveryBoysAdapter(List<Datum> moreitemList, Context context) {
+    public DeliveryBoysAdapter(List<Datum> moreitemList, Context context, RecyclerViewClickListener recyclerViewClickListener) {
         this.moreitemList = moreitemList;
         this.context = context;
+        this.recyclerViewClickListener = recyclerViewClickListener;
     }
 
     @NonNull
@@ -47,17 +51,24 @@ public class DeliveryBoysAdapter extends RecyclerView.Adapter<DeliveryBoysAdapte
     public void onBindViewHolder(@NonNull RecordHolder holder, int position) {
         holder.tvName.setText(moreitemList.get(position).getName());
         holder.tvAddress.setText(moreitemList.get(position).getRouteNumber());
-
+        holder.tvMobile.setText(moreitemList.get(position).getPhoneNumber());
         Log.e("URL", "" + Constants.BaseImageURL + moreitemList.get(position).getImage());
-        Glide.with(context).load(Constants.BaseImageURL + moreitemList.get(position).getImage()).asBitmap().centerCrop().into(new BitmapImageViewTarget(holder.image_icon) {
+        Glide.with(context).load(Constants.BaseImageURL+moreitemList.get(position).getImage()).placeholder(R.drawable.image_placeholder).into(holder.image_icon);
+        holder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
-            protected void setResource(Bitmap resource) {
-                RoundedBitmapDrawable circularBitmapDrawable =
-                        RoundedBitmapDrawableFactory.create(context.getResources(), resource);
-                circularBitmapDrawable.setCircular(true);
-                holder.image_icon.setImageDrawable(circularBitmapDrawable);
+            public void onClick(View view) {
+                recyclerViewClickListener.onClick(view,position);
             }
         });
+
+        holder.tvEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recyclerViewClickListener.onLongClick(view,position);
+            }
+        });
+
+
     }
 
     @Override
@@ -67,14 +78,19 @@ public class DeliveryBoysAdapter extends RecyclerView.Adapter<DeliveryBoysAdapte
 
     public class RecordHolder extends RecyclerView.ViewHolder {
         ImageView image_icon;
-        TextView tvName, tvAddress;
+        TextView tvName, tvAddress,tvMobile,tvDelete,tvEdit;
         LinearLayout linear_item;
 
         public RecordHolder(View view) {
             super(view);
-            image_icon = view.findViewById(R.id.iv_rec_prof_boy);
-            tvName = view.findViewById(R.id.tv_name);
-            tvAddress = view.findViewById(R.id.tv_address);
+            image_icon = view.findViewById(R.id.ivDelBoyImage);
+            tvName = view.findViewById(R.id.tvName);
+            tvMobile = view.findViewById(R.id.tvMobile);
+            tvAddress = view.findViewById(R.id.tvRoute);
+            tvDelete = view.findViewById(R.id.tvDelete);
+            tvEdit = view.findViewById(R.id.tvEdit);
         }
     }
+
+
 }

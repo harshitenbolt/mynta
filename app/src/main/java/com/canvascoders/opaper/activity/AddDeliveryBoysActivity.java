@@ -44,6 +44,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 
 
+import com.canvascoders.opaper.Beans.DeleteDeliveryResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.Datum;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.DeliveryboyListResponse;
 import com.canvascoders.opaper.Beans.VendorList;
@@ -54,6 +55,7 @@ import com.canvascoders.opaper.adapters.DeliveryBoysAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.camera.MyCameraActivity;
+import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
@@ -80,7 +82,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddDeliveryBoysActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddDeliveryBoysActivity extends AppCompatActivity implements View.OnClickListener, RecyclerViewClickListener {
     // after 23 version from new lappy
 
     Context context;
@@ -98,7 +100,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     private ArrayList<String> dcLists = new ArrayList<>();
     AlertDialog b;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    TextView tvDob,tvLanguage;
+    TextView tvDob, tvLanguage;
     String[] select_language = {
             "English", "Assamese", "Bengali", "Gujarati", "Hindi",
             "Kannada", "Kashmiri", "Konkani", "Malayalam", "Manipuri", "Marathi", "Nepali", "Oriya", "Punjabi", "Sanskrit", "Sindhi", "Tamil", "Telugu", "Urdu", "Bodo", "Santhali", "Maithili", "Dogri"};
@@ -142,10 +144,9 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         checkedItems = new boolean[select_language.length];
 
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-        // getBankDetails(mContext,s.toString(),processId);
+            // getBankDetails(mContext,s.toString(),processId);
             ApiCallGetLists();
-        }
-        else {
+        } else {
             Constants.ShowNoInternet(this);
         }
 
@@ -156,7 +157,11 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_add_boy:
-                addBoyDialog();
+
+                Intent i = new Intent(this, AddNewDeliveryBoy.class);
+                i.putExtra("Data", str_process_id);
+                startActivity(i);
+                // addBoyDialog();
                 break;
             case R.id.iv_back:
                 finish();
@@ -173,13 +178,12 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         }
     }
 
-    private void apiCalladdDelBoys(EditText et_name, EditText et_phone, EditText etFatherName,EditText etRoute, EditText etCurrentAdd, EditText etPermAdd, String selectedItem, EditText etDlNumber, TextView tvDob, EditText etVehicleDel, TextView tvLanguage) {
+    private void apiCalladdDelBoys(EditText et_name, EditText et_phone, EditText etFatherName, EditText etRoute, EditText etCurrentAdd, EditText etPermAdd, String selectedItem, EditText etDlNumber, TextView tvDob, EditText etVehicleDel, TextView tvLanguage) {
 
         MultipartBody.Part prof_image = null;
         MultipartBody.Part license_image = null;
         String image = "image";
         String driving_licence = "driving_licence_image";
-
 
 
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
@@ -204,7 +208,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
             params.put(Constants.PARAM_FATHER_NAME, etFatherName.getText().toString().trim());
             params.put(Constants.PARAM_CURRENT_RESIDENTIAL, etCurrentAdd.getText().toString().trim());
             params.put(Constants.PARAM_PERMANENT_ADDRESS, etPermAdd.getText().toString().trim());
-            params.put(Constants.PARAM_DC,selectedItem);
+            params.put(Constants.PARAM_DC, selectedItem);
             params.put(Constants.ROUTE_NUMBER, etRoute.getText().toString().trim());
             params.put(Constants.PARAM_DRIVING_LICENCE_NUM, etDlNumber.getText().toString().trim());
             params.put(Constants.PARAM_DRIVING_LICENCE_DOB, tvDob.getText().toString().trim());
@@ -215,7 +219,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
             // params.put("data", jsonArray.toString());
 
 
-            Call<AddDelBoyResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer "+sessionManager.getToken(),params, prof_image, license_image);
+            Call<AddDelBoyResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image);
             callUpload.enqueue(new Callback<AddDelBoyResponse>() {
                 @Override
                 public void onResponse(Call<AddDelBoyResponse> call, Response<AddDelBoyResponse> response) {
@@ -226,14 +230,13 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                             // getBankDetails(mContext,s.toString(),processId);
                             ApiCallGetLists();
-                        }
-                        else {
+                        } else {
                             Constants.ShowNoInternet(AddDeliveryBoysActivity.this);
                         }
 
                         Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
-                    if (addDelBoyResponse.getResponseCode()==411){
+                    if (addDelBoyResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(AddDeliveryBoysActivity.this);
                     }
 
@@ -303,19 +306,17 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                             if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 Toast.makeText(AddDeliveryBoysActivity.this, validation.getLanguages(), Toast.LENGTH_SHORT).show();
-                            }
-                            else {
-                                Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(),Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
                             }
 
                         } else {
-                            Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(),Toast.LENGTH_LONG).show();
+                            Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
 
 
                         }
 
-                    }
-                    else {
+                    } else {
                         Log.e("RESP", "" + addDelBoyResponse.getResponse().toString());
                         Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         mProgressDialog.dismiss();
@@ -344,20 +345,20 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
 
 
-        Call<DeliveryboyListResponse> call = ApiClient.getClient().create(ApiInterface.class).getDelivery_boys("Bearer "+sessionManager.getToken(),params);
+        Call<DeliveryboyListResponse> call = ApiClient.getClient().create(ApiInterface.class).getDelivery_boys("Bearer " + sessionManager.getToken(), params);
         call.enqueue(new Callback<DeliveryboyListResponse>() {
             @Override
             public void onResponse(Call<DeliveryboyListResponse> call, Response<DeliveryboyListResponse> response) {
+                delivery_boys_list.clear();
                 DeliveryboyListResponse deliveryBoysList = response.body();
                 try {
                     if (deliveryBoysList.getResponseCode() == 200) {
                         mProgressDialog.dismiss();
 //                        Toast.makeText(AddDeliveryBoysActivity.this,deliveryBoysList.getResponse(),Toast.LENGTH_SHORT).show();
                         delivery_boys_list.addAll(deliveryBoysList.getData());
-                    }
-                    else if (deliveryBoysList.getResponseCode()==411){
+                    } else if (deliveryBoysList.getResponseCode() == 411) {
                         sessionManager.logoutUser(AddDeliveryBoysActivity.this);
-                    }else {
+                    } else {
                         mProgressDialog.dismiss();
                         Toast.makeText(AddDeliveryBoysActivity.this, deliveryBoysList.getResponse(), Toast.LENGTH_SHORT).show();
                     }
@@ -369,7 +370,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                         tv_note.setVisibility(View.GONE);
                         btnSubmit.setVisibility(View.VISIBLE);
                     }
-                    deliveryBoysAdapter = new DeliveryBoysAdapter(delivery_boys_list, getApplicationContext());
+                    deliveryBoysAdapter = new DeliveryBoysAdapter(delivery_boys_list, getApplicationContext(), AddDeliveryBoysActivity.this);
 
                     LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
 
@@ -407,7 +408,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         final View dialogView = inflater.inflate(R.layout.add_deliveryboy_dialogue, null);
         dialogBuilder.setView(dialogView);
         final LinearLayout btnbio, btnotp;
-        EditText etFatherName,etPincode,etCurrentAdd,etPermAdd,etroute,etDlNumber,etDlDOB,etVehicleDel;
+        EditText etFatherName, etPincode, etCurrentAdd, etPermAdd, etroute, etDlNumber, etDlDOB, etVehicleDel;
 
 
         RelativeLayout rvLanguage;
@@ -436,11 +437,9 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                         // getBankDetails(mContext,s.toString(),processId);
                         addDC(s.toString());
-                    }
-                    else {
+                    } else {
                         Constants.ShowNoInternet(AddDeliveryBoysActivity.this);
                     }
-
 
 
                 }
@@ -541,13 +540,13 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                 if (tvDob.getText().equals("Date of Birth")) {
                     Toast.makeText(AddDeliveryBoysActivity.this, "Provide Date of Birth", Toast.LENGTH_SHORT).show();
                     // showMSG(false, "Provide Pincode");
-                    return ;
+                    return;
                 }
                 if (TextUtils.isEmpty(etVehicleDel.getText().toString())) {
                     etVehicleDel.requestFocus();
                     etVehicleDel.setError("Provide Vehicle Name");
                     // showMSG(false, "Provide Pincode");
-                    return ;
+                    return;
                 }
                 if (listLanaguage.size() == 0) {
 
@@ -566,17 +565,16 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                 } else {
                     String stringdc;
                     name = et_name.getText().toString();
-                    stringdc = ""+dc.getSelectedItem();
+                    stringdc = "" + dc.getSelectedItem();
                     phone = et_phone.getText().toString();
                     mProgressDialog.setTitle("Adding Delivery Boy");
                     mProgressDialog.show();
-                    apiCalladdDelBoys(et_name, et_phone, etFatherName,etroute,etCurrentAdd,etPermAdd,stringdc,etDlNumber,tvDob,etVehicleDel,tvLanguage);
+                    apiCalladdDelBoys(et_name, et_phone, etFatherName, etroute, etCurrentAdd, etPermAdd, stringdc, etDlNumber, tvDob, etVehicleDel, tvLanguage);
 
                 }
             }
         });
     }
-
 
 
     private void selectLanguage() {
@@ -753,7 +751,6 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     }
 
 
-
     private void addDC(String pcode) {
         // state is DC and DC is state
 
@@ -801,6 +798,89 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
 
     }
 
+    @Override
+    public void onClick(View view, int position) {
+        //Toast.makeText(this, "Done Delete", Toast.LENGTH_SHORT).show();
+
+
+        deletePopup(String.valueOf(delivery_boys_list.get(position).getId()));
+
+    }
+
+    private void deletePopup(String deliveryBoyId) {
+
+        // Display message in dialog box if you have not internet connection
+        android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Alert !");
+        alertDialogBuilder.setMessage("Are you sure you want to delete ?");
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                arg0.dismiss();
+
+                ApiCallDelete(deliveryBoyId);
+            }
+        });
+        alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+
+        android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    private void ApiCallDelete(String deliveryBoyId) {
+        mProgressDialog.setTitle("Delete...");
+        mProgressDialog.show();
+        delivery_boys_list.clear();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        params.put(Constants.PARAM_DELIVERY_BOY_ID, deliveryBoyId);
+
+
+        Call<DeleteDeliveryResponse> call = ApiClient.getClient().create(ApiInterface.class).deleteDeliveryBoy("Bearer " + sessionManager.getToken(), params);
+        call.enqueue(new Callback<DeleteDeliveryResponse>() {
+            @Override
+            public void onResponse(Call<DeleteDeliveryResponse> call, Response<DeleteDeliveryResponse> response) {
+                mProgressDialog.dismiss();
+                DeleteDeliveryResponse deleteDeliveryResponse = response.body();
+
+                if (deleteDeliveryResponse.getResponseCode() == 200) {
+                    Toast.makeText(AddDeliveryBoysActivity.this, deleteDeliveryResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    ApiCallGetLists();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<DeleteDeliveryResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+
+                t.getMessage();
+            }
+        });
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+        //Toast.makeText(this, "Done Edit", Toast.LENGTH_SHORT).show();
+
+
+        Intent i = new Intent(AddDeliveryBoysActivity.this, EditDeliveryBoyActivity.class);
+        i.putExtra(Constants.DATA, delivery_boys_list.get(position));
+        startActivity(i);
+    }
+
+    @Override
+    public void SingleClick(String popup, int position) {
+        //Toast.makeText(this, "Done Delete", Toast.LENGTH_SHORT).show();
+    }
+
     class CustomAdapter<T> extends ArrayAdapter<T> {
         public CustomAdapter(Context context, int textViewResourceId,
                              List<T> objects) {
@@ -817,5 +897,18 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
             }
             return view;
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            // getBankDetails(mContext,s.toString(),processId);
+            ApiCallGetLists();
+        } else {
+            Constants.ShowNoInternet(this);
+        }
+
     }
 }

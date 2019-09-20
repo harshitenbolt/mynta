@@ -114,12 +114,12 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     GoogleMap map;
     private static Dialog dialog;
     ProgressDialog mProgress;
-    CardView cvPan, cvMobile, cvCheque, cvRate, cvResignAgreement;
+    CardView cvPan, cvMobile, cvCheque, cvRate, cvResignAgreement, cvDelBoy;
     private ImageView ivBack, ivSupport;
     RecyclerView rvDocuments;
     AppCompatSpinner spYear;
     ProgressBar pbBar;
-    LinearLayout llDisable;
+    LinearLayout llDisable,llDelBoy;
     CardView cvGST;
     LinearLayout llEnable;
     private TextView tvStoreName, tvAddress, tvNoData;
@@ -146,6 +146,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         tv_Name = findViewById(R.id.tv_name);
         pbBar = findViewById(R.id.mProgress);
         llDisable = findViewById(R.id.llExapandDisable);
+        llDelBoy = findViewById(R.id.llDelBoy);
         ivSupport = findViewById(R.id.ivSupport);
         rvDocuments = findViewById(R.id.rvDocuments);
         ivVendorImage = findViewById(R.id.iv_vendor_image);
@@ -158,6 +159,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         cvRate = findViewById(R.id.cvRate);
         cvGST = findViewById(R.id.cvGST);
         cvResignAgreement = findViewById(R.id.cvResign);
+        cvDelBoy = findViewById(R.id.cvDelBoy);
         spYear = findViewById(R.id.spYear);
 
 
@@ -317,8 +319,14 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
 
             if (allowEditDelBoy.equalsIgnoreCase("1")) {
                 cdEdit.setVisibility(View.VISIBLE);
+                llDelBoy.setVisibility(View.VISIBLE);
+                cvDelBoy.setVisibility(View.VISIBLE);
+
                 //linear_check.setVisibility(View.VISIBLE);
                 //  btn_update_delivery_boy.setVisibility(View.VISIBLE);
+            } else {
+                cvDelBoy.setVisibility(View.GONE);
+                llDelBoy.setVisibility(View.GONE);
             }
 
             Glide.with(this).load(Constants.BaseImageURL + vendor.getShopImage())
@@ -406,14 +414,14 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         });
 
         // changes on 28/01
-       /* btn_update_delivery_boy.setOnClickListener(new View.OnClickListener() {
+        cvDelBoy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(mcontext, AddDeliveryBoysActivity.class);
+                Intent myIntent = new Intent(VendorDetailActivity.this, AddDeliveryBoysActivity.class);
                 myIntent.putExtra("data", vendor);
                 startActivity(myIntent);
             }
-        });*/
+        });
         cvRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,5 +1,6 @@
 package com.canvascoders.opaper.fragment;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -42,6 +46,8 @@ import org.json.JSONObject;
 
 import java.nio.file.WatchEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -49,7 +55,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class InvoiceMainFragment extends Fragment {
+public class InvoiceMainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     SessionManager sessionManager;
     String TAG = "InvoiceMain";
     JSONObject object = new JSONObject();
@@ -60,16 +66,22 @@ public class InvoiceMainFragment extends Fragment {
     private ProgressDialog progressDialog;
     private RecyclerView recyclerview;
     private RadioGroup rg_vendor_list;
+    private int mYear, mMonth, mDay, mHour, mMinute;
     private EndlessRecyclerViewScrollListener scrollListener;
     private String apiName = "get-invoice1";
     private String type_name = "tax";
     String status;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     int signed = 0, page = 0;
     JSONObject jsonObject = new JSONObject();
     private String invoice_pdf = "";
     Context mcontext;
     WebView webView;
+
+    DatePickerDialog.OnDateSetListener fromDate, toDate;
     View view;
+    Button startDate, endDate;
+    String startDatefinal = "", endDateFinal = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,6 +106,8 @@ public class InvoiceMainFragment extends Fragment {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
             object.put(Constants.PARAMS_INVOICE_TYPE, type_name);
+            object.put(Constants.PARAMS_FROM_DATE, startDatefinal);
+            object.put(Constants.PARAMS_TO_DATE, endDateFinal);
         } catch (JSONException e) {
         }
 
@@ -121,6 +135,14 @@ public class InvoiceMainFragment extends Fragment {
                 }
             }
         });
+
+
+        fromDate = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+
+            }
+        };
         return view;
     }
 
@@ -167,7 +189,99 @@ public class InvoiceMainFragment extends Fragment {
     private void intView() {
         networkConnectivity = new NetworkConnectivity(mcontext);
         recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefresh);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
         recyclerview.setHasFixedSize(true);
+        startDate = view.findViewById(R.id.btStartDate);
+        startDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                Date today = new Date();
+                Calendar c1 = Calendar.getInstance();
+                c.setTime(today);
+                //  c.add(Calendar.YEAR, -18); // Subtract 18 year
+                long minDate = c.getTime().getTime(); //
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+
+                                String monthString = String.valueOf(monthOfYear + 1);
+                                if (monthString.length() == 1) {
+                                    monthString = "0" + monthString;
+                                }
+
+
+                                //logic for add 0 in string if date digit is on 1 only
+                                String daysString = String.valueOf(dayOfMonth);
+                                if (daysString.length() == 1) {
+                                    daysString = "0" + daysString;
+                                }
+
+                                startDate.setText(year + "-" + monthString + "-" + daysString);
+                                startDatefinal = year + "-" + monthString + "-" + daysString;
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMaxDate(minDate);
+                datePickerDialog.show();
+            }
+        });
+
+        endDate = view.findViewById(R.id.btEndDate);
+        endDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                Date today = new Date();
+                Calendar c1 = Calendar.getInstance();
+                c.setTime(today);
+                //  c.add(Calendar.YEAR, -18); // Subtract 18 year
+                long minDate = c.getTime().getTime(); //
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+
+                                String monthString = String.valueOf(monthOfYear + 1);
+                                if (monthString.length() == 1) {
+                                    monthString = "0" + monthString;
+                                }
+
+
+                                //logic for add 0 in string if date digit is on 1 only
+                                String daysString = String.valueOf(dayOfMonth);
+
+                                if (daysString.length() == 1) {
+                                    daysString = "0" + daysString;
+                                }
+
+                                endDate.setText(year + "-" + monthString + "-" + daysString);
+                                endDateFinal = year + "-" + monthString + "-" + daysString;
+
+
+                                new GetInvoice1(object.toString(), apiName).execute();
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMaxDate(minDate);
+                datePickerDialog.show();
+            }
+        });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mcontext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerview.setLayoutManager(linearLayoutManager);
@@ -235,6 +349,28 @@ public class InvoiceMainFragment extends Fragment {
         }
 
         ));
+
+    }
+
+    @Override
+    public void onRefresh() {
+        if (signed == 0) {
+            page = 1;
+            apiName = "get-invoice";
+            progressDialog.setMessage("please wait loading Pending vendor signature...");
+            endDateFinal = "";
+            startDatefinal = "";
+            endDate.setText("");
+            startDate.setText("");
+            new GetInvoice1(object.toString(), apiName).execute();
+        } else {
+            webView.setVisibility(View.GONE);
+            apiName = "get-esign-invoice";
+            progressDialog.setTitle("please wait loading Invoice signed by vendor...");
+            page = 1;
+            new GetInvoice1(object.toString(), apiName).execute();
+
+        }
 
     }
 
@@ -388,6 +524,7 @@ public class InvoiceMainFragment extends Fragment {
         @Override
         protected void onPostExecute(String message) {
             progressDialog.dismiss();
+            mSwipeRefreshLayout.setRefreshing(false);
             try {
                 JSONObject jsonObject = new JSONObject(message);
                 Mylogger.getInstance().Logit(TAG, message);

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,6 +59,7 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
     LinearLayout llNoData;
     ProgressDialog mProgress;
     private EndlessRecyclerViewScrollListener scrollListener;
+    FloatingActionButton floatingActionButton;
 
     public PaymentSupportFragment() {
         // Required empty public constructor
@@ -88,6 +90,7 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
         rvPayment.setLayoutManager(linearLayoutManager);
         supportListAdapter = new SupportListAdapter(list, getActivity(), PaymentSupportFragment.this);
         rvPayment.setAdapter(supportListAdapter);
+        floatingActionButton = view.findViewById(R.id.fbAdd);
 
 
 

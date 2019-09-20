@@ -6,20 +6,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -37,31 +36,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
-import com.canvascoders.opaper.Beans.GetAgentDetailResponse.GetAgentDetailResponse;
+import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.Datum;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
-import com.canvascoders.opaper.fragment.InfoFragment;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
-import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.JsonObject;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -70,11 +68,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
-import static com.canvascoders.opaper.fragment.PanVerificationFragment.CROPPED_IMAGE;
-import static com.canvascoders.opaper.utils.Constants.showAlert;
-
-public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClickListener {
+public class EditDeliveryBoyActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etName, etFatherName, etPhoneNumber, etRoute, etDrivingNumber, etVehicle;
     private ImageView ivProfile, ivDriving_Licence, ivBack;
@@ -89,9 +83,10 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     String validationapiUrl;
     View view2, view3;
     int i = 0;
-
+    Bitmap bitmapFromUrl, resizedBitmap;
     private String lattitude = "", longitude = "", currentAdress = "", permAddress = "";
     GPSTracker gps;
+    String deliveryBoy = "";
     LinearLayout llOwnerInfo, llAddressInfo, llDrivingDetails;
     Button btAddNext;
     String str_process_id;
@@ -108,11 +103,17 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     private CheckBox cbSame;
     private String isUpdate = "";
 
+    Datum datum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new_delivery_boy);
-        // isUpdate = getIntent().getStringExtra("Data");
+        setContentView(R.layout.activity_edit_delivery_boy);
+
+
+        datum = (Datum) getIntent().getSerializableExtra("data");
+        str_process_id = String.valueOf(datum.getProccessId());
+        deliveryBoy = String.valueOf(datum.getId());
 
         init();
     }
@@ -122,12 +123,8 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         ivBack = findViewById(R.id.ivBack);
         ivBack.setOnClickListener(this);
         sessionManager = new SessionManager(this);
-        str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
+        //str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
 
-
-        if (getIntent().getStringExtra("Data") != null || !getIntent().getStringExtra("Data").equalsIgnoreCase("")) {
-            str_process_id = getIntent().getStringExtra("Data");
-        }
       /*  if(isUpdate.equalsIgnoreCase("1")){
             str_process_id = getIntent().getStringExtra("process");
         }*/
@@ -136,28 +133,67 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
        */
 
         etName = findViewById(R.id.etName);
+        etName.setText(datum.getName());
         view2 = findViewById(R.id.view2);
         view3 = findViewById(R.id.view3);
         svMain = findViewById(R.id.svMain);
         etFatherName = findViewById(R.id.etFatherName);
+        etFatherName.setText(datum.getFatherName());
         etPhoneNumber = findViewById(R.id.etPhone);
-
+        etPhoneNumber.setText(datum.getPhoneNumber());
         // etPermanentAddress = findViewById(R.id.etPermAdd);
         etRoute = findViewById(R.id.etRouteNo);
+        etRoute.setText(datum.getRouteNumber());
         etDrivingNumber = findViewById(R.id.etLicenceNumber);
+        etDrivingNumber.setText(datum.getDrivingLicenceNum());
         etVehicle = findViewById(R.id.etVehicleForDelivery);
+        etVehicle.setText(datum.getVehicleForDelivery());
         dob = findViewById(R.id.tvDateofBirth);
+        dob.setText(datum.getDrivingLicenceDob());
         dob.setOnClickListener(this);
 
 
         ivProfile = findViewById(R.id.ivProfileImage);
+
+
+        if (datum.getImage() != null && !datum.getImage().equalsIgnoreCase("")) {
+            ivProfile.setPadding(0, 0, 0, 0);
+
+
+            // Bitmap bitmapFromUrl = getBitmapFromURL(Constants.BaseImageURL + datum.getImage());
+
+            new getBitmapFromURL().execute(Constants.BaseImageURL + datum.getImage());
+            // resizedBitmap = ImagePicker.getResizedBitmap(bitmapFromUrl, 400, 400);
+
+
+            Glide.with(this).load(Constants.BaseImageURL + datum.getImage()).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivProfile) {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(EditDeliveryBoyActivity.this.getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    ivProfile.setImageDrawable(circularBitmapDrawable);
+                }
+            });
+        }
+
+
         ivDriving_Licence = findViewById(R.id.ivDrivingLicence);
+        if(datum.getDrivingLicenceImage() != null && !datum.getDrivingLicenceImage().equalsIgnoreCase("")) {
+
+            new getBitmapFromURL1().execute(Constants.BaseImageURL + datum.getDrivingLicenceImage());
+
+            Glide.with(this).load(Constants.BaseImageURL + datum.getDrivingLicenceImage()).into(ivDriving_Licence);
+
+        }
+
         ivDriving_Licence.setOnClickListener(this);
         rvLanguage = findViewById(R.id.rvSelectLanguage);
         rvLanguage.setOnClickListener(this);
         ivProfile.setOnClickListener(this);
         checkedItems = new boolean[select_language.length];
         tvLanguage = findViewById(R.id.tvLanguage);
+        tvLanguage.setText(datum.getLanguages());
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Please wait ...");
         mProgressDialog.setCancelable(false);
@@ -168,20 +204,31 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         llDrivingDetails = findViewById(R.id.llDrivingInformation);
 
         etCurrentHouseNo = findViewById(R.id.etCurrentShopNo);
+        etCurrentHouseNo.setText(datum.getCurrentAddress());
         etCurrentStreet = findViewById(R.id.etCurrentStreet);
+        etCurrentStreet.setText(datum.getCurrentAddress1());
         etCurrentLandmark = findViewById(R.id.etCurrentLandmark);
+        etCurrentLandmark.setText(datum.getCurrentAddressLandmark());
         etCurrentPincode = findViewById(R.id.etCurrentPincode);
+        etCurrentPincode.setText(datum.getCurrentAddressPicode());
         etCurrentCity = findViewById(R.id.etCurrentCity);
+        etCurrentCity.setText(datum.getCurrentAddressCity());
         etCurrentState = findViewById(R.id.etCurrentState);
-
+        etCurrentState.setText(datum.getCurrentAddressState());
         cbSame = findViewById(R.id.cbSameAsAbove);
 
         etPerHouseNo = findViewById(R.id.etPermShopNo);
+        etPerHouseNo.setText(datum.getPermanentResidentialAddress());
         etPermStreet = findViewById(R.id.etPerStreet);
+        etPermStreet.setText(datum.getPermanentResidentialAddress1());
         etPerLandmark = findViewById(R.id.etPerLandmark);
+        etPerLandmark.setText(datum.getPermanentResidentialAddressLandmark());
         etPerPincode = findViewById(R.id.etPerPincode);
+        etPerPincode.setText(datum.getPermanentResidentialAddressPicode());
         etPerCity = findViewById(R.id.etPerCity);
+        etPerCity.setText(datum.getPermanentResidentialAddressCity());
         etPerState = findViewById(R.id.etPerState);
+        etPerState.setText(datum.getPermanentResidentialAddressState());
 
 
         etCurrentPincode.addTextChangedListener(new TextWatcher() {
@@ -203,7 +250,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                         // getBankDetails(mContext,s.toString(),processId);
                         addDC(s.toString());
                     } else {
-                        Constants.ShowNoInternet(AddNewDeliveryBoy.this);
+                        Constants.ShowNoInternet(EditDeliveryBoyActivity.this);
                     }
                     //addDC(s.toString());
                 }
@@ -233,83 +280,71 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         //ApiCallGetDc();
     }
 
-   /* private void ApiCallGetDc() {
 
-        Call<GetAgentDetailResponse> call = ApiClient.getClient().create(ApiInterface.class).getAgentDetails("Bearer " + sessionManager.getToken(), sessionManager.getAgentID());
-        call.enqueue(new Callback<GetAgentDetailResponse>() {
-            @Override
-            public void onResponse(Call<GetAgentDetailResponse> call, Response<GetAgentDetailResponse> response) {
-                try {
 
-                    GetAgentDetailResponse getAgentDetailResponse = response.body();
-                    if (getAgentDetailResponse.getResponseCode() == 200) {
-                        dc = getAgentDetailResponse.getData().get(0).getDc();
-                        tvDc.setText(dc);
-                    } else {
-                        Toast.makeText(AddNewDeliveryBoy.this, getAgentDetailResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-                catch (Exception e){
-                    Toast.makeText(AddNewDeliveryBoy.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<GetAgentDetailResponse> call, Throwable t) {
-                Toast.makeText(AddNewDeliveryBoy.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+   /* public static Bitmap getBitmapFromURL(String src) {
+        try {
+            java.net.URL url = new java.net.URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }*/
 
 
-    private void addDC(String pcode) {
-        // state is DC and DC is state
+    private class getBitmapFromURL extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
 
-        dcLists.clear();
-        mProgressDialog.show();
-
-        JsonObject user = new JsonObject();
-        user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
-        user.addProperty(Constants.PARAM_PINCODE, pcode);
-        ApiClient.getClient().create(ApiInterface.class).getDC("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetDC>() {
-            @Override
-            public void onResponse(Call<GetDC> call, Response<GetDC> response) {
-                mProgressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    GetDC getUserDetails = response.body();
-
-                    if (getUserDetails.getResponseCode() == 200) {
-
-                        for (int i = 0; i < getUserDetails.getData().size(); i++) {
-                            for (DC dc : getUserDetails.getData().get(i).getDc()) {
-                                dcLists.add(dc.getDc());
-                            }
-                            etCurrentState.setText(getUserDetails.getData().get(i).getState());
-                            etCurrentCity.setText(getUserDetails.getData().get(i).getCity());
-
-                        }
-
-                        CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(AddNewDeliveryBoy.this, android.R.layout.simple_spinner_item, dcLists);
-                        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        dc.setAdapter(spinnerArrayAdapter);
-                        dc.setSelection(0);
-
-                    } else if (getUserDetails.getResponseCode() == 405) {
-                        sessionManager.logoutUser(AddNewDeliveryBoy.this);
-                    } else {
-                        Toast.makeText(AddNewDeliveryBoy.this, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
-                    }
-                }
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                profileImagepath = ImagePicker.getBitmapPath(myBitmap, EditDeliveryBoyActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
             }
-
-            @Override
-            public void onFailure(Call<GetDC> call, Throwable t) {
-                mProgressDialog.dismiss();
-                Toast.makeText(AddNewDeliveryBoy.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
-            }
-        });
+        }
 
     }
+
+
+    private class getBitmapFromURL1 extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                licenceImagePath = ImagePicker.getBitmapPath(myBitmap, EditDeliveryBoyActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -409,7 +444,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                             // getBankDetails(mContext,s.toString(),processId);
                             ApiCallValidationCheck(validationapiUrl, 1);
                         } else {
-                            Constants.ShowNoInternet(AddNewDeliveryBoy.this);
+                            Constants.ShowNoInternet(EditDeliveryBoyActivity.this);
                         }
 
 
@@ -422,7 +457,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                             // getBankDetails(mContext,s.toString(),processId);
                             ApiCallValidationCheck(validationapiUrl, 2);
                         } else {
-                            Constants.ShowNoInternet(AddNewDeliveryBoy.this);
+                            Constants.ShowNoInternet(EditDeliveryBoyActivity.this);
                         }
 
                     }
@@ -436,360 +471,6 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         }
 
     }
-
-
-    // validation check api for two screens
-    private void ApiCallValidationCheck(String validationapiUrl, int i1) {
-
-        currentAdress = etCurrentHouseNo.getText().toString() + " " + etCurrentStreet.getText().toString() + " " + etCurrentLandmark.getText().toString() + " " + etCurrentCity.getText().toString() + " " + etCurrentState.getText().toString() + " " + etCurrentPincode.getText().toString();
-        permAddress = etPerHouseNo.getText().toString() + " " + etPermStreet.getText().toString() + " " + etPerLandmark.getText().toString() + " " + etPerCity.getText().toString() + " " + etPerState.getText().toString() + " " + etPerPincode.getText().toString();
-
-        mProgressDialog.show();
-        MultipartBody.Part prof_image = null;
-
-        Call<AddDelBoyResponse> call = null;
-        String image = "image";
-        Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
-        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-
-
-        if (i1 == 1) {
-            File imagefile1 = new File(profileImagepath);
-            prof_image = MultipartBody.Part.createFormData(image, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(profileImagepath)), imagefile1));
-            params.put(Constants.NAME, etName.getText().toString().trim());
-            params.put(Constants.PARAM_FATHER_NAME, etFatherName.getText().toString().trim());
-            params.put(Constants.PHONE_NUMBER, etPhoneNumber.getText().toString().trim());
-            params.put(Constants.ROUTE_NUMBER, etRoute.getText().toString());
-            call = ApiClient.getClient().create(ApiInterface.class).DeliveryBoysDetailsValid1("Bearer " + sessionManager.getToken(), validationapiUrl, params, prof_image);
-
-
-        } else if (i1 == 2) {
-            params.put(Constants.PARAM_CURRENT_RESIDENTIAL, currentAdress);
-            params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
-            params.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
-            call = ApiClient.getClient().create(ApiInterface.class).DeliveryBoysDetailsValid2("Bearer " + sessionManager.getToken(), validationapiUrl, params);
-
-        }
-
-        call.enqueue(new Callback<AddDelBoyResponse>() {
-            @Override
-            public void onResponse(Call<AddDelBoyResponse> call, Response<AddDelBoyResponse> response) {
-
-                mProgressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    AddDelBoyResponse addDelBoyResponse = response.body();
-                    if (addDelBoyResponse.getResponseCode() == 200) {
-
-                        if (i1 == 1) {
-                            llOwnerInfo.setVisibility(View.GONE);
-                            llAddressInfo.setVisibility(View.VISIBLE);
-                            llDrivingDetails.setVisibility(View.GONE);
-                            view2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                            svMain.scrollTo(0, svMain.getBottom());
-
-                        } else if (i1 == 2) {
-                            llAddressInfo.setVisibility(View.GONE);
-                            llDrivingDetails.setVisibility(View.VISIBLE);
-                            llOwnerInfo.setVisibility(View.GONE);
-                            view3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                            svMain.scrollTo(0, svMain.getBottom());
-                        }
-
-
-                    } else {
-                        if (addDelBoyResponse.getResponseCode() == 400) {
-                            if (i1 == 1) {
-                                i = 0;
-                            } else if (i1 == 2) {
-                                i = 1;
-                            }
-
-                            mProgressDialog.dismiss();
-                            if (addDelBoyResponse.getValidation() != null) {
-                                AddDelBoyResponse.Validation validation = addDelBoyResponse.getValidation();
-                                if (validation.getImage() != null && validation.getImage().length() > 0) {
-                                    Toast.makeText(AddNewDeliveryBoy.this, validation.getImage(), Toast.LENGTH_LONG).show();
-                                    finish();
-                                }
-                                if (validation.getName() != null && validation.getName().length() > 0) {
-                                    etName.setError(validation.getName());
-                                    etName.requestFocus();
-                                }
-                                if (validation.getFather_name() != null && validation.getFather_name().length() > 0) {
-                                    etFatherName.setError(validation.getName());
-                                    etFatherName.requestFocus();
-                                }
-                                if (validation.getPhoneNumber() != null && validation.getPhoneNumber().length() > 0) {
-
-                                    etPhoneNumber.setError(validation.getPhoneNumber());
-                                    etPhoneNumber.requestFocus();
-                                }
-                                if (validation.getCurrent_residential_address() != null && validation.getCurrent_residential_address().length() > 0) {
-                                    etCurrentHouseNo.setError(validation.getCurrent_residential_address());
-                                    etCurrentHouseNo.requestFocus();
-                                }
-                                if (validation.getPermanent_address() != null && validation.getPermanent_address().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    etPerHouseNo.setError(validation.getPermanent_address());
-                                    etPerHouseNo.requestFocus();
-
-                                }
-                                if (validation.getDc() != null && validation.getDc().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    Toast.makeText(AddNewDeliveryBoy.this, validation.getDc(), Toast.LENGTH_LONG).show();
-
-
-                                }
-                                if (validation.getRoute_number() != null && validation.getRoute_number().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    etRoute.setError(validation.getRoute_number());
-                                    etRoute.requestFocus();
-
-                                }
-                                if (validation.getDriving_licence_num() != null && validation.getDriving_licence_num().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    etDrivingNumber.setError(validation.getDriving_licence_num());
-                                    etDrivingNumber.requestFocus();
-                                }
-                                if (validation.getDriving_licence_dob() != null && validation.getDriving_licence_dob().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    dob.setError(validation.getDriving_licence_dob());
-                                    dob.requestFocus();
-                                }
-                                if (validation.getDriving_licence_image() != null && validation.getDriving_licence_image().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    Toast.makeText(AddNewDeliveryBoy.this, validation.getDriving_licence_image(), Toast.LENGTH_SHORT).show();
-                                }
-                                if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    etVehicle.setError(validation.getDriving_licence_dob());
-                                    etVehicle.requestFocus();
-                                }
-                                if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    Toast.makeText(AddNewDeliveryBoy.this, validation.getLanguages(), Toast.LENGTH_SHORT).show();
-                                }
-
-                                if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    Toast.makeText(AddNewDeliveryBoy.this, validation.getProccessId(), Toast.LENGTH_SHORT).show();
-                                }
-                                if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    Toast.makeText(AddNewDeliveryBoy.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
-                                } /*else {
-                                    Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
-                                }
-*/
-                            } else {
-                                Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
-
-
-                            }
-                        }
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<AddDelBoyResponse> call, Throwable t) {
-
-
-                mProgressDialog.dismiss();
-
-            }
-        });
-
-    }
-
-    private void ApiCallSubmit() {
-        gps = new GPSTracker(AddNewDeliveryBoy.this);
-        if (gps.canGetLocation()) {
-            Double lat = gps.getLatitude();
-            Double lng = gps.getLongitude();
-            lattitude = String.valueOf(gps.getLatitude());
-            longitude = String.valueOf(gps.getLongitude());
-            Log.e("Lattitude", lattitude);
-            Log.e("Longitude", longitude);
-
-
-        } else {
-            // can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
-            gps.showSettingsAlert();
-        }
-        mProgressDialog.show();
-        MultipartBody.Part prof_image = null;
-        MultipartBody.Part license_image = null;
-        String image = "image";
-        String driving_licence = "driving_licence_image";
-
-        File imagefile1 = new File(profileImagepath);
-        prof_image = MultipartBody.Part.createFormData(image, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(profileImagepath)), imagefile1));
-        //   list.add(shop_act_part);
-
-
-        File imagefile2 = new File(licenceImagePath);
-        license_image = MultipartBody.Part.createFormData(driving_licence, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(licenceImagePath)), imagefile2));
-
-        // Log.e("image",list.toString());
-
-        Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
-        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-        params.put(Constants.NAME, etName.getText().toString().trim());
-        params.put(Constants.PARAM_FATHER_NAME, etFatherName.getText().toString().trim());
-        params.put(Constants.PHONE_NUMBER, etPhoneNumber.getText().toString().trim());
-        params.put(Constants.PARAM_CURRENT_RESIDENTIAL, currentAdress);
-        params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
-        params.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
-        params.put(Constants.ROUTE_NUMBER, etRoute.getText().toString().trim());
-        /*if(isUpdate.equalsIgnoreCase("1")){
-            params.put(Constants.PARAM_IS_EDIT,"1");
-        }*/
-        params.put(Constants.PARAM_DRIVING_LICENCE_NUM, etDrivingNumber.getText().toString().trim());
-        params.put(Constants.PARAM_DRIVING_LICENCE_DOB, dob.getText().toString().trim());
-        params.put(Constants.PARAM_DRIVING_LICENCE_VEHICLE, etVehicle.getText().toString().trim());
-        params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
-        params.put(Constants.PARAM_LATITUDE, lattitude);
-        params.put(Constants.PARAM_LONGITUDE, longitude);
-
-        Call<AddDelBoyResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image);
-        callUpload.enqueue(new Callback<AddDelBoyResponse>() {
-            @Override
-            public void onResponse(Call<AddDelBoyResponse> call, Response<AddDelBoyResponse> response) {
-                try {
-                    mProgressDialog.dismiss();
-                    AddDelBoyResponse addDelBoyResponse = response.body();
-                    if (addDelBoyResponse.getResponseCode() == 200) {
-                        Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                        deleteImages();
-                        finish();
-                    }
-                    if (addDelBoyResponse.getResponseCode() == 411) {
-                        sessionManager.logoutUser(AddNewDeliveryBoy.this);
-                    }
-                    if (addDelBoyResponse.getResponseCode() == 400) {
-
-                        mProgressDialog.dismiss();
-                        if (addDelBoyResponse.getValidation() != null) {
-                            AddDelBoyResponse.Validation validation = addDelBoyResponse.getValidation();
-                            if (validation.getImage() != null && validation.getImage().length() > 0) {
-                                Toast.makeText(AddNewDeliveryBoy.this, validation.getImage(), Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                            if (validation.getName() != null && validation.getName().length() > 0) {
-                                etName.setError(validation.getName());
-                                etName.requestFocus();
-                            }
-                            if (validation.getFather_name() != null && validation.getFather_name().length() > 0) {
-                                etFatherName.setError(validation.getName());
-                                etFatherName.requestFocus();
-                            }
-                            if (validation.getPhoneNumber() != null && validation.getPhoneNumber().length() > 0) {
-
-                                etPhoneNumber.setError(validation.getPhoneNumber());
-                                etPhoneNumber.requestFocus();
-                            }
-                            if (validation.getCurrent_residential_address() != null && validation.getCurrent_residential_address().length() > 0) {
-                                etCurrentHouseNo.setError(validation.getCurrent_residential_address());
-                                etCurrentHouseNo.requestFocus();
-                            }
-                            if (validation.getPermanent_address() != null && validation.getPermanent_address().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                etPerHouseNo.setError(validation.getPermanent_address());
-                                etPerHouseNo.requestFocus();
-
-                            }
-                            if (validation.getDc() != null && validation.getDc().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                Toast.makeText(AddNewDeliveryBoy.this, validation.getDc(), Toast.LENGTH_LONG).show();
-
-
-                            }
-                            if (validation.getRoute_number() != null && validation.getRoute_number().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                etRoute.setError(validation.getRoute_number());
-                                etRoute.requestFocus();
-
-                            }
-                            if (validation.getDriving_licence_num() != null && validation.getDriving_licence_num().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                etDrivingNumber.setError(validation.getDriving_licence_num());
-                                etDrivingNumber.requestFocus();
-                            }
-                            if (validation.getDriving_licence_dob() != null && validation.getDriving_licence_dob().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                dob.setError(validation.getDriving_licence_dob());
-                                dob.requestFocus();
-                            }
-                            if (validation.getDriving_licence_image() != null && validation.getDriving_licence_image().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                Toast.makeText(AddNewDeliveryBoy.this, validation.getDriving_licence_image(), Toast.LENGTH_SHORT).show();
-                            }
-                            if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                etVehicle.setError(validation.getDriving_licence_dob());
-                                etVehicle.requestFocus();
-                            }
-                            if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                Toast.makeText(AddNewDeliveryBoy.this, validation.getLanguages(), Toast.LENGTH_SHORT).show();
-                            }
-
-                            if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                Toast.makeText(AddNewDeliveryBoy.this, validation.getProccessId(), Toast.LENGTH_SHORT).show();
-                            }
-                            if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                Toast.makeText(AddNewDeliveryBoy.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
-                            }
-
-                        } else {
-                            Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
-
-
-                        }
-
-                    } else {
-                        Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
-                        if (addDelBoyResponse.getResponseCode() == 405) {
-                            sessionManager.logoutUser(AddNewDeliveryBoy.this);
-                        } else {
-
-                            Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(AddNewDeliveryBoy.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AddDelBoyResponse> call, Throwable t) {
-                mProgressDialog.dismiss();
-            }
-        });
-
-    }
-
-    private void captureImage(int i) {
-        if (i == 1) {
-            Intent chooseImageIntent = ImagePicker.getCameraIntent(this);
-            startActivityForResult(chooseImageIntent, PROFILEIMAGE);
-        }
-        if (i == 2) {
-            Intent chooseImageIntent1 = ImagePicker.getCameraIntent(this);
-            startActivityForResult(chooseImageIntent1, LICENCEIMAGE);
-        }
-    }
-
 
     private boolean validation(int i) {
         if (i == 1) {
@@ -928,7 +609,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                 // showMSG(false, "Provide Pincode");
                 return false;
             }
-            if (listLanaguage.size() == 0) {
+            if (tvLanguage.getText().equals("Select Language")) {
                 Toast.makeText(this, "Please Select Language", Toast.LENGTH_SHORT).show();
                 // showMSG(false, "Provide Pincode");
                 return false;
@@ -951,39 +632,422 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == LICENCEIMAGE) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(AddNewDeliveryBoy.this, resultCode, data);
-                // img_doc_upload_2.setImageBitmap(bitmap);
-                licenceImagePath = ImagePicker.getBitmapPath(bitmap, AddNewDeliveryBoy.this);
-                ivDriving_Licence.setPadding(0, 0, 0, 0);
-                // ImageUtils.getInstant().getImageUri(getActivity(), photo);
-                Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
+    private void ApiCallValidationCheck(String validationapiUrl, int i1) {
 
-            }
-            if (requestCode == PROFILEIMAGE) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
-                // img_doc_upload_2.setImageBitmap(bitmap);
-                profileImagepath = ImagePicker.getBitmapPath(bitmap, this);
-                ivProfile.setPadding(0, 0, 0, 0);// ImageUtils.getInstant().getImageUri(getActivity(), photo);
+        currentAdress = etCurrentHouseNo.getText().toString() + " " + etCurrentStreet.getText().toString() + " " + etCurrentLandmark.getText().toString() + " " + etCurrentCity.getText().toString() + " " + etCurrentState.getText().toString() + " " + etCurrentPincode.getText().toString();
+        permAddress = etPerHouseNo.getText().toString() + " " + etPermStreet.getText().toString() + " " + etPerLandmark.getText().toString() + " " + etPerCity.getText().toString() + " " + etPerState.getText().toString() + " " + etPerPincode.getText().toString();
 
-                Glide.with(this).load(profileImagepath).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivProfile) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable circularBitmapDrawable =
-                                RoundedBitmapDrawableFactory.create(AddNewDeliveryBoy.this.getResources(), resource);
-                        circularBitmapDrawable.setCircular(true);
-                        ivProfile.setImageDrawable(circularBitmapDrawable);
+        mProgressDialog.show();
+        MultipartBody.Part prof_image = null;
+
+        Call<AddDelBoyResponse> call = null;
+        String image = "image";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+
+
+        if (i1 == 1) {
+            File imagefile1 = new File(profileImagepath);
+            prof_image = MultipartBody.Part.createFormData(image, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(profileImagepath)), imagefile1));
+            params.put(Constants.NAME, etName.getText().toString().trim());
+            params.put(Constants.PARAM_FATHER_NAME, etFatherName.getText().toString().trim());
+            params.put(Constants.PHONE_NUMBER, etPhoneNumber.getText().toString().trim());
+            params.put(Constants.ROUTE_NUMBER, etRoute.getText().toString());
+            params.put(Constants.PARAM_DELIVERY_BOY_ID, deliveryBoy);
+            call = ApiClient.getClient().create(ApiInterface.class).DeliveryBoysDetailsValid1("Bearer " + sessionManager.getToken(), validationapiUrl, params, prof_image);
+
+
+        } else if (i1 == 2) {
+            params.put(Constants.PARAM_CURRENT_RESIDENTIAL, currentAdress);
+            params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
+            params.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
+            call = ApiClient.getClient().create(ApiInterface.class).DeliveryBoysDetailsValid2("Bearer " + sessionManager.getToken(), validationapiUrl, params);
+
+        }
+
+        call.enqueue(new Callback<AddDelBoyResponse>() {
+            @Override
+            public void onResponse(Call<AddDelBoyResponse> call, Response<AddDelBoyResponse> response) {
+
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    AddDelBoyResponse addDelBoyResponse = response.body();
+                    if (addDelBoyResponse.getResponseCode() == 200) {
+
+                        if (i1 == 1) {
+                            llOwnerInfo.setVisibility(View.GONE);
+                            llAddressInfo.setVisibility(View.VISIBLE);
+                            llDrivingDetails.setVisibility(View.GONE);
+                            view2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                            svMain.scrollTo(0, svMain.getBottom());
+
+                        } else if (i1 == 2) {
+                            llAddressInfo.setVisibility(View.GONE);
+                            llDrivingDetails.setVisibility(View.VISIBLE);
+                            llOwnerInfo.setVisibility(View.GONE);
+                            view3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                            svMain.scrollTo(0, svMain.getBottom());
+                        }
+
+
+                    } else {
+                        if (addDelBoyResponse.getResponseCode() == 400) {
+                            if (i1 == 1) {
+                                i = 0;
+                            } else if (i1 == 2) {
+                                i = 1;
+                            }
+
+                            mProgressDialog.dismiss();
+                            if (addDelBoyResponse.getValidation() != null) {
+                                AddDelBoyResponse.Validation validation = addDelBoyResponse.getValidation();
+                                if (validation.getImage() != null && validation.getImage().length() > 0) {
+                                    Toast.makeText(EditDeliveryBoyActivity.this, validation.getImage(), Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
+                                if (validation.getName() != null && validation.getName().length() > 0) {
+                                    etName.setError(validation.getName());
+                                    etName.requestFocus();
+                                }
+                                if (validation.getFather_name() != null && validation.getFather_name().length() > 0) {
+                                    etFatherName.setError(validation.getName());
+                                    etFatherName.requestFocus();
+                                }
+                                if (validation.getPhoneNumber() != null && validation.getPhoneNumber().length() > 0) {
+
+                                    etPhoneNumber.setError(validation.getPhoneNumber());
+                                    etPhoneNumber.requestFocus();
+                                }
+                                if (validation.getCurrent_residential_address() != null && validation.getCurrent_residential_address().length() > 0) {
+                                    etCurrentHouseNo.setError(validation.getCurrent_residential_address());
+                                    etCurrentHouseNo.requestFocus();
+                                }
+                                if (validation.getPermanent_address() != null && validation.getPermanent_address().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etPerHouseNo.setError(validation.getPermanent_address());
+                                    etPerHouseNo.requestFocus();
+
+                                }
+                                if (validation.getDc() != null && validation.getDc().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(EditDeliveryBoyActivity.this, validation.getDc(), Toast.LENGTH_LONG).show();
+
+
+                                }
+                                if (validation.getRoute_number() != null && validation.getRoute_number().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etRoute.setError(validation.getRoute_number());
+                                    etRoute.requestFocus();
+
+                                }
+                                if (validation.getDriving_licence_num() != null && validation.getDriving_licence_num().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etDrivingNumber.setError(validation.getDriving_licence_num());
+                                    etDrivingNumber.requestFocus();
+                                }
+                                if (validation.getDriving_licence_dob() != null && validation.getDriving_licence_dob().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    dob.setError(validation.getDriving_licence_dob());
+                                    dob.requestFocus();
+                                }
+                                if (validation.getDriving_licence_image() != null && validation.getDriving_licence_image().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(EditDeliveryBoyActivity.this, validation.getDriving_licence_image(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etVehicle.setError(validation.getDriving_licence_dob());
+                                    etVehicle.requestFocus();
+                                }
+                                if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(EditDeliveryBoyActivity.this, validation.getLanguages(), Toast.LENGTH_SHORT).show();
+                                }
+
+                                if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(EditDeliveryBoyActivity.this, validation.getProccessId(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(EditDeliveryBoyActivity.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
+                                } /*else {
+                                    Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
+                                }
+*/
+                            } else {
+                                Toast.makeText(EditDeliveryBoyActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
+
+
+                            }
+                        }
                     }
-                });
+                }
 
             }
+
+            @Override
+            public void onFailure(Call<AddDelBoyResponse> call, Throwable t) {
+
+
+                mProgressDialog.dismiss();
+
+            }
+        });
+
+    }
+
+    private void ApiCallSubmit() {
+        gps = new GPSTracker(EditDeliveryBoyActivity.this);
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+        mProgressDialog.show();
+        MultipartBody.Part prof_image = null;
+        MultipartBody.Part license_image = null;
+        String image = "image";
+        String driving_licence = "driving_licence_image";
+
+        File imagefile1 = new File(profileImagepath);
+        prof_image = MultipartBody.Part.createFormData(image, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(profileImagepath)), imagefile1));
+        //   list.add(shop_act_part);
+
+
+        File imagefile2 = new File(licenceImagePath);
+        license_image = MultipartBody.Part.createFormData(driving_licence, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(licenceImagePath)), imagefile2));
+
+        // Log.e("image",list.toString());
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        params.put(Constants.NAME, etName.getText().toString().trim());
+        params.put(Constants.PARAM_FATHER_NAME, etFatherName.getText().toString().trim());
+        params.put(Constants.PHONE_NUMBER, etPhoneNumber.getText().toString().trim());
+        params.put(Constants.PARAM_CURRENT_RESIDENTIAL, currentAdress);
+        params.put(Constants.PARAM_CURRENT_ADDRESS, etCurrentHouseNo.getText().toString());
+        params.put(Constants.PARAM_CURRENT_ADDRESS1, etCurrentStreet.getText().toString());
+        params.put(Constants.PARAM_CURRENT_ADDRESS_LANDMARK, etCurrentLandmark.getText().toString());
+        params.put(Constants.PARAM_CURRENT_ADDRESS_CITY, etCurrentCity.getText().toString());
+        params.put(Constants.PARAM_CURRENT_ADDRESS_STATE, etCurrentState.getText().toString());
+        params.put(Constants.PARAM_CURRENT_ADDRESS_PINCODE, etCurrentPincode.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS, etPerHouseNo.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS1, etPermStreet.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_LANDMARK, etPerLandmark.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_CITY, etPerCity.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_STATE, etPerState.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_PINCODE, etPerPincode.getText().toString());
+        params.put(Constants.PARAM_DELIVERY_BOY_ID, deliveryBoy);
+
+
+        params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
+        params.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
+        params.put(Constants.ROUTE_NUMBER, etRoute.getText().toString().trim());
+        /*if(isUpdate.equalsIgnoreCase("1")){
+            params.put(Constants.PARAM_IS_EDIT,"1");
+        }*/
+        params.put(Constants.PARAM_DRIVING_LICENCE_NUM, etDrivingNumber.getText().toString().trim());
+        params.put(Constants.PARAM_DRIVING_LICENCE_DOB, dob.getText().toString().trim());
+        params.put(Constants.PARAM_DRIVING_LICENCE_VEHICLE, etVehicle.getText().toString().trim());
+        params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
+        params.put(Constants.PARAM_LATITUDE, lattitude);
+        params.put(Constants.PARAM_LONGITUDE, longitude);
+
+
+        Call<AddDelBoyResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image);
+        callUpload.enqueue(new Callback<AddDelBoyResponse>() {
+            @Override
+            public void onResponse(Call<AddDelBoyResponse> call, Response<AddDelBoyResponse> response) {
+                try {
+                    mProgressDialog.dismiss();
+                    AddDelBoyResponse addDelBoyResponse = response.body();
+                    if (addDelBoyResponse.getResponseCode() == 200) {
+                        Toast.makeText(EditDeliveryBoyActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        deleteImages();
+                        finish();
+                    }
+                    if (addDelBoyResponse.getResponseCode() == 411) {
+                        sessionManager.logoutUser(EditDeliveryBoyActivity.this);
+                    }
+                    if (addDelBoyResponse.getResponseCode() == 400) {
+
+                        mProgressDialog.dismiss();
+                        if (addDelBoyResponse.getValidation() != null) {
+                            AddDelBoyResponse.Validation validation = addDelBoyResponse.getValidation();
+                            if (validation.getImage() != null && validation.getImage().length() > 0) {
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getImage(), Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                            if (validation.getName() != null && validation.getName().length() > 0) {
+                                etName.setError(validation.getName());
+                                etName.requestFocus();
+                            }
+                            if (validation.getFather_name() != null && validation.getFather_name().length() > 0) {
+                                etFatherName.setError(validation.getName());
+                                etFatherName.requestFocus();
+                            }
+                            if (validation.getPhoneNumber() != null && validation.getPhoneNumber().length() > 0) {
+
+                                etPhoneNumber.setError(validation.getPhoneNumber());
+                                etPhoneNumber.requestFocus();
+                            }
+                            if (validation.getCurrent_residential_address() != null && validation.getCurrent_residential_address().length() > 0) {
+                                etCurrentHouseNo.setError(validation.getCurrent_residential_address());
+                                etCurrentHouseNo.requestFocus();
+                            }
+                            if (validation.getPermanent_address() != null && validation.getPermanent_address().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etPerHouseNo.setError(validation.getPermanent_address());
+                                etPerHouseNo.requestFocus();
+
+                            }
+                            if (validation.getDc() != null && validation.getDc().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getDc(), Toast.LENGTH_LONG).show();
+
+
+                            }
+                            if (validation.getRoute_number() != null && validation.getRoute_number().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etRoute.setError(validation.getRoute_number());
+                                etRoute.requestFocus();
+
+                            }
+                            if (validation.getDriving_licence_num() != null && validation.getDriving_licence_num().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etDrivingNumber.setError(validation.getDriving_licence_num());
+                                etDrivingNumber.requestFocus();
+                            }
+                            if (validation.getDriving_licence_dob() != null && validation.getDriving_licence_dob().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                dob.setError(validation.getDriving_licence_dob());
+                                dob.requestFocus();
+                            }
+                            if (validation.getDriving_licence_image() != null && validation.getDriving_licence_image().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getDriving_licence_image(), Toast.LENGTH_SHORT).show();
+                            }
+                            if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                etVehicle.setError(validation.getDriving_licence_dob());
+                                etVehicle.requestFocus();
+                            }
+                            if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getLanguages(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getProccessId(), Toast.LENGTH_SHORT).show();
+                            }
+                            if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(EditDeliveryBoyActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
+                            }
+
+                        } else {
+                            Toast.makeText(EditDeliveryBoyActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
+
+
+                        }
+
+                    } else {
+                        Toast.makeText(EditDeliveryBoyActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
+                        if (addDelBoyResponse.getResponseCode() == 405) {
+                            sessionManager.logoutUser(EditDeliveryBoyActivity.this);
+                        } else {
+
+                            Toast.makeText(EditDeliveryBoyActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(EditDeliveryBoyActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AddDelBoyResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+            }
+        });
+
+    }
+
+    private void captureImage(int i) {
+        if (i == 1) {
+            Intent chooseImageIntent = ImagePicker.getCameraIntent(this);
+            startActivityForResult(chooseImageIntent, PROFILEIMAGE);
+        }
+        if (i == 2) {
+            Intent chooseImageIntent1 = ImagePicker.getCameraIntent(this);
+            startActivityForResult(chooseImageIntent1, LICENCEIMAGE);
         }
     }
 
+    private void addDC(String pcode) {
+        // state is DC and DC is state
+
+        dcLists.clear();
+        mProgressDialog.show();
+
+        JsonObject user = new JsonObject();
+        user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
+        user.addProperty(Constants.PARAM_PINCODE, pcode);
+        ApiClient.getClient().create(ApiInterface.class).getDC("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetDC>() {
+            @Override
+            public void onResponse(Call<GetDC> call, Response<GetDC> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetDC getUserDetails = response.body();
+
+                    if (getUserDetails.getResponseCode() == 200) {
+
+                        for (int i = 0; i < getUserDetails.getData().size(); i++) {
+                            for (DC dc : getUserDetails.getData().get(i).getDc()) {
+                                dcLists.add(dc.getDc());
+                            }
+                            etCurrentState.setText(getUserDetails.getData().get(i).getState());
+                            etCurrentCity.setText(getUserDetails.getData().get(i).getCity());
+
+                        }
+
+                        CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(EditDeliveryBoyActivity.this, android.R.layout.simple_spinner_item, dcLists);
+                        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        dc.setAdapter(spinnerArrayAdapter);
+                        dc.setSelection(0);
+
+                    } else if (getUserDetails.getResponseCode() == 405) {
+                        sessionManager.logoutUser(EditDeliveryBoyActivity.this);
+                    } else {
+                        Toast.makeText(EditDeliveryBoyActivity.this, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetDC> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditDeliveryBoyActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
 
     class CustomAdapter<T> extends ArrayAdapter<T> {
         public CustomAdapter(Context context, int textViewResourceId,
@@ -1003,7 +1067,6 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         }
     }
 
-
     private void deleteImages() {
 
         File casted_image = new File(licenceImagePath);
@@ -1016,6 +1079,39 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             casted_image6.delete();
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == LICENCEIMAGE) {
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                licenceImagePath = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
+                ivDriving_Licence.setPadding(0, 0, 0, 0);
+                // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+                Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
+
+            }
+            if (requestCode == PROFILEIMAGE) {
+                Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                profileImagepath = ImagePicker.getBitmapPath(bitmap, this);
+                ivProfile.setPadding(0, 0, 0, 0);// ImageUtils.getInstant().getImageUri(getActivity(), photo);
+
+                Glide.with(this).load(profileImagepath).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivProfile) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable =
+                                RoundedBitmapDrawableFactory.create(EditDeliveryBoyActivity.this.getResources(), resource);
+                        circularBitmapDrawable.setCircular(true);
+                        ivProfile.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
+
+            }
+        }
     }
 
 

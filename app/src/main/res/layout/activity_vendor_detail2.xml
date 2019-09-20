@@ -91,11 +91,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
-                            android:paddingBottom="@dimen/_15sdp"
                             android:orientation="vertical"
                             android:paddingLeft="@dimen/_15sdp"
                             android:paddingTop="@dimen/_15sdp"
-                            android:paddingRight="@dimen/_15sdp">
+                            android:paddingRight="@dimen/_15sdp"
+                            android:paddingBottom="@dimen/_15sdp">
 
                             <android.support.v7.widget.CardView
                                 android:layout_width="match_parent"
@@ -310,10 +310,10 @@
                                             android:id="@+id/tvAddress"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
+                                            android:layout_marginBottom="@dimen/_15sdp"
                                             android:enabled="false"
                                             android:fontFamily="@font/monteregular"
                                             android:lines="2"
-                                            android:layout_marginBottom="@dimen/_15sdp"
                                             android:text=""
                                             android:textSize="@dimen/_11sdp" />
                                     </LinearLayout>
@@ -522,9 +522,9 @@
                                                 style="@style/TextviewwithoutSize"
                                                 android:layout_gravity="center"
                                                 android:layout_marginTop="@dimen/_5sdp"
+                                                android:clickable="false"
                                                 android:fontFamily="@font/montemedium"
                                                 android:text="PAN"
-                                                android:clickable="false"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
                                         </LinearLayout>
@@ -560,12 +560,12 @@
                                                 style="@style/TextviewwithoutSize"
                                                 android:layout_gravity="center"
                                                 android:layout_marginTop="@dimen/_5sdp"
+                                                android:clickable="false"
                                                 android:fontFamily="@font/montemedium"
                                                 android:gravity="center"
                                                 android:lines="2"
                                                 android:maxLines="2"
                                                 android:text="MOBILE NO"
-                                                android:clickable="false"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
                                         </LinearLayout>
@@ -600,10 +600,10 @@
                                                 style="@style/TextviewwithoutSize"
                                                 android:layout_gravity="center"
                                                 android:layout_marginTop="@dimen/_5sdp"
+                                                android:clickable="false"
                                                 android:fontFamily="@font/montemedium"
                                                 android:singleLine="true"
                                                 android:text="CHEQUE"
-                                                android:clickable="false"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
                                         </LinearLayout>
@@ -649,9 +649,9 @@
                                                 style="@style/TextviewwithoutSize"
                                                 android:layout_gravity="center"
                                                 android:layout_marginTop="@dimen/_3sdp"
+                                                android:clickable="false"
                                                 android:fontFamily="@font/montemedium"
                                                 android:gravity="center"
-                                                android:clickable="false"
                                                 android:text="RATE/ADD\nSTORE TYPE"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
@@ -659,7 +659,6 @@
 
 
                                     </android.support.v7.widget.CardView>
-
 
 
                                     <android.support.v7.widget.CardView
@@ -691,17 +690,18 @@
                                                 style="@style/TextviewwithoutSize"
                                                 android:layout_gravity="center"
                                                 android:layout_marginTop="@dimen/_3sdp"
+                                                android:clickable="false"
                                                 android:fontFamily="@font/montemedium"
                                                 android:gravity="center"
                                                 android:lines="2"
                                                 android:maxLines="2"
                                                 android:text="GST"
-                                                android:clickable="false"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
                                         </LinearLayout>
 
                                     </android.support.v7.widget.CardView>
+
                                     <android.support.v7.widget.CardView
                                         android:id="@+id/cvResign"
                                         android:layout_width="match_parent"
@@ -732,11 +732,11 @@
                                                 style="@style/TextviewwithoutSize"
                                                 android:layout_gravity="center"
                                                 android:layout_marginTop="@dimen/_3sdp"
+                                                android:clickable="false"
                                                 android:fontFamily="@font/montemedium"
                                                 android:gravity="center"
                                                 android:lines="2"
                                                 android:maxLines="2"
-                                                android:clickable="false"
                                                 android:text="RESIGN\n AGREEMENT"
                                                 android:textColor="@color/colorBlack"
                                                 android:textSize="@dimen/_8sdp" />
@@ -745,11 +745,61 @@
                                     </android.support.v7.widget.CardView>
 
 
-
                                 </LinearLayout>
 
 
+                                <LinearLayout
+                                    android:id="@+id/llDelBoy"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:gravity="center"
+                                    android:visibility="gone"
+                                    android:orientation="horizontal"
+                                    android:padding="@dimen/_3sdp"></LinearLayout>
+                                <android.support.v7.widget.CardView
+                                    android:id="@+id/cvDelBoy"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="@dimen/_4sdp"
+                                    android:layout_weight="1"
+                                    android:clipToPadding="true"
+                                    android:elevation="@dimen/_5sdp"
+                                    app:cardCornerRadius="@dimen/_5sdp">
+
+                                    <LinearLayout
+                                        android:id="@+id/btDelBoy"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:orientation="vertical"
+                                        android:padding="@dimen/_10sdp">
+
+                                        <ImageView
+
+                                            android:layout_width="@dimen/_35sdp"
+                                            android:layout_height="@dimen/_35sdp"
+                                            android:src="@drawable/delivery" />
+
+                                        <TextView
+                                            style="@style/TextviewwithoutSize"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_3sdp"
+                                            android:clickable="false"
+                                            android:fontFamily="@font/montemedium"
+                                            android:gravity="center"
+                                            android:text="Edit Delivery Boy"
+                                            android:textColor="@color/colorBlack"
+                                            android:textSize="@dimen/_8sdp" />
+                                    </LinearLayout>
+
+
+                                </android.support.v7.widget.CardView>
+
+
                             </LinearLayout>
+
                             <LinearLayout
                                 android:id="@+id/llExapandDisable"
                                 android:layout_width="match_parent"
@@ -967,6 +1017,7 @@
                                         </LinearLayout>
 
                                     </android.support.v7.widget.CardView>
+
                                     <android.support.v7.widget.CardView
                                         android:id="@+id/cvResign1"
                                         android:layout_width="match_parent"
@@ -1009,20 +1060,18 @@
                                     </android.support.v7.widget.CardView>
 
 
-
                                 </LinearLayout>
-
 
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/_10sdp"
-                                    android:textSize="@dimen/_10sdp"
-                                    android:fontFamily="@font/monteregular"
                                     android:layout_marginLeft="@dimen/_7sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:fontFamily="@font/monteregular"
+                                    android:text="For access above mentioned option you needs to login from supervisor account."
                                     android:textColor="@color/text_color_dark_grey"
-                                    android:text="For access above mentioned option you needs to login from supervisor account."/>
+                                    android:textSize="@dimen/_10sdp" />
 
                             </LinearLayout>
                         </LinearLayout>
@@ -1060,17 +1109,17 @@
                                     android:layout_gravity="start"
                                     android:layout_weight="1"
                                     android:focusable="false"
-                                    android:textSize="@dimen/_8sdp"
                                     android:fontFamily="@font/montesemibold"
                                     android:text="Document Signing Status"
-                                    android:textColor="@color/text_color_dark_grey" />
+                                    android:textColor="@color/text_color_dark_grey"
+                                    android:textSize="@dimen/_8sdp" />
 
                                 <android.support.v7.widget.AppCompatSpinner
                                     android:id="@+id/spYear"
+                                    style="@style/Spinner"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="right"
-                                    style="@style/Spinner"
                                     android:layout_weight="3"></android.support.v7.widget.AppCompatSpinner>
 
                             </LinearLayout>
@@ -1084,9 +1133,9 @@
 
                                 <View
                                     android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_1sdp"
                                     android:layout_marginTop="@dimen/_5sdp"
-                                    android:background="@color/colorLightGrey"
-                                    android:layout_height="@dimen/_1sdp"/>
+                                    android:background="@color/colorLightGrey" />
 
 
                                 <android.support.v7.widget.RecyclerView
@@ -1104,13 +1153,14 @@
                                     android:layout_weight="3.5"
                                     android:visibility="gone"
                                     tools:visibility="visible" />
+
                                 <TextView
                                     android:id="@+id/tvNodata"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
                                     android:fontFamily="@font/montesemibold"
                                     android:text="No Documents signed yet"
-                                    android:layout_marginTop="@dimen/_10sdp"
                                     android:textColor="@color/colorGrey"
                                     android:textSize="@dimen/_8sdp" />
 
@@ -1148,6 +1198,7 @@
         </android.support.v4.widget.NestedScrollView>
 
     </RelativeLayout>
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
