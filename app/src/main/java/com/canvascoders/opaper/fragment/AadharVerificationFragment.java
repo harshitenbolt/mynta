@@ -1266,6 +1266,12 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
     }
 
+
+
+
+
+
+
     private void showAlert(String msg) {
         Button btSubmit;
         TextView tvMessage, tvTitle;
@@ -1506,6 +1512,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             callUpload.enqueue(new Callback<CommonResponse>() {
                 @Override
                 public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+
                     if (mProgressDialog != null) {
                         mProgressDialog.dismiss();
                     }
@@ -1514,6 +1521,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
                         if (getaadhardetail.getResponseCode() == 200) {
+
                             deleteImages();
 
 

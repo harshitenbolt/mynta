@@ -134,6 +134,14 @@
     </array>
 
 
+    <array name="FilterType">
+        <item>Select Filter</item>
+        <item>pending</item>
+        <item>in-progress</item>
+        <item>closed</item>
+        <item>re-open</item>
+    </array>
+
     <array name="shipment">
         <item>Shipment Transfer</item>
         <item>Drop Model</item>

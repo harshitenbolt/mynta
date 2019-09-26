@@ -41,8 +41,8 @@ public class Constants {
     //Whole App Base URL for API manage n Call
 
    //   public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
-    public static String BaseURL = "https://mystaging.opape" +
-           "r.in/api3/";  // test server 2
+    public static String BaseURL = "https://mystaging.opaper.in/api3/" ;
+    // test server 2
 
    public final static String APP_NAME = "my_stage"; //stage
     // public final static String APP_NAME = "my_live"; //live
@@ -175,6 +175,7 @@ public class Constants {
     public static String PARAM_YEAR = "year";
     public static String PARAM_IS_INVOICE = "is_invoice";
 
+    public static String PARAM_STATUS = "status";
     public static String PARAM_SEARCH = "search";
     public static String PARAM_ADUMDUM = "addendum";
     public static String PARAM_IMAGE = "image";

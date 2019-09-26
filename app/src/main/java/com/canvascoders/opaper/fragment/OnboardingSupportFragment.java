@@ -4,8 +4,10 @@ package com.canvascoders.opaper.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +15,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.SupportListResponse.Datum;
@@ -32,6 +38,7 @@ import com.canvascoders.opaper.utils.SessionManager;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,13 +57,18 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
     RecyclerView rvOnboardingSupport;
     Context mContext;
 
-    String next_page_url = "support-listing";
+    String next_page_url = "support-listing", nextPageUrl1 = "support-listing";
     SupportListAdapter supportListAdapter;
     private EndlessRecyclerViewScrollListener scrollListener;
     List<Datum> supportList = new ArrayList<>();
+    List<Datum> supportList1 = new ArrayList<>();
     ProgressDialog mProgress;
     SwipeRefreshLayout mSwipeRefreshLayout;
     LinearLayout llNoData;
+    Spinner snDocType;
+    String status="";
+    int search = 0;
+    private List<String> docTypeList = new ArrayList<>();
 
     public OnboardingSupportFragment() {
         // Required empty public constructor
@@ -92,20 +104,83 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
 
                 // this condition  is for pagination in both with Search and without search
-                if (!next_page_url.equalsIgnoreCase("")) ;
-                ApiCallgetReports();
+
+                if (search == 0) {
+                    if (!next_page_url.equalsIgnoreCase(""))
+                        ApiCallgetReports();
+                } else {
+                    if (!nextPageUrl1.equalsIgnoreCase(""))
+                        ApiCallgetReportswithSearch(status);
+                }
+
 
             }
         };
         rvOnboardingSupport.addOnScrollListener(scrollListener);
 
+        snDocType = (Spinner) view.findViewById(R.id.snFilterType);
+        docTypeList = Arrays.asList(getResources().getStringArray(R.array.FilterType));
+        CustomAdapter<String> doctypeadapter = new CustomAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, docTypeList);
+        doctypeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        snDocType.setAdapter(doctypeadapter);
+
+        snDocType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String selectedItem = adapterView.getItemAtPosition(i).toString();
+                status = selectedItem;
+                if (selectedItem.equalsIgnoreCase("Select Filter")) {
+                    supportList.clear();
+                    next_page_url = "support-listing";
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        ApiCallgetReports();
+                    } else {
+                        Constants.ShowNoInternet(getActivity());
+                    }
+                }
+
+
+                if (selectedItem.equalsIgnoreCase("pending")) {
+                    search = 1;
+                    supportList1.clear();
+                    nextPageUrl1="support-listing";
+                    ApiCallgetReportswithSearch(status);
+                }
+                if (selectedItem.equalsIgnoreCase("in-progress")) {
+                    search = 1;
+                    nextPageUrl1="support-listing";
+                    supportList1.clear();
+                    ApiCallgetReportswithSearch(status);
+                }
+                if (selectedItem.equalsIgnoreCase("closed")) {
+                    search = 1;
+                    nextPageUrl1="support-listing";
+                    supportList1.clear();
+                    ApiCallgetReportswithSearch(status);
+                }
+                if (selectedItem.equalsIgnoreCase("re-open")) {
+                    search = 1;
+                    nextPageUrl1="support-listing";
+                    supportList1.clear();
+                    ApiCallgetReportswithSearch(status);
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
             ApiCallgetReports();
         } else {
             Constants.ShowNoInternet(getActivity());
         }
-       // ApiCallgetReports();
+        // ApiCallgetReports();
 
     }
 
@@ -138,6 +213,12 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
                             next_page_url = "";
                         }
 
+                        if(supportList.size()>0){
+                            llNoData.setVisibility(View.GONE);
+                        }
+                        else{
+                            llNoData.setVisibility(View.VISIBLE);
+                        }
 
                         supportListAdapter.notifyDataSetChanged();
 
@@ -161,6 +242,70 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
         });
 
     }
+
+    private void ApiCallgetReportswithSearch(String status) {
+        mProgress.show();
+
+        Map<String, String> param = new HashMap<>();
+        param.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        param.put(Constants.PARAM_IS_INVOICE, "0");
+        param.put(Constants.PARAM_STATUS, status);
+        ApiClient.getClient().create(ApiInterface.class).getSupportList(nextPageUrl1, "Bearer " + sessionManager.getToken(), param).enqueue(new Callback<SupportListResponse>() {
+            @Override
+            public void onResponse(Call<SupportListResponse> call, Response<SupportListResponse> response) {
+                if (response.isSuccessful()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    mProgress.dismiss();
+                    SupportListResponse supportListResponse = response.body();
+                    if (supportListResponse.getData() != null) {
+                        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                        llNoData.setVisibility(View.GONE);
+
+                        supportList1.addAll(supportListResponse.getData());
+
+                        if (supportListResponse.getNextPageUrl() != null) {
+                            if (!supportListResponse.getNextPageUrl().equalsIgnoreCase("")) {
+                                nextPageUrl1 = supportListResponse.getNextPageUrl();
+                                String[] separated = nextPageUrl1.split("api3/");
+                                nextPageUrl1 = Constants.BaseURL + separated[1];
+                                Log.e("next_page_url", nextPageUrl1);
+                            }
+                        } else {
+                            nextPageUrl1 = "";
+                        }
+
+
+                        if(supportList1.size()>0){
+                            llNoData.setVisibility(View.GONE);
+                        }
+                        else{
+                            llNoData.setVisibility(View.VISIBLE);
+                        }
+
+
+                        supportListAdapter.notifyDataSetChanged();
+
+                    } else {
+                        Log.e("DoneDOnaNon", "DoneDOnaNon1");
+
+                        mSwipeRefreshLayout.setVisibility(View.GONE);
+                        llNoData.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    mProgress.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SupportListResponse> call, Throwable t) {
+                mProgress.dismiss();
+
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+
+    }
+
 
     @Override
     public void onClick(View view, int position) {
@@ -187,6 +332,7 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
 
     @Override
     public void onRefresh() {
+        snDocType.setSelection(0);
         supportList.clear();
         next_page_url = "support-listing";
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
@@ -194,7 +340,26 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
         } else {
             Constants.ShowNoInternet(getActivity());
         }
-       // ApiCallgetReports();
+        // ApiCallgetReports();
 
     }
+
+    class CustomAdapter<T> extends ArrayAdapter<T> {
+        public CustomAdapter(Context context, int textViewResourceId,
+                             List<T> objects) {
+            super(context, textViewResourceId, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+            if (view instanceof TextView) {
+                ((TextView) view).setTextSize(12);
+                Typeface typeface = ResourcesCompat.getFont(parent.getContext(), R.font.rb_regular);
+                ((TextView) view).setTypeface(typeface);
+            }
+            return view;
+        }
+    }
+
 }
