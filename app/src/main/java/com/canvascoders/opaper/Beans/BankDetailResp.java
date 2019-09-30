@@ -79,6 +79,17 @@ public class BankDetailResp {
         @Expose
         private String bankBranchName;
 
+        public String getComment() {
+            return comment;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
+        }
+
+        @SerializedName("comment")
+        @Expose
+        private String comment;
         @SerializedName("cancelled_cheque_img")
         @Expose
         private String cancelledcheque;

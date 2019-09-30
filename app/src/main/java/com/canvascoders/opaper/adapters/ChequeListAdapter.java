@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.BankDetailResp;
@@ -55,7 +56,7 @@ public class ChequeListAdapter extends RecyclerView.Adapter<ChequeListAdapter.It
         holder.tvAccountNo.setText("" + bankDetail.getBankAc());
         holder.tvBankName.setText("" + bankDetail.getBankName());
         holder.tvPayeeName.setText("" + bankDetail.getPayeeName());
-        Glide.with(mContext).load(Constants.BaseImageURL+bankDetail.getCancelledcheque()).placeholder(R.drawable.checkimage).into(holder.ivChequeImage);
+        Glide.with(mContext).load(Constants.BaseImageURL + bankDetail.getCancelledcheque()).placeholder(R.drawable.checkimage).into(holder.ivChequeImage);
 
         if (bankDetail.getStatus().equalsIgnoreCase("0")) {
             holder.tvStauts.setText("pending");
@@ -92,6 +93,7 @@ public class ChequeListAdapter extends RecyclerView.Adapter<ChequeListAdapter.It
                 holder.tvStauts.setBackground(mContext.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_green));
             }
         }
+        holder.tvComment.setText(bankDetailList.get(position).getComment());
 //        holder.tvStauts.setText(bankDetail.getStatus());
     }
 
@@ -106,6 +108,7 @@ public class ChequeListAdapter extends RecyclerView.Adapter<ChequeListAdapter.It
 
         public AppCompatTextView tvPayeeName, tvBankName, tvAccountNo, tvStauts;
         public LinearLayout llMain;
+        TextView tvComment;
         private ImageView ivChequeImage;
 
         public ItemHolder(View itemView) {
@@ -116,6 +119,7 @@ public class ChequeListAdapter extends RecyclerView.Adapter<ChequeListAdapter.It
             tvStauts = itemView.findViewById(R.id.tvStauts);
             llMain = itemView.findViewById(R.id.llMain);
             ivChequeImage = itemView.findViewById(R.id.ivAccImage);
+            tvComment = itemView.findViewById(R.id.tvComment);
         }
     }
 

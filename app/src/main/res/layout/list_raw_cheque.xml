@@ -194,6 +194,18 @@
                     android:visibility="visible" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/tvComment"
+                android:layout_width="match_parent"
+                android:text=""
+                android:textColor="@color/colorRed"
+                android:layout_marginTop="@dimen/_1sdp"
+                android:textSize="@dimen/_8sdp"
+                android:fontFamily="@font/monteregular"
+                android:layout_height="wrap_content">
+
+            </TextView>
+
         </android.support.v7.widget.LinearLayoutCompat>
 
 
