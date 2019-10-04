@@ -1,1 +1,1 @@
-include ':app', ':digio-esign2',':library'
+include ':app', ':digio-esign2', ':library', ':aadhaarapi_gateway_sdk'

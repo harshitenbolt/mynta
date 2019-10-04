@@ -202,7 +202,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
             if (neutralStoreList.get(i).isSelected()) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", neutralStoreList.get(i).getStoreTypeId());
-                if (!neutralStoreList.get(i).getStoreType().contains(Constants.CAC_STORE)&& !neutralStoreList.get(i).getStoreType().contains(Constants.ASSISTED)) {
+                if (!neutralStoreList.get(i).getStoreType().contains(Constants.CAC_STORE) && !neutralStoreList.get(i).getStoreType().contains(Constants.ASSISTED)) {
                     if (neutralStoreList.get(i).getRate() != null && neutralStoreList.get(i).getRate().length() > 0) {
                         try {
 //                        float rate = Float.parseFloat(neutralStoreList.get(i).getRate());
@@ -296,6 +296,9 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                                         showDialogApproval(jsonObject.getString("response"));
                                     }
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
+
+                                   /* Intent i = new Intent(StoreTypeListingActivity.this, AddendumSignPendingActivity.class);
+                                    startActivity(i);*/
                                     showDialogApproval(jsonObject.optString("response"));
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(StoreTypeListingActivity.this);
@@ -305,6 +308,10 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                                     showDialogApproval2(jsonObject.optString("response"));
                                 }
                             } else if (response.code() == 202) {
+
+                              /*  Intent i = new Intent(StoreTypeListingActivity.this, AddendumSignPendingActivity.class);
+                                startActivity(i);*/
+
                                 showDialogApproval(jsonObject.optString("message"));
                             } else if (response.code() == 405) {
                                 sessionManager.logoutUser(StoreTypeListingActivity.this);
@@ -388,8 +395,6 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                 taskCompletedFragment2.setMesssge(Msg);
                 commanFragmentCallWithoutBackStack(taskCompletedFragment2);
                 dialog.dismiss();
-
-
             }
         });
 
@@ -481,11 +486,22 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                                     }
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
 
+                                    if (jsonObject.has("last_addendum_sign")) {
+                                        Intent i = new Intent(StoreTypeListingActivity.this, AddendumSignPendingActivity.class);
+                                        i.putExtra("data", vendor);
+                                        i.putExtra("message",jsonObject.getString("response"));
+                                        i.putExtra("count",jsonObject.getString("no_of_time_addendum_sign"));
+                                        i.putExtra("is_esign",jsonObject.getString("is_esign"));
+                                        i.putExtra("last_signed",jsonObject.getString("last_addendum_sign"));
+                                        startActivity(i);
+                                        finish();
+                                    } else {
+                                        showDialogApproval(jsonObject.optString("response"));
+                                    }
+                                    //   dialog.dismiss();
 
 
-                                 //   dialog.dismiss();
-
-                                    showDialogApproval(jsonObject.optString("response"));
+                                    //
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(StoreTypeListingActivity.this);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
@@ -493,7 +509,10 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                                 }
 
                             } else if (response.code() == 202) {
-                                showDialogApproval(jsonObject.optString("message"));
+                                Intent i = new Intent(StoreTypeListingActivity.this, AddendumSignPendingActivity.class);
+                                startActivity(i);
+
+                                //showDialogApproval(jsonObject.optString("message"));
                             } else if (response.code() == 405) {
                                 sessionManager.logoutUser(StoreTypeListingActivity.this);
                             } else {
@@ -527,7 +546,6 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
         intent.putExtra("data", vendor);
         startActivity(intent);
         finish();
-
     }
 
 //    @Override

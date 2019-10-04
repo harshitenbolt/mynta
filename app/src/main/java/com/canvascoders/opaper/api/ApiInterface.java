@@ -36,6 +36,8 @@ import com.canvascoders.opaper.Beans.SupportDetailResponse.SupportDetailResponse
 import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
 import com.canvascoders.opaper.Beans.SupportSubjectResponse.SupportSubjectResponse;
 import com.canvascoders.opaper.Beans.ThreadCommentsResponse.CommentThreadResponse;
+import com.canvascoders.opaper.Beans.TranscationId1Response;
+import com.canvascoders.opaper.Beans.TranscationIdResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.Beans.UpdatePanResponse.UpdatePancardResponse;
 import com.canvascoders.opaper.Beans.UserDetailTResponse.GetUserDetails;
@@ -60,6 +62,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
+import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -279,9 +282,6 @@ public interface ApiInterface {
                                           @Part MultipartBody.Part[] store_image_act, @Part MultipartBody.Part owner_img_act);
 
 
-
-
-
     // api call for add dilvery boys
     @Multipart
     @POST("delivery-boys-store")
@@ -312,7 +312,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("update-gst")
-    Call<CommonResponse> gstUpdate(@Header("Authorization") String token,@FieldMap() Map<String, String> data);
+    Call<CommonResponse> gstUpdate(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
 
     @FormUrlEncoded
@@ -480,8 +480,6 @@ public interface ApiInterface {
     Call<DeleteDeliveryResponse> deleteDeliveryBoy(@Header("Authorization") String token, @FieldMap Map<String, String> data);
 
 
-
-
     @FormUrlEncoded
     @POST("support-thread-detail")
     Call<CommentListResponse> getSupportThreadDetail(@Header("Authorization") String token, @Field("support_id") String data);
@@ -505,6 +503,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("resign-agreement-detail")
     Call<ResignAgreeDetailResponse> getDetailsResignAgreement(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+    @FormUrlEncoded
+    @POST
+    Call<TranscationId1Response> getTransactionId(@Url String url, @Header("Content-Type") String authorization, @Header("QT_API_KEY") String apikey, @Header("QT_AGENCY_ID") String agencyid, @FieldMap Map<String, String> data);
 
 
 }

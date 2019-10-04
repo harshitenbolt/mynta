@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 public class Constants {
 
     //-------------------------------------------------------------------------
-    public final static int APP_VERSION = 25; // need to set +1 here befor apk sent on last update before 942018 @ 12 version
+    public final static int APP_VERSION = 26; // need to set +1 here befor apk sent on last update before 942018 @ 12 version
     //-------------------------------------------------------------------------
 
 

@@ -184,6 +184,9 @@
             android:name=".activity.StoreTypeListingActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".activity.AddendumSignPendingActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".activity.AddendumEsignActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
