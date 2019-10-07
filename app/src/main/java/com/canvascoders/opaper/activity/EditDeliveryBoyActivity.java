@@ -179,7 +179,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
 
         ivDriving_Licence = findViewById(R.id.ivDrivingLicence);
-        if(datum.getDrivingLicenceImage() != null && !datum.getDrivingLicenceImage().equalsIgnoreCase("")) {
+        if (datum.getDrivingLicenceImage() != null && !datum.getDrivingLicenceImage().equalsIgnoreCase("")) {
 
             new getBitmapFromURL1().execute(Constants.BaseImageURL + datum.getDrivingLicenceImage());
 
@@ -207,10 +207,12 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         etCurrentHouseNo.setText(datum.getCurrentAddress());
         etCurrentStreet = findViewById(R.id.etCurrentStreet);
         etCurrentStreet.setText(datum.getCurrentAddress1());
+
         etCurrentLandmark = findViewById(R.id.etCurrentLandmark);
         etCurrentLandmark.setText(datum.getCurrentAddressLandmark());
         etCurrentPincode = findViewById(R.id.etCurrentPincode);
         etCurrentPincode.setText(datum.getCurrentAddressPicode());
+        addDC(etCurrentPincode.getText().toString());
         etCurrentCity = findViewById(R.id.etCurrentCity);
         etCurrentCity.setText(datum.getCurrentAddressCity());
         etCurrentState = findViewById(R.id.etCurrentState);
@@ -661,6 +663,17 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         } else if (i1 == 2) {
             params.put(Constants.PARAM_CURRENT_RESIDENTIAL, currentAdress);
             params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
+            params.put(Constants.PARAM_CURRENT_ADDRESS1, etCurrentStreet.getText().toString().trim());
+            params.put(Constants.PARAM_CURRENT_ADDRESS_LANDMARK, etCurrentLandmark.getText().toString());
+            params.put(Constants.PARAM_CURRENT_ADDRESS_PINCODE, etCurrentPincode.getText().toString());
+            params.put(Constants.PARAM_CURRENT_ADDRESS_CITY, etCurrentCity.getText().toString().trim());
+            params.put(Constants.PARAM_CURRENT_ADDRESS_STATE, etCurrentState.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS, etPerHouseNo.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS1, etPermStreet.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_LANDMARK, etPerLandmark.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_PINCODE, etPerPincode.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_CITY, etPerCity.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_STATE, etPerState.getText().toString());
             params.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
             call = ApiClient.getClient().create(ApiInterface.class).DeliveryBoysDetailsValid2("Bearer " + sessionManager.getToken(), validationapiUrl, params);
 
@@ -729,6 +742,89 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                     etPerHouseNo.requestFocus();
 
                                 }
+
+                                if (validation.getCurrentAddress() != null && validation.getCurrentAddress().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etCurrentHouseNo.setError(validation.getCurrentAddress());
+                                    etCurrentHouseNo.requestFocus();
+
+                                }
+
+                                if (validation.getCurrentaddress1() != null && validation.getCurrentaddress1().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etCurrentStreet.setError(validation.getCurrentaddress1());
+                                    etCurrentStreet.requestFocus();
+
+                                }
+                                if (validation.getCurrentaddressLandmark() != null && validation.getCurrentaddressLandmark().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etCurrentLandmark.setError(validation.getCurrentaddressLandmark());
+                                    etCurrentLandmark.requestFocus();
+
+                                }
+
+                                if (validation.getCurrentAddressPincode() != null && validation.getCurrentAddressPincode().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etCurrentPincode.setError(validation.getCurrentAddressPincode());
+                                    etCurrentPincode.requestFocus();
+
+                                }
+                                if (validation.getCurrentAddressCity() != null && validation.getCurrentAddressCity().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etCurrentCity.setError(validation.getCurrentAddressCity());
+                                    etCurrentCity.requestFocus();
+
+                                }
+
+                                if (validation.getCurrentAddressState() != null && validation.getCurrentAddressState().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etCurrentState.setError(validation.getCurrentAddressState());
+                                    etCurrentState.requestFocus();
+
+                                }
+
+                                if (validation.getPermanentResidentialAddress() != null && validation.getPermanentResidentialAddress().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etPerHouseNo.setError(validation.getPermanentResidentialAddress());
+                                    etPerHouseNo.requestFocus();
+
+                                }
+
+                                if (validation.getPermanentResidentialAddress1() != null && validation.getPermanentResidentialAddress1().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etPermStreet.setError(validation.getPermanentResidentialAddress1());
+                                    etPermStreet.requestFocus();
+
+                                }
+
+                                if (validation.getPermanentResidentialAddressLandmark() != null && validation.getPermanentResidentialAddressLandmark().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etPerLandmark.setError(validation.getPermanentResidentialAddressLandmark());
+                                    etPerLandmark.requestFocus();
+
+                                }
+
+                                if (validation.getPermanentResidentialAddressPincode() != null && validation.getPermanentResidentialAddressPincode().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etPerPincode.setError(validation.getPermanentResidentialAddressPincode());
+                                    etPerPincode.requestFocus();
+
+                                }
+
+                                if (validation.getPermanentResidentialAddressCity() != null && validation.getPermanentResidentialAddressCity().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etPerCity.setError(validation.getPermanentResidentialAddressCity());
+                                    etPerCity.requestFocus();
+
+                                }
+                                if (validation.getPermanentResidentialAddressState() != null && validation.getPermanentResidentialAddressState().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etPerState.setError(validation.getPermanentResidentialAddressState());
+                                    etPerState.requestFocus();
+
+                                }
+
+
                                 if (validation.getDc() != null && validation.getDc().length() > 0) {
                                     //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     Toast.makeText(EditDeliveryBoyActivity.this, validation.getDc(), Toast.LENGTH_LONG).show();

@@ -112,9 +112,11 @@ import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
+import static com.aadhaarapi.sdk.gateway_lib.qtUtils.QtConstantUtils.QT_EMAIL;
 import static com.aadhaarapi.sdk.gateway_lib.qtUtils.QtConstantUtils.QT_REQUEST_TYPE;
 import static com.aadhaarapi.sdk.gateway_lib.qtUtils.QtConstantUtils.QT_TRANSACTION_ID;
 import static com.aadhaarapi.sdk.gateway_lib.qtUtils.QtConstantUtils.REQUEST_AADHAARAPI;
+import static com.aadhaarapi.sdk.gateway_lib.qtUtils.QtRequestType.ESIGN;
 import static com.aadhaarapi.sdk.gateway_lib.qtUtils.QtRequestType.OFFLINE_AADHAAR;
 import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
 import static com.canvascoders.opaper.fragment.PanVerificationFragment.CROPPED_IMAGE;
@@ -522,7 +524,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
             case R.id.btExtract:
 
-            /*    if (kyc_type.equalsIgnoreCase("1")) {
+                if (kyc_type.equalsIgnoreCase("1")) {
                     if (!aadharImagepathFront.equals("") && !aadharImagepathBack.equalsIgnoreCase("")) {
 
                         showEditDialog();
@@ -555,9 +557,9 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                     if (!dlImageOathFront.equals("") && !dlImagePathBack.equalsIgnoreCase("")) {
 
                         try {
-                          *//*  Glide.with(getActivity()).load(voterImagePathBack).into(ivVoterImageBack);
+                            Glide.with(getActivity()).load(voterImagePathBack).into(ivVoterImageBack);
                             ivVoterBackSelected.setVisibility(View.VISIBLE);
-                            tvVoterBack.setVisibility(View.GONE);*//*
+                            tvVoterBack.setVisibility(View.GONE);
                             if (!dlImageOathFront.equalsIgnoreCase("") && !dlImagePathBack.equalsIgnoreCase("")) {
                                 ApiCallGetDetailLicence(dlImageOathFront);
                             }
@@ -568,7 +570,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                         Toast.makeText(getActivity(), "Please upload Both Images.", Toast.LENGTH_SHORT).show();
                     }
 
-                }*/
+                }
 
 
 
@@ -579,7 +581,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                 gatewayIntent.putExtra(QT_TRANSACTION_ID, GatewayId);
                 gatewayIntent.putExtra(QT_REQUEST_TYPE, OFFLINE_AADHAAR.getRequest());
                 startActivityForResult(gatewayIntent, REQUEST_AADHAARAPI);*/
-                ApiGetTransactionId();
+              //  ApiGetTransactionId();
 
                 break;
 
@@ -614,7 +616,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         param.put("purpose", "signature of adhar verification");
         param.put("responseURL", Constants.BaseURL + "/aadhar-api/" + str_process_id);
         param.put("face_match", "N");
-        ApiClient.getClient().create(ApiInterface.class).getTransactionId("https://preprod.aadhaarapi.com/gateway/esign/init/", "application/json", "67c13d33-2b2a-4d33-b9a9-1a5984a4e158", "29e29bc6-6bea-42b9-a489-51c8815b7840", param).enqueue(new Callback<TranscationId1Response>() {
+        ApiClient.getClient().create(ApiInterface.class).getTransactionId("https://prod.aadhaarapi.com/gateway/esign/init/", /*"application/json",*/ "67c13d33-2b2a-4d33-b9a9-1a5984a4e158", "29e29bc6-6bea-42b9-a489-51c8815b7840", param).enqueue(new Callback<TranscationId1Response>() {
             @Override
             public void onResponse(Call<TranscationId1Response> call, Response<TranscationId1Response> response) {
                 if (response.isSuccessful()) {
@@ -720,7 +722,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this);
+                EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this,str_process_id);
                 editNameDialogFragment.setCancelable(false);
                 editNameDialogFragment.show(getChildFragmentManager(), "fragment_edit_name");
             }
@@ -1199,6 +1201,13 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
     }
 
+
+
+
+
+    public static void adharExtractMehots(String transactionId){
+
+    }
 
     public void storeAadhar() {
         gps = new GPSTracker(getActivity());

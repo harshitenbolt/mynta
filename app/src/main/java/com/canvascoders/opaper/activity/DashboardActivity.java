@@ -567,6 +567,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
                     if (getnotificationdata != null) {
 
+
+                        Constants.showAdhar= String.valueOf(getnotificationdata.getShowAdharAPi());
+
                         if (getnotificationdata.getIsupdateavailable() != null) {
                             Log.e("Second Step", "" + getnotificationdata.getIsupdateavailable() + " " + getnotificationdata.getCount());
                         }

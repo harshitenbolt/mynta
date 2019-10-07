@@ -74,6 +74,102 @@ public class AddDelBoyResponse {
 
     public class Validation {
 
+        public String getCurrentaddress1() {
+            return currentaddress1;
+        }
+
+        public void setCurrentaddress1(String currentaddress1) {
+            this.currentaddress1 = currentaddress1;
+        }
+
+        public String getCurrentaddressLandmark() {
+            return currentaddressLandmark;
+        }
+
+        public void setCurrentaddressLandmark(String currentaddressLandmark) {
+            this.currentaddressLandmark = currentaddressLandmark;
+        }
+
+        public String getCurrentAddress() {
+            return currentAddress;
+        }
+
+        public void setCurrentAddress(String currentAddress) {
+            this.currentAddress = currentAddress;
+        }
+
+        public String getCurrentAddressPincode() {
+            return currentAddressPincode;
+        }
+
+        public void setCurrentAddressPincode(String currentAddressPincode) {
+            this.currentAddressPincode = currentAddressPincode;
+        }
+
+        public String getCurrentAddressCity() {
+            return currentAddressCity;
+        }
+
+        public void setCurrentAddressCity(String currentAddressCity) {
+            this.currentAddressCity = currentAddressCity;
+        }
+
+        public String getCurrentAddressState() {
+            return currentAddressState;
+        }
+
+        public void setCurrentAddressState(String currentAddressState) {
+            this.currentAddressState = currentAddressState;
+        }
+
+        public String getPermanentResidentialAddress() {
+            return permanentResidentialAddress;
+        }
+
+        public void setPermanentResidentialAddress(String permanentResidentialAddress) {
+            this.permanentResidentialAddress = permanentResidentialAddress;
+        }
+
+        public String getPermanentResidentialAddress1() {
+            return permanentResidentialAddress1;
+        }
+
+        public void setPermanentResidentialAddress1(String permanentResidentialAddress1) {
+            this.permanentResidentialAddress1 = permanentResidentialAddress1;
+        }
+
+        public String getPermanentResidentialAddressLandmark() {
+            return permanentResidentialAddressLandmark;
+        }
+
+        public void setPermanentResidentialAddressLandmark(String permanentResidentialAddressLandmark) {
+            this.permanentResidentialAddressLandmark = permanentResidentialAddressLandmark;
+        }
+
+        public String getPermanentResidentialAddressPincode() {
+            return permanentResidentialAddressPincode;
+        }
+
+        public void setPermanentResidentialAddressPincode(String permanentResidentialAddressPincode) {
+            this.permanentResidentialAddressPincode = permanentResidentialAddressPincode;
+        }
+
+        public String getPermanentResidentialAddressCity() {
+            return permanentResidentialAddressCity;
+        }
+
+        public void setPermanentResidentialAddressCity(String permanentResidentialAddressCity) {
+            this.permanentResidentialAddressCity = permanentResidentialAddressCity;
+        }
+
+        public String getPermanentResidentialAddressState() {
+            return permanentResidentialAddressState;
+        }
+
+        public void setPermanentResidentialAddressState(String permanentResidentialAddressState) {
+            this.permanentResidentialAddressState = permanentResidentialAddressState;
+        }
+
         @SerializedName("proccess_id")
         @Expose
         private String proccessId;
@@ -91,6 +187,58 @@ public class AddDelBoyResponse {
         @SerializedName("current_residential_address")
         @Expose
         private String current_residential_address;
+
+
+        @SerializedName("current_address1")
+        @Expose
+        private String currentaddress1;
+
+        @SerializedName("current_address_landmark")
+        @Expose
+        private String currentaddressLandmark;
+
+        @SerializedName("current_address")
+        @Expose
+        private String currentAddress;
+
+        @SerializedName("current_address_picode")
+        @Expose
+        private String currentAddressPincode;
+
+        @SerializedName("current_address_city")
+        @Expose
+        private String currentAddressCity;
+
+        @SerializedName("current_address_state")
+        @Expose
+        private String currentAddressState;
+
+        @SerializedName("permanent_residential_address")
+        @Expose
+        private String permanentResidentialAddress;
+
+        @SerializedName("permanent_residential_address1")
+        @Expose
+        private String permanentResidentialAddress1;
+
+        @SerializedName("permanent_residential_address_landmark")
+        @Expose
+        private String permanentResidentialAddressLandmark;
+
+        @SerializedName("permanent_residential_address_picode")
+        @Expose
+        private String permanentResidentialAddressPincode;
+
+        @SerializedName("permanent_residential_address_city")
+        @Expose
+        private String permanentResidentialAddressCity;
+
+        @SerializedName("permanent_residential_address_state")
+        @Expose
+        private String permanentResidentialAddressState;
+
+
+
 
         @SerializedName("permanent_address")
         @Expose

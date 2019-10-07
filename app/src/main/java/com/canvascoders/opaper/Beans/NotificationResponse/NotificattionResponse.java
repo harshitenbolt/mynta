@@ -13,6 +13,18 @@ public class NotificattionResponse {
     @Expose
     private int liveVendorCount;
 
+    public int getShowAdharAPi() {
+        return showAdharAPi;
+    }
+
+    public void setShowAdharAPi(int showAdharAPi) {
+        this.showAdharAPi = showAdharAPi;
+    }
+
+    @SerializedName("show_aadhar_api")
+    @Expose
+    private int showAdharAPi;
+
     @SerializedName("in_procces_count")
     @Expose
     private int inProgressCount;

@@ -297,7 +297,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             if (isUpdationRequired.equalsIgnoreCase("1")) {
                 cvResignAgreement.setVisibility(View.VISIBLE);
             } else {
-                cvResignAgreement.setVisibility(View.INVISIBLE);
+                cvResignAgreement.setVisibility(View.GONE);
             }
             allowDEdit = vendor.getAllowedit();
             allowEditDelBoy = vendor.getIsAddDeliveryBoy();

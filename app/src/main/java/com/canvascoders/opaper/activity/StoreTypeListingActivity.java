@@ -423,6 +423,8 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
 
 
     private void getStoreListing(Integer proccessId) {
+        progressDialog.setMessage("please wait...");
+        progressDialog.show();
         JsonObject dataObj = new JsonObject();
         dataObj.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
         dataObj.addProperty(Constants.KEY_PROCESS_ID, vendor.getProccessId());
@@ -436,6 +438,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
         retrofit.create(ApiInterface.class).getOldStoreTypeListing("Bearer " + sessionManager.getToken(), dataObj).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                progressDialog.dismiss();
 /////
                 if (response.isSuccessful()) {
                     try {
@@ -536,6 +539,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });

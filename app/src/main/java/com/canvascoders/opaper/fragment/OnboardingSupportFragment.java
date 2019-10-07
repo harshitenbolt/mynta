@@ -143,18 +143,22 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
 
                 if (selectedItem.equalsIgnoreCase("pending")) {
                     search = 1;
+                    supportList.clear();
                     supportList1.clear();
                     nextPageUrl1="support-listing";
+                    status = "pending";
                     ApiCallgetReportswithSearch(status);
                 }
                 if (selectedItem.equalsIgnoreCase("in-progress")) {
                     search = 1;
                     nextPageUrl1="support-listing";
+                    status = "in-progress";
                     supportList1.clear();
                     ApiCallgetReportswithSearch(status);
                 }
                 if (selectedItem.equalsIgnoreCase("closed")) {
                     search = 1;
+                    status = "closed";
                     nextPageUrl1="support-listing";
                     supportList1.clear();
                     ApiCallgetReportswithSearch(status);
@@ -163,6 +167,7 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
                     search = 1;
                     nextPageUrl1="support-listing";
                     supportList1.clear();
+                    status= "re-open";
                     ApiCallgetReportswithSearch(status);
 
                 }
@@ -244,6 +249,7 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
     }
 
     private void ApiCallgetReportswithSearch(String status) {
+
         mProgress.show();
 
         Map<String, String> param = new HashMap<>();

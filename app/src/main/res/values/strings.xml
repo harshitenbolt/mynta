@@ -47,8 +47,8 @@
 
     <string name="complete_esign">  Link for completing E-sign verification has been sent to this user\'s registered Mobile No. If Link not received click "Resend". If Completed process then click "Check E-sign". </string>
     <string name="start_esign">Esign Verification for this user is pending under </string>
-    <string name="app_version_2">APP VERSION : 22</string>
-    <string name="version_23">App Version 23</string>
+    <string name="app_version_2">APP VERSION : 24</string>
+    <string name="version_23">App Version 24</string>
 
     <array name="shoptype">
         <item>--Shop Type--</item>
@@ -192,5 +192,14 @@
     <string name="skip_and_send">Skip &amp; Send</string>
     <string name="notice">If you want to change rate or store type please tap on change rate and if you want to continue with current working rate than tap on resign agreement.</string>
     <string name="Rs">\u20B9</string>
+
+
+    <string name="qt_env">QT_P</string>
+
+    <string name="qt_otp_access">y</string>
+
+    <string name="qt_fp_access">n</string>
+    <string name="qt_iris_access">n</string>
+
 
 </resources>

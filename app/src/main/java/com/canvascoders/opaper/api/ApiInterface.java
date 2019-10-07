@@ -36,6 +36,7 @@ import com.canvascoders.opaper.Beans.SupportDetailResponse.SupportDetailResponse
 import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
 import com.canvascoders.opaper.Beans.SupportSubjectResponse.SupportSubjectResponse;
 import com.canvascoders.opaper.Beans.ThreadCommentsResponse.CommentThreadResponse;
+import com.canvascoders.opaper.Beans.TransactionIDResponse.TransactionIdResponse;
 import com.canvascoders.opaper.Beans.TranscationId1Response;
 import com.canvascoders.opaper.Beans.TranscationIdResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
@@ -505,9 +506,17 @@ public interface ApiInterface {
     Call<ResignAgreeDetailResponse> getDetailsResignAgreement(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
 
+
+    @FormUrlEncoded
+    @POST("aadhar-api-init")
+    Call<TransactionIdResponse> getTransacId(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+
+
     @FormUrlEncoded
     @POST
-    Call<TranscationId1Response> getTransactionId(@Url String url, @Header("Content-Type") String authorization, @Header("QT_API_KEY") String apikey, @Header("QT_AGENCY_ID") String agencyid, @FieldMap Map<String, String> data);
+    Call<TranscationId1Response> getTransactionId(@Url String url, /*@Header("Content-Type") String authorization,*/ @Header("QT_API_KEY") String apikey, @Header("QT_AGENCY_ID") String agencyid, @FieldMap Map<String, String> data);
 
 
 }

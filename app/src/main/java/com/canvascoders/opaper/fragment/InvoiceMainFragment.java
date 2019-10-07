@@ -58,7 +58,7 @@ import okhttp3.Response;
 public class InvoiceMainFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     SessionManager sessionManager;
     String TAG = "InvoiceMain";
-    JSONObject object = new JSONObject();
+    JSONObject object ;
     private BillsAdapter linearAdapter;
     private NetworkConnectivity networkConnectivity;
     private ArrayList<BillList> billLists = new ArrayList<>();
@@ -101,7 +101,7 @@ public class InvoiceMainFragment extends Fragment implements SwipeRefreshLayout.
         progressDialog.setCancelable(false);
         webView = view.findViewById(R.id.wvInvoiceMain);
 
-
+        object = new JSONObject();
         try {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
@@ -273,6 +273,17 @@ public class InvoiceMainFragment extends Fragment implements SwipeRefreshLayout.
 
                                 endDate.setText(year + "-" + monthString + "-" + daysString);
                                 endDateFinal = year + "-" + monthString + "-" + daysString;
+
+
+                                object = new JSONObject();
+                                try {
+                                    object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                                    object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                                    object.put(Constants.PARAMS_INVOICE_TYPE, type_name);
+                                    object.put(Constants.PARAMS_FROM_DATE, startDatefinal);
+                                    object.put(Constants.PARAMS_TO_DATE, endDateFinal);
+                                } catch (JSONException e) {
+                                }
 
 
                                 new GetInvoice1(object.toString(), apiName).execute();
