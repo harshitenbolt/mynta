@@ -67,7 +67,7 @@ public class GSTInvoiceMainFragment extends Fragment {
     private RadioGroup rg_vendor_list;
     JSONObject jsonObject = new JSONObject();
     private String apiName = "get-invoice1";
-    private String type_name="tax";
+    private String type_name="tax-gst";
     Context mcontext;
     View view;
     String invoice_pdf = "";

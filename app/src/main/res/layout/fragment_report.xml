@@ -62,7 +62,6 @@
             android:button="@android:color/transparent"
             style="@style/MyRadioButtonStyleLeft"
             android:text="ALL"
-
             android:textSize="16sp" />
 
         <android.support.v7.widget.AppCompatRadioButton

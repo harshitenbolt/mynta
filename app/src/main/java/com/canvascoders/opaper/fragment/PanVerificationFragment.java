@@ -539,7 +539,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             pan_card_part = MultipartBody.Part.createFormData(Constants.PARAM_PAN_CARD_FRONT, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile));
 
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            mProgressDialog.setMessage("Please wait getting details...");
+            mProgressDialog.setMessage("Please wait ...");
             mProgressDialog.show();
             Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstorePancard("Bearer " + sessionManager.getToken(), params, pan_card_part);
             callUpload.enqueue(new Callback<CommonResponse>() {

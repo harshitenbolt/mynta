@@ -534,77 +534,79 @@ public class InvoiceMainFragment extends Fragment implements SwipeRefreshLayout.
 
         @Override
         protected void onPostExecute(String message) {
-            progressDialog.dismiss();
-            mSwipeRefreshLayout.setRefreshing(false);
-            try {
-                JSONObject jsonObject = new JSONObject(message);
-                Mylogger.getInstance().Logit(TAG, message);
-                if (jsonObject.has("response")) {
-                    Toast.makeText(mcontext, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
-                }
-                if (jsonObject.has("responseCode")) {
-                    if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
-                        sessionManager.logoutUser(getActivity());
+
+                progressDialog.dismiss();
+                mSwipeRefreshLayout.setRefreshing(false);
+                try {
+                    JSONObject jsonObject = new JSONObject(message);
+                    Mylogger.getInstance().Logit(TAG, message);
+                    if (jsonObject.has("response")) {
+                        Toast.makeText(mcontext, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
                     }
-                }
-                {
-                    String next_Url = jsonObject.getString("next_page_url");
-                    if (!next_Url.equalsIgnoreCase("") && !next_Url.equals("null")) {
-                        String[] separated = next_Url.split("api3/");
-                        apiName = separated[1];
-                    } else {
-                        apiName = "";
-                    }
-
-                    JSONArray result = jsonObject.getJSONArray("data");
-                    if (result.length() > 0) {
-                        ImageView m = (ImageView) view.findViewById(R.id.imgnodata);
-                        m.setVisibility(View.GONE);
-                    } else {
-                        ImageView m = (ImageView) view.findViewById(R.id.imgnodata);
-                        m.setVisibility(View.VISIBLE);
-                    }
-                    for (int i = 0; i < result.length(); i++) {
-                        JSONObject o = result.getJSONObject(i);
-
-                        Integer id;
-                        Integer invoice_status;
-                        String proccess_id;
-                        String store_name;
-                        String bill_period;
-                        String dc;
-                        String store_address;
-                        String amt;
-                        String mobile_no;
-                        String updated_at;
-                        String vendor_id;
-
-
-                        id = o.getInt("id");
-                        proccess_id = o.getString("proccess_id");
-                        store_name = o.getString("store_name");
-                        if (o.isNull("bill_period")) {
-                            bill_period = "";
-                        } else {
-                            bill_period = o.getString("bill_period");
+                    if (jsonObject.has("responseCode")) {
+                        if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
+                            sessionManager.logoutUser(getActivity());
                         }
-                        dc = o.getString("dc");
-                        store_address = o.getString("store_address");
-                        amt = "0";
-                        mobile_no = o.getString("mobile_no");
-                        updated_at = o.getString("updated_at");
-                        vendor_id = o.getString("vendor_id");
-                        status = o.getString("esign_status");
-                        invoice_status = 0;
-                        page = 0;
-                        billLists.add(new BillList(id, proccess_id, store_name, bill_period, dc, store_address, amt, mobile_no, updated_at, invoice_status, vendor_id));
                     }
-                    linearAdapter.notifyDataSetChanged();
+                    {
+                        String next_Url = jsonObject.getString("next_page_url");
+                        if (!next_Url.equalsIgnoreCase("") && !next_Url.equals("null")) {
+                            String[] separated = next_Url.split("api3/");
+                            apiName = separated[1];
+                        } else {
+                            apiName = "";
+                        }
+
+                        JSONArray result = jsonObject.getJSONArray("data");
+                        if (result.length() > 0) {
+                            ImageView m = (ImageView) view.findViewById(R.id.imgnodata);
+                            m.setVisibility(View.GONE);
+                        } else {
+                            ImageView m = (ImageView) view.findViewById(R.id.imgnodata);
+                            m.setVisibility(View.VISIBLE);
+                        }
+                        for (int i = 0; i < result.length(); i++) {
+                            JSONObject o = result.getJSONObject(i);
+
+                            Integer id;
+                            Integer invoice_status;
+                            String proccess_id;
+                            String store_name;
+                            String bill_period;
+                            String dc;
+                            String store_address;
+                            String amt;
+                            String mobile_no;
+                            String updated_at;
+                            String vendor_id;
+
+
+                            id = o.getInt("id");
+                            proccess_id = o.getString("proccess_id");
+                            store_name = o.getString( "store_name");
+                            if (o.isNull("bill_period")) {
+                                bill_period = "";
+                            } else {
+                                bill_period = o.getString("bill_period");
+                            }
+                            dc = o.getString("dc");
+                            store_address = o.getString("store_address");
+                            amt = "0";
+                            mobile_no = o.getString("mobile_no");
+                            updated_at = o.getString("updated_at");
+                            vendor_id = o.getString("vendor_id");
+                            status = o.getString("esign_status");
+                            invoice_status = 0;
+                            page = 0;
+                            billLists.add(new BillList(id, proccess_id, store_name, bill_period, dc, store_address, amt, mobile_no, updated_at, invoice_status, vendor_id));
+                        }
+                        linearAdapter.notifyDataSetChanged();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
+
     }
 
 

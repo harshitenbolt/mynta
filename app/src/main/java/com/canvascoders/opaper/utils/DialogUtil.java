@@ -58,20 +58,17 @@ public class DialogUtil {
     public static EditText etDlName, etFathername, etDlDob, etDlNumber;
     private static SessionManager sessionManager;
     //pan widgets
-    public static EditText etPanName, etPanFatherName, etPanNumber,etChequeNumber,etPayeeName,etIfscCode,etBankName,etBranchName,etBankAddress;
+    public static EditText etPanName, etStoreName, etPanFatherName, etPanNumber, etChequeNumber, etPayeeName, etIfscCode, etBankName, etBranchName, etBankAddress;
     static DatePicker datePicker;
-
+    static boolean individua = true;
     //voter widgets
-    public static EditText etVotername, etVoterFatherName, etVoterDateofBirth,etVoterIdNumber;
+    public static EditText etVotername, etVoterFatherName, etVoterDateofBirth, etVoterIdNumber;
 
     Button btSubmit;
     Context context;
     ImageView ivClose;
 
     static String order_type = "1";
-
-
-
 
 
     public static void AdharDetail(Context mContext, String name, String year, String pincode, String udi, final DialogListner dialogInterface) {
@@ -164,7 +161,7 @@ public class DialogUtil {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
 
-                                datePicker =new  DatePicker(mContext);
+                                datePicker = new DatePicker(mContext);
                                 datePicker.init(year, monthOfYear + 1, dayOfMonth, null);
 
 
@@ -200,10 +197,11 @@ public class DialogUtil {
             @Override
             public void onClick(View v) {
                 //dialogInterface.cancel();
-                if(isValid(v)){
-                    dialogInterface.onClickDetails(etVotername.getText().toString(),etVoterFatherName.getText().toString(),etVoterDateofBirth.getText().toString(),etVoterIdNumber.getText().toString());
+                if (isValid(v)) {
+                    dialogInterface.onClickDetails(etVotername.getText().toString(), etVoterFatherName.getText().toString(), etVoterDateofBirth.getText().toString(), etVoterIdNumber.getText().toString());
                 }
             }
+
             private boolean isValid(View v) {
                 if (etVotername.getText().toString().equalsIgnoreCase("")) {
                     etVotername.setError("Provide name");
@@ -427,10 +425,13 @@ public class DialogUtil {
     }
 
 
-    public static void PanDetail2(Context mContext, String name, String fathername, String pannumber, final DialogListner dialogInterface) {
+    public static void PanDetail2(Context mContext, String name, String fathername, String pannumber, boolean individual, final DialogListner dialogInterface) {
 
         ImageView ivClose;
         Button btSubmit;
+
+        individua = individual;
+
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
             dialog = null;
@@ -443,6 +444,8 @@ public class DialogUtil {
         dialog.setCancelable(true);
         dialog.findViewById(R.id.ivClose);
         etPanName = dialog.findViewById(R.id.etPanName);
+        etStoreName = dialog.findViewById(R.id.etStoreName);
+
         etPanName.setText(name);
         etPanFatherName = dialog.findViewById(R.id.etFatherName);
         etPanNumber = dialog.findViewById(R.id.etPanNumber);
@@ -456,6 +459,45 @@ public class DialogUtil {
             }
         });
 
+        etPanNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() > 3) {
+                    char first = s.toString().charAt(3);
+                    String word = String.valueOf(first);
+                    if (word.equalsIgnoreCase("P")) {
+                        individua = true;
+                    } else {
+                        individua = false;
+                    }
+
+                    if (individua) {
+                        etStoreName.setVisibility(View.GONE);
+                    } else {
+                        etStoreName.setVisibility(View.VISIBLE);
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        if (individua) {
+            etStoreName.setVisibility(View.GONE);
+        } else {
+            etStoreName.setVisibility(View.VISIBLE);
+        }
 
         btSubmit = dialog.findViewById(R.id.btSubmitDlDetail);
         btSubmit.setOnClickListener(new View.OnClickListener() {
@@ -463,7 +505,13 @@ public class DialogUtil {
                                         public void onClick(View v) {
                                             if (validation(v)) {
                                                 //dialog.dismiss();
-                                                dialogInterface.onClickDetails(etPanName.getText().toString(), etPanFatherName.getText().toString(), "", etPanNumber.getText().toString());
+                                                if (individua) {
+                                                    dialogInterface.onClickDetails(etPanName.getText().toString(), etPanFatherName.getText().toString(), "", etPanNumber.getText().toString());
+
+                                                } else {
+                                                    dialogInterface.onClickDetails(etPanName.getText().toString(), etPanFatherName.getText().toString(), etStoreName.getText().toString(), etPanNumber.getText().toString());
+
+                                                }
                                             }
                                         }
 
@@ -500,9 +548,7 @@ public class DialogUtil {
     }
 
 
-
-
-    public static void chequeDetail(Context mContext, String AccNumber, String payeename, String ifsccode,String processId,String bank_name,String branch_name,String branch_address, final DialogListner dialogInterface) {
+    public static void chequeDetail(Context mContext, String AccNumber, String payeename, String ifsccode, String processId, String bank_name, String branch_name, String branch_address, final DialogListner dialogInterface) {
 
         ImageView ivClose;
         CheckBox cbMain;
@@ -543,9 +589,8 @@ public class DialogUtil {
                 if (s.toString().length() > 5) {
 
                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                        getBankDetails(mContext,s.toString(),processId);
-                    }
-                    else {
+                        getBankDetails(mContext, s.toString(), processId);
+                    } else {
                         Constants.ShowNoInternet(mContext);
                     }
 
@@ -572,7 +617,7 @@ public class DialogUtil {
                                         public void onClick(View v) {
                                             if (validation(v)) {
                                                 //dialog.dismiss();
-                                                dialogInterface.onClickChequeDetails(etChequeNumber.getText().toString(), etPayeeName.getText().toString(),etIfscCode.getText().toString(),etBankName.getText().toString(),etBranchName.getText().toString(),etBankAddress.getText().toString());
+                                                dialogInterface.onClickChequeDetails(etChequeNumber.getText().toString(), etPayeeName.getText().toString(), etIfscCode.getText().toString(), etBankName.getText().toString(), etBranchName.getText().toString(), etBankAddress.getText().toString());
                                             }
                                         }
 
@@ -665,10 +710,7 @@ public class DialogUtil {
     }
 
 
-
-
-
-    public static void getBankDetails(Context context,String ifsc, String str_process_id) {
+    public static void getBankDetails(Context context, String ifsc, String str_process_id) {
 
         sessionManager = new SessionManager(context);
         Map<String, String> params = new HashMap<String, String>();
@@ -719,7 +761,6 @@ public class DialogUtil {
             }
         });
     }
-
 
 
 }

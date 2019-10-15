@@ -484,7 +484,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:visibility="visible">
+                                android:visibility="gone">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -503,7 +503,7 @@
                                         android:background="@drawable/roundedcornergrey"
                                         android:clipToPadding="true"
                                         android:elevation="@dimen/_3sdp"
-                                        android:visibility="gone"
+                                        android:visibility="visible"
                                         app:cardCornerRadius="@dimen/_5sdp">
 
                                         <LinearLayout

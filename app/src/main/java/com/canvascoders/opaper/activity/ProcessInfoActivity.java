@@ -185,7 +185,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void ApiCallCheckEsign() {
-        progressDialog.setMessage("Please Wait Uploading Cheque Document...");
+        progressDialog.setMessage("Please Wait ...");
         progressDialog.show();
 
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {

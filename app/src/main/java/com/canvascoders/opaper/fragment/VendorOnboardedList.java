@@ -491,6 +491,9 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
                             vList.setPanName(vendorList.getPanName());
                             vList.setStoreAddress1(vendorList.getStoreAddress1());
                             vList.setStoreAddressLandmark(vendorList.getStoreAddressLandmark());
+                            vList.setCity(vendorList.getCity());
+                            vList.setState(vendorList.getState());
+                            vList.setPincode(vendorList.getPincode());
                             vList.setPanNo(vendorList.getPanNo());
                             vList.setStatus(vendorList.getStatus());
                             vList.setShopImage(vendorList.getShopImage());
@@ -659,6 +662,12 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
                             vList.setPanName(vendorList.getPanName());
                             vList.setStoreAddress1(vendorList.getStoreAddress1());
                             vList.setStoreAddressLandmark(vendorList.getStoreAddressLandmark());
+
+
+                            vList.setCity(vendorList.getCity());
+                            vList.setState(vendorList.getState());
+                            vList.setPincode(vendorList.getPincode());
+
                             vList.setStatus(vendorList.getStatus());
                             vList.setPanNo(vendorList.getPanNo());
                             vList.setShopImage(vendorList.getShopImage());

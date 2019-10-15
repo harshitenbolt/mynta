@@ -94,6 +94,8 @@ public class EditNameDialogFragment extends DialogFragment {
         edit_apincode = (EditText) view.findViewById(R.id.edit_apincode);
         btn_close_dialog = (ImageView) view.findViewById(R.id.btn_close_dialog);
         progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Please wait...");
 
         sessionManager = new SessionManager(getActivity());
 

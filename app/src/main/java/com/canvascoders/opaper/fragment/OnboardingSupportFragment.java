@@ -66,8 +66,9 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
     SwipeRefreshLayout mSwipeRefreshLayout;
     LinearLayout llNoData;
     Spinner snDocType;
-    String status="";
+    String status = "";
     int search = 0;
+    boolean onRefresh = false;
     private List<String> docTypeList = new ArrayList<>();
 
     public OnboardingSupportFragment() {
@@ -107,16 +108,20 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
 
                 if (search == 0) {
                     if (!next_page_url.equalsIgnoreCase(""))
-                        ApiCallgetReports();
+                        ApiCallgetReports(status);
                 } else {
-                    if (!nextPageUrl1.equalsIgnoreCase(""))
-                        ApiCallgetReportswithSearch(status);
+                    if (!nextPageUrl1.equalsIgnoreCase("")) {
+
+                    }
+                    // ApiCallgetReportswithSearch(status);
                 }
 
 
             }
         };
+
         rvOnboardingSupport.addOnScrollListener(scrollListener);
+
 
         snDocType = (Spinner) view.findViewById(R.id.snFilterType);
         docTypeList = Arrays.asList(getResources().getStringArray(R.array.FilterType));
@@ -131,44 +136,52 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
                 String selectedItem = adapterView.getItemAtPosition(i).toString();
                 status = selectedItem;
                 if (selectedItem.equalsIgnoreCase("Select Filter")) {
-                    supportList.clear();
-                    next_page_url = "support-listing";
-                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                        ApiCallgetReports();
-                    } else {
-                        Constants.ShowNoInternet(getActivity());
-                    }
+
+                        supportList.clear();
+                        next_page_url = "support-listing";
+                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                            status = "";
+                            ApiCallgetReports(status);
+                        } else {
+                            Constants.ShowNoInternet(getActivity());
+                        }
+
+
                 }
 
 
                 if (selectedItem.equalsIgnoreCase("pending")) {
-                    search = 1;
+                    search = 0;
                     supportList.clear();
                     supportList1.clear();
-                    nextPageUrl1="support-listing";
+                    next_page_url = "support-listing";
                     status = "pending";
-                    ApiCallgetReportswithSearch(status);
+                    ApiCallgetReports(status);
                 }
                 if (selectedItem.equalsIgnoreCase("in-progress")) {
-                    search = 1;
-                    nextPageUrl1="support-listing";
+                    search = 0;
+                    next_page_url = "support-listing";
                     status = "in-progress";
-                    supportList1.clear();
-                    ApiCallgetReportswithSearch(status);
+                    supportList.clear();
+                    ApiCallgetReports(status);
+                    //  ApiCallgetReportswithSearch(status);
                 }
                 if (selectedItem.equalsIgnoreCase("closed")) {
-                    search = 1;
+                    search = 0;
                     status = "closed";
-                    nextPageUrl1="support-listing";
-                    supportList1.clear();
-                    ApiCallgetReportswithSearch(status);
+                    next_page_url = "support-listing";
+                    supportList.clear();
+                    ApiCallgetReports(status);
+                    // ApiCallgetReportswithSearch(status);
                 }
                 if (selectedItem.equalsIgnoreCase("re-open")) {
-                    search = 1;
-                    nextPageUrl1="support-listing";
+                    search = 0;
+                    supportList.clear();
+                    next_page_url = "support-listing";
                     supportList1.clear();
-                    status= "re-open";
-                    ApiCallgetReportswithSearch(status);
+                    status = "re-open";
+                    ApiCallgetReports(status);
+                    // ApiCallgetReportswithSearch(status);
 
                 }
 
@@ -180,20 +193,26 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
             }
         });
 
+
+
+/*
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-            ApiCallgetReports();
+            ApiCallgetReports(status);
         } else {
             Constants.ShowNoInternet(getActivity());
-        }
+        }*/
         // ApiCallgetReports();
 
     }
 
-    private void ApiCallgetReports() {
+    private void ApiCallgetReports(String s) {
         mProgress.show();
+        //supportList.clear();
         Map<String, String> param = new HashMap<>();
         param.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         param.put(Constants.PARAM_IS_INVOICE, "0");
+        param.put(Constants.PARAM_STATUS, s);
+
         ApiClient.getClient().create(ApiInterface.class).getSupportList(next_page_url, "Bearer " + sessionManager.getToken(), param).enqueue(new Callback<SupportListResponse>() {
             @Override
             public void onResponse(Call<SupportListResponse> call, Response<SupportListResponse> response) {
@@ -218,10 +237,9 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
                             next_page_url = "";
                         }
 
-                        if(supportList.size()>0){
+                        if (supportList.size() > 0) {
                             llNoData.setVisibility(View.GONE);
-                        }
-                        else{
+                        } else {
                             llNoData.setVisibility(View.VISIBLE);
                         }
 
@@ -248,7 +266,7 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
 
     }
 
-    private void ApiCallgetReportswithSearch(String status) {
+   /* private void ApiCallgetReportswithSearch(String status) {
 
         mProgress.show();
 
@@ -268,6 +286,13 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
                         llNoData.setVisibility(View.GONE);
 
                         supportList1.addAll(supportListResponse.getData());
+
+                        supportListAdapter = new SupportListAdapter(supportList, getActivity(), OnboardingSupportFragment.this);
+                        rvOnboardingSupport.setAdapter(supportListAdapter);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+                        rvOnboardingSupport.setLayoutManager(linearLayoutManager);
+
 
                         if (supportListResponse.getNextPageUrl() != null) {
                             if (!supportListResponse.getNextPageUrl().equalsIgnoreCase("")) {
@@ -310,7 +335,7 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
             }
         });
 
-    }
+    }*/
 
 
     @Override
@@ -338,15 +363,41 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
 
     @Override
     public void onRefresh() {
+        search = 0;
+        next_page_url = "support-listing";
         snDocType.setSelection(0);
         supportList.clear();
-        next_page_url = "support-listing";
+        status = "";
+        onRefresh = true;
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-            ApiCallgetReports();
+            ApiCallgetReports(status);
         } else {
             Constants.ShowNoInternet(getActivity());
         }
-        // ApiCallgetReports();
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rvOnboardingSupport.setLayoutManager(linearLayoutManager);
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
+                // this condition  is for pagination in both with Search and without search
+
+                if (search == 0) {
+                    if (!next_page_url.equalsIgnoreCase(""))
+                        ApiCallgetReports(status);
+                } else {
+                    if (!nextPageUrl1.equalsIgnoreCase("")) {
+
+                    }
+                    // ApiCallgetReportswithSearch(status);
+                }
+
+
+            }
+        };
+        rvOnboardingSupport.addOnScrollListener(scrollListener);
 
     }
 

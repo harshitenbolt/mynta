@@ -119,7 +119,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     RecyclerView rvDocuments;
     AppCompatSpinner spYear;
     ProgressBar pbBar;
-    LinearLayout llDisable,llDelBoy;
+    LinearLayout llDisable, llDelBoy;
     CardView cvGST;
     LinearLayout llEnable;
     private TextView tvStoreName, tvAddress, tvNoData;

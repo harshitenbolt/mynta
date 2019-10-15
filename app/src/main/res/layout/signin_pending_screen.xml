@@ -98,9 +98,10 @@
 
                 <ImageView
                     android:id="@+id/ivHourGlass"
-                    android:layout_width="@dimen/_145sdp"
-                    android:layout_height="@dimen/_145sdp"
-                    android:layout_centerInParent="true"
+                    android:layout_width="@dimen/_125sdp"
+                    android:layout_height="@dimen/_125sdp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_55sdp"
 
                     android:src="@drawable/hourglass" />
 
@@ -171,6 +172,7 @@
                 <LinearLayout
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 

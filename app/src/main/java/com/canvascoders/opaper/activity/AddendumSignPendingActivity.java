@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -83,11 +84,11 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
 
         if(status.equalsIgnoreCase("1")){
             tvStatus.setText("Signed");
-            tvStatus.setTextColor(R.color.colorPrimary);
+            tvStatus.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
         }
         else if(status.equalsIgnoreCase("0")){
             tvStatus.setText("Pending");
-            tvStatus.setTextColor(R.color.colorYellow);
+            tvStatus.setTextColor(ContextCompat.getColor(this,R.color.colorYellow));
         }
        // tvStatus.setText(status);
         tvMessage.setText(message);

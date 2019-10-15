@@ -505,7 +505,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         if (pincodenumber.equalsIgnoreCase("1")) {
             dcLists.clear();
         }
-
+        mProgressDialog.setMessage("Please wait...");
         mProgressDialog.show();
 
         JsonObject user = new JsonObject();
@@ -971,6 +971,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     }
 
     private void ApiCallValidationCheck(String apiname, final int i1) {
+        mProgressDialog.setMessage("Please wait submitting vendor details");
 
         mProgressDialog.show();
         JsonObject user = new JsonObject();
@@ -1576,6 +1577,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             // Ask user to enable GPS/network in settings
             gps.showSettingsAlert();
         }
+        mProgressDialog.setMessage("Please wait submitting vendor details");
         mProgressDialog.show();
         JsonObject user = new JsonObject();
         user.addProperty(Constants.PARAM_PROCESS_ID, str_process_id);

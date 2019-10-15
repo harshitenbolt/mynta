@@ -80,8 +80,19 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:hint="PAN NUMBER"
-                    android:inputType="textCapCharacters"
                     android:imeOptions="actionDone"
+                    android:inputType="textCapCharacters"
+                    android:textAllCaps="true" />
+
+                <EditText
+                    android:visibility="gone"
+                    android:id="@+id/etStoreName"
+                    style="@style/App_EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:hint="Store Name"
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapCharacters"
                     android:textAllCaps="true" />
 
 

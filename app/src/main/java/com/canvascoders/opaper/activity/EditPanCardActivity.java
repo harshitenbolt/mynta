@@ -75,6 +75,8 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
     public static final int CROPPED_IMAGE = 5333;
     private EditText etPanName, etFatherName, etpanNumber;
     private Button btSubmit;
+    boolean individual = true;
+    String panno = "";
     GPSTracker gps;
     TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -183,8 +185,20 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                     UpdatePanDetailResponse updatePanDetailResponse = response.body();
                     if (updatePanDetailResponse.getResponseCode() == 200) {
                         tvPanName.setText(updatePanDetailResponse.getData().get(0).getPanName());
+
                         tvPanFatherName.setText(updatePanDetailResponse.getData().get(0).getFatherName());
                         tvPanNo.setText(updatePanDetailResponse.getData().get(0).getPanNo());
+                        panno = updatePanDetailResponse.getData().get(0).getPanNo();
+
+
+                        char first = panno.charAt(3);
+                        String word = String.valueOf(first);
+                        if (word.equalsIgnoreCase("P")) {
+                            individual = true;
+                        } else {
+                            individual = false;
+                        }
+
                         Glide.with(EditPanCardActivity.this).load(Constants.BaseImageURL + updatePanDetailResponse.getData().get(0).getPan()).into(ivStoreImage);
                         //isPanSelected = true;
                         // ivPanImageSelected.setVisibility(View.VISIBLE);
@@ -265,7 +279,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void UpadatePan(String name, String fathername, String panId) {
+    private void UpadatePan(String name, String fathername, String panId, String storename) {
        /* gps = new GPSTracker(EditPanCardActivity.this);
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
@@ -295,6 +309,11 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         params.put(Constants.PARAM_PAN_NO, "" + panId);
         params.put(Constants.PARAM_PAN_NAME, "" + name);
         params.put(Constants.PARAM_FATHER_NAME, "" + fathername);
+        if (storename.equalsIgnoreCase("")) {
+
+        } else {
+            params.put(Constants.PARAM_STORE_NAME, storename);
+        }
        /* params.put(Constants.PARAM_LATITUDE, lattitude);
         params.put(Constants.PARAM_LONGITUDE, longitude);*/
         File imagefile = new File(panImagepath);
@@ -340,6 +359,13 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                                     DialogUtil.etPanFatherName.setError(validation.getFatherName());
                                 }
+
+                                if (validation.getStoreName() != null && validation.getStoreName().length() > 0) {
+
+                                    DialogUtil.etStoreName.setError(validation.getStoreName());
+                                }
+
+
                                 if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
                                     Toast.makeText(EditPanCardActivity.this, validation.getAgentId(), Toast.LENGTH_LONG).show();
                                 }
@@ -495,7 +521,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                 Toast.makeText(EditPanCardActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
 
-                                DialogUtil.PanDetail2(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
+                                DialogUtil.PanDetail2(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual, new DialogListner() {
                                     @Override
                                     public void onClickPositive() {
 
@@ -507,15 +533,26 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                     }
 
                                     @Override
-                                    public void onClickDetails(String name, String fathername, String dob, String id) {
+                                    public void onClickDetails(String name, String fathername, String storename, String id) {
 
-                                        Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
-                                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                        if (storename.equalsIgnoreCase("")) {
+                                            Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
+                                            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                UpadatePan(name, fathername, id, "");
+                                            } else {
+                                                Constants.ShowNoInternet(EditPanCardActivity.this);
+                                            }
 
-                                            UpadatePan(name, fathername, id);
                                         } else {
-                                            Constants.ShowNoInternet(EditPanCardActivity.this);
+
+                                            Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
+                                            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                UpadatePan(name, fathername, id, storename);
+                                            } else {
+                                                Constants.ShowNoInternet(EditPanCardActivity.this);
+                                            }
                                         }
+
 
                                     }
 
@@ -538,7 +575,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                                     Toast.makeText(EditPanCardActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
-                                    DialogUtil.PanDetail2(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
+                                    DialogUtil.PanDetail2(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual, new DialogListner() {
                                         @Override
                                         public void onClickPositive() {
 
@@ -550,14 +587,26 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                         }
 
                                         @Override
-                                        public void onClickDetails(String name, String fathername, String dob, String id) {
+                                        public void onClickDetails(String name, String fathername, String storename, String id) {
 
-                                            Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
-                                            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                                                UpadatePan(name, fathername, id);
+                                            if (storename.equalsIgnoreCase("")) {
+                                                Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
+                                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                    UpadatePan(name, fathername, id, "");
+                                                } else {
+                                                    Constants.ShowNoInternet(EditPanCardActivity.this);
+                                                }
+
                                             } else {
-                                                Constants.ShowNoInternet(EditPanCardActivity.this);
+
+                                                Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
+                                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                    UpadatePan(name, fathername, id, storename);
+                                                } else {
+                                                    Constants.ShowNoInternet(EditPanCardActivity.this);
+                                                }
                                             }
+
 
                                         }
 

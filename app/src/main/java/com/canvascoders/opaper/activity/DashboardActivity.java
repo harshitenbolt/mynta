@@ -272,6 +272,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 converted = getResizedBitmap(bitmap, 400);
                 Intent i = new Intent(DashboardActivity.this, GeneralSupportSubmitActivity.class);
                 i.putExtra("BitmapImage", converted);
+
                 i.putExtra(Constants.PARAM_SCREEN_NAME, "DashBoard");
                 startActivity(i);
                 findViewById(R.id.rvCaptured).setVisibility(View.GONE);

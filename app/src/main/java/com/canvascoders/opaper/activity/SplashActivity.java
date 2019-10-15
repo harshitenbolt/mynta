@@ -25,9 +25,18 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_new);
+
+
+
         sessionManager = new SessionManager(SplashActivity.this);
         Mylogger.getInstance().setEnable(true);
+
+
+
         FirebaseApp.initializeApp(this);
+
+
+
         FCMID = FirebaseInstanceId.getInstance().getToken();
         Log.e("MyFirebaseIIDService", "" + FCMID);
         sessionManager.saveData(Constants.KEY_FCM_ID, FCMID);
