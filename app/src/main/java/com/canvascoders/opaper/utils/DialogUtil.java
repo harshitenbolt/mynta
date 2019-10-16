@@ -63,7 +63,7 @@ public class DialogUtil {
     static boolean individua = true;
     //voter widgets
     public static EditText etVotername, etVoterFatherName, etVoterDateofBirth, etVoterIdNumber;
-
+    public static LinearLayout llStoreDetails;
     Button btSubmit;
     Context context;
     ImageView ivClose;
@@ -444,6 +444,7 @@ public class DialogUtil {
         dialog.setCancelable(true);
         dialog.findViewById(R.id.ivClose);
         etPanName = dialog.findViewById(R.id.etPanName);
+        llStoreDetails = dialog.findViewById(R.id.llStoreDetails);
         etStoreName = dialog.findViewById(R.id.etStoreName);
 
         etPanName.setText(name);
@@ -478,8 +479,10 @@ public class DialogUtil {
 
                     if (individua) {
                         etStoreName.setVisibility(View.GONE);
+                        llStoreDetails.setVisibility(View.GONE);
                     } else {
                         etStoreName.setVisibility(View.VISIBLE);
+                        llStoreDetails.setVisibility(View.VISIBLE);
                     }
 
 
@@ -495,8 +498,10 @@ public class DialogUtil {
 
         if (individua) {
             etStoreName.setVisibility(View.GONE);
+            llStoreDetails.setVisibility(View.GONE);
         } else {
             etStoreName.setVisibility(View.VISIBLE);
+            llStoreDetails.setVisibility(View.VISIBLE);
         }
 
         btSubmit = dialog.findViewById(R.id.btSubmitDlDetail);

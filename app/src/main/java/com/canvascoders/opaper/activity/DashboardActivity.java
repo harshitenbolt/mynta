@@ -189,6 +189,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         tvHeaderName.setText(sessionManager.getName());
 
 
+
         llNavonBoardNewVendor = v.findViewById(R.id.llNavOnboardNewVendor);
         llNavLiveVendor = v.findViewById(R.id.llNavLiveVendor);
         llNavInProgressVendor = v.findViewById(R.id.llNavInProgressVendor);

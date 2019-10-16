@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.EditGSTActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <ImageView
+            android:id="@+id/iv_back_process"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_title_Process"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montesemibold"
+            android:gravity="center"
+            android:paddingRight="@dimen/_45sdp"
+            android:text="Change GSTN"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+        <ImageView
+            android:id="@+id/ivSupport"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/support" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:id="@+id/flTOp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
+
+        <!-- **** Place Your Content Here **** -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_3sdp"
+            android:background="@drawable/toolbarshadow" />
+
+    </FrameLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/llBottom"
+        android:layout_below="@+id/flTOp"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content">
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+
+                android:layout_height="@dimen/_255sdp"
+                tools:context="com.canvascoders.opaper.view.LocateMeActivity" />
+
+
+            <LinearLayout
+                android:id="@+id/item_wrapper_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/_10sdp">
+
+                <android.support.v7.widget.CardView
+                    style="@style/CustomCardView"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_180sdp"
+                    android:layout_marginRight="@dimen/_10sdp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:orientation="vertical">
+
+
+                        <LinearLayout
+                            android:id="@+id/llOwnerInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="visible">
+
+                            <TextView
+                                style="@style/App_TextViewSmall"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="GST Number"
+                                android:textColor="@color/colorBlue" />
+
+                            <EditText
+                                android:id="@+id/etOwnerName"
+                                style="@style/App_EditTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:imeOptions="actionNext"
+                                android:inputType="text"
+                                android:nextFocusDown="@+id/etShopHouseNo"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+                                style="@style/App_TextViewSmall"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="Store Name"
+                                android:textColor="@color/colorBlue" />
+
+                            <EditText
+                                android:id="@+id/etStoreName"
+                                style="@style/App_EditTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:inputType="text"
+                                android:nextFocusDown="@+id/etOwnerName"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/_10sdp" />
+
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:background="@color/mediumLightGrey" />
+
+
+                            <TextView
+                                style="@style/App_TextViewSmall"
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:fontFamily="@font/montesemibold"
+                                android:text="Store Address"
+                                android:textColor="@color/colorBlue"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                style="@style/App_TextViewSmall"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="Shop/House/Flat No."
+                                android:textColor="@color/colorBlue" />
+
+                            <EditText
+                                android:id="@+id/etShopHouseNo"
+                                style="@style/App_EditTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:inputType="text"
+                                android:nextFocusDown="@id/etStreetName"
+                                android:textSize="@dimen/_10sdp" />
+
+
+                            <TextView
+                                style="@style/App_TextViewSmall"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="Street/Apartment/Locality"
+                                android:textColor="@color/colorBlue" />
+
+                            <EditText
+                                android:id="@+id/etStreetName"
+                                style="@style/App_EditTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:inputType="text"
+                                android:nextFocusDown="@id/etLandmark"
+                                android:textSize="@dimen/_10sdp" />
+
+
+                            <TextView
+                                style="@style/App_TextViewSmall"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="Landmark"
+                                android:textColor="@color/colorBlue" />
+
+                            <EditText
+                                android:id="@+id/etLandmark"
+                                style="@style/App_EditTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:inputType="text"
+                                android:nextFocusDown="@id/etStorePincode"
+                                android:textSize="@dimen/_10sdp" />
+
+
+                            <TextView
+
+                                style="@style/App_TextViewSmall"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="Store Pincode"
+                                android:textColor="@color/colorBlue" />
+
+                            <EditText
+                                android:id="@+id/etStorePincode"
+                                style="@style/App_EditTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:inputType="number"
+                                android:maxLength="6"
+                                android:nextFocusDown="@+id/etRouteNo"
+                                android:textSize="@dimen/_10sdp" />
+
+
+                            <TextView
+                                style="@style/App_TextViewSmall"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="City"
+                                android:textColor="@color/colorBlue" />
+
+                            <EditText
+                                android:id="@+id/etStoreCity"
+                                style="@style/App_EditTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:clickable="false"
+                                android:editable="false"
+                                android:enabled="false"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+                                style="@style/App_TextViewSmall"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="State"
+                                android:textColor="@color/colorBlue" />
+
+                            <EditText
+                                android:id="@+id/etStoreState"
+                                style="@style/App_EditTextStyle"
+                                android:layout_width="match_parent"
+                                android:layout_marginTop="@dimen/_3sdp"
+                                android:clickable="false"
+                                android:enabled="false"
+                                android:inputType="text"
+                                android:nextFocusDown="@id/etRouteNo"
+                                android:textSize="@dimen/_10sdp" />
+
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_1sdp"
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:background="@color/mediumLightGrey" />
+
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/_25sdp"
+                            android:layout_weight="1.2"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/_5sdp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="@font/montesemibold"
+                                        android:text="STORE IMAGE"
+                                        android:textColor="@color/colorBlue"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                    <ImageView
+                                        android:id="@+id/ivStoreImageSelected"
+                                        android:layout_width="@dimen/_15sdp"
+                                        android:layout_height="@dimen/_15sdp"
+                                        android:layout_gravity="end"
+                                        android:layout_marginRight="@dimen/_5sdp"
+                                        android:src="@drawable/bluecheck"
+                                        android:visibility="gone" />
+                                </LinearLayout>
+
+
+                                <android.support.v7.widget.CardView
+                                    android:layout_width="@dimen/_110sdp"
+                                    android:layout_height="@dimen/_110sdp"
+                                    android:layout_marginLeft="@dimen/_2sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginRight="@dimen/_2sdp"
+                                    android:layout_marginBottom="@dimen/_2sdp"
+                                    android:background="@drawable/roundedcornergreythick"
+                                    android:elevation="@dimen/_5sdp"
+                                    app:cardCornerRadius="@dimen/_5sdp">
+
+
+                                    <ImageView
+                                        android:id="@+id/ivStoreImage"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="@drawable/ic_add_img"
+                                        android:scaleType="centerCrop" />
+
+                                </android.support.v7.widget.CardView>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        style="@style/TextviewwithoutSize"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="@font/montesemibold"
+                                        android:text="OWNER IMAGE"
+                                        android:textColor="@color/colorYellow"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                    <ImageView
+                                        android:id="@+id/ivOwnerImageSelected"
+                                        android:layout_width="@dimen/_15sdp"
+                                        android:layout_height="@dimen/_15sdp"
+                                        android:layout_gravity="end"
+                                        android:src="@drawable/yellowcheck"
+                                        android:visibility="gone" />
+                                </LinearLayout>
+
+
+                                <android.support.v7.widget.CardView
+                                    android:layout_width="@dimen/_110sdp"
+                                    android:layout_height="@dimen/_110sdp"
+                                    android:layout_marginLeft="@dimen/_2sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginRight="@dimen/_2sdp"
+                                    android:layout_marginBottom="@dimen/_2sdp"
+                                    android:elevation="@dimen/_5sdp"
+                                    app:cardCornerRadius="@dimen/_5sdp">
+
+                                    <ImageView
+                                        android:id="@+id/ivOwnerImage"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:scaleType="centerCrop"
+                                        app:srcCompat="@drawable/ic_add_img" />
+
+                                </android.support.v7.widget.CardView>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/llBottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/_10sdp">
+
+        <Button
+            android:id="@+id/btUpload"
+            style="@style/Button_withGreen"
+            android:layout_weight="1"
+            android:text="UPLOAD" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

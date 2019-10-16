@@ -270,8 +270,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String Hardware_value = Build.HARDWARE;
         String Serial_nO_value = Build.SERIAL;
 
-        String android_id =
-                Settings.Secure.getString(this.getContentResolver(),
+        String android_id = Settings.Secure.getString(this.getContentResolver(),
                         Settings.Secure.ANDROID_ID);
 
         String BootLoader_value = Build.BOOTLOADER;

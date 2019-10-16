@@ -434,11 +434,10 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         cvGST.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               /* Intent myIntent = new Intent(VendorDetailActivity.this, StoreTypeListingActivity.class);
+                Intent myIntent = new Intent(VendorDetailActivity.this, EditGSTActivity.class);
                 myIntent.putExtra("data", vendor);
                 startActivity(myIntent);
-*/
-                showAlert(vendor.getGstn());
+                //showAlert(vendor.getGstn());
             }
         });
 

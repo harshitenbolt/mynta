@@ -34,10 +34,11 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
+        <activity android:name=".activity.EditGSTActivity"></activity>
         <activity
             android:name=".activity.EditDeliveryBoyActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".activity.DelBoyListingActivity" />
         <activity
             android:name=".activity.ResignAgreementActivity"

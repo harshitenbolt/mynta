@@ -84,18 +84,33 @@
                     android:inputType="textCapCharacters"
                     android:textAllCaps="true" />
 
-                <EditText
-                    android:visibility="gone"
-                    android:id="@+id/etStoreName"
-                    style="@style/App_EditTextStyle"
+                <LinearLayout
+                    android:id="@+id/llStoreDetails"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:hint="Store Name"
-                    android:imeOptions="actionDone"
-                    android:inputType="textCapCharacters"
-                    android:textAllCaps="true" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
+                    <EditText
+                        android:id="@+id/etStoreName"
+                        style="@style/App_EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:hint="Store Name"
+                        android:imeOptions="actionDone"
+                        android:inputType="textCapCharacters"
+                        android:textAllCaps="true"
+                        android:visibility="visible" />
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:fontFamily="@font/montemedium"
+                        android:text="Store name should be same as above mentioned Pan Details."
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_8sdp" />
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
