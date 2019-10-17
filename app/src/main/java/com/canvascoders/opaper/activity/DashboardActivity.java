@@ -40,6 +40,7 @@ import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.DebitInvoiceMainFragment;
 import com.canvascoders.opaper.fragment.GSTInvoiceMainFragment;
+import com.canvascoders.opaper.fragment.InvoiceListingFragment;
 import com.canvascoders.opaper.fragment.InvoiceMainFragment;
 import com.canvascoders.opaper.fragment.MobileFragment;
 import com.canvascoders.opaper.fragment.NotificationFragment;
@@ -171,7 +172,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         llNotification.setOnClickListener(this);
         llLiveVendors.setOnClickListener(this);
         llInProgressVendors.setOnClickListener(this);
-        swLayout =findViewById(R.id.swLayout);
+        swLayout = findViewById(R.id.swLayout);
         swLayout.setOnRefreshListener(this);
         llReports.setOnClickListener(this);
         llInvoice.setOnClickListener(this);
@@ -187,7 +188,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         tvHeaderEmail.setText(sessionManager.getEmail());
         tvHeaderName.setText(sessionManager.getName());
-
 
 
         llNavonBoardNewVendor = v.findViewById(R.id.llNavOnboardNewVendor);
@@ -370,7 +370,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 llInProgressVendors.setBackgroundResource(0);
                 llReports.setBackgroundResource(0);
                 llInvoice.setBackgroundResource(R.drawable.rounded_corner_bordercolor_green);
-                commanFragmentCallWithBackStack(new InvoiceMainFragment());
+                commanFragmentCallWithBackStack(new InvoiceListingFragment());
                 break;
 
 
@@ -570,7 +570,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     if (getnotificationdata != null) {
 
 
-                        Constants.showAdhar= String.valueOf(getnotificationdata.getShowAdharAPi());
+                        Constants.showAdhar = String.valueOf(getnotificationdata.getShowAdharAPi());
 
                         if (getnotificationdata.getIsupdateavailable() != null) {
                             Log.e("Second Step", "" + getnotificationdata.getIsupdateavailable() + " " + getnotificationdata.getCount());

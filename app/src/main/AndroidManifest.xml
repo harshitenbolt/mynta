@@ -34,7 +34,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".activity.EditGSTActivity"></activity>
+        <activity android:name=".activity.InvoiceDetailsActivity"></activity>
+        <activity android:name=".activity.EditGSTActivity" />
         <activity
             android:name=".activity.EditDeliveryBoyActivity"
             android:screenOrientation="portrait"
