@@ -19,6 +19,7 @@ import com.canvascoders.opaper.Beans.GeneralSupportResponse.GeneralSupportRespon
 import com.canvascoders.opaper.Beans.GenerateResetPWResponse.GenerateResetPWResponse;
 import com.canvascoders.opaper.Beans.GetAgentDetailResponse.GetAgentDetailResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
+import com.canvascoders.opaper.Beans.GetVendorInvoiceList.GetVendorInvoiceDetails;
 import com.canvascoders.opaper.Beans.GetVendorTypeDetails;
 import com.canvascoders.opaper.Beans.NotificationResponse.NotificattionResponse;
 import com.canvascoders.opaper.Beans.PanCardOcrResponse.PanCardSubmitResponse;
@@ -517,6 +518,13 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST
     Call<TranscationId1Response> getTransactionId(@Url String url, /*@Header("Content-Type") String authorization,*/ @Header("QT_API_KEY") String apikey, @Header("QT_AGENCY_ID") String agencyid, @FieldMap Map<String, String> data);
+
+
+
+
+    @FormUrlEncoded
+    @POST("get-invoice-list-for-single-kirana")
+    Call<GetVendorInvoiceDetails> getVendorInvoiceList(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
 
 }
