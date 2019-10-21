@@ -1,20 +1,38 @@
 package com.canvascoders.opaper.activity;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.canvascoders.opaper.Beans.GetVendorInvoiceList.Datum;
 import com.canvascoders.opaper.Beans.GetVendorInvoiceList.GetVendorInvoiceDetails;
+import com.canvascoders.opaper.Beans.GetVendorInvoiceList.MensaDelivery;
+import com.canvascoders.opaper.Beans.GetVendorInvoiceList.StoreList;
 import com.canvascoders.opaper.Beans.TransactionIDResponse.TransactionIdResponse;
 import com.canvascoders.opaper.Beans.VendorInvoiceList;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.adapters.DeliveryBoysListAdapter;
+import com.canvascoders.opaper.adapters.NoOFBillPeriodListAdapter;
+import com.canvascoders.opaper.adapters.NoOFInvoicesListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -24,22 +42,38 @@ import retrofit2.Response;
 public class InvoiceDetailsActivity extends AppCompatActivity {
     SessionManager sessionManager;
     VendorInvoiceList vendorInvoiceList;
+    ProgressDialog mProgress;
+    NoOFInvoicesListAdapter noOFInvoicesListAdapter;
+    NoOFBillPeriodListAdapter noOFBillPeriodListAdapter;
+    List<String> keyvalue = new ArrayList<>();
+    RecyclerView rvNoImvoice, rvBillPeriod;
+    List<Map<String, Map<String, List<MensaDelivery>>>> titleList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invoice_details);
+        mProgress = new ProgressDialog(this);
+        mProgress.setMessage("Please wait...");
+        mProgress.setCancelable(false);
+
         sessionManager = new SessionManager(this);
 
         vendorInvoiceList = (VendorInvoiceList) getIntent().getSerializableExtra("data");
+        init();
 
         APICall();
 
 
     }
 
-    private void APICall() {
+    private void init() {
+        rvNoImvoice = findViewById(R.id.rvInvoices);
+        rvBillPeriod = findViewById(R.id.rvBillPeriod);
+    }
 
+    private void APICall() {
+        mProgress.show();
 
         Map<String, String> param = new HashMap<>();
         /*JSONObject jsonObject = new JSONObject();
@@ -59,8 +93,48 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
         ApiClient.getClient().create(ApiInterface.class).getVendorInvoiceList("Bearer " + sessionManager.getToken(), param).enqueue(new Callback<GetVendorInvoiceDetails>() {
             @Override
             public void onResponse(Call<GetVendorInvoiceDetails> call, Response<GetVendorInvoiceDetails> response) {
-                if(response.isSuccessful()){
-                 // GetVendorInvoiceDetails champions = new Gson().fromJson((response.body()), GetVendorInvoiceDetails.class);
+                if (response.isSuccessful()) {
+                    mProgress.dismiss();
+                    GetVendorInvoiceDetails champions = response.body();
+
+
+                    if (champions.getResponseCode() == 200) {
+
+
+                        Map<String, Integer> list = new HashMap<>();
+                        list = champions.getResult();
+
+                        titleList.addAll(champions.getData());
+
+
+                        noOFInvoicesListAdapter = new NoOFInvoicesListAdapter(list, InvoiceDetailsActivity.this);
+
+                        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(InvoiceDetailsActivity.this, LinearLayoutManager.VERTICAL, false);
+
+                        rvNoImvoice.setLayoutManager(horizontalLayoutManager);
+                        rvNoImvoice.setAdapter(noOFInvoicesListAdapter);
+
+                        //noOFInvoicesListAdapter.notifyDataSetChanged();
+
+
+                        for (int i = 0; i < titleList.size(); i++) {
+
+                            Map<String, Map<String, List<MensaDelivery>>> list1 = new HashMap<>();
+                            list1 = titleList.get(i);
+
+                            noOFBillPeriodListAdapter = new NoOFBillPeriodListAdapter(list1, InvoiceDetailsActivity.this);
+
+                            LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(InvoiceDetailsActivity.this, LinearLayoutManager.VERTICAL, false);
+
+                            rvBillPeriod.setLayoutManager(horizontalLayoutManager1);
+                            rvBillPeriod.setAdapter(noOFBillPeriodListAdapter);
+                        }
+
+
+                    } else {
+                        Toast.makeText(InvoiceDetailsActivity.this, champions.getResponse(), Toast.LENGTH_LONG).show();
+
+                    }
                 }
 
 
@@ -68,10 +142,14 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GetVendorInvoiceDetails> call, Throwable t) {
+                mProgress.dismiss();
+                Toast.makeText(InvoiceDetailsActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
 
             }
         });
 
 
     }
+
+
 }

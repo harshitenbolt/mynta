@@ -71,6 +71,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 public class GstActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+
+
     static String documentId = null;
     private static boolean isBiometrix = false;
     private static boolean isOtp = false;

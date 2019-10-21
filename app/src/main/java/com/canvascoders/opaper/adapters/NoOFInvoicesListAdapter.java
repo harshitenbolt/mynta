@@ -8,20 +8,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.canvascoders.opaper.Beans.GetVendorInvoiceList.StoreList;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ApprovalRateDetail;
 import com.canvascoders.opaper.R;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class NoOFInvoicesListAdapter extends RecyclerView.Adapter<NoOFInvoicesListAdapter.ItemHolder> {
 
-    public List<ApprovalRateDetail> bankDetailList;
+    public Map<String, Integer> bankDetailList;
     Context mContext;
+    String[] keys, value;
     final int sdk = android.os.Build.VERSION.SDK_INT;
+    List<String> keysname = new ArrayList<>();
+    List<Integer> valueName = new ArrayList<>();
 
-    public NoOFInvoicesListAdapter(Context ctx, List<ApprovalRateDetail> dataViews) {
+
+    public NoOFInvoicesListAdapter(Map<String, Integer> dataViews, Context ctx) {
         this.bankDetailList = dataViews;
         mContext = ctx;
+        keysname.addAll(dataViews.keySet());
+        valueName.addAll(dataViews.values());
 
     }
 
@@ -36,13 +46,9 @@ public class NoOFInvoicesListAdapter extends RecyclerView.Adapter<NoOFInvoicesLi
 
     @Override
     public void onBindViewHolder(ItemHolder holder, final int position) {
-        holder.tvRateName.setText(bankDetailList.get(position).getStoreType());
-        holder.tvRate.setText(mContext.getResources().getString(R.string.Rs) + " " + bankDetailList.get(position).getNewRate());
-        if (position == bankDetailList.size() - 1) {
-            holder.viewMain.setVisibility(View.GONE);
-        }
+        holder.tvRateName.setText(keysname.get(position).toString());
+        holder.tvRate.setText(String.valueOf(valueName.get(position)));
 
-//        holder.tvStauts.setText(bankDetail.getStatus());
     }
 
     @Override
