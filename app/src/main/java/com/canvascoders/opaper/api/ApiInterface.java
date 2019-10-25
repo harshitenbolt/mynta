@@ -7,6 +7,7 @@ import com.canvascoders.opaper.Beans.BankDetailResp;
 import com.canvascoders.opaper.Beans.BankDetailsResponse.BankDetailsResponse;
 import com.canvascoders.opaper.Beans.ChangeMobileResponse.ChangeMobileResponse;
 import com.canvascoders.opaper.Beans.CheckEsignResponse.CheckEsignResponse;
+import com.canvascoders.opaper.Beans.CheckGSTStatus.CheckGstStatus;
 import com.canvascoders.opaper.Beans.CommentListResponse.CommentListResponse;
 import com.canvascoders.opaper.Beans.CommentResponse.CommentResponse;
 import com.canvascoders.opaper.Beans.DelBoysNextScreenResponse.DelBoysNextResponse;
@@ -18,6 +19,8 @@ import com.canvascoders.opaper.Beans.EditUserResponse.EditUserResponse;
 import com.canvascoders.opaper.Beans.GeneralSupportResponse.GeneralSupportResponse;
 import com.canvascoders.opaper.Beans.GenerateResetPWResponse.GenerateResetPWResponse;
 import com.canvascoders.opaper.Beans.GetAgentDetailResponse.GetAgentDetailResponse;
+import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
+import com.canvascoders.opaper.Beans.GetGstListing.GetGstListing;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
 import com.canvascoders.opaper.Beans.GetVendorInvoiceList.GetVendorInvoiceDetails;
 import com.canvascoders.opaper.Beans.GetVendorTypeDetails;
@@ -44,6 +47,7 @@ import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResp
 import com.canvascoders.opaper.Beans.UpdatePanResponse.UpdatePancardResponse;
 import com.canvascoders.opaper.Beans.UserDetailTResponse.GetUserDetails;
 import com.canvascoders.opaper.Beans.VendorListResponse.VendorListResponse;
+import com.canvascoders.opaper.Beans.VerifyGstResponse.VerifyGst;
 import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
 import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
@@ -54,6 +58,7 @@ import com.canvascoders.opaper.Beans.verifymobile.GetMobileResponse;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
@@ -507,12 +512,9 @@ public interface ApiInterface {
     Call<ResignAgreeDetailResponse> getDetailsResignAgreement(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
 
-
     @FormUrlEncoded
     @POST("aadhar-api-init")
     Call<TransactionIdResponse> getTransacId(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
-
-
 
 
     @FormUrlEncoded
@@ -520,11 +522,36 @@ public interface ApiInterface {
     Call<TranscationId1Response> getTransactionId(@Url String url, /*@Header("Content-Type") String authorization,*/ @Header("QT_API_KEY") String apikey, @Header("QT_AGENCY_ID") String agencyid, @FieldMap Map<String, String> data);
 
 
-
-
     @FormUrlEncoded
     @POST("get-invoice-list-for-single-kirana")
     Call<GetVendorInvoiceDetails> getVendorInvoiceList(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+    @FormUrlEncoded
+    @POST("check-gst-number")
+    Call<GetGSTVerify> getGSTVerify(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+    @Multipart
+    @POST("verify-gst-number")
+    Call<VerifyGst> updateGst(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part List<MultipartBody.Part> attachment);
+
+
+
+    @FormUrlEncoded
+    @POST("gst-number-status")
+    Call<CheckGstStatus> checkGSTStatus(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+
+    @FormUrlEncoded
+    @POST("gst-send-link")
+    Call<CheckGstStatus> sendGStLink(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+    @FormUrlEncoded
+    @POST("vendor-gst-list")
+    Call<GetGstListing> getgstListing(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
 
 
 }

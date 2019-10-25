@@ -38,6 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.canvascoders.opaper.Beans.CheckGSTStatus.CheckGstStatus;
 import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGSTVerify.StoreAddress;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
@@ -58,7 +59,9 @@ import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.DialogUtil;
 import com.canvascoders.opaper.utils.ImagePicker;
+import com.canvascoders.opaper.utils.ImageUploadTask;
 import com.canvascoders.opaper.utils.Mylogger;
+import com.canvascoders.opaper.utils.OnTaskCompleted;
 import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
@@ -81,7 +84,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -91,11 +99,13 @@ import java.util.regex.Matcher;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
+import static com.canvascoders.opaper.fragment.PanVerificationFragment.CROPPED_IMAGE;
 
 public class EditGSTActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, OnMapReadyCallback,
         LocationListener, View.OnClickListener {
@@ -111,9 +121,10 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     private GoogleMap mMap;
     boolean isPanSelected = false;
     private Spinner dc;
-    public static final int CROPPED_IMAGE = 5333;
+    public static final int CROPPED_IMAGE = 5333, CROPPED_IMAGE_2 = 5335;
     private static final int IMAGE_SHOP_IMG = 105, IMAGE_OWNER_IMG = 106;
     private static final int IMAGE_PAN = 101;
+    private static final int IMAGE_CHEQUE = 102;
     private static int IMAGE_SELCTED_IMG = 0;
     boolean enabled = false;
     private static final int DEFAULT_ZOOM = 15;
@@ -140,11 +151,24 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     String panName, panFatherName, panNumber;
     LinearLayout llWaitingApproval;
     boolean isPanScreen = false;
+    LinearLayout llLinearView;
+    String approvalGSTId = "";
+    private TextView btn_cheque_card;
+    private ImageView ivChequeImage;
+    private ImageView btn_cheque_card_select;
+    private Button btExtract;
+    private String cancelChequeImagepath = "", imagecamera = "";
+    String bank_name = "";
+    String bank_branch = "";
+    String branch_address = "";
 
+    int request_id = 0;
 
     private TextView tvPanClick, tvPanName, tvPanFatherName, tvPanNo;
     private TextView tvSkipCheque;
     String store_address, store_address1, store_address_landmark, store_city, store_state, store_pincode, store_full_address;
+    String bankName, bank_branch_name, Ifsc, bank_ac, payee_name, bank_address;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -249,8 +273,66 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         tvSkipCheque.setOnClickListener(this);
         llWaitingApproval = findViewById(R.id.llWaitingApproval);
         tvMessage = findViewById(R.id.tvMessage);
-       /* ivShopImage = findViewById(R.id.ivCaptureImage);
-        ivShopImage.setOnClickListener(this);*/
+        llLinearView = findViewById(R.id.viewPage);
+
+        //chequeImageFlow
+        btExtract = findViewById(R.id.btExtract);
+        btn_cheque_card = (TextView) findViewById(R.id.tvClickCheque);
+        btn_cheque_card_select = (ImageView) findViewById(R.id.tvClickChequeSelected);
+        btn_cheque_card_select.setOnClickListener(this);
+        ivChequeImage = findViewById(R.id.ivChequeImage);
+        btExtract.setOnClickListener(this);
+        btn_cheque_card.setOnClickListener(this);
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            // getBankDetails(mContext,s.toString(),processId);
+            APiCallCheckGSTStatus();
+        } else {
+            Constants.ShowNoInternet(EditGSTActivity.this);
+        }
+
+
+    }
+
+    private void APiCallCheckGSTStatus() {
+        progressDialog.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+
+        Call<CheckGstStatus> call = ApiClient.getClient().create(ApiInterface.class).checkGSTStatus("Bearer " + sessionManager.getToken(), params);
+        call.enqueue(new Callback<CheckGstStatus>() {
+            @Override
+            public void onResponse(Call<CheckGstStatus> call, Response<CheckGstStatus> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    CheckGstStatus checkGstStatus = response.body();
+                    if (checkGstStatus.getResponseCode() == 200) {
+                        rvFirstScreen.setVisibility(View.VISIBLE);
+                    } else if (checkGstStatus.getResponseCode() == 202) {
+                        rvChequeDetails.setVisibility(View.GONE);
+                        rvFirstScreen.setVisibility(View.GONE);
+                        rvSecondScreen.setVisibility(View.GONE);
+                        rvPanDetails.setVisibility(View.GONE);
+                        llWaitingApproval.setVisibility(View.VISIBLE);
+                        llLinearView.setVisibility(View.GONE);
+                        tvMessage.setText(checkGstStatus.getResponse());
+                        approvalGSTId = String.valueOf(checkGstStatus.getApprovalGSTId());
+                        if (checkGstStatus.getSendLink() == true) {
+                            btSendLink.setVisibility(View.VISIBLE);
+                        } else {
+                            btSendLink.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CheckGstStatus> call, Throwable t) {
+                progressDialog.dismiss();
+
+            }
+        });
+
     }
 
 
@@ -620,6 +702,13 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                 capture_document_front_and_back_image(5);
                 break;
 
+            case R.id.tvClickCheque:
+                capture_document_front_and_back_image(6);
+                break;
+            case R.id.tvClickChequeSelected:
+                capture_document_front_and_back_image(6);
+                break;
+
             case R.id.tvSkip:
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                     if (isPanScreen == true) {
@@ -635,7 +724,250 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
 
                 break;
+            case R.id.btSendLink:
+                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                    ApiCallSendLink();
+
+
+                } else {
+                    Constants.ShowNoInternet(EditGSTActivity.this);
+                }
+
+
+                break;
+
+
+            case R.id.btExtract:
+                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+
+                    if (validationCheque())
+                        CallMerekApi();
+
+                    /*storeCheque()*/
+                    ;/*{
+                    DialogueUtils.failedPayment(getActivity(), new DialogListner() {
+                        @Override
+                        public void onClickPositive() {
+                            DialogueUtils.dismiss();
+                        }
+
+                        @Override
+                        public void onClickNegative() {
+                            DialogueUtils.dismiss();
+                        }
+                    });
+
+                }*///
+               /* else{
+                    DialogueUtils.successPayment(getActivity(), new DialogListner() {
+                        @Override
+                        public void onClickPositive() {
+                            DialogueUtils.dismiss();
+                        }
+
+                        @Override
+                        public void onClickNegative() {
+                            DialogueUtils.dismiss();
+                        }
+                    });
+                }*/
+
+
+                } else {
+                    Constants.ShowNoInternet(EditGSTActivity.this);
+                }
+                break;
+
+
         }
+
+    }
+
+
+    //cheque data
+
+    public void CallMerekApi() {
+
+        HashMap<String, String> fileMap = new HashMap<>();
+        fileMap.put("image", cancelChequeImagepath);
+        final ProgressDialog pd = new ProgressDialog(this);
+        pd.setTitle("Loading . . .");
+        pd.show();
+        Log.e("Merak", "API Called");
+        new ImageUploadTask(Constants.OCRMEREK, null, fileMap, new OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(String result) {
+                //Log.e("MERAK RESULT", tryCount + "::" + result);
+                pd.dismiss();
+                try {
+
+                    JSONObject jsonObject = new JSONObject(result);
+                    if (jsonObject.optInt("success") == 1) {
+                        JSONObject dataObj = jsonObject.getJSONObject("data");
+                        if (dataObj != null) {
+                            String ifsccode = "";
+                            ifsccode = dataObj.optString("ifsc_code");
+                            getBankDetails(ifsccode);
+                            String accountNumber = dataObj.optString("account_number");
+                            bank_name = dataObj.optString("bank_name");
+                            bank_branch = dataObj.optString("bank_branch");
+                            branch_address = dataObj.optString("branch_address");
+                            String payeeName = "";
+                            try {
+                                request_id = jsonObject.optInt("request_id");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            JSONArray payeeNames = dataObj.optJSONArray("payee_name");
+                            if (payeeNames != null && payeeNames.length() > 0) {
+                                payeeName = payeeNames.getString(0);
+                                // edit_ac_name.setText(payeeName);
+                            }
+
+                            DialogUtil.chequeDetail(EditGSTActivity.this, accountNumber, payeeName, ifsccode, str_process_id, bank_name, bank_branch, branch_address, new DialogListner() {
+                                @Override
+                                public void onClickPositive() {
+
+                                }
+
+                                @Override
+                                public void onClickNegative() {
+
+                                }
+
+                                @Override
+                                public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                                }
+
+                                @Override
+                                public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+                                    //aiya karvanu
+                                    //    storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
+                                    bankName = bankname;
+                                    bank_branch_name = BranchName;
+                                    Ifsc = ifsc;
+                                    bank_ac = accName;
+                                    payee_name = payeename;
+                                    bank_address = bankAdress;
+
+
+                                    if (isPanScreen == true) {
+                                        ApiCallWithChequewithPan();
+
+                                    } else {
+                                        ApiCallWithChequewithoutPan();
+                                    }
+
+
+                                }
+                            });
+                           /* edit_ac_no.setText(accountNumber);
+                            edit_ifsc.setText(ifscCode);
+                            edit_bank_name.setText(bank_name);
+                            edit_bank_branch_name.setText(bank_branch);
+                            edit_bank_address.setText(branch_address);*/
+
+
+                        }
+                    } else {
+                        DialogUtil.chequeDetail(EditGSTActivity.this, "", "", "", str_process_id, "", "", "", new DialogListner() {
+                            @Override
+                            public void onClickPositive() {
+
+                            }
+
+                            @Override
+                            public void onClickNegative() {
+
+                            }
+
+                            @Override
+                            public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                bankName = bankname;
+                                bank_branch_name = BranchName;
+                                Ifsc = ifsc;
+                                bank_ac = accName;
+                                payee_name = payeename;
+                                bank_address = bankAdress;
+
+                                if (isPanScreen == true) {
+                                    ApiCallWithChequewithPan();
+                                } else {
+                                    ApiCallWithChequewithoutPan();
+                                }
+
+                                //    storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
+                            }
+                        });
+                        Toast.makeText(EditGSTActivity.this, "There is some issue retrieving data from cheque image, Reselect image or enter manually", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    pd.dismiss();
+                    e.printStackTrace();
+                    cancelChequeImagepath = "";
+                    Glide.with(EditGSTActivity.this).load(cancelChequeImagepath).placeholder(R.drawable.checkimage)
+                            .into(ivChequeImage);
+                    isPanSelected = false;
+                    btn_cheque_card.setVisibility(View.VISIBLE);
+                    btn_cheque_card_select.setVisibility(View.GONE);
+                    Toast.makeText(EditGSTActivity.this, "There is some issue retrieving data from cheque image, Reselect image or enter manually", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        }).execute();
+
+        Glide.with(EditGSTActivity.this).load(cancelChequeImagepath).placeholder(R.drawable.placeholder)
+                .into(ivChequeImage);
+        isPanSelected = true;
+
+    }
+
+    private boolean validationCheque() {
+        if (!isPanSelected) {
+            Toast.makeText(this, "Please select Cheque Image", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void ApiCallSendLink() {
+        progressDialog.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_APPROVAL_GST_ID, approvalGSTId);
+        Call<CheckGstStatus> call = ApiClient.getClient().create(ApiInterface.class).sendGStLink("Bearer " + sessionManager.getToken(), params);
+        call.enqueue(new Callback<CheckGstStatus>() {
+            @Override
+            public void onResponse(Call<CheckGstStatus> call, Response<CheckGstStatus> response) {
+                if (response.isSuccessful()) {
+                    progressDialog.dismiss();
+                    CheckGstStatus verifyGst = response.body();
+                    if (verifyGst.getResponseCode() == 200) {
+                        Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CheckGstStatus> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
+
+            }
+        });
 
     }
 
@@ -690,10 +1022,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                 if (response.isSuccessful()) {
                     VerifyGst verifyGst = response.body();
                     if (verifyGst.getResponseCode() == 200) {
-                        Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
                         rvChequeDetails.setVisibility(View.GONE);
                         tvMessage.setText(verifyGst.getResponse());
-                        llWaitingApproval.setVisibility(View.VISIBLE);
+                        // llWaitingApproval.setVisibility(View.VISIBLE);
+                        APiCallCheckGSTStatus();
                     } else {
                         Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
 
@@ -715,6 +1048,242 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     }
 
     private void ApiCallWithoutChequewithoutPan() {
+        progressDialog.show();
+
+        MultipartBody.Part attachment_gst = null;
+        MultipartBody.Part attachment_store = null;
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        params.put(Constants.PARAM_GSTN, etGST.getText().toString());
+        params.put(Constants.PARAM_STORE_NAME, etStoreNAme.getText().toString());
+        params.put(Constants.PARAM_STORE_ADDRESS, store_address);
+        params.put(Constants.PARAM_STORE_ADDRESS1, store_address1);
+        params.put(Constants.PARAM_STORE_ADDRESS_LANDMARK, store_address_landmark);
+        params.put(Constants.PARAM_CITY, store_city);
+        params.put(Constants.PARAM_STATE, store_state);
+        params.put(Constants.PARAM_PINCODE, store_pincode);
+        params.put(Constants.PARAM_STORE_FULL_ADDRESS, store_full_address);
+        params.put(Constants.PARAM_DC, String.valueOf(dc.getSelectedItem()));
+        params.put(Constants.PARAM_LATITUDE, String.valueOf(mDefaultLocation.latitude));
+        params.put(Constants.PARAM_LONGITUDE, String.valueOf(mDefaultLocation.longitude));
+        params.put(Constants.PARAM_IS_PAN_EXIST, "no");
+        params.put(Constants.PARAM_IS_BANK_EXIST, "no");
+
+
+        File imagefile = new File(gstCertificate);
+        attachment_gst = MultipartBody.Part.createFormData(Constants.PARAM_GST_CERTIFICATE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(gstCertificate)), imagefile));
+
+        File imageStore = new File(shopImg);
+        attachment_store = MultipartBody.Part.createFormData(Constants.PARAM_STORE_IMAGE, imageStore.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(shopImg)), imageStore));
+
+
+        List<MultipartBody.Part> imagepart = new ArrayList<>();
+        imagepart.add(attachment_gst);
+        imagepart.add(attachment_store);
+
+
+        Call<VerifyGst> call = ApiClient.getClient().create(ApiInterface.class).updateGst("Bearer " + sessionManager.getToken(), params, imagepart);
+        call.enqueue(new Callback<VerifyGst>() {
+            @Override
+            public void onResponse(Call<VerifyGst> call, Response<VerifyGst> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    VerifyGst verifyGst = response.body();
+                    if (verifyGst.getResponseCode() == 200) {
+                        //Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
+                        rvChequeDetails.setVisibility(View.GONE);
+                        tvMessage.setText(verifyGst.getResponse());
+                        // llWaitingApproval.setVisibility(View.VISIBLE);
+                        APiCallCheckGSTStatus();
+                    } else {
+                        Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<VerifyGst> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+    }
+
+
+    private void ApiCallWithChequewithoutPan() {
+        progressDialog.show();
+
+        MultipartBody.Part attachment_gst = null;
+        MultipartBody.Part attachment_store = null;
+        MultipartBody.Part attachment_cheque = null;
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        params.put(Constants.PARAM_GSTN, etGST.getText().toString());
+        params.put(Constants.PARAM_STORE_NAME, etStoreNAme.getText().toString());
+        params.put(Constants.PARAM_STORE_ADDRESS, store_address);
+        params.put(Constants.PARAM_STORE_ADDRESS1, store_address1);
+        params.put(Constants.PARAM_STORE_ADDRESS_LANDMARK, store_address_landmark);
+        params.put(Constants.PARAM_CITY, store_city);
+        params.put(Constants.PARAM_STATE, store_state);
+        params.put(Constants.PARAM_PINCODE, store_pincode);
+        params.put(Constants.PARAM_STORE_FULL_ADDRESS, store_full_address);
+        params.put(Constants.PARAM_DC, String.valueOf(dc.getSelectedItem()));
+        params.put(Constants.PARAM_LATITUDE, String.valueOf(mDefaultLocation.latitude));
+        params.put(Constants.PARAM_LONGITUDE, String.valueOf(mDefaultLocation.longitude));
+        params.put(Constants.PARAM_IS_PAN_EXIST, "no");
+        params.put(Constants.PARAM_IS_BANK_EXIST, "yes");
+
+        params.put(Constants.PARAM_PARAM_BANK_NAME, bank_name);
+        params.put(Constants.PARAM_BANK_BRANCH_NAME, bank_branch_name);
+        params.put(Constants.PARAM_IFSC, Ifsc);
+        params.put(Constants.PARAM_BANK_AC, bank_ac);
+        params.put(Constants.PARAM_PAYEE_NAME, payee_name);
+        params.put(Constants.PARAM_BANK_ADDRESS, bank_address);
+
+
+        File imagefile = new File(gstCertificate);
+        attachment_gst = MultipartBody.Part.createFormData(Constants.PARAM_GST_CERTIFICATE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(gstCertificate)), imagefile));
+
+        File imageStore = new File(shopImg);
+        attachment_store = MultipartBody.Part.createFormData(Constants.PARAM_STORE_IMAGE, imageStore.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(shopImg)), imageStore));
+
+
+        File imagecheque = new File(cancelChequeImagepath);
+        attachment_cheque = MultipartBody.Part.createFormData(Constants.PARAM_CANCELLED_CHEQUE, imageStore.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(cancelChequeImagepath)), imagecheque));
+
+
+        List<MultipartBody.Part> imagepart = new ArrayList<>();
+        imagepart.add(attachment_gst);
+        imagepart.add(attachment_store);
+        imagepart.add(attachment_cheque);
+
+        Call<VerifyGst> call = ApiClient.getClient().create(ApiInterface.class).updateGst("Bearer " + sessionManager.getToken(), params, imagepart);
+        call.enqueue(new Callback<VerifyGst>() {
+            @Override
+            public void onResponse(Call<VerifyGst> call, Response<VerifyGst> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    VerifyGst verifyGst = response.body();
+                    if (verifyGst.getResponseCode() == 200) {
+                        //Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
+                        rvChequeDetails.setVisibility(View.GONE);
+                        tvMessage.setText(verifyGst.getResponse());
+                        DialogUtil.dismiss();
+                        // llWaitingApproval.setVisibility(View.VISIBLE);
+                        APiCallCheckGSTStatus();
+                    } else {
+                        DialogUtil.dismiss();
+                        Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<VerifyGst> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+    }
+
+
+    private void ApiCallWithChequewithPan() {
+        progressDialog.show();
+        MultipartBody.Part attachment_pan = null;
+        MultipartBody.Part attachment_gst = null;
+        MultipartBody.Part attachment_store = null;
+        MultipartBody.Part attachment_cheque = null;
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        params.put(Constants.PARAM_GSTN, etGST.getText().toString());
+        params.put(Constants.PARAM_STORE_NAME, etStoreNAme.getText().toString());
+        params.put(Constants.PARAM_STORE_ADDRESS, store_address);
+        params.put(Constants.PARAM_STORE_ADDRESS1, store_address1);
+        params.put(Constants.PARAM_STORE_ADDRESS_LANDMARK, store_address_landmark);
+        params.put(Constants.PARAM_CITY, store_city);
+        params.put(Constants.PARAM_STATE, store_state);
+        params.put(Constants.PARAM_PINCODE, store_pincode);
+        params.put(Constants.PARAM_STORE_FULL_ADDRESS, store_full_address);
+        params.put(Constants.PARAM_DC, String.valueOf(dc.getSelectedItem()));
+        params.put(Constants.PARAM_PAN_NAME, panName);
+        params.put(Constants.PARAM_FATHER_NAME, panFatherName);
+        params.put(Constants.PARAM_PAN_NO, panNumber);
+        params.put(Constants.PARAM_GST_PAN_NO, panNumber);
+        params.put(Constants.PARAM_LATITUDE, String.valueOf(mDefaultLocation.latitude));
+        params.put(Constants.PARAM_LONGITUDE, String.valueOf(mDefaultLocation.longitude));
+        params.put(Constants.PARAM_IS_PAN_EXIST, "yes");
+        params.put(Constants.PARAM_IS_BANK_EXIST, "yes");
+
+        params.put(Constants.PARAM_PARAM_BANK_NAME, bank_name);
+        params.put(Constants.PARAM_BANK_BRANCH_NAME, bank_branch_name);
+        params.put(Constants.PARAM_IFSC, Ifsc);
+        params.put(Constants.PARAM_BANK_AC, bank_ac);
+        params.put(Constants.PARAM_PAYEE_NAME, payee_name);
+        params.put(Constants.PARAM_BANK_ADDRESS, bank_address);
+
+
+        File imagefile1 = new File(panImagepath);
+        attachment_pan = MultipartBody.Part.createFormData(Constants.PARAM_PAN_CARD_FRONT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile1));
+
+        File imagefile = new File(gstCertificate);
+        attachment_gst = MultipartBody.Part.createFormData(Constants.PARAM_GST_CERTIFICATE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(gstCertificate)), imagefile));
+
+        File imageStore = new File(shopImg);
+        attachment_store = MultipartBody.Part.createFormData(Constants.PARAM_STORE_IMAGE, imageStore.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(shopImg)), imageStore));
+
+        File imagecheque = new File(cancelChequeImagepath);
+        attachment_cheque = MultipartBody.Part.createFormData(Constants.PARAM_CANCELLED_CHEQUE, imageStore.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(cancelChequeImagepath)), imagecheque));
+
+
+        List<MultipartBody.Part> imagepart = new ArrayList<>();
+        imagepart.add(attachment_pan);
+        imagepart.add(attachment_gst);
+        imagepart.add(attachment_store);
+        imagepart.add(attachment_cheque);
+
+
+        Call<VerifyGst> call = ApiClient.getClient().create(ApiInterface.class).updateGst("Bearer " + sessionManager.getToken(), params, imagepart);
+        call.enqueue(new Callback<VerifyGst>() {
+            @Override
+            public void onResponse(Call<VerifyGst> call, Response<VerifyGst> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    VerifyGst verifyGst = response.body();
+                    if (verifyGst.getResponseCode() == 200) {
+                        //Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
+                        rvChequeDetails.setVisibility(View.GONE);
+                        tvMessage.setText(verifyGst.getResponse());
+                        DialogUtil.dismiss();
+                        // llWaitingApproval.setVisibility(View.VISIBLE);
+                        APiCallCheckGSTStatus();
+                    } else {
+                        DialogUtil.dismiss();
+                        Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
+
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<VerifyGst> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
+
+            }
+        });
     }
 
 
@@ -787,6 +1356,10 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                     Intent chooseImageIntent = ImagePicker.getCameraIntent(EditGSTActivity.this);
                     startActivityForResult(chooseImageIntent, IMAGE_PAN);
                 }
+                if (side_of_document == 6) {
+                    Intent chooseImageIntent = ImagePicker.getCameraIntent(EditGSTActivity.this);
+                    startActivityForResult(chooseImageIntent, IMAGE_CHEQUE);
+                }
 
 
             }
@@ -825,7 +1398,12 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                         store_address = storeAddress.getBnm() + " " + storeAddress.getBno();
                         store_address1 = storeAddress.getSt();
                         store_address_landmark = storeAddress.getLoc();
-                        store_city = storeAddress.getCity();
+                        if(storeAddress.getCity().equalsIgnoreCase("")){
+                            store_city = storeAddress.getDst();
+                        }
+                        else{
+                            store_city = storeAddress.getCity();
+                        }
                         store_state = storeAddress.getStcd();
                         store_pincode = storeAddress.getPncd();
                         store_full_address = etStoreAddress.getText().toString();
@@ -854,7 +1432,6 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             public void onFailure(Call<GetGSTVerify> call, Throwable t) {
                 progressDialog.dismiss();
                 Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-
 
             }
         });
@@ -1023,6 +1600,30 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+            }
+
+
+            if (requestCode == IMAGE_CHEQUE) {
+
+//                Constants.hideKeyboardwithoutPopulate(getActivity());
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditGSTActivity.this);
+
+                Intent intent = new Intent(EditGSTActivity.this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                startActivityForResult(intent, CROPPED_IMAGE_2);
+
+
+            }
+            if (requestCode == CROPPED_IMAGE_2) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                cancelChequeImagepath = RealPathUtil.getPath(EditGSTActivity.this, imgURI);
+                Glide.with(EditGSTActivity.this).load(cancelChequeImagepath).placeholder(R.drawable.placeholder)
+                        .into(ivChequeImage);
+                isPanSelected = true;
+                btn_cheque_card.setVisibility(View.GONE);
+                btn_cheque_card_select.setVisibility(View.VISIBLE);
 
             }
         }
@@ -1238,6 +1839,60 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
 
         }
+    }
+
+
+    ///
+
+
+    public void getBankDetails(String ifsc) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        params.put(Constants.PARAM_IFSC, ifsc);
+
+        Log.e("DATA", "PID:" + str_process_id + " aID : " + sessionManager.getAgentID() + " IFSC:" + ifsc);
+        Call<ResponseBody> callUpload = ApiClient.getClient().create(ApiInterface.class).getBankDetailsFromIfsc("Bearer " + sessionManager.getToken(), params);
+        callUpload.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String res = response.body().string();
+                        Mylogger.getInstance().Logit(TAG, res);
+                        if (!TextUtils.isEmpty(res)) {
+                            JSONObject jsonObject = new JSONObject(res);
+                            if (jsonObject.has("responseCode")) {
+                                if (jsonObject.getInt("responseCode") == 200) {
+                                    JSONObject result = jsonObject.getJSONArray("data").getJSONObject(0);
+                                    bank_name = result.getString("bank_name").toString();
+                                    bank_branch = result.getString("bank_branch_name").toString();
+                                    branch_address = result.getString("bank_address").toString();
+                                } else if (jsonObject.getInt("responseCode") == 405) {
+                                    sessionManager.logoutUser(EditGSTActivity.this);
+                                } else if (jsonObject.getInt("responseCode") == 411) {
+                                    sessionManager.logoutUser(EditGSTActivity.this);
+                                } else {
+                                }
+                            }
+                        } else {
+                            Toast.makeText(EditGSTActivity.this, "Server not responding", Toast.LENGTH_LONG).show();
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
 }

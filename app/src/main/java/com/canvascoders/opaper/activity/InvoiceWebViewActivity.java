@@ -61,18 +61,18 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     private String TAG = "InvoiceEsign";
     SessionManager sessionManager;
-    int signed ;
-    private String mobile_no = "",storename="";
-    private String enbolt_id = "",invoice_num="";
+    int signed;
+    private String mobile_no = "", storename = "";
+    private String enbolt_id = "", invoice_num = "";
     private String uid = "";
     private String invoice_pdf = "";
     Button ivSelect;
     private String status = "";
-    Bitmap b,converted;
+    Bitmap b, converted;
     RelativeLayout rvMain;
     private RelativeLayout relative_buttom;
     FrameLayout flImage;
-    ImageView ivSupport,imageView;
+    ImageView ivSupport, imageView;
     RelativeLayout rvMainWithRect;
     JSONObject jsonObject = new JSONObject();
 
@@ -92,23 +92,17 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        btn_send_link = (AppCompatTextView)findViewById(R.id.btn_send_link);
+        btn_send_link = (AppCompatTextView) findViewById(R.id.btn_send_link);
         relative_buttom = findViewById(R.id.relative_buttom);
-       /* str_mobile_no = sessionManager.getData(Constants.KEY_EMP_MOBILE);
-        cvMain = findViewById(R.id.cvMain);*/
+
         invoice_id = getIntent().getStringExtra(Constants.KEY_INVOICE_ID);
         invoice_type = getIntent().getStringExtra(Constants.INVOICE_TYPE);
         status = getIntent().getStringExtra(Constants.INVOICE_NUMBER);
-        Log.e("invoice_num",status);
-        signed = getIntent().getIntExtra(Constants.SIGNED,0);
+        Log.e("invoice_num", status);
+        signed = getIntent().getIntExtra(Constants.SIGNED, 0);
         storename = getIntent().getStringExtra(Constants.KEY_NAME);
 
 
-
-        invoice_id = getIntent().getStringExtra(Constants.KEY_INVOICE_ID);
-        invoice_type = getIntent().getStringExtra(Constants.INVOICE_TYPE);
-        signed = getIntent().getIntExtra(Constants.SIGNED,0);
-        status = getIntent().getStringExtra(Constants.INVOICE_NUMBER);
         mWebView = (WebView) findViewById(R.id.web_view_id);
         btn_agree = (AppCompatTextView) findViewById(R.id.btn_agree);
 
@@ -182,13 +176,13 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
                 findViewById(R.id.tverror).setVisibility(View.GONE);
                 Bitmap bitmap = viewToBitmap(rvMainWithRect);
                 converted = getResizedBitmap(bitmap, 400);
-                Intent i = new Intent(InvoiceWebViewActivity.this,ReportIssueActivity.class);
+                Intent i = new Intent(InvoiceWebViewActivity.this, ReportIssueActivity.class);
                 i.putExtra("BitmapImage", converted);
-                i.putExtra(Constants.PARAM_SCREEN_NAME,"Invoice");
-                i.putExtra(Constants.KEY_PROCESS_ID,enbolt_id);
-                i.putExtra(Constants.KEY_INVOICE_NUM,invoice_num);
-                i.putExtra(Constants.KEY_NAME,storename);
-                i.putExtra(Constants.KEY_INVOICE_ID,invoice_id);
+                i.putExtra(Constants.PARAM_SCREEN_NAME, "Invoice");
+                i.putExtra(Constants.KEY_PROCESS_ID, enbolt_id);
+                i.putExtra(Constants.KEY_INVOICE_NUM, invoice_num);
+                i.putExtra(Constants.KEY_NAME, storename);
+                i.putExtra(Constants.KEY_INVOICE_ID, invoice_id);
 
                 startActivity(i);
             }
@@ -259,18 +253,17 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
                 MediaType mediaType = MediaType.parse("application/json");
                 RequestBody body = RequestBody.create(mediaType, s);
                 Request requestLogin = null;
-                if(signed == 0){
+                if (signed == 0) {
                     requestLogin = new Request.Builder()
                             .url(Constants.BaseURL + "get-single-invoice")
                             .post(body)
-                            .addHeader("Authorization","Bearer "+sessionManager.getToken())
+                            .addHeader("Authorization", "Bearer " + sessionManager.getToken())
                             .build();
-                }
-                else{
+                } else {
                     requestLogin = new Request.Builder()
                             .url(Constants.BaseURL + "get-single-signed-invoice")
                             .post(body)
-                            .addHeader("Authorization","Bearer "+sessionManager.getToken())
+                            .addHeader("Authorization", "Bearer " + sessionManager.getToken())
                             .build();
                 }
 
@@ -316,7 +309,7 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
 
                         mWebView.getSettings().setJavaScriptEnabled(true);
                         String pdf = invoice_pdf;
-                        mWebView.loadUrl( pdf);
+                        mWebView.loadUrl(pdf);
                         /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(pdf));
                         startActivity(browserIntent);*/
                         mWebView.loadData(result.getString("invoice_html"), "text/html; charset=utf-8", "UTF-8");
@@ -353,9 +346,10 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
 
             }
         }
+
         private String showPdf(String url) {
             String googleDocsUrl = "http://docs.google.com/viewer?embedded=true&url=";
-            return googleDocsUrl+ Uri.encode(url);
+            return googleDocsUrl + Uri.encode(url);
         }
 
 
@@ -367,11 +361,12 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
         view.draw(canvas);
         return bitmap;
     }
+
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
 
-        float bitmapRatio = (float)width / (float) height;
+        float bitmapRatio = (float) width / (float) height;
         if (bitmapRatio > 1) {
             width = maxSize;
             height = (int) (width / bitmapRatio);
@@ -381,7 +376,6 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
         }
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
-
 
 
     private void apicallSendLink() {

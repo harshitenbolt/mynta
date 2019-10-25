@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.GetVendorInvoiceList.Datum;
@@ -47,7 +48,9 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
     NoOFBillPeriodListAdapter noOFBillPeriodListAdapter;
     List<String> keyvalue = new ArrayList<>();
     RecyclerView rvNoImvoice, rvBillPeriod;
+    TextView tvTotalInvoice;
     List<Map<String, Map<String, List<MensaDelivery>>>> titleList = new ArrayList<>();
+    List<Integer> valueName = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
     private void init() {
         rvNoImvoice = findViewById(R.id.rvInvoices);
         rvBillPeriod = findViewById(R.id.rvBillPeriod);
+        tvTotalInvoice = findViewById(R.id.tvTotalInvoice);
     }
 
     private void APICall() {
@@ -113,6 +117,14 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
 
                         rvNoImvoice.setLayoutManager(horizontalLayoutManager);
                         rvNoImvoice.setAdapter(noOFInvoicesListAdapter);
+
+                        int totalInvoice = 0;
+                        valueName.addAll(list.values());
+
+                        for (int i = 0; i < valueName.size(); i++) {
+                            totalInvoice = totalInvoice + (valueName.get(i));
+                        }
+                        tvTotalInvoice.setText(String.valueOf(totalInvoice));
 
                         //noOFInvoicesListAdapter.notifyDataSetChanged();
 

@@ -394,7 +394,10 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 break;
             case R.id.llNavInvoice:
 
-                commanFragmentCallWithBackStack(new InvoiceMainFragment());
+                /*commanFragmentCallWithBackStack(new InvoiceMainFragment());
+                drawer.closeDrawer(GravityCompat.START);*/
+
+                commanFragmentCallWithBackStack(new InvoiceListingFragment());
                 drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.llNavGSTnote:

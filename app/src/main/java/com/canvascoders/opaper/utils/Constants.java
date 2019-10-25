@@ -252,6 +252,7 @@ public class Constants {
     public static String PARAM_NAME = "name";
     public static String PARAM_YEAR_OF_BIRTH = "yob";
     public static String PARAM_PINCODE = "pincode";
+    public static String PARAM_STORE_FULL_ADDRESS = "store_full_address";
     public static String PARAM_AADHAR_FRONT = "adhar_card_front";
     public static String PARAM_AADHAR_BACK = "adhar_card_back";
     public static String PARAM_ESIGN_URL = "esign_url";
@@ -280,20 +281,45 @@ public class Constants {
     public static String PARAM_INVOICE_ID = "invoice_id";
     public static String PARAM_ENBOLT_ID = "enbolt_id";
     public static String PARAM_LONGITUDE = "longitude";
+
+    public static String PARAM_IS_PAN_EXIST = "is_pan_exist";
+    public static String PARAM_IS_BANK_EXIST = "is_bank_exist";
+
+
     public static String PARAM_LATITUDE = "latitude";
     public static String PARAM_PAN_NO = "pan_no";
+    public static String PARAM_GST_PAN_NO = "gst_pan_no";
+
+
+
+    public static String PARAM_PARAM_BANK_NAME = "bank_name";
+
+    public static String PARAM_BANK_BRANCH_NAME = "bank_branch_name";
+
+    public static String PARAM_PAYEE_NAME = "payee_name";
+
+    public static String PARAM_BANK_ADDRESS = "bank_address";
+
+
+
+
     public static String PARAM_PAN_NAME = "pan_name";
     public static String PARAM_PAN_CARD_FRONT = "pan_card_front";
+
+    public static String PARAM_GST_CERTIFICATE = "gst_certificate_image";
     public static String PARAM_RATE = "rate";
     public static String PARAM_USER_NAME = "username";
     public static String PARAM_REQUEST_ID = "request_id";
     public static String PARAM_EDIT_DETAIL = "edit_detail";
+    public  static  String PARAM_STORE_IMAGE = "store_image";
 
 
     public static String PARAM_IDENTIFIRE = "identifier";
     public static String PARAM_AADHAR_ID = "aadhaar_id";
     public static String PARAM_VID = "vid";
     public static String PARAM_FILE_NAME = "file_name";
+
+    public static String PARAM_APPROVAL_GST_ID = "approval_gst_id";
 
     public static String PARAM_FILE_URL = "file_url";
     public static String PARAM_APP_NAME = "app_name";

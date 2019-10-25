@@ -86,6 +86,18 @@ public class NoOFInvoicesTitleListAdapter extends RecyclerView.Adapter<NoOFInvoi
         } else {
             holder.tvStatus.setText("N/A");
             holder.ivStatus.setVisibility(View.GONE);
+            holder.ivEye.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent i = new Intent(mContext, InvoiceWebViewActivity.class);
+                    i.putExtra(Constants.KEY_INVOICE_ID, titleList.get(position).getId());
+                    i.putExtra(Constants.INVOICE_TYPE, titleList.get(position).getInvoiceType());
+                    i.putExtra(Constants.INVOICE_NUMBER,titleList.get(position).getInvoiceNum());
+                    mContext.startActivity(i);
+
+                }
+            });
 
 
         }

@@ -553,6 +553,86 @@ public class DialogUtil {
     }
 
 
+    public static void PanDetailGST(Context mContext, String name, String fathername, String pannumber, final DialogListner dialogInterface) {
+
+        ImageView ivClose;
+        Button btSubmit;
+
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialoguepan_detail);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
+        dialog.findViewById(R.id.ivClose);
+        etPanName = dialog.findViewById(R.id.etPanName);
+        llStoreDetails = dialog.findViewById(R.id.llStoreDetails);
+        etStoreName = dialog.findViewById(R.id.etStoreName);
+
+        etPanName.setText(name);
+        etPanFatherName = dialog.findViewById(R.id.etFatherName);
+        etPanNumber = dialog.findViewById(R.id.etPanNumber);
+        ivClose = dialog.findViewById(R.id.ivClose);
+        etPanFatherName.setText(fathername);
+        etPanNumber.setText(pannumber);
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        btSubmit = dialog.findViewById(R.id.btSubmitDlDetail);
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (validation(v)) {
+                                                //dialog.dismiss();
+                                                dialogInterface.onClickDetails(etPanName.getText().toString(), etPanFatherName.getText().toString(), etStoreName.getText().toString(), etPanNumber.getText().toString());
+
+
+                                            }
+                                        }
+
+                                        private boolean validation(View v) {
+                                            if (etPanName.getText().toString().equalsIgnoreCase("")) {
+                                                etPanName.setError("Provide name");
+                                                etPanName.requestFocus();
+                                                return false;
+                                            }
+                                            if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
+                                                etPanFatherName.setError("Provide Father name");
+                                                etPanFatherName.requestFocus();
+                                                return false;
+                                            }
+                                            Matcher matcher = Constants.PAN_PATTERN.matcher(etPanNumber.getText().toString());
+                                            if (TextUtils.isEmpty(etPanNumber.getText().toString()) || etPanNumber.getText().toString().length() < 5) {
+                                                etPanNumber.setError("Provide Number");
+                                                etPanNumber.requestFocus();
+                                                return false;
+                                            } else if (!matcher.matches()) {
+                                                etPanNumber.setError("Provide Valid Pan Number");
+                                                etPanNumber.requestFocus();
+                                                return false;
+                                            }
+                                            return true;
+                                        }
+                                    }
+        );
+
+
+        dialog.show();
+
+
+    }
+
+
     public static void chequeDetail(Context mContext, String AccNumber, String payeename, String ifsccode, String processId, String bank_name, String branch_name, String branch_address, final DialogListner dialogInterface) {
 
         ImageView ivClose;
