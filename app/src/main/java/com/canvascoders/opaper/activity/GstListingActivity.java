@@ -94,6 +94,9 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
                             rvGSTl.setAdapter(gstListAdapter);
                             tvNodate.setVisibility(View.GONE);
                         } else {
+                            Intent i = new Intent(GstListingActivity.this, EditGSTActivity.class);
+                            i.putExtra("data", vendor);
+                            startActivity(i);
                             tvNodate.setVisibility(View.VISIBLE);
                         }
 
