@@ -2,12 +2,9 @@ package com.canvascoders.opaper.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,10 +22,8 @@ import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
-import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
-import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.util.HashMap;

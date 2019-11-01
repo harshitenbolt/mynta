@@ -2,58 +2,24 @@ package com.canvascoders.opaper.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.widget.SwitchCompat;
-import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
+
+import androidx.fragment.app.Fragment;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
-import com.canvascoders.opaper.Beans.dc.DC;
-import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.api.ApiClient;
-import com.canvascoders.opaper.api.ApiInterface;
-import com.canvascoders.opaper.utils.Constants;
-import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
-import com.canvascoders.opaper.activity.AgreementDetailActivity;
-import com.canvascoders.opaper.activity.AppApplication;
-import com.google.gson.JsonObject;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.canvascoders.opaper.utils.Constants.showAlert;
 
 public class InfoEditFragment extends Fragment /*implements View.OnClickListener */{
 

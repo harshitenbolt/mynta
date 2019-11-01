@@ -9,13 +9,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatTextView;
+import androidx.appcompat.widget.AppCompatTextView;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -36,7 +36,6 @@ import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,7 +55,7 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
 
     private WebView mWebView;
     private AppCompatTextView btn_agree, btn_send_link;
-    private String invoice_id = "";
+    private int invoice_id = 0;
     private String invoice_type = "";
     ProgressDialog progressDialog;
     private String TAG = "InvoiceEsign";
@@ -67,14 +66,16 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
     private String uid = "";
     private String invoice_pdf = "";
     Button ivSelect;
-    private String status = "";
+    private String status = "", store_type = "";
     Bitmap b, converted;
     RelativeLayout rvMain;
     private RelativeLayout relative_buttom;
     FrameLayout flImage;
     ImageView ivSupport, imageView;
     RelativeLayout rvMainWithRect;
+    String pending = "";
     JSONObject jsonObject = new JSONObject();
+    private ImageView ivBack;
 
 
     @Override
@@ -94,14 +95,29 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
     private void initView() {
         btn_send_link = (AppCompatTextView) findViewById(R.id.btn_send_link);
         relative_buttom = findViewById(R.id.relative_buttom);
-
-        invoice_id = getIntent().getStringExtra(Constants.KEY_INVOICE_ID);
+        ivBack = findViewById(R.id.iv_back_process);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        invoice_id = getIntent().getIntExtra(Constants.KEY_INVOICE_ID, 0);
         invoice_type = getIntent().getStringExtra(Constants.INVOICE_TYPE);
         status = getIntent().getStringExtra(Constants.INVOICE_NUMBER);
+        store_type = getIntent().getStringExtra(Constants.PARAM_STORE_TYPE_CONFIG);
+        pending = getIntent().getStringExtra("Pending");
         Log.e("invoice_num", status);
         signed = getIntent().getIntExtra(Constants.SIGNED, 0);
         storename = getIntent().getStringExtra(Constants.KEY_NAME);
 
+
+        if (pending.equalsIgnoreCase("Pending")) {
+            relative_buttom.setVisibility(View.VISIBLE);
+
+        } else {
+            relative_buttom.setVisibility(View.GONE);
+        }
 
         mWebView = (WebView) findViewById(R.id.web_view_id);
         btn_agree = (AppCompatTextView) findViewById(R.id.btn_agree);
@@ -217,7 +233,8 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
         try {
             jsonObject.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             jsonObject.put(Constants.PARAMS_INVOICE_TYPE, getIntent().getStringExtra(Constants.PARAMS_INVOICE_TYPE));
-            jsonObject.put(Constants.PARAM_INVOICE_ID, getIntent().getStringExtra(Constants.PARAM_INVOICE_ID));
+            jsonObject.put(Constants.PARAM_INVOICE_ID, invoice_id);
+            jsonObject.put(Constants.PARAM_STORE_TYPE, store_type);
             // jsonObject.put(Constants.PARAMS_INVOICE_TYPE, getIntent().getStringExtra(Constants.PARAMS_INVOICE_TYPE));
             Mylogger.getInstance().Logit(TAG, Constants.BaseURL + "get-single-invoice");
             Mylogger.getInstance().Logit(TAG, jsonObject.toString());
@@ -382,10 +399,11 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
             Map<String, String> params = new HashMap<String, String>();
             // params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
-            params.put(Constants.PARAM_INVOICE_ID, invoice_id);
+            params.put(Constants.PARAM_INVOICE_ID, String.valueOf(invoice_id));
             params.put(Constants.PARAMS_INVOICE_TYPE, invoice_type);
+            params.put(Constants.PARAM_STORE_TYPE, store_type);
 
-            progressDialog.setTitle("Please Wait ...");
+            progressDialog.setMessage("Please Wait ...");
             progressDialog.show();
             Call<SendInvoiceLinkresponse> call = ApiClient.getClient().create(ApiInterface.class).sendInvoice("Bearer " + sessionManager.getToken(), params);
             call.enqueue(new Callback<SendInvoiceLinkresponse>() {

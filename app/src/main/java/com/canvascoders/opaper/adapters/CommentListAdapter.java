@@ -2,11 +2,11 @@ package com.canvascoders.opaper.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +19,6 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.CommentListResponse.Datum;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

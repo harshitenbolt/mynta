@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.GeneralSupportResponse.GeneralSupportResponse;
-import com.canvascoders.opaper.Beans.SubmitReportResponse.SubmitReportResponse;
 import com.canvascoders.opaper.Beans.SupportSubjectResponse.SupportSubjectResponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;

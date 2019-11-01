@@ -6,8 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -279,6 +279,8 @@ public class Constants {
     public static String PARAM_LICENCE_NO = "license_no";
     public static String PARAM_OWNER_NAME = "owner_name";
     public static String PARAM_INVOICE_ID = "invoice_id";
+
+    public static String PARAM_STORE_TYPE = "store_type";
     public static String PARAM_ENBOLT_ID = "enbolt_id";
     public static String PARAM_LONGITUDE = "longitude";
 
@@ -423,7 +425,7 @@ public class Constants {
         } else {
             sbView.setBackgroundColor(ContextCompat.getColor(AppApplication.getInstance(), R.color.colorRed));
         }
-        TextView tv = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        TextView tv = (TextView) sbView.findViewById(R.id.snackbar_text);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             tv.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         } else {

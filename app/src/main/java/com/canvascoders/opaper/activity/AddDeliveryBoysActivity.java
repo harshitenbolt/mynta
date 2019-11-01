@@ -1,7 +1,6 @@
 package com.canvascoders.opaper.activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -11,21 +10,20 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -54,7 +52,6 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.adapters.DeliveryBoysAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
-import com.canvascoders.opaper.camera.MyCameraActivity;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.ImagePicker;
@@ -62,10 +59,6 @@ import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.JsonObject;
 import com.theartofdev.edmodo.cropper.CropImage;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -578,7 +571,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
 
 
     private void selectLanguage() {
-        android.support.v7.app.AlertDialog.Builder mBuilder = new android.support.v7.app.AlertDialog.Builder(this);
+        androidx.appcompat.app.AlertDialog.Builder mBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
         mBuilder.setTitle("Select Languagaes");
         mBuilder.setMultiChoiceItems(select_language, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
             @Override
@@ -608,7 +601,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                 }
             }
         });
-        android.support.v7.app.AlertDialog mDialog = mBuilder.create();
+        androidx.appcompat.app.AlertDialog mDialog = mBuilder.create();
         mDialog.show();
 
     }
@@ -810,7 +803,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     private void deletePopup(String deliveryBoyId) {
 
         // Display message in dialog box if you have not internet connection
-        android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(this);
+        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Alert !");
         alertDialogBuilder.setMessage("Are you sure you want to delete ?");
         alertDialogBuilder.setCancelable(false);
@@ -829,7 +822,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
             }
         });
 
-        android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        androidx.appcompat.app.AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
 

@@ -1,19 +1,16 @@
 package com.canvascoders.opaper.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.canvascoders.opaper.Beans.GetVendorInvoiceList.StoreList;
-import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ApprovalRateDetail;
 import com.canvascoders.opaper.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

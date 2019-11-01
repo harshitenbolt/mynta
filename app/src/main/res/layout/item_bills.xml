@@ -34,7 +34,7 @@
                     android:src="@drawable/shop"
                     android:visibility="visible" />
 
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
                     android:layout_height="@dimen/_18sdp"
                     android:src="@drawable/placeholder2" />
 
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_22sdp"
@@ -105,7 +105,7 @@
                             android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/factory" />
 
-                        <android.support.v7.widget.AppCompatTextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/txt3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_22sdp"
@@ -143,7 +143,7 @@
                             android:layout_height="@dimen/_15sdp"
                             android:src="@drawable/billperiod" />
 
-                        <android.support.v7.widget.AppCompatTextView
+                        <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/txt5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -165,14 +165,14 @@
                 android:weightSum="1">
 
 
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.40"
                     android:fontFamily="@font/rb_light"
                     android:text="Amount" />
 
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

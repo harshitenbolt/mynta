@@ -11,7 +11,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
 import com.canvascoders.opaper.R;
@@ -19,7 +18,7 @@ import com.canvascoders.opaper.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchableSpinner extends android.support.v7.widget.AppCompatSpinner implements View.OnTouchListener,
+public class SearchableSpinner extends androidx.appcompat.widget.AppCompatSpinner implements View.OnTouchListener,
         SearchableListDialog.SearchableItem {
     public static final int NO_ITEM_SELECTED = -1;
     private Context _context;

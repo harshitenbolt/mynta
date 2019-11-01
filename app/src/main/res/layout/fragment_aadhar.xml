@@ -110,7 +110,7 @@
 
 
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cdAdharcard"
                 style="@style/CustomCardView"
                 android:layout_height="wrap_content"
@@ -286,9 +286,9 @@
                 </LinearLayout>
 
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cdDrivingLicence"
                 style="@style/CustomCardView"
                 android:layout_height="wrap_content"
@@ -451,9 +451,9 @@
                 </LinearLayout>
 
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:id="@+id/cdVoter"
                 style="@style/CustomCardView"
                 android:layout_height="wrap_content"
@@ -616,7 +616,7 @@
                 </LinearLayout>
 
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 

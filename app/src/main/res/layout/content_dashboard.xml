@@ -31,7 +31,7 @@
                 android:layout_marginRight="@dimen/_3sdp"
                 android:layout_weight="1">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cdOnBoard"
                     style="@style/CustomCardView"
                     android:layout_height="@dimen/_140sdp">
@@ -59,7 +59,7 @@
                             android:text="ONBOARD NEW VENDOR" />
                     </RelativeLayout>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
             <LinearLayout
@@ -69,7 +69,7 @@
                 android:layout_marginLeft="@dimen/_3sdp"
                 android:layout_weight="1">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cdNotification"
                     style="@style/CustomCardView"
                     android:layout_height="@dimen/_140sdp"
@@ -124,7 +124,7 @@
                             android:text="NOTIFICATIONS" />
                     </RelativeLayout>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
         </LinearLayout>
@@ -144,7 +144,7 @@
                 android:layout_marginRight="@dimen/_3sdp"
                 android:layout_weight="1">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cdLivevendor"
                     style="@style/CustomCardView"
                     android:layout_height="@dimen/_140sdp"
@@ -199,7 +199,7 @@
                             android:text="LIVE VENDORS" />
                     </RelativeLayout>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
 
@@ -210,7 +210,7 @@
                 android:layout_marginLeft="@dimen/_3sdp"
                 android:layout_weight="1">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cdInProgressVendor"
                     style="@style/CustomCardView"
                     android:layout_height="@dimen/_140sdp"
@@ -261,7 +261,7 @@
                             android:text="IN-PROGRESS VENDOR" />
                     </RelativeLayout>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
         </LinearLayout>
@@ -281,7 +281,7 @@
                 android:layout_marginRight="@dimen/_3sdp"
                 android:layout_weight="1">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cdReports"
                     style="@style/CustomCardView"
                     android:layout_height="@dimen/_140sdp"
@@ -316,7 +316,7 @@
                             android:text="REPORTS" />
                     </RelativeLayout>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
             <LinearLayout
@@ -326,7 +326,7 @@
                 android:layout_marginLeft="@dimen/_3sdp"
                 android:layout_weight="1">
 
-                <android.support.v7.widget.CardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cdInvoice"
                     style="@style/CustomCardView"
                     android:layout_height="@dimen/_140sdp"
@@ -359,7 +359,7 @@
                             android:text="INVOICE" />
                     </RelativeLayout>
 
-                </android.support.v7.widget.CardView>
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
         </LinearLayout>

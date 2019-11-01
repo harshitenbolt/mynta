@@ -4,26 +4,23 @@ import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SwitchCompat;
-import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SwitchCompat;
+
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,13 +34,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.adapters.CustomPopupAdapter;
 import com.canvascoders.opaper.adapters.MyAdapterforRecycler;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
-import com.canvascoders.opaper.utils.ImageUtils;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.OTPActivity;
 import com.canvascoders.opaper.adapters.MyAdapter;
@@ -60,7 +54,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -69,7 +62,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 import static android.app.Activity.RESULT_OK;
-import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
 
 
 public class DocUploadFragment extends Fragment implements View.OnClickListener {

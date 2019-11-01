@@ -1,10 +1,9 @@
 package com.canvascoders.opaper.adapters;
 
 import android.content.Context;
-import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.canvascoders.opaper.Beans.SignedDocDetailResponse.Result;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
-import com.canvascoders.opaper.utils.Mylogger;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 

@@ -1,24 +1,20 @@
 package com.canvascoders.opaper.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.canvascoders.opaper.Beans.RateTypeBean;
 import com.canvascoders.opaper.Beans.StoreTypeBean;
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.fragment.RateFragment;
 import com.canvascoders.opaper.utils.Constants;
 
 import java.util.List;

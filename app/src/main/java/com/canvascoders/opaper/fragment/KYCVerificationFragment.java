@@ -1,33 +1,25 @@
 package com.canvascoders.opaper.fragment;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
-import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -37,57 +29,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.canvascoders.opaper.Beans.AadhaarCard;
-import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
-import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
-import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
-import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
-import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.activity.AppApplication;
-import com.canvascoders.opaper.activity.CropImage2Activity;
 import com.canvascoders.opaper.activity.OTPActivity;
-import com.canvascoders.opaper.activity.ScannerActivity;
-import com.canvascoders.opaper.api.ApiClient;
-import com.canvascoders.opaper.api.ApiInterface;
-import com.canvascoders.opaper.helper.DialogListner;
-import com.canvascoders.opaper.utils.AadhaarXMLParser;
 import com.canvascoders.opaper.utils.Constants;
-import com.canvascoders.opaper.utils.DataAttributes;
-import com.canvascoders.opaper.utils.DialogUtil;
 import com.canvascoders.opaper.utils.GPSTracker;
-import com.canvascoders.opaper.utils.ImagePicker;
-import com.canvascoders.opaper.utils.Mylogger;
-import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 
-import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static android.app.Activity.RESULT_OK;
-import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
 
 
 public class KYCVerificationFragment extends Fragment implements View.OnClickListener /*implements View.OnClickListener*/ {

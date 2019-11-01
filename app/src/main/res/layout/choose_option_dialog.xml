@@ -12,7 +12,7 @@
         android:paddingRight="5dp"
         android:paddingTop="@dimen/margin_20dp">
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -21,7 +21,7 @@
 
             android:textSize="22sp" />
 
-        <android.support.v7.widget.AppCompatImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,13 +44,13 @@
             android:paddingLeft="25dp"
             android:paddingRight="25dp">
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_bio"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:background="@drawable/bio_normal" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txt_biomatric"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,14 +72,14 @@
             android:paddingLeft="25dp"
             android:paddingRight="25dp">
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img_phone_otp"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:padding="5dp"
                 />
 
-            <android.support.v7.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txt_phone_otp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
             android:layout_marginTop="15dp"
             android:background="@color/colorPrimary"></RelativeLayout>
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

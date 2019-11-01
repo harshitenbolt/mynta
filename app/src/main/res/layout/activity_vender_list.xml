@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -56,7 +56,7 @@
         android:orientation="horizontal"
         android:weightSum="1">
 
-        <android.support.v7.widget.AppCompatRadioButton
+        <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/radio_onboard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             android:checked="true"
             android:text="Onboarded Vendor" />
 
-        <android.support.v7.widget.AppCompatRadioButton
+        <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/radio_inprogress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -72,16 +72,16 @@
             android:text="Inprogress Vendor" />
 
     </RadioGroup>
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipe_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp"></android.support.v7.widget.RecyclerView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:padding="5dp"></androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</android.support.v7.widget.LinearLayoutCompat>
+</androidx.appcompat.widget.LinearLayoutCompat>

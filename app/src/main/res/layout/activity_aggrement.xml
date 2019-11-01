@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +16,7 @@
             android:layout_width="100dp"
             android:layout_height="60dp"
             android:src="@drawable/opaper2" />
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <View
         android:layout_width="match_parent"
@@ -32,7 +32,7 @@
         android:layout_marginTop="2dp"
         android:background="#ffffff">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/footer"
@@ -43,7 +43,7 @@
                 android:id="@+id/web_view_id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"></WebView>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
 
         <LinearLayout

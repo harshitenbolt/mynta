@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cvMain"
     android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         android:gravity="center"
         android:padding="@dimen/_10sdp">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/cvMain1"
             android:layout_width="@dimen/_60sdp"
             android:layout_height="@dimen/_60sdp"
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY" />
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         style="@style/TextviewwithoutSize"
                         android:fontFamily="@font/montesemibold"
                         android:text="Ticket No."
@@ -59,7 +59,7 @@
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_8sdp" />
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvTicketNo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                     android:layout_gravity="center"
                     android:orientation="vertical">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         style="@style/TextviewwithoutSize"
                         android:fontFamily="@font/montesemibold"
                         android:text="Priority"
@@ -89,7 +89,7 @@
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_8sdp" />
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvPriority"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -117,14 +117,14 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
 
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         style="@style/TextviewwithoutSize"
                         android:fontFamily="@font/montesemibold"
                         android:text="Subject"
                         android:clickable="false"
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_8sdp" />
-                    <android.support.v7.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvSubject"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -162,14 +162,14 @@
                 android:weightSum="1">
 
 
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.40"
                     android:fontFamily="@font/rb_light"
                     android:text="Amount" />
 
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -186,14 +186,14 @@
                 android:weightSum="1">
 
 
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.40"
                     android:fontFamily="@font/rb_light"
                     android:text="Bill Period" />
 
-                <android.support.v7.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -205,4 +205,4 @@
         </LinearLayout>
     </RelativeLayout>
 
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

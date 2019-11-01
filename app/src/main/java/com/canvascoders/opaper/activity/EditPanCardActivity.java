@@ -5,10 +5,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,15 +18,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
-import com.canvascoders.opaper.Beans.PanCardOcrResponse.PanCardSubmitResponse;
-import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.Beans.UpdatePanResponse.UpdatePancardResponse;
 import com.canvascoders.opaper.Beans.VendorList;
@@ -34,7 +31,6 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.PanApprovalPending;
-import com.canvascoders.opaper.fragment.TaskCompletedFragment2;
 import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.DialogUtil;
@@ -47,7 +43,6 @@ import com.canvascoders.opaper.utils.SessionManager;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -330,15 +325,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                     UpdatePancardResponse updatePancardResponse = response.body();
                     if (updatePancardResponse.getResponseCode() == 200) {
-                        deleteImages();
-                        File casted_image = new File(cameraimage);
-                        if (casted_image.exists()) {
-                            casted_image.delete();
-                        }
-                        File casted_image1 = new File(panImagepath);
-                        if (casted_image1.exists()) {
-                            casted_image1.delete();
-                        }
+                        //deleteImages();
 
 
                         Toast.makeText(EditPanCardActivity.this, updatePancardResponse.getResponse(), Toast.LENGTH_SHORT).show();
@@ -425,7 +412,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_PAN) {
-                deleteImages();
+               // deleteImages();
 //                Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                 Bitmap bitmap = ImagePicker.getImageFromResult(EditPanCardActivity.this, resultCode, data);
                 cameraimage = ImagePicker.getBitmapPath(bitmap, EditPanCardActivity.this);
@@ -637,7 +624,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    private void deleteImages() {
+  /*  private void deleteImages() {
 
         File casted_image = new File(cameraimage);
         if (casted_image.exists()) {
@@ -648,7 +635,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         if (casted_image6.exists()) {
             casted_image6.delete();
         }
-    }
+    }*/
 
     public void commanFragmentCallWithoutBackStack(Fragment fragment) {
 

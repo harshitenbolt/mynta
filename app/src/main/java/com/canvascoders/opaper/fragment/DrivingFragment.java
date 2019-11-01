@@ -8,10 +8,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +25,6 @@ import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicence
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.CropImage2Activity;
-import com.canvascoders.opaper.activity.ScannerActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.helper.DialogListner;
@@ -35,7 +34,6 @@ import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
-import com.google.common.eventbus.EventBus;
 
 import java.io.File;
 import java.util.HashMap;

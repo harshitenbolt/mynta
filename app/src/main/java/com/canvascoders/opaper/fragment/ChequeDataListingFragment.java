@@ -2,15 +2,14 @@ package com.canvascoders.opaper.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +17,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.BankDetailResp;
-import com.canvascoders.opaper.Beans.StoreTypeBean;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.activity.AddendumEsignActivity;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.DashboardActivity;
-import com.canvascoders.opaper.activity.StoreTypeListingActivity;
 import com.canvascoders.opaper.adapters.ChequeListAdapter;
-import com.canvascoders.opaper.adapters.StoreReListingAdapter;
-import com.canvascoders.opaper.adapters.VendorAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
@@ -35,13 +29,6 @@ import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;

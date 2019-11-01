@@ -22,7 +22,7 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/_10sdp">
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 style="@style/CustomCardView"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
@@ -900,7 +900,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
     </ScrollView>
 

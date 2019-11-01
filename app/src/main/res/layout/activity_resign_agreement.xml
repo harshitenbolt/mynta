@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -42,7 +42,7 @@
             android:padding="@dimen/_5sdp"
             android:src="@drawable/support" />
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -65,7 +65,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/relative_buttom"
@@ -79,7 +79,7 @@
                 android:layout_height="match_parent"
                 android:visibility="gone"></WebView>
 
-            <android.support.v4.widget.NestedScrollView
+            <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedMain"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -135,7 +135,7 @@
                         android:textColor="@color/text_color_dark_grey"
                         android:textSize="@dimen/_10sdp" />
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvAddedndum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -143,7 +143,7 @@
                         android:paddingBottom="@dimen/_15sdp"
                         android:visibility="gone">
 
-                    </android.support.v7.widget.RecyclerView>
+                    </androidx.recyclerview.widget.RecyclerView>
 
                     <View
                         android:layout_width="match_parent"
@@ -162,7 +162,7 @@
                         android:text="Current Approval Rate"
                         android:textSize="@dimen/_10sdp" />
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_15sdp"
@@ -192,14 +192,14 @@
                                 android:textColor="@color/colorRed"
                                 android:textSize="@dimen/_10sdp" />
 
-                            <android.support.v7.widget.RecyclerView
+                            <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rvRateAgainProcess"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/_20sdp"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_marginRight="@dimen/_20sdp"
-                                android:layout_marginBottom="@dimen/_20sdp"></android.support.v7.widget.RecyclerView>
+                                android:layout_marginBottom="@dimen/_20sdp"></androidx.recyclerview.widget.RecyclerView>
 
 
                             <View
@@ -219,14 +219,14 @@
                                 android:text="Rate Approved"                               android:textColor="@color/colorYellow"
                                 android:textSize="@dimen/_10sdp" />
 
-                            <android.support.v7.widget.RecyclerView
+                            <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rvRateList"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/_20sdp"></android.support.v7.widget.RecyclerView>
+                                android:layout_margin="@dimen/_20sdp"></androidx.recyclerview.widget.RecyclerView>
 
                         </LinearLayout>
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
 
                     <LinearLayout
@@ -278,7 +278,7 @@
                             android:text="Current Working Rate"
                             android:textSize="@dimen/_10sdp" />
 
-                        <android.support.v7.widget.CardView
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_15sdp"
@@ -291,14 +291,14 @@
                             app:cardBackgroundColor="@color/colorRateBackground"
                             app:cardCornerRadius="@dimen/_20sdp">
 
-                            <android.support.v7.widget.RecyclerView
+                            <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rvPreviousRate"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/_20sdp">
 
-                            </android.support.v7.widget.RecyclerView>
-                        </android.support.v7.widget.CardView>
+                            </androidx.recyclerview.widget.RecyclerView>
+                        </androidx.cardview.widget.CardView>
 
 
                     </LinearLayout>
@@ -329,9 +329,9 @@
                     </LinearLayout>
 
                 </LinearLayout>
-            </android.support.v4.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
 
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:id="@+id/relative_buttom"

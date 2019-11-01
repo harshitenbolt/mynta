@@ -31,7 +31,7 @@
         android:layout_below="@+id/toolbar"
         android:background="#bebbbb" />
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/relative_buttom"
@@ -44,7 +44,7 @@
             android:id="@+id/web_view_id"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></WebView>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <RelativeLayout
         android:id="@+id/relative_buttom"
@@ -55,7 +55,7 @@
         android:paddingTop="@dimen/margin_10dp">
 
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_agree"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

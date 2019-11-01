@@ -8,19 +8,17 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatTextView;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.RealPathUtil;
-import com.canvascoders.opaper.activity.DashboardActivity;
 
 import java.io.File;
 

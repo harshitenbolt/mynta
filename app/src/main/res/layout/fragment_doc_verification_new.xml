@@ -7,7 +7,7 @@
     android:background="@color/lightGrey">
 
     <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/_17sdp"
@@ -93,10 +93,10 @@
                                 android:padding="@dimen/_30sdp"
                                 android:src="@drawable/photocamera" />
 
-                            <android.support.v7.widget.RecyclerView
+                            <androidx.recyclerview.widget.RecyclerView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginLeft="@dimen/_15sdp"></android.support.v7.widget.RecyclerView>
+                                android:layout_marginLeft="@dimen/_15sdp"></androidx.recyclerview.widget.RecyclerView>
 
                         </LinearLayout>
 
@@ -207,5 +207,5 @@
             </LinearLayout>
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>

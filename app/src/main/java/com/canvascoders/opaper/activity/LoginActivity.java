@@ -12,14 +12,13 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -33,17 +32,11 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.Beans.UserDetailTResponse.GetUserDetails;
-import com.canvascoders.opaper.fragment.MobileFragment;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -293,8 +286,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        String imei= telephonyManager.getDeviceId();
-        Log.e("Device_data",Manufacturer_value+Brand_value+Model_value+Board_value+Hardware_value+Serial_nO_value+android_id+BootLoader_value+API_level+Version+Build_ID +"   "+imei);
+     //   String imei= telephonyManager.getDeviceId();
+        Log.e("Device_data",Manufacturer_value+Brand_value+Model_value+Board_value+Hardware_value+Serial_nO_value+android_id+BootLoader_value+API_level+Version+Build_ID +"   ");
         JSONObject jsonObject = new JSONObject();
 
         try {
@@ -308,7 +301,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             jsonObject.put("API_level",API_level);
             jsonObject.put("Version",Version);
             jsonObject.put("Build_ID",Build_ID);
-            jsonObject.put("IMEI_No",imei);
+            //jsonObject.put("IMEI_No",imei);
             jsonObject.put("App_version",Constants.APP_VERSION);
 
         } catch (JSONException e) {

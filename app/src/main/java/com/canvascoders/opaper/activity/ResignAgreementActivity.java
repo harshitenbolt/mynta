@@ -11,12 +11,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -30,7 +30,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.canvascoders.opaper.Beans.DelBoysResponse.DelBoyResponse;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.AddendumDetail;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ApprovalRateDetail;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.BasicDetailRateDetail;
@@ -42,17 +41,13 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.Screenshot.DragRectView;
 import com.canvascoders.opaper.Screenshot.Screenshot;
 import com.canvascoders.opaper.adapters.AdddendumListAdapter;
-import com.canvascoders.opaper.adapters.CommentListAdapter;
 import com.canvascoders.opaper.adapters.CurrentRateListAdapter;
-import com.canvascoders.opaper.adapters.DeliveryBoysListAdapter;
 import com.canvascoders.opaper.adapters.NewRateListAdapter;
 import com.canvascoders.opaper.adapters.PopupRateListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
-import com.canvascoders.opaper.fragment.PanVerificationFragment;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
-import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 
 import org.json.JSONException;
@@ -71,9 +66,7 @@ import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-import static android.content.Intent.ACTION_ANSWER;
 import static android.content.Intent.ACTION_VIEW;
-import static android.content.Intent.EXTRA_PROCESS_TEXT_READONLY;
 
 public class ResignAgreementActivity extends AppCompatActivity implements RecyclerViewClickListener {
 

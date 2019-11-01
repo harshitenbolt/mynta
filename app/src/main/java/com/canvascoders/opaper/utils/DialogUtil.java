@@ -1,24 +1,18 @@
 package com.canvascoders.opaper.utils;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
+
+import androidx.core.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -30,9 +24,6 @@ import android.widget.Toast;
 
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
-import com.canvascoders.opaper.activity.DashboardActivity;
-import com.canvascoders.opaper.activity.LoginActivity;
-import com.canvascoders.opaper.activity.SplashActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.PanVerificationFragment;

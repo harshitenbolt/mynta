@@ -1,23 +1,17 @@
 package com.canvascoders.opaper.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.canvascoders.opaper.Beans.BankDetailResp;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.BasicDetailRateDetail;
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.utils.Constants;
 
 import java.util.List;
 

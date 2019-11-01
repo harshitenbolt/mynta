@@ -7,43 +7,37 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.text.Editable;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.canvascoders.opaper.Beans.RateTypeBean;
 import com.canvascoders.opaper.Beans.StoreTypeBean;
 import com.canvascoders.opaper.Beans.VendorList;
-import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
 import com.canvascoders.opaper.R;
 
 import com.canvascoders.opaper.activity.ProcessInfoActivity;
 import com.canvascoders.opaper.adapters.RateListAdapter;
-import com.canvascoders.opaper.adapters.RejectedStoreListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
-import com.canvascoders.opaper.activity.AgreementDetailActivity;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.OTPActivity;
 import com.google.gson.JsonArray;
@@ -59,10 +53,7 @@ import java.util.ArrayList;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
-
-import static com.canvascoders.opaper.utils.Constants.showAlert;
 
 public class RateFragment extends Fragment implements View.OnClickListener {
 

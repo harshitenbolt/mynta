@@ -25,7 +25,7 @@
         android:text="NOTIFICATION"
         android:textColor="@color/colorPrimary" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,7 +34,7 @@
         android:background="#e7e6e6"
         android:padding="10dp">
 
-    </android.support.v7.widget.RecyclerView>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <RelativeLayout
         android:id="@+id/activity_thread_editor_parent"
@@ -44,7 +44,7 @@
         android:background="@color/cardview_dark_background"
         android:padding="@dimen/simple_padding_small">
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/activity_thread_send_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             app:fabSize="mini"
             tools:ignore="RtlCompat" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/activity_thread_send_fab2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
             android:visibility="gone"
             tools:ignore="RtlCompat" />
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/activity_thread_input_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -2,17 +2,16 @@ package com.canvascoders.opaper.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.canvascoders.opaper.Beans.CheckGSTStatus.CheckGstStatus;
 import com.canvascoders.opaper.Beans.GetGstListing.Datum;
 import com.canvascoders.opaper.Beans.GetGstListing.GetGstListing;
 import com.canvascoders.opaper.Beans.VendorList;

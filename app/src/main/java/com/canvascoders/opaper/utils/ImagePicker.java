@@ -7,6 +7,7 @@ package com.canvascoders.opaper.utils;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -23,13 +24,17 @@ import android.os.Parcelable;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-import android.support.v4.content.FileProvider;
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
+
 import android.util.Log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +77,45 @@ public class ImagePicker {
         }
         return takePhotoIntent;
     }
+
+
+
+
+
+
+  /*  private void saveImage(Context context,Bitmap bitmap, @NonNull String name) throws IOException {
+        boolean saved;
+        OutputStream fos;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ContentResolver resolver =context.getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/" + IMAGES_FOLDER_NAME);
+            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+            fos = resolver.openOutputStream(imageUri);
+        } else {
+            String imagesDir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DCIM).toString() + File.separator + IMAGES_FOLDER_NAME;
+
+            File file = new File(imagesDir);
+
+            if (!file.exists()) {
+                file.mkdir();
+            }
+
+            File image = new File(imagesDir, name + ".png");
+            fos = new FileOutputStream(image)
+
+        }
+
+        saved = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        fos.flush();
+        fos.close();
+    }
+*/
+
 
     public static Intent getPickImageIntent(Context context) {
         Intent chooserIntent = null;
@@ -153,9 +197,17 @@ public class ImagePicker {
                     imageReturnedIntent.getData() == null ||
                     imageReturnedIntent.getData().toString().contains(imageFile.toString()));
             if (isCamera) {     /** CAMERA **/
-                if (Build.VERSION.SDK_INT > 21) { //use this if Lollipop_Mr1 (API 22) or above
+                if (Build.VERSION.SDK_INT > 21 /*&& Build.VERSION.SDK_INT < Build.VERSION_CODES.Q*/) { //use this if Lollipop_Mr1 (API 22) or above
                     selectedImage = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", imageFile);
-                } else {
+                }/* else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    ContentResolver resolver = context.getContentResolver();
+                    ContentValues contentValues = new ContentValues();
+                    *//*contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
+                    contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
+                    contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/" + IMAGES_FOLDER_NAME);*//*
+                    selectedImage = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+
+                }*/ else {
                     selectedImage = Uri.fromFile(imageFile);
                 }
             } else {            /** ALBUM **/
@@ -305,7 +357,7 @@ public class ImagePicker {
     }
 
     public static String getImagePath() {
-        Log.e("file",filePath);
+        Log.e("file", filePath);
         return filePath;
     }
 
@@ -379,13 +431,14 @@ public class ImagePicker {
             Cursor cursor = mContext.getContentResolver().query(tempUri, null, null, null, null);
             cursor.moveToFirst();
             int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            Log.e("file",cursor.getString(idx));
+            Log.e("file", cursor.getString(idx));
             return cursor.getString(idx);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
     }
+
     public static Bitmap getBitmapFromURL(String src) {
         try {
             java.net.URL url = new java.net.URL(src);

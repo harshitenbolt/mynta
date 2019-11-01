@@ -8,14 +8,14 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -38,10 +38,9 @@ import com.canvascoders.opaper.Beans.VendorInvoiceList;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.activity.DashboardActivity;
 import com.canvascoders.opaper.activity.InvoiceDetailsActivity;
-import com.canvascoders.opaper.activity.VendorDetailActivity;
 import com.canvascoders.opaper.adapters.InvoiceListCommonAdapter;
-import com.canvascoders.opaper.adapters.VendorListOnboardedAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
@@ -49,7 +48,6 @@ import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.EndlessRecyclerViewScrollListener;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
-import com.google.android.gms.vision.text.Line;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -112,6 +110,7 @@ public class InvoiceListingFragment extends Fragment implements SwipeRefreshLayo
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_invoice_listing, container, false);
+        DashboardActivity.settitle("Invoices");
         init();
         return v;
     }
@@ -123,7 +122,7 @@ public class InvoiceListingFragment extends Fragment implements SwipeRefreshLayo
 
 
         progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("please wait loading onboarded vendors...");
+        progressDialog.setMessage("please wait loading Invoices ...");
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -175,7 +174,7 @@ public class InvoiceListingFragment extends Fragment implements SwipeRefreshLayo
 
         apiName = "get-all-kirana-invoice";
         onboard = true;
-        progressDialog.setMessage("please wait loading onboarded vendors...");
+        progressDialog.setMessage("please wait loading Invoices ...");
 
         new GetVendorList(object.toString(), apiName).execute();
 
@@ -314,6 +313,7 @@ public class InvoiceListingFragment extends Fragment implements SwipeRefreshLayo
                 }
             }
         });
+
 
 
     }
@@ -842,6 +842,16 @@ public class InvoiceListingFragment extends Fragment implements SwipeRefreshLayo
             status.setText("Status:" + detail.status);*//*
             return row;*/
 
+        }
+    }
+
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            // Refresh your fragment here
         }
     }
 }

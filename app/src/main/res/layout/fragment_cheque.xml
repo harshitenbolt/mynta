@@ -10,7 +10,7 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         style="@style/CustomCardView"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
@@ -123,7 +123,7 @@
                 android:visibility="gone" />
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
     <Button

@@ -5,13 +5,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.content.res.ResourcesCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;

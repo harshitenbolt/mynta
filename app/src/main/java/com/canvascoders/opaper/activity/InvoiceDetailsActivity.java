@@ -1,38 +1,29 @@
 package com.canvascoders.opaper.activity;
 
 import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.canvascoders.opaper.Beans.GetVendorInvoiceList.Datum;
 import com.canvascoders.opaper.Beans.GetVendorInvoiceList.GetVendorInvoiceDetails;
 import com.canvascoders.opaper.Beans.GetVendorInvoiceList.MensaDelivery;
-import com.canvascoders.opaper.Beans.GetVendorInvoiceList.StoreList;
-import com.canvascoders.opaper.Beans.TransactionIDResponse.TransactionIdResponse;
 import com.canvascoders.opaper.Beans.VendorInvoiceList;
-import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.adapters.DeliveryBoysListAdapter;
 import com.canvascoders.opaper.adapters.NoOFBillPeriodListAdapter;
 import com.canvascoders.opaper.adapters.NoOFInvoicesListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.SessionManager;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -51,6 +42,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
     TextView tvTotalInvoice;
     List<Map<String, Map<String, List<MensaDelivery>>>> titleList = new ArrayList<>();
     List<Integer> valueName = new ArrayList<>();
+    ImageView ivBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +66,13 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
         rvNoImvoice = findViewById(R.id.rvInvoices);
         rvBillPeriod = findViewById(R.id.rvBillPeriod);
         tvTotalInvoice = findViewById(R.id.tvTotalInvoice);
+        ivBack = findViewById(R.id.iv_back_process);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void APICall() {

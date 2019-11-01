@@ -13,13 +13,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -48,13 +48,8 @@ import com.canvascoders.opaper.Beans.VerifyGstResponse.VerifyGst;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.adapters.MyAdapter;
-import com.canvascoders.opaper.adapters.MyAdapterforRecycler;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
-import com.canvascoders.opaper.fragment.MapsCurrentPlaceFragment;
-import com.canvascoders.opaper.fragment.MobileFragment;
-import com.canvascoders.opaper.fragment.PanApprovalPending;
 import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.DialogUtil;
@@ -105,7 +100,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
-import static com.canvascoders.opaper.fragment.PanVerificationFragment.CROPPED_IMAGE;
 
 public class EditGSTActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, OnMapReadyCallback,
         LocationListener, View.OnClickListener {

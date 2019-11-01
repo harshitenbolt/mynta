@@ -1,15 +1,14 @@
 package com.canvascoders.opaper.adapters;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.canvascoders.opaper.Beans.BasicDetailRateDetailFromResign;
-import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.BasicDetailRateDetail;
 import com.canvascoders.opaper.R;
 
 import java.util.List;

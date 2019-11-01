@@ -15,8 +15,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -278,6 +278,7 @@ public class CropImage2Activity extends AppCompatActivity {
             Log.e("aoki", "mSourceUri = " + mSourceUri);
         }*/
         // load image
+        mCropView.load(null);
         mCropView.load(mSourceUri)
                 .initialFrameRect(mFrameRect)
                 .useThumbnail(false)

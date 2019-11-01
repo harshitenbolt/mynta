@@ -1,30 +1,22 @@
 package com.canvascoders.opaper.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
-
-import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.Datum;
 import com.canvascoders.opaper.Beans.ObjectPopup;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
-import com.canvascoders.opaper.utils.Constants;
-import com.canvascoders.opaper.utils.OnTaskCompleted;
 
 import java.util.ArrayList;
 import java.util.List;

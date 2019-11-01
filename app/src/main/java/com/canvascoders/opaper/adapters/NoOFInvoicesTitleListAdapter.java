@@ -2,9 +2,9 @@ package com.canvascoders.opaper.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +18,6 @@ import com.canvascoders.opaper.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class NoOFInvoicesTitleListAdapter extends RecyclerView.Adapter<NoOFInvoicesTitleListAdapter.ItemHolder> {
 
@@ -62,6 +61,8 @@ public class NoOFInvoicesTitleListAdapter extends RecyclerView.Adapter<NoOFInvoi
                         Intent i = new Intent(mContext, InvoiceWebViewActivity.class);
                         i.putExtra(Constants.KEY_INVOICE_ID, titleList.get(position).getId());
                         i.putExtra(Constants.INVOICE_NUMBER, titleList.get(position).getInvoiceType());
+                        i.putExtra(Constants.PARAM_STORE_TYPE_CONFIG, titleList.get(position).getStoreType());
+                        i.putExtra("Pending", "");
                         mContext.startActivity(i);
 
                     }
@@ -77,6 +78,8 @@ public class NoOFInvoicesTitleListAdapter extends RecyclerView.Adapter<NoOFInvoi
                         i.putExtra(Constants.KEY_INVOICE_ID, titleList.get(position).getId());
                         i.putExtra(Constants.INVOICE_TYPE, titleList.get(position).getInvoiceType());
                         i.putExtra(Constants.INVOICE_NUMBER, titleList.get(position).getGstEsignStatus());
+                        i.putExtra(Constants.PARAM_STORE_TYPE_CONFIG, titleList.get(position).getStoreType());
+                        i.putExtra("Pending", "Pending");
                         mContext.startActivity(i);
                     }
                 });
@@ -93,7 +96,9 @@ public class NoOFInvoicesTitleListAdapter extends RecyclerView.Adapter<NoOFInvoi
                     Intent i = new Intent(mContext, InvoiceWebViewActivity.class);
                     i.putExtra(Constants.KEY_INVOICE_ID, titleList.get(position).getId());
                     i.putExtra(Constants.INVOICE_TYPE, titleList.get(position).getInvoiceType());
-                    i.putExtra(Constants.INVOICE_NUMBER,titleList.get(position).getInvoiceNum());
+                    i.putExtra(Constants.INVOICE_NUMBER, titleList.get(position).getInvoiceNum());
+                    i.putExtra(Constants.PARAM_STORE_TYPE_CONFIG, titleList.get(position).getStoreType());
+                    i.putExtra("Pending", "");
                     mContext.startActivity(i);
 
                 }

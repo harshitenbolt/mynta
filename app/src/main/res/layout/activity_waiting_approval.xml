@@ -11,7 +11,7 @@
 
 
 
-    <android.support.v7.widget.AppCompatImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img"
         android:padding="30dp"
         android:layout_width="match_parent"

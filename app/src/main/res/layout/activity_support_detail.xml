@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activity.SupportDetailActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -30,7 +30,7 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_14sdp" />
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
     </FrameLayout>
 
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         style="@style/CustomCardView"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.v4.widget.NestedScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fillViewport="true">
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <android.support.v7.widget.CardView
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/cvTop"
                         style="@style/CustomCardView"
                         android:layout_height="@dimen/_120sdp"
@@ -85,7 +85,7 @@
                             android:layout_height="@dimen/_120sdp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/image_placeholder" />
-                    </android.support.v7.widget.CardView>
+                    </androidx.cardview.widget.CardView>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -205,7 +205,7 @@
                             android:text="Comments"
                             android:textSize="@dimen/_12sdp" />
 
-                        <android.support.v7.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvComments"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -213,7 +213,7 @@
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginRight="@dimen/_10sdp"
                             android:paddingBottom="@dimen/_55sdp"
-                            android:visibility="gone"></android.support.v7.widget.RecyclerView>
+                            android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
 
                         <TextView
                             android:id="@+id/tvNocomment"
@@ -230,7 +230,7 @@
 
                 </RelativeLayout>
 
-            </android.support.v4.widget.NestedScrollView>
+            </androidx.core.widget.NestedScrollView>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -306,7 +306,7 @@
             </LinearLayout>
 
         </RelativeLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
 </RelativeLayout>

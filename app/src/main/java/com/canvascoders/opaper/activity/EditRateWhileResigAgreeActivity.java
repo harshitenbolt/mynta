@@ -2,15 +2,14 @@ package com.canvascoders.opaper.activity;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResponse;
 import com.canvascoders.opaper.Beans.StoreTypeBean;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
@@ -31,7 +29,6 @@ import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
-import com.google.android.gms.maps.model.Dash;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -45,7 +42,6 @@ import java.util.ArrayList;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class EditRateWhileResigAgreeActivity extends AppCompatActivity {

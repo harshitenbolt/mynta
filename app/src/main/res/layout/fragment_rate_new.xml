@@ -8,7 +8,7 @@
     android:clickable="true"
     tools:context=".activity.DashboardActivity">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
@@ -26,7 +26,7 @@
                 android:layout_above="@+id/linear_bottom"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_rate_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -99,7 +99,7 @@
 
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
 </RelativeLayout>

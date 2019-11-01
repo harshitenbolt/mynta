@@ -7,38 +7,21 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.canvascoders.opaper.Beans.CheckEsignResponse.CheckEsignResponse;
 import com.canvascoders.opaper.Beans.SupportListResponse.Datum;
-import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
-import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.DashboardActivity;
-import com.canvascoders.opaper.adapters.RateListAdapter;
-import com.canvascoders.opaper.adapters.SupportListAdapter;
-import com.canvascoders.opaper.api.ApiClient;
-import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.SessionManager;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.

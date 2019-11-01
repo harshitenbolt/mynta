@@ -7,7 +7,7 @@
 
 
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -31,7 +31,7 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_14sdp" />
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
     </FrameLayout>
 
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/relative_buttom"
@@ -60,7 +60,7 @@
             android:id="@+id/web_view_id"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></WebView>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <LinearLayout
         android:id="@+id/relative_buttom"
@@ -73,7 +73,7 @@
        >
 
 
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_agree"
             android:layout_width="match_parent"
             android:visibility="gone"
@@ -92,7 +92,7 @@
             android:text="AGREE"
             android:textColor="@color/colorWhite"
             app:fontFamily="@font/rb_medium" />
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_resend"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -111,7 +111,7 @@
             android:text="RESEND LINK"
             android:textColor="@color/colorWhite"
             app:fontFamily="@font/rb_medium" />
-        <android.support.v7.widget.AppCompatTextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/btn_update"
             android:layout_width="match_parent"
             android:layout_weight="1.5"

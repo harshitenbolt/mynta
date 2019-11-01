@@ -7,19 +7,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.net.Uri;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -40,17 +39,14 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
-import com.canvascoders.opaper.Beans.GetAgentDetailResponse.GetAgentDetailResponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
-import com.canvascoders.opaper.fragment.InfoFragment;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
-import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.JsonObject;
 
@@ -61,7 +57,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -69,10 +64,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
-import static com.canvascoders.opaper.fragment.PanVerificationFragment.CROPPED_IMAGE;
-import static com.canvascoders.opaper.utils.Constants.showAlert;
 
 public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClickListener {
 
