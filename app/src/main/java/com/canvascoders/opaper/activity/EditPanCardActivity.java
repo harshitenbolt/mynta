@@ -72,6 +72,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
     private Button btSubmit;
     boolean individual = true;
     String panno = "";
+
     GPSTracker gps;
     TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -253,7 +254,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         switch (view.getId()) {
             case R.id.btSubmit:
                 if (validation()) {
-                    Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
+//                    Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
 
                         ExtractPanDetail();
@@ -523,7 +524,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                     public void onClickDetails(String name, String fathername, String storename, String id) {
 
                                         if (storename.equalsIgnoreCase("")) {
-                                            Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
+//                                            Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                                 UpadatePan(name, fathername, id, "");
                                             } else {
@@ -532,7 +533,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                                         } else {
 
-                                            Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
+                                          //  Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                                 UpadatePan(name, fathername, id, storename);
                                             } else {

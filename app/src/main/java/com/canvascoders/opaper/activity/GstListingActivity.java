@@ -2,10 +2,14 @@ package com.canvascoders.opaper.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -99,8 +103,14 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
                             tvNodate.setVisibility(View.VISIBLE);
                         }
 
+                    } else if (getGstListing.getResponseCode() == 403) {
+                        Intent i = new Intent(GstListingActivity.this, EditGSTActivity.class);
+                        i.putExtra("data", vendor);
+                        startActivity(i);
+                        finish();
+                        tvNodate.setVisibility(View.VISIBLE);
                     } else {
-                        Toast.makeText(GstListingActivity.this, getGstListing.getResponse(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(GstListingActivity.this, getGstListing.getResponse(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }

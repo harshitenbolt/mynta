@@ -13,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.Settings;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -20,7 +21,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -157,6 +160,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     String branch_address = "";
 
     int request_id = 0;
+    ImageView ivBack;
 
     private TextView tvPanClick, tvPanName, tvPanFatherName, tvPanNo;
     private TextView tvSkipCheque;
@@ -209,6 +213,13 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     }
 
     private void init() {
+        ivBack = findViewById(R.id.iv_back_process);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         requestPermissionHandler = new RequestPermissionHandler();
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
@@ -277,6 +288,9 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         ivChequeImage = findViewById(R.id.ivChequeImage);
         btExtract.setOnClickListener(this);
         btn_cheque_card.setOnClickListener(this);
+
+        etGST.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+
 
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
             // getBankDetails(mContext,s.toString(),processId);
@@ -1392,10 +1406,9 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                         store_address = storeAddress.getBnm() + " " + storeAddress.getBno();
                         store_address1 = storeAddress.getSt();
                         store_address_landmark = storeAddress.getLoc();
-                        if(storeAddress.getCity().equalsIgnoreCase("")){
+                        if (storeAddress.getCity().equalsIgnoreCase("")) {
                             store_city = storeAddress.getDst();
-                        }
-                        else{
+                        } else {
                             store_city = storeAddress.getCity();
                         }
                         store_state = storeAddress.getStcd();
@@ -1733,7 +1746,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                     public void onClickDetails(String name, String fathername, String storename, String id) {
 
                                         if (storename.equalsIgnoreCase("")) {
-                                            Constants.hideKeyboardwithoutPopulate(EditGSTActivity.this);
+//                                            Constants.hideKeyboardwithoutPopulate(EditGSTActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                                 // UpadatePan(name, fathername, id, "");
                                                 panName = name;
@@ -1752,7 +1765,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
                                         } else {
 
-                                            Constants.hideKeyboardwithoutPopulate(EditGSTActivity.this);
+                                            //      Constants.hideKeyboardwithoutPopulate(EditGSTActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                                 //  UpadatePan(name, fathername, id, storename);
                                             } else {

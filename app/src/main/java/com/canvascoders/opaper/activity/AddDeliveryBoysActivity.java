@@ -10,15 +10,19 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
+
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -846,6 +850,9 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                 if (deleteDeliveryResponse.getResponseCode() == 200) {
                     Toast.makeText(AddDeliveryBoysActivity.this, deleteDeliveryResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     ApiCallGetLists();
+                } else {
+                    Toast.makeText(AddDeliveryBoysActivity.this, deleteDeliveryResponse.getResponse(), Toast.LENGTH_SHORT).show();
+
                 }
 
             }

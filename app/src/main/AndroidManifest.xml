@@ -34,9 +34,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".activity.GstListingActivity"
+        <activity
+            android:name=".activity.GstListingActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" ></activity>
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".activity.InvoiceWebViewActivity"
             android:screenOrientation="portrait"
@@ -45,7 +46,10 @@
             android:name=".activity.InvoiceDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".activity.EditGSTActivity" />
+        <activity
+            android:name=".activity.EditGSTActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.EditDeliveryBoyActivity"
             android:screenOrientation="portrait"

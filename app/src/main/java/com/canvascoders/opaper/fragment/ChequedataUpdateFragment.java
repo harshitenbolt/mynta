@@ -201,7 +201,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
 
                         if (checkEsignResponse.getResponseCode() == 200) {
                             progressDialog.dismiss();
-                            Glide.with(ChequedataUpdateFragment.this).load(checkEsignResponse.getData().get(0).getCancelledCheque())
+                            Glide.with(getActivity()).load(checkEsignResponse.getData().get(0).getCancelledCheque())
                                     .into(ivChequeImage);
 
 /*
@@ -261,7 +261,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                             edit_ifsc.setText(vendorBankDetail.getIfsc());*/
 
                             Log.e("Image", vendorBankDetail.getCancelledCheque());
-                            Glide.with(ChequedataUpdateFragment.this).load(vendorBankDetail.getCancelledCheque())
+                            Glide.with(getActivity()).load(vendorBankDetail.getCancelledCheque())
                                     .into(btn_cheque_card);
                            /* mMyTask = new DownloadTask()
                                     .execute(stringToURL(vendorBankDetail.getCancelledCheque()
@@ -487,7 +487,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
 
         switch (v.getId()) {
             case R.id.btExtract:
-                Constants.hideKeyboardwithoutPopulate(getActivity());
+            //    Constants.hideKeyboardwithoutPopulate(getActivity());
                 //if (validation()) {
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                     if (validation()) {
@@ -560,7 +560,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
     }
 
     private boolean validation() {
-      /*  if (TextUtils.isEmpty(edit_ac_no.getText().toString())) {
+      /*  if (TextUtils.isEmpt0y(edit_ac_no.getText().toString())) {
             edit_ac_no.requestFocus();
             edit_ac_no.setError("Provide Accout Number");
             //showMSG(false, "Provide Accout Number");
