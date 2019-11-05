@@ -268,15 +268,13 @@
                             style="@style/TextviewwithoutSize"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-
-
-                            android:text="Esign Verification for this user is pending under Link for completing E-sign verification has been sent to this user's registered Mobile No."
+                            android:text="Esign Verification for this user is pending. Underlink for complete e-sign verification has been sent to the user's registered Mobile No."
                             android:textSize="@dimen/_10sdp" />
 
                         <TextView
                             style="@style/TextviewwithoutSize"
                             android:layout_marginTop="@dimen/_15sdp"
-                            android:text="If link is not received Click Resend.If completed process then click check E-sign"
+                            android:text="If link is not received , Click Resend . If completed the process, click Check E-sign"
                             android:textSize="@dimen/_10sdp" />
                     </LinearLayout>
                 </ScrollView>

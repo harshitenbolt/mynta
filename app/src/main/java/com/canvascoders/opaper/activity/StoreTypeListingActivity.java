@@ -223,7 +223,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                         }
 //                    jsonObject.addProperty("rate", neutralStoreList.get(i).getRate());
                     } else {
-                        Toast.makeText(StoreTypeListingActivity.this, "Issue with Rate:" + neutralStoreList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(StoreTypeListingActivity.this, "Issue with rate:" + neutralStoreList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                         return;
                     }
                 } else {  // ITS s CAC store send rate "0"
@@ -245,7 +245,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                     } else
                         jsonObject.addProperty("rate", rejectedStoreList.get(i).getRate());
                 } else {
-                    Toast.makeText(StoreTypeListingActivity.this, "Issue with Rate:" + rejectedStoreList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(StoreTypeListingActivity.this, "Issue with rate:" + rejectedStoreList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                     return;
                 }
                 jsonArray.add(jsonObject);

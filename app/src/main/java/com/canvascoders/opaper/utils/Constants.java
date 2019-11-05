@@ -40,13 +40,13 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
 
-  //   public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+//    public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
     public static String BaseURL = "https://mystaging.opaper.in/api3/" ;
     // test server 2
 
    public final static String APP_NAME = "my_stage"; //stage
- //   public final static String APP_NAME = "my_live"; //live
-  //  public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+  // public final static String APP_NAME = "my_live"; //live
+   // public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
     public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
@@ -368,11 +368,11 @@ public class Constants {
 
     // set title
     public static String TITLE_DASHBOARD = "Dashboard";
-    public static String TITLE_MOBILE_AUTH = "Mobile Authentication";
+    public static String TITLE_MOBILE_AUTH = "Mobile Verification";
     public static String TITLE_SCANNER = "QR Code Scan";
     public static String TITLE_AGREEMENT = "Agreement Details";
     public static String TITLE_CHEQUE = "Cheque Verification";
-    public static String TITLE_DOCUMENT = "Document Verification";
+    public static String TITLE_DOCUMENT = "Vendor Documents";
     public static String TITLE_ADD_DEL_BOY = "Add Delivery Boy";
     public static String TITLE_GST_DETAIL = "GST Details";
     public static String TITLE_VENDOR_DETAIL_MENSA = "MENSA Vendor Details";
@@ -383,7 +383,7 @@ public class Constants {
     public static String TITLE_LOCATION = "Location";
     public static String TITLE_NOC_DETAIL = "Noc Details";
     public static String TITLE_NOTIFICATION = "Notification";
-    public static String TITLE_PAN_CARD_VERIFICATION = "PAN Card Verification";
+    public static String TITLE_PAN_CARD_VERIFICATION = "PAN Verification";
     public static String TITLE_PROFILE = "Profile";
     public static String TITLE_RATE_UPDATE = "Rate Update";
     public static String TITLE_DELIVERY_BOY = "Delivery boy";

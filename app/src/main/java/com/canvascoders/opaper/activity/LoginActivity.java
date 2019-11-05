@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         ivShowPassword = findViewById(R.id.ivShowPw);
 
         mProgressDialog = new ProgressDialog(LoginActivity.this);
-        mProgressDialog.setMessage("Please wait authenticating store executive");
+        mProgressDialog.setMessage("Authenticating store executive. Please wait.");
         mProgressDialog.setCancelable(false);
 
         edt_email_id = (EditText) findViewById(R.id.etEmail);

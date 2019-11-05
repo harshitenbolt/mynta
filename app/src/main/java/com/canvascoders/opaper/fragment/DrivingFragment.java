@@ -131,7 +131,7 @@ public class DrivingFragment extends Fragment implements View.OnClickListener {
         driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
 
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
-        mProgressDialog.setMessage("Please wait getting details...");
+        mProgressDialog.setMessage("Fetching details. Please wait......");
         mProgressDialog.show();
         // hideKeyboardwithoutPopulateFragment();
         Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);

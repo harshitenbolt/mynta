@@ -66,7 +66,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
 
     private void initView() {
         mProgressDialog = new ProgressDialog(mcontext);
-        mProgressDialog.setMessage("sending OTP to mobile...");
+        mProgressDialog.setMessage("Sending OTP to mobile.");
         mProgressDialog.setCancelable(false);
         edit_mobile_no = view.findViewById(R.id.etMobileNumber);
         btn_next = view.findViewById(R.id.btSendOTP);

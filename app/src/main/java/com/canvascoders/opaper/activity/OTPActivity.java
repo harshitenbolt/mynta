@@ -192,7 +192,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
             break;
 
             case R.id.llNavOnboardNewVendor:
-                tv_title.setText("Mobile Authentication");
+                tv_title.setText("Mobile Verification");
 
                 commanFragmentCallWithoutBackStack(new MobileFragment());
                 drawer.closeDrawer(GravityCompat.START);
@@ -463,7 +463,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                             public void onTick(long millisUntilFinished) {
                                 countDown--;
                                 tvTime.setVisibility(View.VISIBLE);
-                                tvTime.setText("Resend OTP in 00:" + countDown);
+                                tvTime.setText("Uploading cheque document. Please wait... in 00:" + countDown);
                             }
 
                             public void onFinish() {

@@ -4,7 +4,9 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Environment;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -69,7 +71,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
         deleteImage();
 
         tv_message = findViewById(R.id.lbl_your_name);
-        tv_message.setText(getText(R.string.start_esign) + "" + getText(R.string.complete_esign));
+        // tv_message.setText(getText(R.string.start_esign) + "" + getText(R.string.complete_esign));
         sessionManager = new SessionManager(ProcessInfoActivity.this);
         str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
         tvTitleActionBar = findViewById(R.id.tv_title_Process);
@@ -113,21 +115,17 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
     public void deleteImage() {
 
-        File dir = new File(Environment.getExternalStorageDirectory()+"/Pictures");
-        if (dir.isDirectory())
-        {
+        File dir = new File(Environment.getExternalStorageDirectory() + "/Pictures");
+        if (dir.isDirectory()) {
             Log.e("-->", "file Deleted :" + dir);
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++)
-            {
+            for (int i = 0; i < children.length; i++) {
                 new File(dir, children[i]).delete();
             }
         }
     }
-
 
 
     @Override

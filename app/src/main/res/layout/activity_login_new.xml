@@ -160,7 +160,7 @@
                             style="@style/App_TextViewSmall"
                             android:gravity="end"
                             android:textSize="@dimen/_10sdp"
-                            android:text="Forgot Passoword?"
+                            android:text="forgot passoword"
                             android:textColor="@color/colorYellow"
                             android:fontFamily="@font/montesemibold"/>
 
@@ -180,7 +180,7 @@
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/colorBlue"
                         android:fontFamily="@font/monteregular"
-                        android:text="Remeber me"
+                        android:text="remeber me"
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold" />

@@ -456,7 +456,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
         if (!TextUtils.isEmpty(panImagepath)) {
 
-            mProgressDialog.setMessage("Image extracting...");
+            mProgressDialog.setMessage("Extracting image..");
             mProgressDialog.setCancelable(false);
             mProgressDialog.show();
 

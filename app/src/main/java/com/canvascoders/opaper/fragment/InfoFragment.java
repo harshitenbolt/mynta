@@ -85,9 +85,9 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     private EditText etLicenceNumeber;
     private TextView tvDOB;
     private Toolbar toolbar;
-    String selectedString = "";
+    private String selectedString = "";
     private static Dialog dialog;
-    TextView tvTypeofVendor, tvStoreType, tvVendorTypeDetail, tvLocality, tvApproach, tvShipment;
+    private TextView tvTypeofVendor, tvStoreType, tvVendorTypeDetail, tvLocality, tvApproach, tvShipment;
     private TextView tvLanguage;
     private Switch switchGst, switchPartner;
     private String TAG = "InfoFragment";
@@ -99,7 +99,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     private TextView tvGeneralInfo,tvAddressInfo;
     private LinearLayout llDOB;
     DatePicker datePicker;
-    CustomPopupAdapter customPopupAdapter;
     CustomPopupStoreTypeAdapter customPopupStoreTypeAdapter;
     CustomPopupLocalityAdapter customPopupLocalityAdapter;
     CustomPopupApproachAdapter customPopupApproachAdapter;
@@ -185,7 +184,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
         mcontext = this.getActivity();
         mProgressDialog = new ProgressDialog(mcontext);
-        mProgressDialog.setMessage("Please wait submitting vendor details");
+        mProgressDialog.setMessage("Submitting rate details . Please wait ...");
         mProgressDialog.setCancelable(false);
 
         sessionManager = new SessionManager(mcontext);
@@ -620,7 +619,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                     listVendorType.add(objectPopup);
                 }
 
-                customPopupAdapter = new CustomPopupAdapter(listVendorType, mcontext, this, "VendorType");
+                CustomPopupAdapter customPopupAdapter = new CustomPopupAdapter(listVendorType, mcontext, this, "VendorType");
 
                 LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
@@ -958,7 +957,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     }
 
     private void ApiCallValidationCheck(String apiname, final int i1) {
-        mProgressDialog.setMessage("Please wait submitting vendor details");
+        mProgressDialog.setMessage("Submitting rate details . Please wait ...");
 
         mProgressDialog.show();
         JsonObject user = new JsonObject();
@@ -1564,7 +1563,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             // Ask user to enable GPS/network in settings
             gps.showSettingsAlert();
         }
-        mProgressDialog.setMessage("Please wait submitting vendor details");
+        mProgressDialog.setMessage("Submitting rate details . Please wait ...");
         mProgressDialog.show();
         JsonObject user = new JsonObject();
         user.addProperty(Constants.PARAM_PROCESS_ID, str_process_id);
@@ -1892,7 +1891,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         btSubmit = dialog.findViewById(R.id.btSubmit);
         tvMessage = dialog.findViewById(R.id.tvMessage);
         tvTitle = dialog.findViewById(R.id.tvTitle);
-        tvTitle.setText("Details Verification");
+        tvTitle.setText("Vendor Details");
 
         tvMessage.setText(msg);
 

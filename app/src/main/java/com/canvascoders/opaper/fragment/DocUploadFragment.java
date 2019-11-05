@@ -163,7 +163,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
         myAdapter = new MyAdapter(mcontext, shopActImage);
         myAdapterforRecycler = new MyAdapterforRecycler(mcontext, shopActImage);
 
-        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
         rvImages.setLayoutManager(horizontalLayoutManager);
 
         rvImages.setAdapter(myAdapterforRecycler);
@@ -703,7 +703,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
         btSubmit = dialog.findViewById(R.id.btSubmit);
         tvMessage = dialog.findViewById(R.id.tvMessage);
         tvTitle = dialog.findViewById(R.id.tvTitle);
-        tvTitle.setText("Document Details");
+        tvTitle.setText("Vendor Document");
 
         tvMessage.setText(msg);
 

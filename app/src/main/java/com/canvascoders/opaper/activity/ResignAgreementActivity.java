@@ -120,7 +120,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
         nestedScrollView = findViewById(R.id.nestedMain);
         btResign = findViewById(R.id.btResign);
         progressDialog = new ProgressDialog(ResignAgreementActivity.this);
-        progressDialog.setTitle("Please Wait System is Generating Agreeement...");
+        progressDialog.setTitle("Please wait system is generating Agreement...");
         progressDialog.setCancelable(false);
         sessionManager = new SessionManager(ResignAgreementActivity.this);
         rvAddendumList = findViewById(R.id.rvAddedndum);

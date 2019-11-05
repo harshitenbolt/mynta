@@ -754,7 +754,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
 
 
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            progressDialog.setMessage("Please Wait Uploading Cheque Document...");
+            progressDialog.setMessage("Uploading cheque document. Please wait......");
             progressDialog.show();
 
             Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getStoreChequeUpdated("Bearer " + sessionManager.getToken(), params, cheque_image_part);

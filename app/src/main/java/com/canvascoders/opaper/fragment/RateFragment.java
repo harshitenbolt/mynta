@@ -103,7 +103,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
 //        edit_rate = (EditText) view.findViewById(R.id.edit_rate);
         mProgressDialog = new ProgressDialog(mcontext);
         mProgressDialog.setCancelable(false);
-        mProgressDialog.setMessage("Please wait submitting Rate details");
+        mProgressDialog.setMessage("Submitting rate details , Please wait ...");
 //        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         btn_next.setOnClickListener(this);
 
@@ -116,7 +116,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
         });
 
         LinearLayoutManager approvedLinearLayoutManager = new LinearLayoutManager(getContext());
-        approvedLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        approvedLinearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(approvedLinearLayoutManager);
 
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
@@ -333,11 +333,11 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                             }
                         } else {
                             mProgressDialog.dismiss();
-                            Toast.makeText(mcontext, "Issue with Rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                             return;
                         }
                     } else {
-                        Toast.makeText(mcontext, "Issue with Rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                         return;
                     }
                 } else {

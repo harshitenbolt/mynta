@@ -27,7 +27,7 @@
                     android:fontFamily="@font/montesemibold"
                     android:gravity="center"
                     android:textColor="@color/colorBlack"
-                    android:text="Account Details" />
+                    android:text="Bank Account Details" />
 
                 <ImageView
                     android:id="@+id/ivClose"
@@ -141,7 +141,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/margin_10dp"
-                        android:text="I have verified above data with physical copy of cheque." />
+                        android:text="I have verified the above data with physical copy of cheque." />
                 </LinearLayout>
 
 
@@ -152,7 +152,7 @@
         <Button
             android:id="@+id/btSubmitChequeDetail"
             android:layout_below="@+id/lineardata"
-            android:text="Submit"
+            android:text="VERIFY"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@drawable/rounded_bottom_corner_view_green"
             style="@style/Button_withGreen" />

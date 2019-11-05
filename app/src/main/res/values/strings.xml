@@ -46,9 +46,9 @@
     <string name="flash_on">Flash on</string>
 
     <string name="complete_esign">  Link for completing E-sign verification has been sent to this user\'s registered Mobile No. If Link not received click "Resend". If Completed process then click "Check E-sign". </string>
-    <string name="start_esign">Esign Verification for this user is pending under </string>
-    <string name="app_version_2">APP VERSION : 24</string>
-    <string name="version_23">App Version 24</string>
+    <string name="start_esign">Esign verification for this user is pending under </string>
+    <string name="app_version_2">APP VERSION : 25</string>
+    <string name="version_23">App Version 25</string>
 
     <array name="shoptype">
         <item>--Shop Type--</item>
@@ -186,8 +186,8 @@
     <string name="sign_in">SIGN IN</string>
     <string name="send_otp">Send OTP</string>
 
-    <string name="o_paper_will_send_one_time_password">O-paper will send <b>One Time Password</b> on this mobile number.</string>
-    <string name="please_enter_store_owner_mobile_number">Please enter store owner mobile number</string>
+    <string name="o_paper_will_send_one_time_password">We will send a <b>One Time Password</b> to this mobile number.</string>
+    <string name="please_enter_store_owner_mobile_number">Please enter Kirana\'s registered mobile number</string>
     <string name="owner_store_information"><![CDATA[Owner & Store Information]]></string>
     <string name="skip_and_send">Skip &amp; Send</string>
     <string name="notice">If you want to change rate or store type please tap on change rate and if you want to continue with current working rate than tap on resign agreement.</string>

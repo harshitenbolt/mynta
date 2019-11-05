@@ -116,7 +116,7 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:fontFamily="@font/montesemibold"
-                            android:text="Resend OTP in"
+                            android:text="Uploading cheque document. Please wait... in"
                             android:textColor="@color/colorYellow"
                             android:textSize="@dimen/_10sdp"
                             android:visibility="gone" />
@@ -150,7 +150,7 @@
                                 android:layout_marginLeft="@dimen/_2sdp"
                                 android:fontFamily="@font/montesemibold"
                                 android:focusable="false"
-                                android:text="Resend again"
+                                android:text="resend OTP"
                                 android:textColor="@color/colorYellow"
                                 android:textSize="@dimen/_11sdp" />
                         </LinearLayout>

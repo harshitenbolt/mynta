@@ -92,7 +92,7 @@
                     android:fontFamily="@font/monteregular"
 
                     android:gravity="center"
-                    android:text="You don't have any \ndelivery boys yet."
+                    android:text="You have not added delivery boy details yet."
                     android:textColor="@color/mediumGrey"
                     android:textSize="@dimen/_15sdp" />
 
@@ -100,8 +100,9 @@
                     style="@style/TextviewwithoutSize"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_35sdp"
+                    android:gravity="center"
                     android:fontFamily="@font/montesemibold"
-                    android:text="Please add Delivery Boy"
+                    android:text="Please go ahead and add One"
                     android:textSize="@dimen/_15sdp" />
 
 
@@ -132,11 +133,11 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
             android:layout_weight="1"
-            android:textSize="@dimen/_12sdp"
             android:background="@color/colorPrimary"
             android:fontFamily="@font/montebold"
             android:text="SUBMIT"
             android:textColor="@color/whitePrimary"
+            android:textSize="@dimen/_12sdp"
             android:visibility="visible" />
     </LinearLayout>
 

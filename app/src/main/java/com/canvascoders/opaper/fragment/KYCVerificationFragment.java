@@ -823,7 +823,7 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
         voter_back_part = MultipartBody.Part.createFormData(Constants.PARAM_BACKSIDE_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathBack)), imagefile));
 
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
-        mProgressDialog.setMessage("Please wait getting details...");
+        mProgressDialog.setMessage("Fetching details. Please wait......");
         mProgressDialog.show();
         hideKeyboardwithoutPopulateFragment();
 
@@ -940,7 +940,7 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
         driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
 
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
-        mProgressDialog.setMessage("Please wait getting details...");
+        mProgressDialog.setMessage("Fetching details. Please wait......");
         mProgressDialog.show();
         hideKeyboardwithoutPopulateFragment();
         Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);
@@ -1188,7 +1188,7 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
             aadharcard_back_part = MultipartBody.Part.createFormData(Constants.PARAM_AADHAR_BACK, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathBack)), imagefile1));
 
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            mProgressDialog.setMessage("Please wait getting details...");
+            mProgressDialog.setMessage("Fetching details. Please wait......");
             mProgressDialog.show();
 
             Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadhar("Bearer " + sessionManager.getToken(), params, aadharcard_front_part, aadharcard_back_part);
@@ -1508,7 +1508,7 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
 
 
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            mProgressDialog.setMessage("Please wait getting details...");
+            mProgressDialog.setMessage("Fetching details. Please wait......");
             mProgressDialog.show();
             hideKeyboardwithoutPopulateFragment();
             Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadhar("Bearer " + sessionManager.getToken(), params, aadharcard_front_part, aadharcard_back_part);

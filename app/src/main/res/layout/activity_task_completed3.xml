@@ -80,7 +80,7 @@
                     style="@style/TextviewwithoutSize"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_35sdp"
-                    android:text="All Documents Signed Successfully.\nPlease ask City Manager for approval"/>
+                    android:text="All documents signed successfully.\nPlease ask City Manager for approval"/>
 
 
 

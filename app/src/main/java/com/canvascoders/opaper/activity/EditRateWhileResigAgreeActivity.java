@@ -276,11 +276,11 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
                             }
                         } else {
                             mProgressDialog.dismiss();
-                            Toast.makeText(this, "Issue with Rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(this, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                             return;
                         }
                     } else {
-                        Toast.makeText(this, "Issue with Rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                         return;
                     }
                 } else {

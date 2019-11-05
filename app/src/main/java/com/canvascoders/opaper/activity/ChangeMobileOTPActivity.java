@@ -274,7 +274,7 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
             params.put(Constants.PARAM_PROCESS_ID, str_process_id);
             params.put(Constants.PARAM_MOBILE_NO, mobile);
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            mProgressDialog.setMessage("Please wait getting details...");
+            mProgressDialog.setMessage("Fetching details. Please wait......");
             mProgressDialog.show();
 
             Call<ChangeMobileResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).changeMobile("Bearer " + sessionManager.getToken(), params);

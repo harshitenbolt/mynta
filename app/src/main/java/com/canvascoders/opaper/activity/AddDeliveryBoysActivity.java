@@ -333,7 +333,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     }
 
     private void ApiCallGetLists() {
-        mProgressDialog.setTitle("Fetching Delivery Boys...");
+        mProgressDialog.setTitle("Fetching delivery boys...");
         mProgressDialog.show();
         delivery_boys_list.clear();
         Map<String, String> params = new HashMap<String, String>();

@@ -145,7 +145,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
         recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
         recyclerview.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mcontext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerview.setLayoutManager(linearLayoutManager);
         vendorAdapter = new VendorListInProgressAdapter(vendorLists, getActivity(), this);
 
@@ -183,7 +183,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
 
         apiName = "inprogress-vendors";
         onboard = true;
-        progressDialog.setMessage("please wait loading inprogress vendors...");
+        progressDialog.setMessage("Loading in progress. Please wait...");
 
         new GetVendorList(object.toString(), apiName).execute();
 

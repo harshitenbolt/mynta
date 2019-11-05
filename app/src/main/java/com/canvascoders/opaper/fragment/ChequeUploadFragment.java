@@ -510,7 +510,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             cheque_image_part = MultipartBody.Part.createFormData(Constants.PARAM_CANCELLED_CHEQUE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(cancelChequeImagepath)), imagefile));
 
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            progressDialog.setMessage("Please Wait Uploading Cheque Document...");
+            progressDialog.setMessage("Uploading cheque document. Please wait......");
             progressDialog.show();
 
             Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreCheque("Bearer " + sessionManager.getToken(), params, cheque_image_part);

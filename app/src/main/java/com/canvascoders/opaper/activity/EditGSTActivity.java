@@ -1678,7 +1678,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
         if (!TextUtils.isEmpty(panImagepath)) {
 
-            progressDialog.setMessage("Image extracting...");
+            progressDialog.setMessage("Extracting image..");
             progressDialog.setCancelable(false);
             progressDialog.show();
 

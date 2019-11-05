@@ -245,7 +245,7 @@
                             android:layout_marginRight="@dimen/_15sdp"
                             android:layout_marginBottom="@dimen/_15sdp"
                             android:fontFamily="@font/montesemibold"
-                            android:text="Your request for rate change is under approval please wait till approve."
+                            android:text="Your request for rate change is awaiting approval . Please check again later ."
                             android:textColor="@color/text_color_dark_grey"
                             android:textSize="@dimen/_10sdp" />
 
@@ -262,9 +262,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_15sdp"
                             android:layout_marginTop="@dimen/_10sdp"
+
                             android:layout_marginRight="@dimen/_15sdp"
                             android:fontFamily="@font/montesemibold"
-                            android:text="If you wants to continue with same rate tap on skip to resign agreement"
+                            android:text="To continue with the same rate . \nplease click ' skip to resign agreement '"
                             android:textColor="@color/text_color_dark_grey"
                             android:textSize="@dimen/_10sdp" />
 

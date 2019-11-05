@@ -123,7 +123,7 @@
                         <TextView
                             style="@style/App_TextViewSmall"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:text="Owner Name"
+                            android:text="Owner's Name"
                             android:textColor="@color/colorBlue" />
 
                         <EditText

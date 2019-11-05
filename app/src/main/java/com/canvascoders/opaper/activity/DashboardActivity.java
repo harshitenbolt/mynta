@@ -147,7 +147,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         mProgressDialog = new ProgressDialog(DashboardActivity.this);
         mProgressDialog.setCancelable(false);
-        mProgressDialog.setMessage("Please wait authenticating store executive");
+        mProgressDialog.setMessage("Please wait...");
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
@@ -296,7 +296,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         switch (v.getId()) {
             case R.id.llOnboardNewVendor:
-                tv_title.setText("Mobile Authentication");
+                tv_title.setText("Mobile Verification");
                 llOnboardNewVendor.setBackgroundResource(R.drawable.rounded_corner_bordercolor_green);
                 llNotification.setBackgroundResource(0);
                 llLiveVendors.setBackgroundResource(0);
@@ -369,7 +369,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
 
             case R.id.llNavOnboardNewVendor:
-                tv_title.setText("Mobile Authentication");
+                tv_title.setText("Mobile Verification");
 
                 commanFragmentCallWithBackStack(new MobileFragment());
                 drawer.closeDrawer(GravityCompat.START);
@@ -538,7 +538,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
 
 
-            mProgressDialog.setMessage("Please wait getting details...");
+            mProgressDialog.setMessage("Gettting details. Please wait.");
             mProgressDialog.show();
 
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();

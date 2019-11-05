@@ -300,7 +300,7 @@ public class InfoEditFragment extends Fragment /*implements View.OnClickListener
             params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             params.put(Constants.PARAM_PROCESS_ID, str_process_id);
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            mProgressDialog.setMessage("Please wait getting details...");
+            mProgressDialog.setMessage("Fetching details. Please wait......");
             mProgressDialog.show();
 
             Call<ResponseBody> callUpload = ApiClient.getClient().create(ApiInterface.class).getDetails("Bearer "+sessionManager.getToken(),params);

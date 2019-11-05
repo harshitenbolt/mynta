@@ -137,7 +137,7 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
         navigationView.setNavigationItemSelectedListener(this);*/
 
         progressDialog = new ProgressDialog(InvoiceEsignActivity.this);
-        progressDialog.setTitle("Please Wait System is Generating INVOICE...");
+        progressDialog.setTitle("Please wait system is generating INVOICE...");
         progressDialog.setCancelable(false);
         sessionManager = new SessionManager(InvoiceEsignActivity.this);
         btn_send_link = (AppCompatTextView)findViewById(R.id.btn_send_link);

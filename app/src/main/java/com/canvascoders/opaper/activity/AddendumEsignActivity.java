@@ -101,7 +101,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
 
 
         progressDialog = new ProgressDialog(AddendumEsignActivity.this);
-        progressDialog.setTitle("Please Wait System is Generating Addendum...");
+        progressDialog.setTitle("Please wait system is generating Addendum...");
         progressDialog.setCancelable(false);
         sessionManager = new SessionManager(AddendumEsignActivity.this);
 

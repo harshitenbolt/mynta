@@ -71,7 +71,7 @@
                         android:layout_marginTop="@dimen/_15sdp"
                         android:fontFamily="@font/montesemibold"
 
-                        android:text="Your agreement is generating with below store type rate.Are you sure you want to continue with this rate ?"
+                        android:text="Your agreement will be generated with below working rate , kindly confirm by clicking on Submit ."
                         android:textColor="@color/text_color_dark_grey" />
 
                     <TextView

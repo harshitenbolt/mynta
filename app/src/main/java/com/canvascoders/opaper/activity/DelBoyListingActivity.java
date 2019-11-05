@@ -93,7 +93,7 @@ public class DelBoyListingActivity extends AppCompatActivity implements View.OnC
 
         delivery_boys_list.clear();
 
-        mProgressDialog.setTitle("Fetching Delivery Boys...");
+        mProgressDialog.setTitle("Fetching delivery boys...");
         mProgressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);

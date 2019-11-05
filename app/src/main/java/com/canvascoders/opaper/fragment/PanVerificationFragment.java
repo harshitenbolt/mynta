@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -196,7 +197,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         btn_extract = view.findViewById(R.id.bgtExtractPan);
         tvClickPan = view.findViewById(R.id.tvClickPan);
         tvClickPan.setOnClickListener(this);
-      //  tvGoBack= view.findViewById(R.id.tvGoBack);
+        //  tvGoBack= view.findViewById(R.id.tvGoBack);
         llGoback = view.findViewById(R.id.llGonext);
         llGoback.setOnClickListener(this);
 
@@ -242,7 +243,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                         btn_pan_card_select.setVisibility(View.VISIBLE);
                         Bitmap bitmap = ImagePicker.getBitmapFromURL(Constants.BaseImageURL + updatePanDetailResponse.getData().get(0).getPan());
                         panImagepath = ImagePicker.getBitmapPath(bitmap, getActivity());
-                       // llGoback.setEnabled(true);
+                        // llGoback.setEnabled(true);
                         DialogUtil.PanDetail(getActivity(), updatePanDetailResponse.getData().get(0).getPanName(), updatePanDetailResponse.getData().get(0).getFatherName(), updatePanDetailResponse.getData().get(0).getPanNo(), new DialogListner() {
                             @Override
                             public void onClickPositive() {
@@ -427,7 +428,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_PAN) {
 
-              //  Constants.hideKeyboardwithoutPopulate(getActivity());
+                //  Constants.hideKeyboardwithoutPopulate(getActivity());
                 Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
@@ -544,7 +545,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
 
                     if (response.isSuccessful()) {
-                      //  deleteImages();
+                        //  deleteImages();
 
                         CommonResponse panVerificationDetail = response.body();
 
@@ -650,7 +651,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
         if (!TextUtils.isEmpty(panImagepath)) {
 
-            mProgressDialog.setMessage("Image extracting...");
+            mProgressDialog.setMessage("Extracting image..");
             mProgressDialog.setCancelable(false);
             mProgressDialog.show();
 
@@ -831,7 +832,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             super.onPostExecute(file);
             if (file != null) {
                 panImagepath = file.getPath();
-                Glide.with(PanVerificationFragment.this)
+                Glide.with(getActivity())
                         .load(Uri.fromFile(file))
                         .placeholder(R.drawable.placeholder)
                         .into(ivPanImage);
