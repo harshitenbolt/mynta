@@ -9,8 +9,11 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,6 +24,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -91,7 +95,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     DrawerLayout drawer;
     ImageView ivSupport, imageView, ivHome;
     View v, vHeader;
-    TextView tvInProgressVendorCount, tvLiveVendorCount;
+    TextView tvInProgressVendorCount, tvLiveVendorCount, tvCountNotification;
     Button ivSelect;
     SwipeRefreshLayout swLayout;
     Bitmap b, converted;
@@ -153,6 +157,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         tvInProgressVendorCount = findViewById(R.id.tvInProgressCount);
         tvLiveVendorCount = findViewById(R.id.tvLiveVendorCount);
+        tvCountNotification = findViewById(R.id.tvCountNotification);
 
 
         llInProgressVendors = findViewById(R.id.llInProgressVendor);
@@ -307,19 +312,22 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 break;
 
             case R.id.llNotification:
-                tv_title.setText("Notifications");
+                //tv_title.setText("Notifications");
                 llOnboardNewVendor.setBackgroundResource(0);
                 llNotification.setBackgroundResource(R.drawable.rounded_corner_bordercolor_green);
                 llLiveVendors.setBackgroundResource(0);
                 llInProgressVendors.setBackgroundResource(0);
                 llReports.setBackgroundResource(0);
                 llInvoice.setBackgroundResource(0);
-                commanFragmentCallWithBackStack(new NotificationFragment());
+                Intent i1 = new Intent(DashboardActivity.this, NotificationActivity.class);
+                startActivity(i1);
+
+                //   commanFragmentCallWithBackStack(new NotificationFragment());
                 break;
 
 
             case R.id.llInProgressVendor:
-                tv_title.setText("Notifications");
+                tv_title.setText("In Progress Vendor");
                 llOnboardNewVendor.setBackgroundResource(0);
                 llNotification.setBackgroundResource(0);
                 llLiveVendors.setBackgroundResource(0);
@@ -486,7 +494,10 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         }
 
         if (id == R.id.nav_4) {
-            commanFragmentCallWithBackStack(new NotificationFragment());
+            //commanFragmentCallWithBackStack(new NotificationFragment());
+
+            Intent i1 = new Intent(DashboardActivity.this, NotificationActivity.class);
+            startActivity(i1);
 
         }
         if (id == R.id.nav_5) {
@@ -585,9 +596,18 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                         } else {
                             tvInProgressVendorCount.setVisibility(View.VISIBLE);
                         }
+
+
+                        if (getnotificationdata.getAgentNotificationCount() == 0) {
+                            tvCountNotification.setVisibility(View.GONE);
+                        } else {
+                            tvCountNotification.setVisibility(View.VISIBLE);
+                        }
+
+
                         tvInProgressVendorCount.setText(String.valueOf(getnotificationdata.getInProgressCount()));
                         tvLiveVendorCount.setText(String.valueOf(getnotificationdata.getLiveVendorCount()));
-
+                        tvCountNotification.setText(String.valueOf(getnotificationdata.getAgentNotificationCount()));
                         if (getnotificationdata.getResponse().equalsIgnoreCase("success")) {
                             Log.e("Sec", "Step done");
 
@@ -744,7 +764,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     protected void onResume() {
         super.onResume();
         getNotification();
-        //tv_title.setText("Dashboard");
+        tv_title.setText("Dashboard");
     }
 
     @Override
