@@ -52,6 +52,21 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
         }
+        else if(store.getStoreType().contains("Mensa Bet - CAC")){
+            holder.edt_store_amount.setHint("");
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
+
+        else if(store.getStoreType().contains("Mensa - Alteration")){
+            holder.edt_store_amount.setHint("");
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
 
 
 
@@ -73,6 +88,25 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                     holder.rvSeperateRight.setVisibility(View.GONE);
                     holder.vSeperate.setVisibility(View.GONE);
                 }
+
+                if(store.getStoreType().contains("Mensa Bet - CAC")){
+                    holder.edt_store_amount.setHint("");
+                    holder.edt_store_amount.setText("     ");
+                    holder.edt_store_amount.setEnabled(false);
+                    holder.rvSeperateRight.setVisibility(View.GONE);
+                    holder.vSeperate.setVisibility(View.GONE);
+                }
+
+                if(store.getStoreType().contains("Mensa - Alteration")){
+                    holder.edt_store_amount.setHint("");
+                    holder.edt_store_amount.setText("     ");
+                    holder.edt_store_amount.setEnabled(false);
+                    holder.rvSeperateRight.setVisibility(View.GONE);
+                    holder.vSeperate.setVisibility(View.GONE);
+                }
+
+
+
 
                 if (holder.check_box_store.isChecked()) {
                     if (!store.getStoreType().contains(Constants.CAC_STORE))

@@ -184,7 +184,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
         mcontext = this.getActivity();
         mProgressDialog = new ProgressDialog(mcontext);
-        mProgressDialog.setMessage("Submitting rate details . Please wait ...");
+        mProgressDialog.setMessage("Submitting Kirana details . Please wait ...");
         mProgressDialog.setCancelable(false);
 
         sessionManager = new SessionManager(mcontext);
@@ -957,7 +957,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     }
 
     private void ApiCallValidationCheck(String apiname, final int i1) {
-        mProgressDialog.setMessage("Submitting rate details . Please wait ...");
+        mProgressDialog.setMessage("Submitting kirana details . Please wait ...");
 
         mProgressDialog.show();
         JsonObject user = new JsonObject();
@@ -1563,7 +1563,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             // Ask user to enable GPS/network in settings
             gps.showSettingsAlert();
         }
-        mProgressDialog.setMessage("Submitting rate details . Please wait ...");
+        mProgressDialog.setMessage("Submitting kirana details . Please wait ...");
         mProgressDialog.show();
         JsonObject user = new JsonObject();
         user.addProperty(Constants.PARAM_PROCESS_ID, str_process_id);

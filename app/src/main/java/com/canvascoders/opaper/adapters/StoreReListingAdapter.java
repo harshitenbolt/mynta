@@ -47,9 +47,22 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
         holder.check_box_store.setEnabled(true);
         holder.check_box_store.setChecked(false);
 
-
-
         if(store.getStoreType().contains(Constants.ASSISTED)){
+            holder.edt_store_amount.setHint("");
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
+        else if(store.getStoreType().contains("Mensa Bet - CAC")){
+            holder.edt_store_amount.setHint("");
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
+
+        else if(store.getStoreType().contains("Mensa - Alteration")){
             holder.edt_store_amount.setHint("");
             holder.edt_store_amount.setText("     ");
             holder.edt_store_amount.setEnabled(false);
@@ -60,6 +73,11 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
             holder.rvSeperateRight.setVisibility(View.VISIBLE);
             holder.vSeperate.setVisibility(View.VISIBLE);
         }
+
+
+
+
+
 
 
         if (store.getStoreType().contains(Constants.CAC_STORE)) {
@@ -75,6 +93,21 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                 public void onClick(View v) {
 
                     if(store.getStoreType().contains(Constants.ASSISTED)){
+                        holder.edt_store_amount.setHint("");
+                        holder.edt_store_amount.setText("     ");
+                        holder.edt_store_amount.setEnabled(false);
+                        holder.rvSeperateRight.setVisibility(View.GONE);
+                        holder.vSeperate.setVisibility(View.GONE);
+                    }
+                    else if(store.getStoreType().contains("Mensa Bet - CAC")){
+                        holder.edt_store_amount.setHint("");
+                        holder.edt_store_amount.setText("     ");
+                        holder.edt_store_amount.setEnabled(false);
+                        holder.rvSeperateRight.setVisibility(View.GONE);
+                        holder.vSeperate.setVisibility(View.GONE);
+                    }
+
+                    else if(store.getStoreType().contains("Mensa - Alteration")){
                         holder.edt_store_amount.setHint("");
                         holder.edt_store_amount.setText("     ");
                         holder.edt_store_amount.setEnabled(false);

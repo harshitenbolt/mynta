@@ -384,7 +384,10 @@ public class GstActivity extends AppCompatActivity implements NavigationView.OnN
 
         }
         if (id == R.id.nav_4) {
-            commanFragmentCallWithoutBackStack(new NotificationFragment());
+
+            Intent i1 = new Intent(GstActivity.this,NotificationActivity.class);
+            startActivity(i1);
+           // commanFragmentCallWithoutBackStack(new NotificationFragment());
 
         }
         if (id == R.id.nav_5) {

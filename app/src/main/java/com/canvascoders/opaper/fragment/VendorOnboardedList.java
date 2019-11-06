@@ -149,7 +149,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
         recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
         recyclerview.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mcontext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerview.setLayoutManager(linearLayoutManager);
         vendorAdapter = new VendorListOnboardedAdapter(vendorLists, getActivity(), this);
 

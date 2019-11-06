@@ -139,4 +139,6 @@ public class VendorListOnboardedAdapter extends RecyclerView.Adapter<VendorListO
 
         }
     }
+
+
 }

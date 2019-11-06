@@ -463,7 +463,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                             public void onTick(long millisUntilFinished) {
                                 countDown--;
                                 tvTime.setVisibility(View.VISIBLE);
-                                tvTime.setText("Uploading cheque document. Please wait... in 00:" + countDown);
+                                tvTime.setText("Sending an OTP. Please wait... in 00:" + countDown);
                             }
 
                             public void onFinish() {
@@ -688,7 +688,10 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
 
         }
         if (id == R.id.nav_4) {
-            commanFragmentCallWithoutBackStack(new NotificationFragment());
+
+            Intent i1 = new Intent(OTPActivity.this,NotificationActivity.class);
+            startActivity(i1);
+    //        commanFragmentCallWithoutBackStack(new NotificationFragment());
 
 
         }

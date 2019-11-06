@@ -447,7 +447,10 @@ public class AgreementDetailActivity extends AppCompatActivity implements Naviga
 
         }
         if (id == R.id.nav_4) {
-            commanFragmentCallWithoutBackStack(new NotificationFragment());
+            Intent i = new Intent(AgreementDetailActivity.this,NotificationActivity.class);
+            startActivity(i);
+
+          //  commanFragmentCallWithoutBackStack(new NotificationFragment());
 
         }
         if (id == R.id.nav_5) {

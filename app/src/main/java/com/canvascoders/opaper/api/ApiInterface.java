@@ -48,6 +48,7 @@ import com.canvascoders.opaper.Beans.UpdatePanResponse.UpdatePancardResponse;
 import com.canvascoders.opaper.Beans.UserDetailTResponse.GetUserDetails;
 import com.canvascoders.opaper.Beans.VendorListResponse.VendorListResponse;
 import com.canvascoders.opaper.Beans.VerifyGstResponse.VerifyGst;
+import com.canvascoders.opaper.Beans.ViewNotificationResponse.ViewNotificationResponse;
 import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
 import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
@@ -552,6 +553,12 @@ public interface ApiInterface {
     @POST("vendor-gst-list")
     Call<GetGstListing> getgstListing(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
+
+
+
+    @FormUrlEncoded
+    @POST("notification-read")
+    Call<ViewNotificationResponse> viewNotification(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
 
 
 }

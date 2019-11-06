@@ -25,6 +25,20 @@ public class NotificattionResponse {
     @Expose
     private int showAdharAPi;
 
+    public int getAgentNotificationCount() {
+        return agentNotificationCount;
+    }
+
+    public void setAgentNotificationCount(int agentNotificationCount) {
+        this.agentNotificationCount = agentNotificationCount;
+    }
+
+    @SerializedName("agent_notification_count")
+    @Expose
+    private int agentNotificationCount;
+
+
+
     @SerializedName("in_procces_count")
     @Expose
     private int inProgressCount;
