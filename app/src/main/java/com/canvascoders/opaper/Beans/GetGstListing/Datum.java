@@ -11,7 +11,7 @@ public class Datum {
     private Integer id;
     @SerializedName("gstn")
     @Expose
-    private Integer gstn;
+    private String gstn;
     @SerializedName("status")
     @Expose
     private String status;
@@ -33,11 +33,11 @@ public class Datum {
         this.id = id;
     }
 
-    public Integer getGstn() {
+    public String getGstn() {
         return gstn;
     }
 
-    public void setGstn(Integer gstn) {
+    public void setGstn(String gstn) {
         this.gstn = gstn;
     }
 

@@ -744,6 +744,31 @@ public class Validation {
     private String latitude;
 
 
+    public String getGstn() {
+        return gstn;
+    }
+
+    public void setGstn(String gstn) {
+        this.gstn = gstn;
+    }
+
+    @SerializedName("gstn")
+    @Expose
+    private String gstn;
+
+
+    public String getGstCertificateImage() {
+        return gstCertificateImage;
+    }
+
+    public void setGstCertificateImage(String gstCertificateImage) {
+        this.gstCertificateImage = gstCertificateImage;
+    }
+
+    @SerializedName("gst_certificate_image")
+    @Expose
+    private String gstCertificateImage;
+
 
 
 

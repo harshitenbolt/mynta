@@ -332,6 +332,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
                             vList.setIsRead(notificationList.getIsRead());
                             vList.setId(notificationList.getId());
                             vList.setUpdatedAt(notificationList.getUpdatedAt());
+                            vList.setCreatedAt(notificationList.getCreatedAt());
 
                             page = 0;
 

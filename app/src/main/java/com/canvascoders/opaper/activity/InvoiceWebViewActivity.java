@@ -9,17 +9,22 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.appcompat.widget.AppCompatTextView;
+
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -120,6 +125,7 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
         }
 
         mWebView = (WebView) findViewById(R.id.web_view_id);
+
         btn_agree = (AppCompatTextView) findViewById(R.id.btn_agree);
 
         btn_send_link.setOnClickListener(new View.OnClickListener() {
@@ -326,14 +332,27 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
 
                         mWebView.getSettings().setJavaScriptEnabled(true);
                         String pdf = invoice_pdf;
-                        mWebView.loadUrl(pdf);
+                        // mWebView.loadUrl(pdf);
+
                         /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(pdf));
                         startActivity(browserIntent);*/
-                        mWebView.loadData(result.getString("invoice_html"), "text/html; charset=utf-8", "UTF-8");
+                        //mWebView.loadData(, "text/html; charset=utf-8", "UTF-8");
                         if (status.equals("1")) {
 
                             btn_agree.setVisibility(View.GONE);
                         }
+
+                        if (invoice_pdf.equalsIgnoreCase("")) {
+                            mWebView.loadDataWithBaseURL(null, result.getString("invoice_html"), "text/html", "UTF-8", null);
+
+                        } else {
+
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(invoice_pdf));
+                            startActivity(browserIntent);
+                            finish();
+                        }
+
+
                     } else {
 
                         Toast.makeText(InvoiceWebViewActivity.this, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();

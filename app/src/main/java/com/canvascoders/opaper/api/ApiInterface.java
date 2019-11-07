@@ -173,10 +173,14 @@ public interface ApiInterface {
     Call<ApiSubmitOCRPanVoterDlResponse> submitDlorVoter(@FieldMap Map<String, String> apiVersionMap);
 
     //-----------------------------------------------------------------------------
-    @Headers({"Content-type: application/json", "Accept: */*"})
+    @FormUrlEncoded
     @POST("submit-details")
-    Call<GetUserDetailResponse> submitBizDetails(@Header("Authorization") String token, @Body JsonObject data);
+    Call<GetUserDetailResponse> submitBizDetails(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
+
+    @Multipart
+    @POST("submit-details")
+    Call<GetUserDetailResponse> submitBizDetailsGST(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
 
     //-----------------------------------------------------------------------------
 

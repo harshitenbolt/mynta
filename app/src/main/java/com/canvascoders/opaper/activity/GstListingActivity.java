@@ -88,6 +88,7 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
                 if (response.isSuccessful()) {
                     GetGstListing getGstListing = response.body();
                     if (getGstListing.getResponseCode() == 200) {
+                        list.clear();
                         list.addAll(getGstListing.getData().get(0));
                         if (list.size() > 0) {
                             gstListAdapter = new GSTListAdapter(GstListingActivity.this, list);
@@ -135,6 +136,14 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
                 startActivity(i);
                 break;
         }
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ApiCallGetGSt();
 
     }
 }

@@ -59,15 +59,14 @@ public class NotificationListAdapter extends RecyclerView.Adapter<NotificationLi
             boolean change = true;
             holder.tvTime.setVisibility(View.VISIBLE);
             holder.btView.setVisibility(View.GONE);
-            holder.tvTime.setText(notificationLists.get(position).getUpdatedAt());
+            holder.tvTime.setText(notificationLists.get(position).getCreatedAt());
 
             holder.cdMain.setBackgroundResource(R.color.colorlightGrey);
 
         } else {
             holder.btView.setVisibility(View.VISIBLE);
             holder.tvTime.setVisibility(View.VISIBLE);
-            holder.tvTime.setVisibility(View.INVISIBLE);
-            holder.tvTime.setText(notificationLists.get(position).getUpdatedAt());
+            holder.tvTime.setText(notificationLists.get(position).getCreatedAt());
             holder.btView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

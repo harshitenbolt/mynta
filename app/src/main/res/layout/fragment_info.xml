@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -131,8 +132,8 @@
                             style="@style/App_EditTextStyle"
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
-                            android:inputType="text"
                             android:imeOptions="actionNext"
+                            android:inputType="text"
                             android:nextFocusDown="@+id/etShopHouseNo"
                             android:textColor="@color/colorBlack"
                             android:textSize="@dimen/_10sdp" />
@@ -146,17 +147,17 @@
 
                         <TextView
                             android:id="@+id/etDateOfBirth"
+                            style="@style/App_EditTextStyle"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_35sdp"
                             android:layout_marginTop="@dimen/_3sdp"
-                            style="@style/App_EditTextStyle"
                             android:fontFamily="@font/monteregular"
                             android:gravity="center_vertical"
-                            android:paddingLeft="@dimen/_10sdp"
-                            android:inputType="none"
-                            android:textSize="@dimen/_10sdp"
                             android:imeOptions="actionNext"
-                            android:text="Date of Birth" />
+                            android:inputType="none"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:text="Date of Birth"
+                            android:textSize="@dimen/_10sdp" />
 
 
                         <View
@@ -186,8 +187,8 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
-                            android:textSize="@dimen/_10sdp"
-                            android:nextFocusDown="@id/etStreetName" />
+                            android:nextFocusDown="@id/etStreetName"
+                            android:textSize="@dimen/_10sdp" />
 
 
                         <TextView
@@ -202,8 +203,8 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
-                            android:textSize="@dimen/_10sdp"
-                            android:nextFocusDown="@id/etLandmark" />
+                            android:nextFocusDown="@id/etLandmark"
+                            android:textSize="@dimen/_10sdp" />
 
 
                         <TextView
@@ -218,8 +219,8 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
-                            android:textSize="@dimen/_10sdp"
-                            android:nextFocusDown="@id/etStorePincode" />
+                            android:nextFocusDown="@id/etStorePincode"
+                            android:textSize="@dimen/_10sdp" />
 
 
                         <TextView
@@ -236,8 +237,8 @@
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="number"
                             android:maxLength="6"
-                            android:textSize="@dimen/_10sdp"
-                            android:nextFocusDown="@+id/etRouteNo" />
+                            android:nextFocusDown="@+id/etRouteNo"
+                            android:textSize="@dimen/_10sdp" />
 
 
                         <TextView
@@ -252,9 +253,9 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:clickable="false"
-                            android:textSize="@dimen/_10sdp"
                             android:editable="false"
-                            android:enabled="false" />
+                            android:enabled="false"
+                            android:textSize="@dimen/_10sdp" />
 
                         <TextView
                             style="@style/App_TextViewSmall"
@@ -268,10 +269,10 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:clickable="false"
-                            android:textSize="@dimen/_10sdp"
                             android:enabled="false"
                             android:inputType="text"
-                            android:nextFocusDown="@id/etRouteNo" />
+                            android:nextFocusDown="@id/etRouteNo"
+                            android:textSize="@dimen/_10sdp" />
 
 
                         <View
@@ -295,12 +296,12 @@
 
                             <Spinner
                                 android:id="@+id/dc"
-                                android:gravity="center"
-                                android:textSize="@dimen/_10sdp"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:backgroundTint="@color/colorPrimary"
-                                android:paddingLeft="@dimen/_10sdp" />
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:textSize="@dimen/_10sdp" />
                         </RelativeLayout>
 
                         <TextView
@@ -315,9 +316,9 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:layout_marginBottom="@dimen/_20sdp"
-                            android:textSize="@dimen/_10sdp"
+                            android:imeOptions="actionDone"
                             android:inputType="text"
-                            android:imeOptions="actionDone" />
+                            android:textSize="@dimen/_10sdp" />
 
 
                     </LinearLayout>
@@ -413,8 +414,8 @@
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="number"
                             android:maxLength="6"
-                            android:textSize="@dimen/_10sdp"
-                            android:nextFocusDown="@+id/etCurrentCity" />
+                            android:nextFocusDown="@+id/etCurrentCity"
+                            android:textSize="@dimen/_10sdp" />
 
                         <TextView
                             style="@style/App_TextViewSmall"
@@ -428,8 +429,8 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
-                            android:textSize="@dimen/_10sdp"
-                            android:nextFocusDown="@+id/etCurrentState" />
+                            android:nextFocusDown="@+id/etCurrentState"
+                            android:textSize="@dimen/_10sdp" />
 
                         <TextView
                             style="@style/App_TextViewSmall"
@@ -442,8 +443,8 @@
                             style="@style/App_EditTextStyle"
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
-                            android:textSize="@dimen/_10sdp"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:textSize="@dimen/_10sdp" />
 
 
                         <View
@@ -486,8 +487,8 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
-                            android:textSize="@dimen/_10sdp"
-                            android:nextFocusDown="@id/etPerStreet" />
+                            android:nextFocusDown="@id/etPerStreet"
+                            android:textSize="@dimen/_10sdp" />
 
 
                         <TextView
@@ -502,8 +503,8 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
-                            android:textSize="@dimen/_10sdp"
-                            android:nextFocusDown="@id/etPerLandmark" />
+                            android:nextFocusDown="@id/etPerLandmark"
+                            android:textSize="@dimen/_10sdp" />
 
 
                         <TextView
@@ -518,8 +519,8 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
-                            android:textSize="@dimen/_10sdp"
-                            android:nextFocusDown="@id/etPerPincode" />
+                            android:nextFocusDown="@id/etPerPincode"
+                            android:textSize="@dimen/_10sdp" />
 
 
                         <TextView
@@ -535,8 +536,8 @@
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="number"
                             android:maxLength="6"
-                            android:textSize="@dimen/_10sdp"
-                            android:nextFocusDown="@id/etPerCity" />
+                            android:nextFocusDown="@id/etPerCity"
+                            android:textSize="@dimen/_10sdp" />
 
 
                         <TextView
@@ -552,8 +553,8 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:inputType="text"
-                            android:textSize="@dimen/_10sdp"
-                            android:nextFocusDown="@id/etPerState" />
+                            android:nextFocusDown="@id/etPerState"
+                            android:textSize="@dimen/_10sdp" />
 
                         <TextView
                             style="@style/App_TextViewSmall"
@@ -567,8 +568,8 @@
                             android:layout_width="match_parent"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:imeOptions="actionDone"
-                            android:textSize="@dimen/_10sdp"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:textSize="@dimen/_10sdp" />
 
 
                     </LinearLayout>
@@ -638,6 +639,67 @@
 
                         </RelativeLayout>
 
+
+                        <LinearLayout
+                            android:id="@+id/llGST"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_weight="1"
+                                    android:fontFamily="@font/montesemibold"
+                                    android:text="GST Certificate"
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_11sdp" />
+
+                                <ImageView
+                                    android:id="@+id/ivGSTImageSelected"
+                                    android:layout_width="@dimen/_15sdp"
+                                    android:layout_height="@dimen/_15sdp"
+                                    android:layout_gravity="end"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    android:src="@drawable/bluecheck"
+                                    android:visibility="gone" />
+                            </LinearLayout>
+
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="@dimen/_110sdp"
+                                android:layout_height="@dimen/_110sdp"
+                                android:layout_marginLeft="@dimen/_2sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_marginRight="@dimen/_2sdp"
+                                android:layout_marginBottom="@dimen/_2sdp"
+                                android:background="@drawable/roundedcornergreythick"
+                                android:elevation="@dimen/_5sdp"
+                                app:cardCornerRadius="@dimen/_5sdp">
+
+
+                                <ImageView
+                                    android:id="@+id/ivGSTImage"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/ic_add_img"
+                                    android:scaleType="centerCrop" />
+
+                            </androidx.cardview.widget.CardView>
+
+
+                        </LinearLayout>
 
                         <TextView
                             style="@style/App_TextViewSmall"
@@ -886,6 +948,7 @@
                             android:layout_height="@dimen/_35sdp"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:background="@drawable/etfieldbackgroundgrey">
+
                             <TextView
                                 android:id="@+id/tvStoreType"
                                 android:layout_width="wrap_content"

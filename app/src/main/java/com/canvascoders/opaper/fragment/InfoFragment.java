@@ -1,14 +1,20 @@
 package com.canvascoders.opaper.fragment;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -42,6 +49,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.Beans.GetVendorTypeDetails;
 import com.canvascoders.opaper.Beans.ObjectPopup;
@@ -49,6 +58,7 @@ import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.adapters.CustomPopupAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupApproachAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupLocalityAdapter;
@@ -59,22 +69,30 @@ import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
+import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.Mylogger;
+import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.OTPActivity;
 import com.google.gson.JsonObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
 import static com.canvascoders.opaper.utils.Constants.hideKeyboardwithoutPopulate;
 
 public class InfoFragment extends Fragment implements View.OnClickListener, RecyclerViewClickListener /*implements View.OnClickListener*/ {
@@ -96,7 +114,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     private SessionManager sessionManager;
     private Button btn_next, btChangeChaque;
     private int mYear, mMonth, mDay, mHour, mMinute;
-    private TextView tvGeneralInfo,tvAddressInfo;
+    private TextView tvGeneralInfo, tvAddressInfo;
     private LinearLayout llDOB;
     DatePicker datePicker;
     CustomPopupStoreTypeAdapter customPopupStoreTypeAdapter;
@@ -108,6 +126,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     LinearLayout llOwnerInfo, llGeneraInfo, llAddrssInfo;
     Button btNext;
     Switch ifgst;
+    private String gstPath = "";
     RelativeLayout rvVendorType, rvStoreType, rvLocality, rvApproach, rvShipmentTransfer, rvVendorTypeDetail;
     int i = 0;
     boolean[] checkedItems;
@@ -140,6 +159,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
       private List<String> approach = new ArrayList<>();
   */
     private String isgsttn = "no";
+    private static int IMAGE_SELCTION_CODE = 0;
+    private static final int IMAGE_GST = 101;
     private String isPartnered = "no";
     private RelativeLayout rvSelectLanguage, rvSelectStoretype;
     private ArrayList<String> dcLists = new ArrayList<>();
@@ -175,12 +196,18 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     Context mcontext;
     Button btChangePan;
     View view;
+    LinearLayout llGst;
+    ImageView ivGst;
+    private RequestPermissionHandler requestPermissionHandler;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_info, container, false);
+
+        requestPermissionHandler = new RequestPermissionHandler();
+
 
         mcontext = this.getActivity();
         mProgressDialog = new ProgressDialog(mcontext);
@@ -221,6 +248,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     private void initView() {
 
         // OTPActivity.settitle("Mensa Vednor Details");
+
+        llGst = view.findViewById(R.id.llGST);
         btNext = view.findViewById(R.id.btNext);
         view2 = view.findViewById(R.id.view2);
         view3 = view.findViewById(R.id.view3);
@@ -256,6 +285,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         tvShipment = view.findViewById(R.id.tvShipment);
         tvLocality = view.findViewById(R.id.tvLocality);
         tvLanguage = view.findViewById(R.id.tvLanguage);
+
 
         etEmail = view.findViewById(R.id.etEmailInfo);
         etLicenceNumeber = view.findViewById(R.id.etLicenceNumber);
@@ -326,9 +356,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 edit_gstn.setEnabled(isChecked);
                 if (isChecked) {
                     isgsttn = "yes";
+                    llGst.setVisibility(View.VISIBLE);
                 } else {
                     isgsttn = "no";
                     edit_gstn.setHint("GSTN");
+                    llGst.setVisibility(View.GONE);
                 }
             }
         });
@@ -459,6 +491,15 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                     isPartnered = "no";
 
                 }
+            }
+        });
+
+        ivGst = view.findViewById(R.id.ivGSTImage);
+        // iv_image = dialogView.findViewById(R.id.iv_prof_boy);
+        ivGst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                capture_gst_image();
             }
         });
 
@@ -602,7 +643,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 RecyclerView rvItems;
                 ImageView ivClose;
                 Button btSubmit;
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity(),R.style.CustomDialog);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
 
                 LayoutInflater inflater = this.getLayoutInflater();
                 View dialogView = inflater.inflate(R.layout.dialogue_popup_list, null);
@@ -680,7 +721,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 RecyclerView rvItems1;
                 Button btSubmit1;
                 ImageView ivClose1;
-                AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(getActivity(),R.style.CustomDialog);
+                AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
 
                 LayoutInflater inflater1 = this.getLayoutInflater();
                 View dialogView1 = inflater1.inflate(R.layout.dialogue_popup_list, null);
@@ -727,7 +768,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 RecyclerView rvItemsLocality;
                 Button btSubmitLocality;
                 ImageView ivCloseLocality;
-                AlertDialog.Builder mBuilderLocality = new AlertDialog.Builder(getActivity(),R.style.CustomDialog);
+                AlertDialog.Builder mBuilderLocality = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
 
                 LayoutInflater inflaterLocality = this.getLayoutInflater();
                 View dialogViewLocality = inflaterLocality.inflate(R.layout.dialogue_popup_list, null);
@@ -776,7 +817,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 RecyclerView rvItemsAproach;
                 Button btSubmitAproach;
                 ImageView ivCloseAproach;
-                AlertDialog.Builder mBuilderAproach = new AlertDialog.Builder(getActivity(),R.style.CustomDialog);
+                AlertDialog.Builder mBuilderAproach = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
 
                 LayoutInflater inflaterAproach = this.getLayoutInflater();
                 View dialogViewAproach = inflaterAproach.inflate(R.layout.dialogue_popup_list, null);
@@ -826,7 +867,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 RecyclerView rvItemsShipment;
                 Button btSubmitShipment;
                 ImageView ivCloseShipment;
-                AlertDialog.Builder mBuilderShipment = new AlertDialog.Builder(getActivity(),R.style.CustomDialog);
+                AlertDialog.Builder mBuilderShipment = new AlertDialog.Builder(getActivity(), R.style.CustomDialog);
 
                 LayoutInflater inflaterShipment = this.getLayoutInflater();
                 View dialogViewShipment = inflaterShipment.inflate(R.layout.dialogue_popup_list, null);
@@ -1279,6 +1320,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 // showMSG(false, "dProvide Email");
                 return false;
             }
+
+
             if (!Constants.isEmailValid(etEmail.getText().toString())) {
                 //_editTextMobile.setError("Provide Valid email");
                 // showMSG(false, "Provide Valid Email");
@@ -1476,6 +1519,12 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 // showMSG(false, "Provide Pincode");
                 return false;
             }
+            if (isgsttn.equalsIgnoreCase("yes")) {
+                if (gstPath.equalsIgnoreCase("")) {
+                    Toast.makeText(getActivity(), "please GST Certificate licence", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            }
 
             if (isgsttn.equalsIgnoreCase("yes")) {
                 if (TextUtils.isEmpty(edit_gstn.getText().toString())) {
@@ -1547,6 +1596,9 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
     // submit Details Last Api
     public void bizDetailsSubmit(final View v) {
+
+        Call<GetUserDetailResponse> call;
+        MultipartBody.Part typedFile = null;
         gps = new GPSTracker(getActivity());
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
@@ -1565,65 +1617,75 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         }
         mProgressDialog.setMessage("Submitting kirana details . Please wait ...");
         mProgressDialog.show();
-        JsonObject user = new JsonObject();
-        user.addProperty(Constants.PARAM_PROCESS_ID, str_process_id);
-        user.addProperty(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-        user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
-        user.addProperty(Constants.PARAM_EMAIL, "" + etEmail.getText());
-        user.addProperty(Constants.PARAM_IF_GST, isgsttn);
-        user.addProperty(Constants.PARAM_GSTN, "" + edit_gstn.getText());
-        user.addProperty(Constants.PARAM_PINCODE, "" + etStorePincode.getText());
-        user.addProperty(Constants.PARAM_DC, "" + dc.getSelectedItem());
-        user.addProperty(Constants.PARAM_STATE, "" + etStoreState.getText());
-        user.addProperty(Constants.PARAM_CITY, "" + etStoreCity.getText());
-        user.addProperty(Constants.PARAM_STORE_NAME, "" + etStorename.getText());
-        user.addProperty(Constants.PARAM_STORE_ADDRESS, "" + etStoreShopNo.getText());
-        user.addProperty(Constants.PARAM_STORE_ADDRESS1, "" + etStoreStreet.getText());
-        user.addProperty(Constants.PARAM_STORE_ADDRESS_LANDMARK, "" + etStoreLandmark.getText());
-        user.addProperty(Constants.PARAM_LATITUDE, "" + lattitude);
-        user.addProperty(Constants.PARAM_LONGITUDE, "" + longitude);
+        HashMap<String, String> user = new HashMap<>();
+
+        user.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        user.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        user.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+        user.put(Constants.PARAM_EMAIL, "" + etEmail.getText());
+        user.put(Constants.PARAM_IF_GST, isgsttn);
+        user.put(Constants.PARAM_GSTN, "" + edit_gstn.getText());
+        user.put(Constants.PARAM_PINCODE, "" + etStorePincode.getText());
+        user.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
+        user.put(Constants.PARAM_STATE, "" + etStoreState.getText());
+        user.put(Constants.PARAM_CITY, "" + etStoreCity.getText());
+        user.put(Constants.PARAM_STORE_NAME, "" + etStorename.getText());
+        user.put(Constants.PARAM_STORE_ADDRESS, "" + etStoreShopNo.getText());
+        user.put(Constants.PARAM_STORE_ADDRESS1, "" + etStoreStreet.getText());
+        user.put(Constants.PARAM_STORE_ADDRESS_LANDMARK, "" + etStoreLandmark.getText());
+        user.put(Constants.PARAM_LATITUDE, "" + lattitude);
+        user.put(Constants.PARAM_LONGITUDE, "" + longitude);
 
         if (!TextUtils.isEmpty(etLicenceNumeber.getText().toString())) {
-            user.addProperty(Constants.PARAM_LICENCE_NO, "" + etLicenceNumeber.getText());
+            user.put(Constants.PARAM_LICENCE_NO, "" + etLicenceNumeber.getText());
         } else {
-            user.addProperty(Constants.PARAM_LICENCE_NO, "");
+            user.put(Constants.PARAM_LICENCE_NO, "");
         }
 
         //new Update
-        user.addProperty(Constants.PARAM_OWNER_NAME, "" + etOwnerName.getText());
-        user.addProperty(Constants.PARAM_DOB, "" + tvDOB.getText());
-        user.addProperty(Constants.PARAM_ROUTE, "" + etRoute.getText());
-        user.addProperty(Constants.PARAM_RESIDENTIAL_ADDRESS, "" + etCurrentShopNo.getText());
-        user.addProperty(Constants.PARAM_RESIDENTIAL_ADDRESS1, "" + etCurrentStreet.getText());
-        user.addProperty(Constants.PARAM_RESIDENTIAL_LANDMARK, "" + etCurrentLandmark.getText());
-        user.addProperty(Constants.PARAM_RESIDENTIAL_CITY, "" + etCurrentCity.getText());
-        user.addProperty(Constants.PARAM_RESIDENTIAL_PINCODE, "" + etCurrentPincode.getText());
-        user.addProperty(Constants.PARAM_RESIDENTIAL_STATE, "" + etCurrentState.getText());
+        user.put(Constants.PARAM_OWNER_NAME, "" + etOwnerName.getText());
+        user.put(Constants.PARAM_DOB, "" + tvDOB.getText());
+        user.put(Constants.PARAM_ROUTE, "" + etRoute.getText());
+        user.put(Constants.PARAM_RESIDENTIAL_ADDRESS, "" + etCurrentShopNo.getText());
+        user.put(Constants.PARAM_RESIDENTIAL_ADDRESS1, "" + etCurrentStreet.getText());
+        user.put(Constants.PARAM_RESIDENTIAL_LANDMARK, "" + etCurrentLandmark.getText());
+        user.put(Constants.PARAM_RESIDENTIAL_CITY, "" + etCurrentCity.getText());
+        user.put(Constants.PARAM_RESIDENTIAL_PINCODE, "" + etCurrentPincode.getText());
+        user.put(Constants.PARAM_RESIDENTIAL_STATE, "" + etCurrentState.getText());
 
 
-        user.addProperty(Constants.PARAM_PERMANENT_ADDRESS, "" + etPerShopNo.getText());
-        user.addProperty(Constants.PARAM_PERMANENT_ADDRESS1, "" + etPerStreet.getText());
-        user.addProperty(Constants.PARAM_PERMANENT_ADDRESS_LANDMARK, "" + etPerLandmark.getText());
-        user.addProperty(Constants.PARAM_PERMANENT_ADDRESS_PINCODE, "" + etPerPincode.getText());
-        user.addProperty(Constants.PARAM_PERMANENT_ADDRESS_CITY, "" + etPerCity.getText());
-        user.addProperty(Constants.PARAM_PERMANENT_ADDRESS_STATE, "" + etPerState.getText());
+        user.put(Constants.PARAM_PERMANENT_ADDRESS, "" + etPerShopNo.getText());
+        user.put(Constants.PARAM_PERMANENT_ADDRESS1, "" + etPerStreet.getText());
+        user.put(Constants.PARAM_PERMANENT_ADDRESS_LANDMARK, "" + etPerLandmark.getText());
+        user.put(Constants.PARAM_PERMANENT_ADDRESS_PINCODE, "" + etPerPincode.getText());
+        user.put(Constants.PARAM_PERMANENT_ADDRESS_CITY, "" + etPerCity.getText());
+        user.put(Constants.PARAM_PERMANENT_ADDRESS_STATE, "" + etPerState.getText());
 
 
-        user.addProperty(Constants.PARAM_VENDOR_TYPE, "" + tvTypeofVendor.getText());
-        user.addProperty(Constants.PARAM_VENDOR_TYPE_DETAIL, "" + tvVendorTypeDetail.getText());
-        user.addProperty(Constants.PARAM_LOCALITY, "" + tvLocality.getText());
-        user.addProperty(Constants.PARAM_APPROACH, "" + tvApproach.getText());
-        user.addProperty(Constants.PARAM_LANGUAGES, "" + tvLanguage.getText());
-        user.addProperty(Constants.PARAM_SHIPMENT_TRANS, "" + tvShipment.getText());
-        user.addProperty(Constants.PARAM_PARTNER_WITH_OTHER, "" + isPartnered);
-        user.addProperty(Constants.PARAM_STORE_TYPE_CONFIG, "" + tvStoreType.getText());
+        user.put(Constants.PARAM_VENDOR_TYPE, "" + tvTypeofVendor.getText());
+        user.put(Constants.PARAM_VENDOR_TYPE_DETAIL, "" + tvVendorTypeDetail.getText());
+        user.put(Constants.PARAM_LOCALITY, "" + tvLocality.getText());
+        user.put(Constants.PARAM_APPROACH, "" + tvApproach.getText());
+        user.put(Constants.PARAM_LANGUAGES, "" + tvLanguage.getText());
+        user.put(Constants.PARAM_SHIPMENT_TRANS, "" + tvShipment.getText());
+        user.put(Constants.PARAM_PARTNER_WITH_OTHER, "" + isPartnered);
+        user.put(Constants.PARAM_STORE_TYPE_CONFIG, "" + tvStoreType.getText());
 
 
         Log.e("User Date", "Edit info" + user);
         Log.e("User Date", "Edit info" + str_process_id + "   " + sessionManager.getAgentID());
 
 
-        ApiClient.getClient().create(ApiInterface.class).submitBizDetails("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetUserDetailResponse>() {
+        if (isgsttn.equalsIgnoreCase("yes")) {
+            File imagefile = new File(gstPath);
+            typedFile = MultipartBody.Part.createFormData(Constants.PARAM_GST_CERTIFICATE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(gstPath)), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
+            call = ApiClient.getClient().create(ApiInterface.class).submitBizDetailsGST("Bearer " + sessionManager.getToken(), user, typedFile);
+        } else {
+            call = ApiClient.getClient().create(ApiInterface.class).submitBizDetails("Bearer " + sessionManager.getToken(), user);
+
+        }
+
+        call.enqueue(new Callback<GetUserDetailResponse>() {
             @Override
             public void onResponse(Call<GetUserDetailResponse> call, Response<GetUserDetailResponse> response) {
                 mProgressDialog.dismiss();
@@ -1665,6 +1727,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 etRoute.setError(validation.getRoute());
                                 etRoute.requestFocus();
+
+                            }
+                            if (validation.getGstCertificateImage() != null && validation.getGstCertificateImage().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getGstCertificateImage(), Toast.LENGTH_LONG).show();
+
 
                             }
                             if (validation.getStoreAddress() != null && validation.getStoreAddress().length() > 0) {
@@ -1911,21 +1978,79 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     }
 
 
-
-    private final void focusOnView(String selectedString){
+    private final void focusOnView(String selectedString) {
         scMain.post(new Runnable() {
             @Override
             public void run() {
-                if(selectedString.equalsIgnoreCase("1")){
+                if (selectedString.equalsIgnoreCase("1")) {
                     scMain.scrollTo(0, tvAddressInfo.getBottom());
-                }
-                else{
+                } else {
                     scMain.scrollTo(0, tvGeneralInfo.getBottom());
                 }
 
             }
         });
     }
+
+
+    // capture GST Image
+    private void capture_gst_image() {
+        requestPermissionHandler.requestPermission(getActivity(), new String[]{
+                Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION
+        }, 123, new RequestPermissionHandler.RequestPermissionListener() {
+            @Override
+            public void onSuccess() {
+
+                IMAGE_SELCTION_CODE = IMAGE_GST;
+                Intent chooseImageIntent = ImagePicker.getCameraIntent(getActivity());
+                startActivityForResult(chooseImageIntent, IMAGE_GST);
+
+            }
+
+            @Override
+            public void onFailed() {
+                Toast.makeText(getActivity(), "request permission failed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        requestPermissionHandler.onRequestPermissionsResult(requestCode, permissions,
+                grantResults);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+
+
+            if (requestCode == IMAGE_GST) {
+                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                gstPath = ImagePicker.getBitmapPath(bitmap, getActivity());
+                Glide.with(getActivity()).load(gstPath).placeholder(R.drawable.placeholder)
+                        .into(ivGst);
+            }
+        }
+       /* if (requestCode == IMAGE_LICENCE && resultCode == Activity.RESULT_OK) {
+            CropImage.activity(Uri.fromFile(new File(data.getStringExtra(MyCameraActivity.FILEURI)))).start(this);
+        }
+        else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+                CallMerekApi(data);
+            }
+        }*/
+    }
+
+
 }
 
 

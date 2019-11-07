@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.CheckGSTStatus.CheckGstStatus;
+import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGSTVerify.StoreAddress;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
@@ -947,6 +948,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     }
 
     private void ApiCallSendLink() {
+        progressDialog.setMessage("Sending link...");
         progressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
@@ -1056,7 +1058,9 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     }
 
     private void ApiCallWithoutChequewithoutPan() {
+        progressDialog.setMessage("Please wait...");
         progressDialog.show();
+
 
         MultipartBody.Part attachment_gst = null;
         MultipartBody.Part attachment_store = null;
@@ -1124,6 +1128,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
 
     private void ApiCallWithChequewithoutPan() {
+        progressDialog.setMessage("Please wait...");
         progressDialog.show();
 
         MultipartBody.Part attachment_gst = null;
@@ -1147,7 +1152,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         params.put(Constants.PARAM_IS_PAN_EXIST, "no");
         params.put(Constants.PARAM_IS_BANK_EXIST, "yes");
 
-        params.put(Constants.PARAM_PARAM_BANK_NAME, bank_name);
+        params.put(Constants.PARAM_PARAM_BANK_NAME, bankName);
         params.put(Constants.PARAM_BANK_BRANCH_NAME, bank_branch_name);
         params.put(Constants.PARAM_IFSC, Ifsc);
         params.put(Constants.PARAM_BANK_AC, bank_ac);
@@ -1206,6 +1211,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
 
     private void ApiCallWithChequewithPan() {
+        progressDialog.setMessage("Please wait...");
         progressDialog.show();
         MultipartBody.Part attachment_pan = null;
         MultipartBody.Part attachment_gst = null;
@@ -1233,7 +1239,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         params.put(Constants.PARAM_IS_PAN_EXIST, "yes");
         params.put(Constants.PARAM_IS_BANK_EXIST, "yes");
 
-        params.put(Constants.PARAM_PARAM_BANK_NAME, bank_name);
+        params.put(Constants.PARAM_PARAM_BANK_NAME, bankName);
         params.put(Constants.PARAM_BANK_BRANCH_NAME, bank_branch_name);
         params.put(Constants.PARAM_IFSC, Ifsc);
         params.put(Constants.PARAM_BANK_AC, bank_ac);
@@ -1427,10 +1433,29 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                         }
 
 
+                    } else if (getGSTVerify.getResponseCode() == 400) {
+                        if (getGSTVerify.getValidation() != null) {
+                            Validation validation = getGSTVerify.getValidation();
+                            if (validation.getGstn() != null && validation.getGstn().length() > 0) {
+                                etGST.setError(validation.getGstn());
+                                etGST.requestFocus();
+                                // return false;
+                            } else {
+                                Toast.makeText(EditGSTActivity.this, getGSTVerify.getResponse(), Toast.LENGTH_LONG).show();
+
+                            }
+                        } else {
+
+                            Toast.makeText(EditGSTActivity.this, getGSTVerify.getResponse(), Toast.LENGTH_LONG).show();
+                        }
+                    } else if (getGSTVerify.getResponseCode() == 202) {
+                        sessionManager.logoutUser(EditGSTActivity.this);
                     } else {
                         Toast.makeText(EditGSTActivity.this, getGSTVerify.getResponse(), Toast.LENGTH_LONG).show();
 
                     }
+                } else {
+                    progressDialog.dismiss();
                 }
 
             }
