@@ -304,7 +304,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
     }
 
     private void checkAndPrepareObj() {
-       // mProgressDialog.show();
+        // mProgressDialog.show();
         JsonArray jsonArray = new JsonArray();
         // checking from neutral stores to get updated data.
         for (int i = 0; i < rateTypeBeans.size(); i++) {
@@ -313,34 +313,40 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
                 if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE) && !rateTypeBeans.get(i).getStoreType().contains(Constants.ASSISTED)) {
-                    if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
-                        if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
-                            try {
+                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration")){
+                        if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
+                            if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
+                                try {
 //                        float rate = Float.parseFloat(rateTypeBeans.get(i).getRate());
 //                        if(rate>0)
-                                jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
-                              //  mProgressDialog.dismiss();
+                                    jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
+                                    //  mProgressDialog.dismiss();
 
 //                        else
 //                        {
 //                            Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
 //                            return;
 //                        }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            } else {
+                                mProgressDialog.dismiss();
+                                Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                                 return;
                             }
                         } else {
-                            mProgressDialog.dismiss();
                             Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                             return;
                         }
-                    } else {
-                        Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
-                        return;
+
                     }
-                } else {
+                    else {
+                        jsonObject.addProperty("rate", "0");
+                    }
+                }  else {
                     jsonObject.addProperty("rate", "0");
                 }
                 jsonArray.add(jsonObject);
@@ -352,7 +358,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
             return;
         }
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-           submitStoreUpdateDetails(jsonArray);
+            submitStoreUpdateDetails(jsonArray);
         } else {
             Constants.ShowNoInternet(getActivity());
         }
@@ -394,7 +400,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
                 Log.e("REsponse code", "" + response.code());
-                Log.e("REspomse msg", "" + response.body().toString());
+              //  Log.e("REspomse msg", "" + response.body().toString());
                 if (response.isSuccessful()) {
                     mProgressDialog.dismiss();
                     try {

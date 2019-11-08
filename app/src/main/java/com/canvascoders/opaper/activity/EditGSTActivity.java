@@ -982,6 +982,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     }
 
     private void ApiCallWithoutChequewithPan() {
+        progressDialog.setMessage("Please wait...");
         progressDialog.show();
         MultipartBody.Part attachment_pan = null;
         MultipartBody.Part attachment_gst = null;

@@ -5,15 +5,19 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -202,29 +206,37 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", neutralStoreList.get(i).getStoreTypeId());
                 if (!neutralStoreList.get(i).getStoreType().contains(Constants.CAC_STORE) && !neutralStoreList.get(i).getStoreType().contains(Constants.ASSISTED)) {
-                    if (neutralStoreList.get(i).getRate() != null && neutralStoreList.get(i).getRate().length() > 0) {
-                        try {
+
+                    if (!neutralStoreList.get(i).getStoreType().contains("Mensa - Alteration")) {
+
+                        if (neutralStoreList.get(i).getRate() != null && neutralStoreList.get(i).getRate().length() > 0) {
+                            try {
 //                        float rate = Float.parseFloat(neutralStoreList.get(i).getRate());
 //                        if (rate > 0)
-                            if (neutralStoreList.get(i).getRate().equalsIgnoreCase("0") || neutralStoreList.get(i).getRate().equalsIgnoreCase("0.0")) {
-                                Toast.makeText(this, "Please enter valid rate", Toast.LENGTH_SHORT).show();
-                            } else {
-                                jsonObject.addProperty("rate", "" + neutralStoreList.get(i).getRate());
-                            }
+                                if (neutralStoreList.get(i).getRate().equalsIgnoreCase("0") || neutralStoreList.get(i).getRate().equalsIgnoreCase("0.0")) {
+                                    Toast.makeText(this, "Please enter valid rate", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    jsonObject.addProperty("rate", "" + neutralStoreList.get(i).getRate());
+                                }
 
 //                        else {
 //                            Toast.makeText(StoreTypeListingActivity.this, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
 //                            return;
 //                        }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(StoreTypeListingActivity.this, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(StoreTypeListingActivity.this, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
 //                    jsonObject.addProperty("rate", neutralStoreList.get(i).getRate());
-                    } else {
-                        Toast.makeText(StoreTypeListingActivity.this, "Issue with rate:" + neutralStoreList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(StoreTypeListingActivity.this, "Issue with rate:" + neutralStoreList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                            return;
+
+                        }
                         return;
+                    } else {
+                        jsonObject.addProperty("rate", "0");
                     }
                 } else {  // ITS s CAC store send rate "0"
                     jsonObject.addProperty("rate", "0");
@@ -491,10 +503,10 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                                     if (jsonObject.has("last_addendum_sign")) {
                                         Intent i = new Intent(StoreTypeListingActivity.this, AddendumSignPendingActivity.class);
                                         i.putExtra("data", vendor);
-                                        i.putExtra("message",jsonObject.getString("response"));
-                                        i.putExtra("count",jsonObject.getString("no_of_time_addendum_sign"));
-                                        i.putExtra("is_esign",jsonObject.getString("is_esign"));
-                                        i.putExtra("last_signed",jsonObject.getString("last_addendum_sign"));
+                                        i.putExtra("message", jsonObject.getString("response"));
+                                        i.putExtra("count", jsonObject.getString("no_of_time_addendum_sign"));
+                                        i.putExtra("is_esign", jsonObject.getString("is_esign"));
+                                        i.putExtra("last_signed", jsonObject.getString("last_addendum_sign"));
                                         startActivity(i);
                                         finish();
                                     } else {

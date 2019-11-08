@@ -3,13 +3,17 @@ package com.canvascoders.opaper.activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.graphics.drawable.ColorDrawable;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -255,33 +259,39 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
             if (rateTypeBeans.get(i).isSelected() && !rateTypeBeans.get(i).getIsApproved().equalsIgnoreCase("1")) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
-                if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE)&& !rateTypeBeans.get(i).getStoreType().contains(Constants.ASSISTED)) {
-                    if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
-                        if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
-                            try {
+                if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE) && !rateTypeBeans.get(i).getStoreType().contains(Constants.ASSISTED)) {
+                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration")) {
+                        if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
+                            if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
+                                try {
 //                        float rate = Float.parseFloat(rateTypeBeans.get(i).getRate());
 //                        if(rate>0)
-                                jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
-                                //  mProgressDialog.dismiss();
+                                    jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
+                                    //  mProgressDialog.dismiss();
 
 //                        else
 //                        {
 //                            Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
 //                            return;
 //                        }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Toast.makeText(this, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(this, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            } else {
+                                mProgressDialog.dismiss();
+                                Toast.makeText(this, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                                 return;
                             }
                         } else {
-                            mProgressDialog.dismiss();
                             Toast.makeText(this, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                             return;
                         }
-                    } else {
-                        Toast.makeText(this, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                         return;
+                    }
+                    else {
+                        jsonObject.addProperty("rate", "0");
                     }
                 } else {
                     jsonObject.addProperty("rate", "0");
