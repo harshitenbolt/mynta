@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canvascoders.opaper.Beans.MensaAlteration;
 import com.canvascoders.opaper.Beans.StoreTypeBean;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
@@ -37,10 +38,12 @@ import com.canvascoders.opaper.adapters.StoreReListingAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.TaskCompletedFragment2;
+import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -57,7 +60,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 
-public class StoreTypeListingActivity extends AppCompatActivity {  //implements NavigationView.OnNavigationItemSelectedListener
+public class StoreTypeListingActivity extends AppCompatActivity implements RecyclerViewClickListener {  //implements NavigationView.OnNavigationItemSelectedListener
 
     NeutralStoreListAdapter neutralstoreListAdapter;
     RejectedStoreListAdapter rejectedStoreListAdapter;
@@ -73,6 +76,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
     static TextView tv_title;
     ImageView iv_back;
 
+    String alterationselected = "";
     Toolbar toolbar;
 
     VendorList vendor;
@@ -84,6 +88,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
 
     LinearLayout llApproved, llRejected, llNeutral;
     RecyclerView rv_approved, rv_rejected, rv_neutral;
+    private ArrayList<MensaAlteration> mensaalterationList = new ArrayList<>();
     Boolean editFlag = false;
 
     @Override
@@ -237,6 +242,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                         return;
                     } else {
                         jsonObject.addProperty("rate", "0");
+                        jsonObject.addProperty("sub_store_type", alterationselected);
                     }
                 } else {  // ITS s CAC store send rate "0"
                     jsonObject.addProperty("rate", "0");
@@ -459,12 +465,25 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
                             JSONObject jsonObject = new JSONObject(response.body().string());
 
                             if (response.code() == 200) {
+                                Gson gson = new Gson();
                                 if (jsonObject.getString("responseCode").equalsIgnoreCase("200")) {
                                     if (jsonObject.has("next_screen")) {
                                         Toast.makeText(StoreTypeListingActivity.this, jsonObject.getString("response"), Toast.LENGTH_LONG).show();
                                         startAddendum();
                                     } else {
                                         JSONArray storeJsonArray = jsonObject.getJSONArray("data");
+                                        JSONArray result = jsonObject.getJSONArray("Mensa - Alteration");
+
+                                        for (int i = 0; i < result.length(); i++) {
+                                            JSONObject o = result.getJSONObject(i);
+                                            MensaAlteration mensalist = gson.fromJson(o.toString(), MensaAlteration.class);
+                                            MensaAlteration mensaAlteration = new MensaAlteration(true, "", "");
+                                            mensaAlteration.setSubStoreType(mensalist.getSubStoreType());
+                                            mensaAlteration.setSubStoreTypeId(mensalist.getSubStoreTypeId());
+                                            mensaalterationList.add(mensaAlteration);
+                                        }
+                                        //mensaJsonArray = get
+
                                         Log.e("Found Stores", "" + storeJsonArray.length());
 
                                         for (int i = 0; i < storeJsonArray.length(); i++) {
@@ -483,7 +502,7 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
 
                                         if (neutralStoreList.size() > 0) {
                                             llNeutral.setVisibility(View.VISIBLE);
-                                            storeReListingAdapter = new StoreReListingAdapter(neutralStoreList, StoreTypeListingActivity.this);
+                                            storeReListingAdapter = new StoreReListingAdapter(neutralStoreList, mensaalterationList, StoreTypeListingActivity.this, StoreTypeListingActivity.this);
                                             rv_neutral.setAdapter(storeReListingAdapter);
                                         }
 //                                    if (rejectedStoreList.size() > 0) {
@@ -644,4 +663,19 @@ public class StoreTypeListingActivity extends AppCompatActivity {  //implements 
         }
     }
 
+    @Override
+    public void onClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+
+    }
+
+    @Override
+    public void SingleClick(String popup, int position) {
+        alterationselected = popup;
+
+    }
 }
