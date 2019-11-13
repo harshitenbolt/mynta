@@ -6,73 +6,26 @@
     android:layout_height="wrap_content"
     android:background="@color/whitePrimary">
 
-    <RelativeLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/whitePrimary">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <LinearLayout
-            android:id="@+id/lineardata"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:background="@color/whitePrimary">
 
-            <RelativeLayout
-                android:paddingTop="@dimen/_10sdp"
+            <LinearLayout
+                android:id="@+id/lineardata"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:fontFamily="@font/montesemibold"
-                    android:gravity="center"
-                    android:text="Confirmation"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_15sdp" />
-
-                <ImageView
-                    android:id="@+id/ivClose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:padding="@dimen/_2sdp"
-                    android:src="@drawable/close" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:background="@color/lightGrey" />
-
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:fontFamily="@font/montesemibold"
-
-                        android:text="Your agreement will be generated with below working rate , kindly confirm by clicking on Submit ."
-                        android:textColor="@color/text_color_dark_grey" />
+                    android:paddingTop="@dimen/_10sdp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -81,43 +34,97 @@
                         android:layout_marginTop="@dimen/_15sdp"
                         android:fontFamily="@font/montesemibold"
                         android:gravity="center"
-                        android:text="Working Rate"
+                        android:text="Confirmation"
                         android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_15sdp" />
+
+                    <ImageView
+                        android:id="@+id/ivClose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:padding="@dimen/_2sdp"
+                        android:src="@drawable/close" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:background="@color/lightGrey" />
 
 
-                    <androidx.cardview.widget.CardView
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
 
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:background="@color/colorBlue"
-                        android:clipToPadding="true"
-                        android:elevation="@dimen/_5sdp"
-                        android:padding="@dimen/_10sdp"
-                        app:cardBackgroundColor="@color/colorBlue"
-                        app:cardCornerRadius="@dimen/_20sdp">
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:orientation="vertical">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvRateList"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/montesemibold"
+
+                            android:text="Your agreement will be generated with below working rate , kindly confirm by clicking on Submit ."
+                            android:textColor="@color/text_color_dark_grey" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/montesemibold"
+                            android:gravity="center"
+                            android:text="Working Rate"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_10sdp" />
+
+
+                        <androidx.cardview.widget.CardView
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/_20sdp">
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:background="@color/colorBlue"
+                            android:clipToPadding="true"
+                            android:elevation="@dimen/_5sdp"
+                            android:padding="@dimen/_10sdp"
+                            app:cardBackgroundColor="@color/colorBlue"
+                            app:cardCornerRadius="@dimen/_20sdp">
 
-                        </androidx.recyclerview.widget.RecyclerView>
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-            </ScrollView>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvRateList"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/_20sdp">
 
-        </LinearLayout>
+                            </androidx.recyclerview.widget.RecyclerView>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                </ScrollView>
 
-        <Button
-            android:id="@+id/btSubmitConfirm"
-            style="@style/Button_withGreen"
-            android:layout_below="@+id/lineardata"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/rounded_corner_view_green"
-            android:text="Submit" />
-    </RelativeLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btSubmitConfirm"
+                style="@style/Button_withGreen"
+                android:layout_below="@+id/lineardata"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/rounded_corner_view_green"
+                android:text="Submit" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.cardview.widget.CardView>

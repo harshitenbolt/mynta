@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
+
 import com.google.android.material.snackbar.Snackbar;
+
 import androidx.core.content.ContextCompat;
+
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -40,13 +43,13 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
 
-//    public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
-    public static String BaseURL = "https://mystaging.opaper.in/api3/" ;
+    //    public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+    public static String BaseURL = "https://mystaging.opaper.in/api3/";
     // test server 2
 
-   public final static String APP_NAME = "my_stage"; //stage
-  // public final static String APP_NAME = "my_live"; //live
-   // public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+    public final static String APP_NAME = "my_stage"; //stage
+    // public final static String APP_NAME = "my_live"; //live
+    // public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
     public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
@@ -66,7 +69,6 @@ public class Constants {
     public static String GET_COMMENT_LIST = "support-thread-detail";
 
     public static String showAdhar = "0";
-
 
 
     //Static Fixde Values
@@ -142,6 +144,8 @@ public class Constants {
     public static String KEY_SUPPORT_ID = "support_id";
     public static String KEY_EDIT_DETAIL = "edit_detail";
 
+
+    public static String[] dataRate = null;
     //-------------------------
 
     //For Vendor Mobile info
@@ -173,6 +177,9 @@ public class Constants {
     public static String PARAM_TOKEN = "token";
     public static String PARAM_AGENT_ID = "agent_id";
 
+    public static String PARAM_IS_EXPIRED = "is_expired";
+
+    public static String PARAM_EXPIRED_SOON = "expired_soon";
     public static String PARAM_IS_DOC = "is_doc";
 
     public static String PARAM_YEAR = "year";
@@ -201,7 +208,7 @@ public class Constants {
     public static String PARAM_PERMANENT_RESIDENTIAL_ADDRESS_CITY = "permanent_residential_address_city";
     public static String PARAM_PERMANENT_RESIDENTIAL_ADDRESS_STATE = "permanent_residential_address_state";
 
-    public static String PARAM_DELIVERY_BOY_ID="delivery_boy_id";
+    public static String PARAM_DELIVERY_BOY_ID = "delivery_boy_id";
     public static String PARAM_PERMANENT_ADDRESS = "permanent_address";
     public static String PARAM_PERMANENT_ADDRESS1 = "permanent_address1";
     public static String PARAM_PERMANENT_ADDRESS_LANDMARK = "permanent_address_landmark";
@@ -213,8 +220,8 @@ public class Constants {
     public static String NAME = "name";
     public static String ROUTE_NUMBER = "route_number";
     public static String PARAMS_INVOICE_TYPE = "invoice_type";
-   public static String PARAMS_FROM_DATE = "from_date";
-   public static String PARAMS_TO_DATE = "to_date";
+    public static String PARAMS_FROM_DATE = "from_date";
+    public static String PARAMS_TO_DATE = "to_date";
     public static String PARAM_MOBILE_NO = "mobile_no";
 
     public static String PARAM_DRIVING_LICENCE_NUM = "driving_licence_num";
@@ -294,7 +301,6 @@ public class Constants {
     public static String PARAM_GST_PAN_NO = "gst_pan_no";
 
 
-
     public static String PARAM_PARAM_BANK_NAME = "bank_name";
 
     public static String PARAM_BANK_BRANCH_NAME = "bank_branch_name";
@@ -302,8 +308,6 @@ public class Constants {
     public static String PARAM_PAYEE_NAME = "payee_name";
 
     public static String PARAM_BANK_ADDRESS = "bank_address";
-
-
 
 
     public static String PARAM_PAN_NAME = "pan_name";
@@ -314,7 +318,7 @@ public class Constants {
     public static String PARAM_USER_NAME = "username";
     public static String PARAM_REQUEST_ID = "request_id";
     public static String PARAM_EDIT_DETAIL = "edit_detail";
-    public  static  String PARAM_STORE_IMAGE = "store_image";
+    public static String PARAM_STORE_IMAGE = "store_image";
 
 
     public static String PARAM_IDENTIFIRE = "identifier";

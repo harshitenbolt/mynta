@@ -128,9 +128,13 @@
         <item>Other Company/Firm</item>
     </array>
     <array name="DocType">
-        <item>Voter ID</item>
-        <item>Driving Licence</item>
-        <item>Aadhar Card</item>
+        <item>Expired Vendors</item>
+        <item>Upcoming Expire</item>
+        <item>in-progress</item>
+        <item>Active</item>
+        <item>Deactivated/Closed</item>
+        <item>Payment Hold</item>
+        <item>Black Listed</item>
     </array>
 
 

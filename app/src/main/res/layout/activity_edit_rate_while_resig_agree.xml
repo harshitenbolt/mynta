@@ -71,6 +71,7 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_rate_type"
+                    android:paddingBottom="@dimen/_45sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

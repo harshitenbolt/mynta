@@ -87,7 +87,7 @@ public class InvoiceListCommonAdapter extends RecyclerView.Adapter<InvoiceListCo
 
         } else if (vendorLists.get(position).getStatus().equalsIgnoreCase("3")) {
             holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorBlue));
-            holder.tvStatus.setText("Payment Hold");
+            holder.tvStatus.setText(" Payment Hold");
             holder.ivStatusImage.setImageResource(R.drawable.hold);
         } else if (vendorLists.get(position).getStatus().equalsIgnoreCase("4")) {
             holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorBlack));

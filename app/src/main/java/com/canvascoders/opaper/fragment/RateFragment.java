@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canvascoders.opaper.Beans.MensaAlteration;
 import com.canvascoders.opaper.Beans.StoreTypeBean;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
@@ -34,12 +35,14 @@ import com.canvascoders.opaper.activity.ProcessInfoActivity;
 import com.canvascoders.opaper.adapters.RateListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.OTPActivity;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -55,7 +58,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 
-public class RateFragment extends Fragment implements View.OnClickListener {
+public class RateFragment extends Fragment implements View.OnClickListener, RecyclerViewClickListener {
 
     private String TAG = "RateFragment";
     private ProgressDialog mProgressDialog;
@@ -75,7 +78,8 @@ public class RateFragment extends Fragment implements View.OnClickListener {
     ArrayList<StoreTypeBean> rateTypeBeans;
     RecyclerView recyclerView;
     VendorList vendor;
-
+    private ArrayList<MensaAlteration> mensaalterationList = new ArrayList<>();
+    String alterationselected="";
     // se commit done Start
 
     // new branch change mobile
@@ -199,10 +203,24 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                         if (!TextUtils.isEmpty(res)) {
                             JSONObject jsonObject = new JSONObject(response.body().string());
                             if (response.code() == 200) {
+                                mensaalterationList.clear();
+                                Gson gson = new Gson();
                                 Log.e("in JSON", "" + jsonObject.toString());
 
                                 if (jsonObject.getString("responseCode").equalsIgnoreCase("200")) {
                                     JSONArray rateJsonArray = jsonObject.getJSONArray("data");
+                                    JSONArray result = jsonObject.getJSONArray("Mensa - Alteration");
+
+                                    for (int i = 0; i < result.length(); i++) {
+                                        JSONObject o = result.getJSONObject(i);
+                                        MensaAlteration mensalist = gson.fromJson(o.toString(), MensaAlteration.class);
+                                        MensaAlteration mensaAlteration = new MensaAlteration(true, "", "");
+                                        mensaAlteration.setSubStoreType(mensalist.getSubStoreType());
+                                        mensaAlteration.setSubStoreTypeId(mensalist.getSubStoreTypeId());
+                                        mensaalterationList.add(mensaAlteration);
+                                    }
+
+
                                     Log.e("Found Stores", "" + rateJsonArray.length());
                                     ArrayList<StoreTypeBean> tempList = new ArrayList<>();
                                     boolean isSecondTime = false;
@@ -240,7 +258,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
 //                                    }
 
 
-                                    rateListAdapter = new RateListAdapter(rateTypeBeans, getContext());
+                                    rateListAdapter = new RateListAdapter(rateTypeBeans, mensaalterationList, getContext(),RateFragment.this);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));
@@ -313,7 +331,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
                 if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE) && !rateTypeBeans.get(i).getStoreType().contains(Constants.ASSISTED)) {
-                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration")){
+                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration")) {
                         if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
                             if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
                                 try {
@@ -342,11 +360,11 @@ public class RateFragment extends Fragment implements View.OnClickListener {
                             return;
                         }
 
-                    }
-                    else {
+                    } else {
                         jsonObject.addProperty("rate", "0");
+                        jsonObject.addProperty("sub_store_type", alterationselected);
                     }
-                }  else {
+                } else {
                     jsonObject.addProperty("rate", "0");
                 }
                 jsonArray.add(jsonObject);
@@ -400,7 +418,7 @@ public class RateFragment extends Fragment implements View.OnClickListener {
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
                 Log.e("REsponse code", "" + response.code());
-              //  Log.e("REspomse msg", "" + response.body().toString());
+                //  Log.e("REspomse msg", "" + response.body().toString());
                 if (response.isSuccessful()) {
                     mProgressDialog.dismiss();
                     try {
@@ -638,5 +656,21 @@ public class RateFragment extends Fragment implements View.OnClickListener {
             fragmentTransaction.commit();
 
         }
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+
+    }
+
+    @Override
+    public void SingleClick(String popup, int position) {
+        alterationselected = popup;
+
     }
 }

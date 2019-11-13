@@ -1,33 +1,59 @@
 package com.canvascoders.opaper.adapters;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.DialogInterface;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.canvascoders.opaper.Beans.MensaAlteration;
+import com.canvascoders.opaper.Beans.ObjectPopup;
 import com.canvascoders.opaper.Beans.StoreTypeBean;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static com.canvascoders.opaper.utils.Constants.dataRate;
 
 public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAdapter.ItemHolder> {
 
     public List<StoreTypeBean> dataViews;
 
     Context mContext;
+    List<MensaAlteration> mensaAlterationList;
+    List<String> listStoreType = new ArrayList<>();
+    CustomPopupRateStoreTypeAdapter customPopupStoreTypeAdapter;
+    RecyclerViewClickListener recyclerViewClickListener;
 
-    public StoreReListingAdapter(List<StoreTypeBean> dataViews, Context mContext) {
+    boolean[] checkedStoreType;
+
+
+    public StoreReListingAdapter(List<StoreTypeBean> dataViews, List<MensaAlteration> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener) {
         this.dataViews = dataViews;
         this.mContext = mContext;
+        this.recyclerViewClickListener = recyclerViewClickListener;
+        this.mensaAlterationList = mensaAlterationList;
     }
 
     @NonNull
@@ -47,37 +73,28 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
         holder.check_box_store.setEnabled(true);
         holder.check_box_store.setChecked(false);
 
-        if(store.getStoreType().contains(Constants.ASSISTED)){
+        if (store.getStoreType().contains(Constants.ASSISTED)) {
             holder.edt_store_amount.setHint("");
             holder.edt_store_amount.setText("     ");
             holder.edt_store_amount.setEnabled(false);
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
-        }
-        else if(store.getStoreType().contains("Mensa Bet - CAC")){
+        } else if (store.getStoreType().contains("Mensa Bet - CAC")) {
             holder.edt_store_amount.setHint("");
             holder.edt_store_amount.setText("     ");
             holder.edt_store_amount.setEnabled(false);
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
-        }
-
-        else if(store.getStoreType().contains("Mensa - Alteration")){
+        } else if (store.getStoreType().contains("Mensa - Alteration")) {
             holder.edt_store_amount.setHint("");
             holder.edt_store_amount.setText("     ");
             holder.edt_store_amount.setEnabled(false);
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
-        }
-        else{
+        } else {
             holder.rvSeperateRight.setVisibility(View.VISIBLE);
             holder.vSeperate.setVisibility(View.VISIBLE);
         }
-
-
-
-
-
 
 
         if (store.getStoreType().contains(Constants.CAC_STORE)) {
@@ -89,71 +106,131 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
 
 
         holder.check_box_store.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            @Override
+            public void onClick(View v) {
 
-                    if(store.getStoreType().contains(Constants.ASSISTED)){
-                        holder.edt_store_amount.setHint("");
-                        holder.edt_store_amount.setText("     ");
-                        holder.edt_store_amount.setEnabled(false);
-                        holder.rvSeperateRight.setVisibility(View.GONE);
-                        holder.vSeperate.setVisibility(View.GONE);
-                    }
-                    else if(store.getStoreType().contains("Mensa Bet - CAC")){
-                        holder.edt_store_amount.setHint("");
-                        holder.edt_store_amount.setText("     ");
-                        holder.edt_store_amount.setEnabled(false);
-                        holder.rvSeperateRight.setVisibility(View.GONE);
-                        holder.vSeperate.setVisibility(View.GONE);
-                    }
-
-                    else if(store.getStoreType().contains("Mensa - Alteration")){
-                        holder.edt_store_amount.setHint("");
-                        holder.edt_store_amount.setText("     ");
-                        holder.edt_store_amount.setEnabled(false);
-                        holder.rvSeperateRight.setVisibility(View.GONE);
-                        holder.vSeperate.setVisibility(View.GONE);
-                    }
-                    else{
-                        holder.rvSeperateRight.setVisibility(View.VISIBLE);
-                        holder.vSeperate.setVisibility(View.VISIBLE);
-                    }
-
-
+                if (store.getStoreType().contains(Constants.ASSISTED)) {
+                    holder.edt_store_amount.setHint("");
+                    holder.edt_store_amount.setText("     ");
+                    holder.edt_store_amount.setEnabled(false);
+                    holder.rvSeperateRight.setVisibility(View.GONE);
+                    holder.vSeperate.setVisibility(View.GONE);
+                } else if (store.getStoreType().contains("Mensa Bet - CAC")) {
+                    holder.edt_store_amount.setHint("");
+                    holder.edt_store_amount.setText("     ");
+                    holder.edt_store_amount.setEnabled(false);
+                    holder.rvSeperateRight.setVisibility(View.GONE);
+                    holder.vSeperate.setVisibility(View.GONE);
+                } else if (store.getStoreType().contains("Mensa - Alteration")) {
+                    holder.edt_store_amount.setHint("");
+                    holder.edt_store_amount.setText("     ");
+                    holder.edt_store_amount.setEnabled(false);
+                    holder.rvSeperateRight.setVisibility(View.GONE);
+                    holder.vSeperate.setVisibility(View.GONE);
 
                     if (holder.check_box_store.isChecked()) {
-                        holder.edt_store_amount.setEnabled(true);
-                        dataViews.get(position).setSelected(true);
-                    } else {
-                        holder.edt_store_amount.setEnabled(false);
-                        dataViews.get(position).setSelected(false);
+                        //dialogbox opeb
+                        TextView tvtitleStoreType;
+                        RecyclerView rvItems1;
+                        Button btSubmit1;
+                        ImageView ivClose1;
+                        AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(mContext, R.style.CustomDialog);
+
+                        LayoutInflater inflater1 = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View dialogView1 = inflater1.inflate(R.layout.dialogue_popup_list, null);
+                        mBuilder2.setView(dialogView1);
+                        tvtitleStoreType = dialogView1.findViewById(R.id.tvTitleListPopup);
+                        tvtitleStoreType.setText("Mensa Alteration Type");
+                        rvItems1 = dialogView1.findViewById(R.id.rvListPopup);
+                        btSubmit1 = dialogView1.findViewById(R.id.btSubmitDetail);
+
+                        customPopupStoreTypeAdapter = new CustomPopupRateStoreTypeAdapter(mensaAlterationList, mContext, "StoreType", this);
+
+                        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+
+                        rvItems1.setLayoutManager(horizontalLayoutManager1);
+
+                        rvItems1.setAdapter(customPopupStoreTypeAdapter);
+                        AlertDialog mDialog1 = mBuilder2.create();
+                        mDialog1.show();
+
+                        btSubmit1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // tvVendorTypeDetail.setText(selectedString);
+                                String str = "";
+                                if (dataRate != null) {
+                                    str = TextUtils.join(",", dataRate);
+                                    Log.e("itemlist", str);
+                                    mDialog1.dismiss();
+                                } else {
+                                    holder.check_box_store.setChecked(false);
+                                    str = "";
+                                    mDialog1.dismiss();
+                                }
+                                recyclerViewClickListener.SingleClick(str, position);
+
+
+                            }
+                        });
+                        ivClose1 = dialogView1.findViewById(R.id.ivClose);
+                        ivClose1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String str = "";
+                                if (dataRate != null) {
+                                    str = TextUtils.join(",", dataRate);
+                                    Log.e("itemlist", str);
+                                    mDialog1.dismiss();
+                                } else {
+                                    holder.check_box_store.setChecked(false);
+                                    str = "";
+                                    mDialog1.dismiss();
+                                }
+                            }
+                        });
                     }
 
 
-                    if (store.getStoreType().contains(Constants.CAC_STORE)) {
+                } else {
+                    holder.rvSeperateRight.setVisibility(View.VISIBLE);
+                    holder.vSeperate.setVisibility(View.VISIBLE);
+                }
+
+
+                if (holder.check_box_store.isChecked()) {
+                    holder.edt_store_amount.setEnabled(true);
+                    dataViews.get(position).setSelected(true);
+                } else {
+                    holder.edt_store_amount.setEnabled(false);
+                    dataViews.get(position).setSelected(false);
+                }
+
+
+                if (store.getStoreType().contains(Constants.CAC_STORE)) {
                        /* holder.check_box_store.setChecked(true);
                         holder.check_box_store.setEnabled(true);
                         holder.edt_store_amount.setText("10%/3% GMV");*/
-                        holder.edt_store_amount.setEnabled(false);
-                    }
+                    holder.edt_store_amount.setEnabled(false);
+                }
 
 
 // remove other selected
-                    for (int i = 0; i < dataViews.size(); i++) {
-                        if (i != position)
-                            if (dataViews.get(i).isSelected()) {
-                                dataViews.get(i).setSelected(false);
-                                dataViews.get(i).setRate("0.0");
-                                notifyItemChanged(i);
-                            }
-                    }
-
+                for (int i = 0; i < dataViews.size(); i++) {
+                    if (i != position)
+                        if (dataViews.get(i).isSelected()) {
+                            dataViews.get(i).setSelected(false);
+                            dataViews.get(i).setRate("0.0");
+                            notifyItemChanged(i);
+                        }
                 }
-            });
-            holder.check_box_store.setEnabled(true);
-            holder.check_box_store.setChecked(store.isSelected());
-            holder.edt_store_amount.setEnabled(store.isSelected());
-            holder.edt_store_amount.setText(store.getRate());
+
+            }
+        });
+        holder.check_box_store.setEnabled(true);
+        holder.check_box_store.setChecked(store.isSelected());
+        holder.edt_store_amount.setEnabled(store.isSelected());
+        holder.edt_store_amount.setText(store.getRate());
 
 
         if (store.isSelected()) {
@@ -221,7 +298,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
         }
 
 
-        if(store.getStoreType().contains(Constants.RENTAL)){
+        if (store.getStoreType().contains(Constants.RENTAL)) {
             holder.check_box_store.setEnabled(false);
         }
     }

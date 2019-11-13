@@ -1,53 +1,40 @@
-package com.canvascoders.opaper.fragment;
+package com.canvascoders.opaper.activity;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.AppCompatRadioButton;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.canvascoders.opaper.Beans.SearchListResponse.Datum;
+import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.activity.AppApplication;
-import com.canvascoders.opaper.activity.DashboardActivity;
-import com.canvascoders.opaper.activity.TypeWiseOnboardedListActivity;
-import com.canvascoders.opaper.activity.VendorDetailActivity;
 import com.canvascoders.opaper.adapters.VendorListOnboardedAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.fragment.VendorOnboardedList;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.EndlessRecyclerViewScrollListener;
@@ -61,6 +48,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,106 +62,74 @@ import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener, AdapterView.OnItemSelectedListener {
+public class TypeWiseOnboardedListActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
 
-
-    AppCompatRadioButton radio_onboard;
-    AppCompatRadioButton radio_inprogress;
-    RecyclerView recyclerview;
-    VendorListOnboardedAdapter vendorAdapter;
-    String TAG = "VendorLis";
-    Context context1;
     SessionManager sessionManager;
+    LinearLayout llNoData;
+    ProgressDialog progressDialog;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    JSONObject object = new JSONObject();
-    JSONObject objectSearch = new JSONObject();
-    ImageView iv_clear_text;
-    String[] stringArray;
-    String[] options;
-    AutoCompleteTextView edit_search_vendor;
-    int page, page1, pageSearch = 1;
-    private EndlessRecyclerViewScrollListener scrollListener;
+    RecyclerView recyclerView;
+    VendorListOnboardedAdapter vendorAdapter;
     private ArrayList<VendorList> vendorLists = new ArrayList<>();
     private ArrayList<VendorList> vendorLists1 = new ArrayList<>();
-    private ProgressDialog progressDialog;
-    private RadioGroup radio_group;
-
+    private EndlessRecyclerViewScrollListener scrollListener;
+    private boolean search = false;
+    String TAG = "VendorLis";
     private String apiName = "completed-vendors";
     private boolean onboard = true;
+    int page, page1, pageSearch = 1;
     private String apiNameSearch = "completed-vendors";
-    private boolean search = false;
-    View view;
-    private ImageView ivSearch;
-    CustomAdapter<String> spinnerArrayAdapter;
-    LinearLayout llNoData;
-    String selection;
-    SwipeRefreshLayout swMain;
-    AutoCompleteTextView actv;
-    List<Datum> searchList = new ArrayList<>();
-
-    List<String> nameList = new ArrayList<>();
-    List<String> mobileList = new ArrayList<>();
-    Context mcontext;
-    Spinner spSearch;
-    Spinner spinner;
-    FloatingActionButton fab;
-
-
-    public VendorOnboardedList() {
-        // Required empty public constructor
-    }
+    JSONObject object = new JSONObject();
+    TextView tvTitle;
+    private List<String> storeTypeList = new ArrayList<>();
+    private Spinner snDocType;
+    ImageView ivBack;
+    JSONObject objectSearch = new JSONObject();
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_vendor_onboarded_list, container, false);
-        mcontext = this.getActivity();
-        DashboardActivity.settitle("Live Vendors");
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_type_wise_onboarded_list);
         Initialize();
-        return view;
     }
 
-    public void Initialize() {
+    private void Initialize() {
 
         //edit_search_vendor = view.findViewById(R.id.etSearchPlace);
-        sessionManager = new SessionManager(getActivity());
-        llNoData = view.findViewById(R.id.llNoData);
-
-
-        progressDialog = new ProgressDialog(mcontext);
-        progressDialog.setMessage("please wait loading onboarded vendors...");
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-        ivSearch = view.findViewById(R.id.ivSearch);
-        recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
-        recyclerview.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mcontext);
-        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-        recyclerview.setLayoutManager(linearLayoutManager);
-        vendorAdapter = new VendorListOnboardedAdapter(vendorLists, getActivity(), this);
-
-        recyclerview.setAdapter(vendorAdapter);
-        fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        sessionManager = new SessionManager(this);
+        llNoData = findViewById(R.id.llNoData);
+        tvTitle = findViewById(R.id.tv_title);
+        ivBack = findViewById(R.id.iv_back);
+        ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent( getActivity(), TypeWiseOnboardedListActivity.class);
-                startActivity(i);
+                finish();
             }
         });
 
 
-        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-            ApiCallgetReports();
-        } else {
-            Constants.ShowNoInternet(getActivity());
-        }
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("please wait loading onboarded vendors...");
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        vendorAdapter = new VendorListOnboardedAdapter(vendorLists, this, this);
+
+        recyclerView.setAdapter(vendorAdapter);
+
+
+        snDocType = (Spinner) findViewById(R.id.snDocType);
+        storeTypeList = Arrays.asList(getResources().getStringArray(R.array.DocType));
+
+        CustomAdapter<String> doctypeadapter = new CustomAdapter<String>(TypeWiseOnboardedListActivity.this, android.R.layout.simple_spinner_item, storeTypeList);
+        doctypeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        snDocType.setAdapter(doctypeadapter);
 
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -194,11 +150,12 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
 
             }
         };
-        recyclerview.addOnScrollListener(scrollListener);
+        recyclerView.addOnScrollListener(scrollListener);
 
         try {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+            object.put(Constants.PARAM_IS_EXPIRED, "1");
         } catch (
                 JSONException e) {
 
@@ -210,139 +167,119 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
         onboard = true;
         progressDialog.setMessage("please wait loading onboarded vendors...");
 
+        // new GetVendorList(object.toString(), apiName).execute();
+
+
+        snDocType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedItem = parent.getItemAtPosition(position).toString();
+                if (selectedItem.equals("Expired Vendors")) {
+                    object = new JSONObject();
+                    page1 = 1;
+                    apiName = "completed-vendors";
+                    try {
+                        object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                        object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                        object.put(Constants.PARAM_IS_EXPIRED, "1");
+                    } catch (JSONException e) {
+                    }
+                    tvTitle.setText("Expired Vendors");
+                    new GetVendorList(object.toString(), apiName).execute();
+                }
+                if (selectedItem.equals("Upcoming Expire")) {
+                    object = new JSONObject();
+                    page1 = 1;
+                    apiName = "completed-vendors";
+                    try {
+                        object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                        object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                        object.put(Constants.PARAM_EXPIRED_SOON, "1");
+                    } catch (JSONException e) {
+                    }
+                    tvTitle.setText("Upcoming Expire");
+                    new GetVendorList(object.toString(), apiName).execute();
+                }
+                if (selectedItem.equals("in-progress")) {
+                    object = new JSONObject();
+                    page1 = 1;
+                    apiName = "completed-vendors";
+                    try {
+                        object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                        object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                        object.put(Constants.PARAM_STATUS, "0");
+                    } catch (JSONException e) {
+                    }
+                    tvTitle.setText("In Progress Vendors");
+                    new GetVendorList(object.toString(), apiName).execute();
+                }
+                if (selectedItem.equals("Active")) {
+                    object = new JSONObject();
+                    page1 = 1;
+                    apiName = "completed-vendors";
+                    try {
+                        object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                        object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                        object.put(Constants.PARAM_STATUS, "1");
+                    } catch (JSONException e) {
+                    }
+                    tvTitle.setText("Active Vendors");
+                    new GetVendorList(object.toString(), apiName).execute();
+                }
+                if (selectedItem.equals("Deactivated/Closed")) {
+                    object = new JSONObject();
+                    page1 = 1;
+                    apiName = "completed-vendors";
+                    try {
+                        object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                        object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                        object.put(Constants.PARAM_STATUS, "2");
+                    } catch (JSONException e) {
+                    }
+                    tvTitle.setText("Deactivated/Closed");
+                    new GetVendorList(object.toString(), apiName).execute();
+                }
+                if (selectedItem.equals("Payment Hold")) {
+                    object = new JSONObject();
+                    page1 = 1;
+                    apiName = "completed-vendors";
+                    try {
+                        object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                        object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                        object.put(Constants.PARAM_STATUS, "3");
+                    } catch (JSONException e) {
+                    }
+                    new GetVendorList(object.toString(), apiName).execute();
+                    tvTitle.setText("Payment Hold");
+                }
+                if (selectedItem.equals("Black Listed")) {
+                    object = new JSONObject();
+                    page1 = 1;
+                    apiName = "completed-vendors";
+                    try {
+                        object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                        object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                        object.put(Constants.PARAM_STATUS, "4");
+                    } catch (JSONException e) {
+                    }
+                    tvTitle.setText("Black Listed");
+                    new GetVendorList(object.toString(), apiName).execute();
+                }
+            } // to close the onItemSelected
+
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onRefresh() {
+        page1 = 1;
+
+        apiName = "completed-vendors";
         new GetVendorList(object.toString(), apiName).execute();
-
-        actv = (AutoCompleteTextView) view.findViewById(R.id.etSearchPlace);
-
-        actv.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // this condition is for not contain any keyword in ediitext
-                if (s.length() != 0) {
-
-                    if (s.length() > 3) {
-                        String regexStr = "^[0-9]*$";
-
-                        if (s.toString().matches(regexStr)) {
-                            spinnerArrayAdapter = new CustomAdapter<String>(mcontext, android.R.layout.simple_spinner_item, mobileList);
-                        } else {
-                            spinnerArrayAdapter = new CustomAdapter<String>(mcontext, android.R.layout.simple_spinner_item, nameList);
-
-                        }
-                        actv.setAdapter(spinnerArrayAdapter);//setting the adapter data into the AutoCompleteTextView
-                        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view,
-                                                    int position, long id) {
-
-                                try {
-                                    objectSearch.put(Constants.PARAM_TOKEN, sessionManager.getToken());
-                                    objectSearch.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-
-
-                                    if (spinnerArrayAdapter.getItem(position).toString() != null) {
-                                        objectSearch.put(Constants.PARAM_SEARCH, actv.getText().toString());
-                                    } else {
-                                        objectSearch.put(Constants.PARAM_SEARCH, actv.getText().toString());
-                                    }
-
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                pageSearch = 1;
-                                search = true;
-                                // this condition is for radio button that which is selected so we can call that api
-                                if (onboard == true) {           // with Search keywords we are calling this apis
-                                    apiNameSearch = "completed-vendors";
-                                    new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
-                                } else {
-                                    apiNameSearch = "completed-vendors";
-                                    new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
-                                }
-                            }
-                        });
-
-                        actv.setOnTouchListener(new View.OnTouchListener() {
-                            @Override
-                            public boolean onTouch(View view, MotionEvent motionEvent) {
-                                actv.showDropDown();
-                                return false;
-                            }
-                        });
-                    }
-
-
-                } else {
-                    // without using search keywords we are calling this because it have to be called everytime even there is no text
-                    if (onboard == true) {
-                        page1 = 1;
-                        page = 1;
-                        apiName = "completed-vendors";
-                        new GetVendorList(object.toString(), apiName).execute();
-                    } else {
-                        page = 1;
-                        page1 = 1;
-                        apiName = "completed-vendors";
-                        //  new GetVendorList(object.toString(), apiName).execute();
-                    }
-                }
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
-
-        actv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                actv.showDropDown();
-            }
-        });
-
-
-        actv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (!b) {
-                }
-            }
-        });
-
-
-        ivSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    objectSearch.put(Constants.PARAM_TOKEN, sessionManager.getToken());
-                    objectSearch.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-                    objectSearch.put(Constants.PARAM_SEARCH, actv.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                pageSearch = 1;
-                search = true;
-                // this condition is for radio button that which is selected so we can call that api
-                if (onboard == true) {           // with Search keywords we are calling this apis
-                    apiNameSearch = "completed-vendors";
-                    new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
-                } else {
-                    apiNameSearch = "completed-vendors";
-                    new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
-                }
-            }
-        });
-
 
     }
 
@@ -361,7 +298,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
         for (int i = 0; i < vendorLists.size(); i++) {
             if (vendorLists.get(i).getProccessId() == position) {
                 //edit_search_vendor.setText("");
-                Intent i1 = new Intent(getActivity(), VendorDetailActivity.class);
+                Intent i1 = new Intent(TypeWiseOnboardedListActivity.this, VendorDetailActivity.class);
 
                 //  commanFragmentCallWithBackStack(new VendorDetailsFragment(), vendorLists.get(i));
                 i1.putExtra("data", vendorLists.get(i));
@@ -369,31 +306,6 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
                 break;
             }
         }
-
-    }
-
-
-    private void showAlert(String msg) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mcontext);
-        alertDialog.setTitle("PAN Details");
-        alertDialog.setMessage(msg);
-        alertDialog.setCancelable(false);
-        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        alertDialog.show();
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Toast.makeText(getActivity(), " You select >> " + options[i], Toast.LENGTH_SHORT).show();
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 
@@ -462,11 +374,11 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
 
                     JSONObject jsonObject = new JSONObject(message);
                     if (jsonObject.has("response")) {
-                        Toast.makeText(mcontext, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(TypeWiseOnboardedListActivity.this, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
                     }
                     if (jsonObject.has("responseCode")) {
                         if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
-                            sessionManager.logoutUser(getActivity());
+                            sessionManager.logoutUser(TypeWiseOnboardedListActivity.this);
                         }
                     }
                     {
@@ -538,7 +450,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
                             pageSearch = 2;
                         }
                         if (vendorLists.size() > 0) {
-                            recyclerview.getRecycledViewPool().clear();
+                            recyclerView.getRecycledViewPool().clear();
                             vendorAdapter.notifyDataSetChanged();
                             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                             llNoData.setVisibility(View.GONE);
@@ -630,11 +542,11 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
 
                     JSONObject jsonObject = new JSONObject(message);
                     if (jsonObject.has("response")) {
-                        Toast.makeText(mcontext, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(TypeWiseOnboardedListActivity.this, jsonObject.getString("response").toLowerCase(), Toast.LENGTH_LONG).show();
                     }
                     if (jsonObject.has("responseCode")) {
                         if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
-                            sessionManager.logoutUser(getActivity());
+                            sessionManager.logoutUser(TypeWiseOnboardedListActivity.this);
                         }
                     }
 
@@ -711,7 +623,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
                             vendorLists1.add(vList);
                         }
                         if (vendorLists.size() > 0) {
-                            recyclerview.getRecycledViewPool().clear();
+                            recyclerView.getRecycledViewPool().clear();
                             vendorAdapter.notifyDataSetChanged();
                             mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                             llNoData.setVisibility(View.GONE);
@@ -729,160 +641,8 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
         }
     }
 
-    @Override
-    public void onRefresh() {
-        page1 = 1;
-        actv.getText().clear();
-        apiName = "completed-vendors";
-        new GetVendorList(object.toString(), apiName).execute();
 
-    }
-
-
-    public void sendOTP(final int vendorProcessId) {
-        for (int i = 0; i < vendorLists1.size(); i++) {
-            if (vendorLists1.get(i).getProccessId() == vendorProcessId) {
-                edit_search_vendor.setText("");
-                Intent i1 = new Intent(getActivity(), VendorDetailActivity.class);
-
-                //  commanFragmentCallWithBackStack(new VendorDetailsFragment(), vendorLists.get(i));
-                i1.putExtra("data", vendorLists.get(i));
-                startActivity(i1);
-                break;
-            }
-        }
-
-
-    }
-
-
-    public void commanFragmentCallWithBackStack(Fragment fragment, VendorList vendorList) {
-
-        Fragment cFragment = fragment;
-
-        Bundle bundle = new Bundle();
-
-        bundle.putSerializable("data", vendorList);
-
-        if (cFragment != null) {
-
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragment.setArguments(bundle);
-            fragmentTransaction.add(R.id.rvContentMain, cFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-
-        }
-    }
-
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-    }
-
-
-    private void ApiCallgetReports() {
-        // mProgress.show();
-        Map<String, String> param = new HashMap<>();
-        param.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-        param.put(Constants.PARAM_VENDOR_TYPE, "1");
-        ApiClient.getClient().create(ApiInterface.class).getSearchListResponse("Bearer " + sessionManager.getToken(), param).enqueue(new Callback<SearchListResponse>() {
-            @Override
-            public void onResponse(Call<SearchListResponse> call, retrofit2.Response<SearchListResponse> response) {
-                if (response.isSuccessful()) {
-
-                    //  mProgress.dismiss();
-                    SearchListResponse supportListResponse = response.body();
-                    if (supportListResponse.getResponseCode() == 200) {
-                        Log.e("harshit", supportListResponse.getResponse());
-
-                        searchList.addAll(supportListResponse.getData());
-
-                        for (int i = 0; i < searchList.size(); i++) {
-
-                            if (searchList.get(i).getStoreName() != null) {
-                                nameList.add(searchList.get(i).getStoreName());
-                            }
-                            if (searchList.get(i).getMobileNo() != null) {
-                                mobileList.add(searchList.get(i).getMobileNo());
-                            }
-
-
-                            //nameList.add(searchList.get(i).getMobileNo());
-                            // nameList.add(searchList.get(i).getName());
-
-                        }
-
-
-                        spinnerArrayAdapter = new CustomAdapter<String>(mcontext, android.R.layout.simple_spinner_item, nameList);
-                        actv.setAdapter(spinnerArrayAdapter);//setting the adapter data into the AutoCompleteTextView
-
-                        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view,
-                                                    int position, long id) {
-
-                                try {
-                                    objectSearch.put(Constants.PARAM_TOKEN, sessionManager.getToken());
-                                    objectSearch.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-
-                                    if (spinnerArrayAdapter.getItem(position).toString() != null) {
-                                        objectSearch.put(Constants.PARAM_SEARCH, actv.getText().toString());
-                                    } else {
-                                        objectSearch.put(Constants.PARAM_SEARCH, actv.getText().toString());
-                                    }
-
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                pageSearch = 1;
-                                search = true;
-                                // this condition is for radio button that which is selected so we can call that api
-                                if (onboard == true) {           // with Search keywords we are calling this apis
-                                    apiNameSearch = "completed-vendors";
-                                    new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
-                                } else {
-                                    apiNameSearch = "completed-vendors";
-                                    new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
-                                }
-                            }
-                        });
-
-
-                        actv.setOnTouchListener(new View.OnTouchListener() {
-                            @Override
-                            public boolean onTouch(View view, MotionEvent motionEvent) {
-                                actv.showDropDown();
-                                return false;
-                            }
-                        });
-
-                    } else {
-                        Log.e("harshit", supportListResponse.getResponse());
-                    }
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SearchListResponse> call, Throwable t) {
-
-
-                mSwipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
-    }
-
-
-  /*  class CustomAdapter<T> extends ArrayAdapter<T> {
+    class CustomAdapter<T> extends ArrayAdapter<T> {
         public CustomAdapter(Context context, int textViewResourceId,
                              List<T> objects) {
             super(context, textViewResourceId, objects);
@@ -899,53 +659,6 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
             return view;
         }
     }
-*/
 
-    class CustomAdapter<T> extends ArrayAdapter<T> {
-        public CustomAdapter(Context context, int textViewResourceId,
-                             List<T> objects) {
-            super(context, textViewResourceId, objects);
-
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = super.getView(position, convertView, parent);
-
-            if (view instanceof TextView) {
-                ((TextView) view).setTextSize(15);
-                ((TextView) view).setPadding(15, 15, 0, 5);
-                ((TextView) view).setTransformationMethod(null);
-                Typeface typeface = ResourcesCompat.getFont(parent.getContext(), R.font.montesemibold);
-
-                ((TextView) view).setTypeface(typeface);
-            }
-            return view;
-           /* View row = null;
-            LayoutInflater inflater = (LayoutInflater) getActivity()
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            if (convertView == null) {
-                row = inflater.inflate(R.layout.spinner_item_search, parent,
-                        false);
-            } else {
-                row = convertView;
-            }
-            Datum detail = searchList.get(position);
-            TextView name = (TextView) row.findViewById(R.id.tv1);
-            name.setText(detail.getName());
-            name.setText(detail.getMobileNo());
-           *//* TextView email = (TextView) row.findViewById(R.id.tvClientEmail);
-            email.setText(detail.email);
-            TextView id = (TextView) row.findViewById(R.id.tvClientID);
-            id.setText("ID : " + detail.id);
-            TextView company = (TextView) row
-                    .findViewById(R.id.tvClientCompanyName);
-            company.setText(detail.company);
-            TextView status = (TextView) row.findViewById(R.id.tvClientStatus);
-            status.setText("Status:" + detail.status);*//*
-            return row;*/
-
-        }
-    }
 
 }

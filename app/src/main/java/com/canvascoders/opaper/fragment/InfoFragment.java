@@ -1489,6 +1489,10 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 Toast.makeText(getActivity(), "Please Select Store Type", Toast.LENGTH_LONG).show();
                 return false;
             }
+            if(tvStoreType.getText().toString().equalsIgnoreCase("Select Store Type")){
+                Toast.makeText(getActivity(), "Please Select Store Type", Toast.LENGTH_LONG).show();
+                return false;
+            }
             if (tvLocality.getText().equals("")) {
                 //  tvLocality.requestFocus();
                 Toast.makeText(getActivity(), "Select Locality", Toast.LENGTH_LONG).show();

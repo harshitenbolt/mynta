@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canvascoders.opaper.Beans.MensaAlteration;
 import com.canvascoders.opaper.Beans.StoreTypeBean;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
@@ -29,10 +30,12 @@ import com.canvascoders.opaper.adapters.RateListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.TaskCompletedFragment2;
+import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -48,7 +51,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 
-public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
+public class EditRateWhileResigAgreeActivity extends AppCompatActivity implements RecyclerViewClickListener {
     private String TAG = "RateFragment";
     private ProgressDialog mProgressDialog;
     private SessionManager sessionManager;
@@ -64,6 +67,8 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
     private static Dialog dialog;
     ProgressDialog mPogress;
     String s = "1";
+    String alterationselected = "";
+    private ArrayList<MensaAlteration> mensaalterationList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,10 +170,25 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
                         if (!TextUtils.isEmpty(res)) {
                             JSONObject jsonObject = new JSONObject(response.body().string());
                             if (response.code() == 200) {
+                                mensaalterationList.clear();
+                                Gson gson = new Gson();
                                 Log.e("in JSON", "" + jsonObject.toString());
 
                                 if (jsonObject.getString("responseCode").equalsIgnoreCase("200")) {
                                     JSONArray rateJsonArray = jsonObject.getJSONArray("data");
+
+
+                                    JSONArray result = jsonObject.getJSONArray("Mensa - Alteration");
+
+                                    for (int i = 0; i < result.length(); i++) {
+                                        JSONObject o = result.getJSONObject(i);
+                                        MensaAlteration mensalist = gson.fromJson(o.toString(), MensaAlteration.class);
+                                        MensaAlteration mensaAlteration = new MensaAlteration(true, "", "");
+                                        mensaAlteration.setSubStoreType(mensalist.getSubStoreType());
+                                        mensaAlteration.setSubStoreTypeId(mensalist.getSubStoreTypeId());
+                                        mensaalterationList.add(mensaAlteration);
+                                    }
+
                                     Log.e("Found Stores", "" + rateJsonArray.length());
                                     ArrayList<StoreTypeBean> tempList = new ArrayList<>();
                                     boolean isSecondTime = false;
@@ -207,7 +227,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
 //                                    }
 
 
-                                    rateListAdapter = new RateListAdapter(rateTypeBeans, EditRateWhileResigAgreeActivity.this);
+                                    rateListAdapter = new RateListAdapter(rateTypeBeans, mensaalterationList, EditRateWhileResigAgreeActivity.this, EditRateWhileResigAgreeActivity.this);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));
@@ -288,10 +308,10 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
                             Toast.makeText(this, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                             return;
                         }
-                        return;
-                    }
-                    else {
+
+                    } else {
                         jsonObject.addProperty("rate", "0");
+                        jsonObject.addProperty("sub_store_type", alterationselected);
                     }
                 } else {
                     jsonObject.addProperty("rate", "0");
@@ -481,5 +501,20 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity {
             finish();
             //  startActivity(new Intent(EditRateWhileResigAgreeActivity.this, DashboardActivity.class));
         }
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+
+    }
+
+    @Override
+    public void SingleClick(String popup, int position) {
+        alterationselected = popup;
     }
 }

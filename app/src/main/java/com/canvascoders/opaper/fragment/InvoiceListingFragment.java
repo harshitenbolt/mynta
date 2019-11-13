@@ -135,7 +135,7 @@ public class InvoiceListingFragment extends Fragment implements SwipeRefreshLayo
         recyclerview = (RecyclerView) v.findViewById(R.id.recyclerview);
         recyclerview.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerview.setLayoutManager(linearLayoutManager);
         invoiceListCommonAdapter = new InvoiceListCommonAdapter(vendorLists, getActivity(), InvoiceListingFragment.this);
 

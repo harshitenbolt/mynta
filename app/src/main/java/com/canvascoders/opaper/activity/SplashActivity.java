@@ -3,7 +3,9 @@ package com.canvascoders.opaper.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 
 import com.canvascoders.opaper.R;
@@ -27,14 +29,11 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_new);
 
 
-
         sessionManager = new SessionManager(SplashActivity.this);
         Mylogger.getInstance().setEnable(true);
 
 
-
         FirebaseApp.initializeApp(this);
-
 
 
         FCMID = FirebaseInstanceId.getInstance().getToken();

@@ -7,6 +7,8 @@ import com.google.gson.annotations.SerializedName;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class StoreTypeBean {
 
 
@@ -37,6 +39,19 @@ public class StoreTypeBean {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+
+    @SerializedName("Mensa - Alteration")
+    @Expose
+    private List<MensaAlteration> mensaAlteration = null;
+
+    public List<MensaAlteration> getMensaAlteration() {
+        return mensaAlteration;
+    }
+
+    public void setMensaAlteration(List<MensaAlteration> mensaAlteration) {
+        this.mensaAlteration = mensaAlteration;
     }
 
     public String getStoreType() {

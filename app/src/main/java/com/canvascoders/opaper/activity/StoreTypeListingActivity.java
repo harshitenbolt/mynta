@@ -239,7 +239,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
                             return;
 
                         }
-                        return;
+
                     } else {
                         jsonObject.addProperty("rate", "0");
                         jsonObject.addProperty("sub_store_type", alterationselected);
