@@ -35,10 +35,12 @@ import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResp
 import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
 import com.canvascoders.opaper.Beans.SendInvoiceEsignResponse.SendInvoiceLinkresponse;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
+import com.canvascoders.opaper.Beans.StartTaskResponse.StartTaskResponse;
 import com.canvascoders.opaper.Beans.SubmitReportResponse.SubmitReportResponse;
 import com.canvascoders.opaper.Beans.SupportDetailResponse.SupportDetailResponse;
 import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
 import com.canvascoders.opaper.Beans.SupportSubjectResponse.SupportSubjectResponse;
+import com.canvascoders.opaper.Beans.TaskDetailResponse.GetTaskDetailsResponse;
 import com.canvascoders.opaper.Beans.ThreadCommentsResponse.CommentThreadResponse;
 import com.canvascoders.opaper.Beans.TransactionIDResponse.TransactionIdResponse;
 import com.canvascoders.opaper.Beans.TranscationId1Response;
@@ -341,7 +343,7 @@ public interface ApiInterface {
                                     @Part MultipartBody.Part store_image_act);
     //-----------------------------------------------------------------------------
 
-//change
+    //change
     @FormUrlEncoded
     @POST("esign")
     Call<ResponseBody> Esign(@FieldMap Map<String, String> apiVersionMap);
@@ -542,11 +544,9 @@ public interface ApiInterface {
     Call<VerifyGst> updateGst(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part List<MultipartBody.Part> attachment);
 
 
-
     @FormUrlEncoded
     @POST("gst-number-status")
     Call<CheckGstStatus> checkGSTStatus(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
-
 
 
     @FormUrlEncoded
@@ -558,11 +558,20 @@ public interface ApiInterface {
     Call<GetGstListing> getgstListing(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
 
-
-
     @FormUrlEncoded
     @POST("notification-read")
     Call<ViewNotificationResponse> viewNotification(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
+
+
+    @FormUrlEncoded
+    @POST("task-detail")
+    Call<GetTaskDetailsResponse> getTaskDetailResponse(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
+
+
+
+    @FormUrlEncoded
+    @POST("task-start-end")
+    Call<StartTaskResponse> startTask(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
 
 
 }

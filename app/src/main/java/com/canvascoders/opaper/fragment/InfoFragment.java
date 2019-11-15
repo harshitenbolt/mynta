@@ -623,7 +623,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                     }
                 } else {
                     if (validation(3)) {
-                        hideKeyboardwithoutPopulate(getActivity());
+                       // hideKeyboardwithoutPopulate(getActivity());
 
                         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                             // getBankDetails(mContext,s.toString(),processId);
@@ -1489,7 +1489,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 Toast.makeText(getActivity(), "Please Select Store Type", Toast.LENGTH_LONG).show();
                 return false;
             }
-            if(tvStoreType.getText().toString().equalsIgnoreCase("Select Store Type")){
+            if (tvStoreType.getText().toString().equalsIgnoreCase("Select Store Type")) {
                 Toast.makeText(getActivity(), "Please Select Store Type", Toast.LENGTH_LONG).show();
                 return false;
             }

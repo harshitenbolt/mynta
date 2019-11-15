@@ -175,7 +175,9 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                                     str = "";
                                     mDialog1.dismiss();
                                 }
+                                holder.check_box_store.setChecked(false);
                             }
+
                         });
                     }
                 }

@@ -187,6 +187,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                                     str = "";
                                     mDialog1.dismiss();
                                 }
+                                holder.check_box_store.setChecked(false);
                             }
                         });
                     }

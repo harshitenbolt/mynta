@@ -134,6 +134,7 @@ public class Constants {
     public static String KEY_PASSWORD = "password";
     public static String KEY_FCM_ID = "FCMID";
     public static String KEY_PROCESS_ID = "proccess_id";
+    public static String KEY_ID = "id";
     public static String KEY_UID = "uid";
     public static String KEY_PINCODE = "pincode";
     public static String KEY_YEAR = "year";
@@ -183,7 +184,9 @@ public class Constants {
     public static String PARAM_IS_DOC = "is_doc";
 
     public static String PARAM_YEAR = "year";
+    public static String PARAM_TASK_ID = "task_id";
     public static String PARAM_IS_INVOICE = "is_invoice";
+
 
     public static String PARAM_STATUS = "status";
     public static String PARAM_SEARCH = "search";
@@ -347,6 +350,7 @@ public class Constants {
 
 
     public static String PARAM_VENDOR_TYPE = "vendor_type";
+    public static String PARAM_TYPE = "type";
     public static String PARAM_VENDOR_TYPE_DETAIL = "vendor_type_detail";
     public static String PARAM_LOCALITY = "locality";
     public static String PARAM_APPROACH = "approach";

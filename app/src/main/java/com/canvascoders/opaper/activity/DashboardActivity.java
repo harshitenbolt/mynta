@@ -166,7 +166,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         llLiveVendors = findViewById(R.id.llLiveVendor);
         llNotification = findViewById(R.id.llNotification);
         llOnboardNewVendor = findViewById(R.id.llOnboardNewVendor);
-        llReports = findViewById(R.id.llReports);
+        llReports = findViewById(R.id.llTasks);
         llOnboardNewVendor.setOnClickListener(this);
         llNotification.setOnClickListener(this);
         llLiveVendors.setOnClickListener(this);
@@ -354,15 +354,19 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 break;
 
 
-            case R.id.llReports:
-                tv_title.setText("Reports");
+            case R.id.llTasks:
+                tv_title.setText("Tasks");
                 llOnboardNewVendor.setBackgroundResource(0);
                 llNotification.setBackgroundResource(0);
                 llLiveVendors.setBackgroundResource(0);
                 llInProgressVendors.setBackgroundResource(0);
                 llReports.setBackgroundResource(R.drawable.rounded_corner_bordercolor_green);
                 llInvoice.setBackgroundResource(0);
-                commanFragmentCallWithBackStack(new ReportFragment());
+                /*commanFragmentCallWithBackStack(new ReportFragment());*/
+
+                Intent i2 = new Intent(DashboardActivity.this, TaskListActivity.class);
+                startActivity(i2);
+
                 break;
             case R.id.llInvoice:
                 tv_title.setText("Invoices");
