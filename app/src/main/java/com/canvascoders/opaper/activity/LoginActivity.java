@@ -12,11 +12,13 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.util.Log;
@@ -57,9 +59,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String TAG = "LoginActivity";
     private EditText edt_email_id, edt_password;
     private Button btn_login;
-    private String longitude= "";
-    private String lattitude="";
-    private String address="";
+    private String longitude = "";
+    private String lattitude = "";
+    private String address = "";
     private ProgressDialog mProgressDialog;
     private SessionManager sessionManager;
     private TextView tvForgot;
@@ -82,7 +84,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         requestPermissionHandler.requestPermission(this, new String[]{
                 Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.READ_PHONE_STATE}, 123, new RequestPermissionHandler.RequestPermissionListener() {
+                Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE}, 123, new RequestPermissionHandler.RequestPermissionListener() {
             @Override
             public void onSuccess() {
                 if (gps.canGetLocation()) {
@@ -92,10 +94,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     longitude = String.valueOf(gps.getLongitude());
                     Log.e("Lattitude", lattitude);
                     Log.e("Longitude", longitude);
-                    if (lat !=0.0 ) {
+                    if (lat != 0.0) {
                         getAddress(lat, lng);
                     }
-
 
 
                 } else {
@@ -139,13 +140,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         ivShowPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(showPassword == false){
+                if (showPassword == false) {
                     showPassword = true;
                     ivShowPassword.setImageResource(R.drawable.ic_eye);
                     edt_password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-                }
-                else{
+                } else {
                     showPassword = false;
                     ivShowPassword.setImageResource(R.drawable.ic_eye_close);
                     edt_password.setInputType(129);
@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!enabled)
             enabled = service.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         if (!enabled) {
-            new AlertDialog.Builder (this)
+            new AlertDialog.Builder(this)
                     .setTitle("Alert")
                     .setMessage("Device GPS is not enabled")
                     .setPositiveButton("Start", new DialogInterface.OnClickListener() {
@@ -197,7 +197,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                           Toast.makeText(LoginActivity.this,"Please allow Location Permission",Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Please allow Location Permission", Toast.LENGTH_LONG).show();
                         }
                     }).show();
         }
@@ -208,10 +208,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             longitude = String.valueOf(gps.getLongitude());
             Log.e("Lattitude", lattitude);
             Log.e("Longitude", longitude);
-            if (lat !=0.0 ) {
+            if (lat != 0.0) {
                 getAddress(lat, lng);
             }
-
 
 
         } else {
@@ -252,8 +251,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-
-
     public void setLogin(final View v) {
 
         String Manufacturer_value = Build.MANUFACTURER;
@@ -264,7 +261,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String Serial_nO_value = Build.SERIAL;
 
         String android_id = Settings.Secure.getString(this.getContentResolver(),
-                        Settings.Secure.ANDROID_ID);
+                Settings.Secure.ANDROID_ID);
 
         String BootLoader_value = Build.BOOTLOADER;
         String User_value = Build.USER;
@@ -286,23 +283,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-     //   String imei= telephonyManager.getDeviceId();
-        Log.e("Device_data",Manufacturer_value+Brand_value+Model_value+Board_value+Hardware_value+Serial_nO_value+android_id+BootLoader_value+API_level+Version+Build_ID +"   ");
+        //   String imei= telephonyManager.getDeviceId();
+        Log.e("Device_data", Manufacturer_value + Brand_value + Model_value + Board_value + Hardware_value + Serial_nO_value + android_id + BootLoader_value + API_level + Version + Build_ID + "   ");
         JSONObject jsonObject = new JSONObject();
 
         try {
-            jsonObject.put("Manufacturer_value",Manufacturer_value);
-            jsonObject.put("Brand_value",Brand_value);
-            jsonObject.put("Model_value",Model_value);
-            jsonObject.put("Board_value",Board_value);
-            jsonObject.put("Hardware_value",Hardware_value);
-            jsonObject.put("Serial_nO_value",Serial_nO_value);
-            jsonObject.put("android_id",android_id);
-            jsonObject.put("API_level",API_level);
-            jsonObject.put("Version",Version);
-            jsonObject.put("Build_ID",Build_ID);
+            jsonObject.put("Manufacturer_value", Manufacturer_value);
+            jsonObject.put("Brand_value", Brand_value);
+            jsonObject.put("Model_value", Model_value);
+            jsonObject.put("Board_value", Board_value);
+            jsonObject.put("Hardware_value", Hardware_value);
+            jsonObject.put("Serial_nO_value", Serial_nO_value);
+            jsonObject.put("android_id", android_id);
+            jsonObject.put("API_level", API_level);
+            jsonObject.put("Version", Version);
+            jsonObject.put("Build_ID", Build_ID);
             //jsonObject.put("IMEI_No",imei);
-            jsonObject.put("App_version",Constants.APP_VERSION);
+            jsonObject.put("App_version", Constants.APP_VERSION);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -321,7 +318,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         user.addProperty(Constants.PARAM_LONGITUDE, longitude);
 
         Log.e("FCMID", "FCMID" + sessionManager.getData(Constants.KEY_FCM_ID));
-        Log.e("device_info",jsonObject.toString());
+        Log.e("device_info", jsonObject.toString());
         ApiClient.getClient().create(ApiInterface.class).getUserSignin(user).enqueue(new Callback<GetUserDetails>() {
             @Override
             public void onResponse(Call<GetUserDetails> call, Response<GetUserDetails> response) {
@@ -375,8 +372,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Constants.hideKeyboardwithoutPopulate(LoginActivity.this);
             getPermitionGrant(v);
         }
-        if(v.getId() == R.id.tvForgot){
-            Intent i = new Intent(LoginActivity.this,ForgotPasswordActivity.class);
+        if (v.getId() == R.id.tvForgot) {
+            Intent i = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(i);
         }
     }
@@ -401,7 +398,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             longitude = String.valueOf(gps.getLongitude());
                             Log.e("Lattitude", lattitude);
                             Log.e("Longitude", longitude);
-                            if (lat !=0.0 ) {
+                            if (lat != 0.0) {
                                 getAddress(lat, lng);
                             }
 

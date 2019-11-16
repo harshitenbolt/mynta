@@ -25,6 +25,19 @@ public class TaskList implements Serializable {
     @Expose
     private String adminId;
 
+    public String getCompleteDatetime() {
+        return completeDatetime;
+    }
+
+    public void setCompleteDatetime(String completeDatetime) {
+        this.completeDatetime = completeDatetime;
+    }
+
+    @SerializedName("complete_date_time")
+    @Expose
+    private String completeDatetime;
+
+
     public String getStoreName() {
         return storeName;
     }
@@ -222,12 +235,25 @@ public class TaskList implements Serializable {
     @SerializedName("better_place_reference_id")
     @Expose
     private String betterPlaceReferenceId;
+
+    public String getDueTime() {
+        return dueTime;
+    }
+
+    public void setDueTime(String dueTime) {
+        this.dueTime = dueTime;
+    }
+
     @SerializedName("better_place_client_reference_id")
     @Expose
     private String betterPlaceClientReferenceId;
     @SerializedName("bgv_run")
     @Expose
     private String bgvRun;
+
+    @SerializedName("due_time")
+    @Expose
+    private String dueTime;
 
     public Integer getId() {
         return id;

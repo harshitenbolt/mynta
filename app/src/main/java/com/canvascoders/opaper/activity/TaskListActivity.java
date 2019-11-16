@@ -1,6 +1,7 @@
 package com.canvascoders.opaper.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -12,6 +13,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.TaskList;
@@ -36,6 +40,7 @@ import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.EndlessRecyclerViewScrollListener;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -60,10 +65,10 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     Button ivSelect;
     FrameLayout flImage;
     ProgressDialog progressDialog;
-    RecyclerView rvTaskList;
+    RecyclerView rvTaskList, rvTaskListPending;
     TaskListAdapter taskListAdapter;
     List<TaskList> taskLists = new ArrayList<>();
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    SwipeRefreshLayout mSwipeRefreshLayout, mSwipeRefreshLayoutPending;
     private EndlessRecyclerViewScrollListener scrollListener;
     private String apiName = "task-list";
     private boolean onboard = true;
@@ -74,13 +79,40 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     int page, page1, pageSearch = 1;
     String TAG = "TaskList";
     SessionManager sessionManager;
-    LinearLayout llNoData;
+    LinearLayout llNoData, llNoDataPending;
+    TextView tvComplted, tvPending;
+    Drawable background, background1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
         init();
+
+
+        if (background instanceof ShapeDrawable) {
+            ((ShapeDrawable) background).getPaint().setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            tvComplted.setTextColor(getResources().getColor(R.color.colorWhite));
+        } else if (background instanceof GradientDrawable) {
+            ((GradientDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            tvComplted.setTextColor(getResources().getColor(R.color.colorWhite));
+        } else if (background instanceof ColorDrawable) {
+            ((ColorDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            tvComplted.setTextColor(getResources().getColor(R.color.colorWhite));
+        }
+
+        if (background1 instanceof ShapeDrawable) {
+            ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(this, R.color.colorWhite));
+            tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+        } else if (background1 instanceof GradientDrawable) {
+            ((GradientDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+            tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+        } else if (background1 instanceof ColorDrawable) {
+            ((ColorDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+            tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+        }
+
+
     }
 
     private void init() {
@@ -88,6 +120,17 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
         progressDialog.setCancelable(false);
+
+
+        tvComplted = findViewById(R.id.tvComplted);
+        tvPending = findViewById(R.id.tvPending);
+        tvComplted.setOnClickListener(this);
+        tvPending.setOnClickListener(this);
+
+        //
+        background = tvComplted.getBackground();
+        background1 = tvPending.getBackground();
+
 
         ivBack = findViewById(R.id.iv_back);
         ivBack.setOnClickListener(this);
@@ -100,21 +143,53 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         });
 
         llNoData = findViewById(R.id.llNoData);
+        llNoDataPending = findViewById(R.id.llNoDataPending);
 
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_containerCompleted);
+        mSwipeRefreshLayoutPending = (SwipeRefreshLayout) findViewById(R.id.swipe_containerPending);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayoutPending.setOnRefreshListener(this);
         // ivSearch = view.findViewById(R.id.ivSearch);
         rvTaskList = (RecyclerView) findViewById(R.id.rvTaskList);
+        rvTaskListPending = (RecyclerView) findViewById(R.id.rvTaskListPending);
         rvTaskList.setHasFixedSize(true);
+        rvTaskListPending.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+
+
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+
+
         rvTaskList.setLayoutManager(linearLayoutManager);
+        rvTaskListPending.setLayoutManager(linearLayoutManager1);
         taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
 
         rvTaskList.setAdapter(taskListAdapter);
+        rvTaskListPending.setAdapter(taskListAdapter);
 
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
+                // this condition  is for pagination in both with Search and without search
+
+                if (search == true) {
+                    // this condition is for not getting Next URL from API
+                    if (!apiNameSearch.equalsIgnoreCase("")) ;
+                    new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
+                } else {
+                    if (!apiName.equalsIgnoreCase("")) {
+                        new GetVendorList(object.toString(), apiName).execute();
+                    }
+                }
+
+            }
+        };
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager1) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
 
@@ -136,7 +211,8 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
         try {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
-            object.put(Constants.PARAM_AGENT_ID, "720");
+            object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+            object.put(Constants.PARAM_STATUS, "1");
         } catch (
                 JSONException e) {
 
@@ -148,7 +224,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         onboard = true;
         progressDialog.setMessage("please wait loading tasks...");
 
-        new GetVendorList(object.toString(), apiName).execute();
+        // new GetVendorList(object.toString(), apiName).execute();
 
 
         ivSupport = findViewById(R.id.ivSupport);
@@ -249,6 +325,93 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                 ivSupport.setVisibility(View.GONE);
                 flImage.setForeground(drawable);
                 break;
+
+
+            case R.id.tvComplted:
+                object = new JSONObject();
+                try {
+                    object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                    object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                    object.put(Constants.PARAM_STATUS, "1");
+                } catch (
+                        JSONException e) {
+
+                }
+
+
+                page1 = 1;
+                apiName = "task-list";
+                new GetVendorList(object.toString(), apiName).execute();
+
+
+                mSwipeRefreshLayoutPending.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                if (background instanceof ShapeDrawable) {
+                    ((ShapeDrawable) background).getPaint().setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    tvComplted.setTextColor(getResources().getColor(R.color.colorWhite));
+                } else if (background instanceof GradientDrawable) {
+                    ((GradientDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    tvComplted.setTextColor(getResources().getColor(R.color.colorWhite));
+                } else if (background instanceof ColorDrawable) {
+                    ((ColorDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    tvComplted.setTextColor(getResources().getColor(R.color.colorWhite));
+                }
+
+                if (background1 instanceof ShapeDrawable) {
+                    ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background1 instanceof GradientDrawable) {
+                    ((GradientDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background1 instanceof ColorDrawable) {
+                    ((ColorDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+                }
+                break;
+
+
+            case R.id.tvPending:
+
+
+                object = new JSONObject();
+                try {
+                    object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                    object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                    object.put(Constants.PARAM_STATUS, "0");
+                } catch (
+                        JSONException e) {
+
+                }
+                page1 = 1;
+                apiName = "task-list";
+                new GetVendorList(object.toString(), apiName).execute();
+
+                mSwipeRefreshLayoutPending.setVisibility(View.VISIBLE);
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                if (background1 instanceof ShapeDrawable) {
+                    ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    tvPending.setTextColor(getResources().getColor(R.color.colorWhite));
+                } else if (background1 instanceof GradientDrawable) {
+                    ((GradientDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    tvPending.setTextColor(getResources().getColor(R.color.colorWhite));
+                } else if (background1 instanceof ColorDrawable) {
+                    ((ColorDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    tvPending.setTextColor(getResources().getColor(R.color.colorWhite));
+                }
+
+                if (background instanceof ShapeDrawable) {
+                    ((ShapeDrawable) background).getPaint().setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvComplted.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background instanceof GradientDrawable) {
+                    ((GradientDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvComplted.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background instanceof ColorDrawable) {
+                    ((ColorDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvComplted.setTextColor(getResources().getColor(R.color.colorBlack));
+                }
+
+
+                break;
         }
 
     }
@@ -341,6 +504,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         protected void onPostExecute(String message) {
             progressDialog.dismiss();
             mSwipeRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayoutPending.setRefreshing(false);
             Mylogger.getInstance().Logit(TAG, message);
             if (message != null) {
                 try {
@@ -381,8 +545,10 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                             vList.setMobileNo(vendorList.getMobileNo());
                             vList.setStoreName(vendorList.getStoreName());
                             vList.setType(vendorList.getType());
+                            vList.setCompleteDatetime(vendorList.getCompleteDatetime());
                             vList.setStatus(vendorList.getStatus());
                             vList.setDueDate(vendorList.getDueDate());
+                            vList.setDueTime(vendorList.getDueTime());
 
                             page = 0;
                             page1 = 0;
@@ -395,9 +561,13 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                             taskListAdapter.notifyDataSetChanged();
                             rvTaskList.setVisibility(View.VISIBLE);
                             llNoData.setVisibility(View.GONE);
+                            llNoDataPending.setVisibility(View.GONE);
+                            rvTaskListPending.setVisibility(View.VISIBLE);
                         } else {
                             rvTaskList.setVisibility(View.GONE);
+                            rvTaskListPending.setVisibility(View.GONE);
                             llNoData.setVisibility(View.VISIBLE);
+                            llNoDataPending.setVisibility(View.VISIBLE);
                         }
                     }
                 } catch (JSONException e) {
@@ -503,9 +673,11 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                             vList.setAgentId(vendorList.getAgentId());
                             vList.setMobileNo(vendorList.getMobileNo());
                             vList.setStoreName(vendorList.getStoreName());
+                            vList.setCompleteDatetime(vendorList.getCompleteDatetime());
                             vList.setType(vendorList.getType());
                             vList.setStatus(vendorList.getStatus());
                             vList.setDueDate(vendorList.getDueDate());
+                            vList.setDueTime(vendorList.getDueTime());
 
                             page = 0;
                             page1 = 0;
@@ -558,4 +730,12 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        page1 = 1;
+        //actv.getText().clear();
+        apiName = "task-list";
+        new GetVendorList(object.toString(), apiName).execute();
+    }
 }

@@ -95,7 +95,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     DrawerLayout drawer;
     ImageView ivSupport, imageView, ivHome;
     View v, vHeader;
-    TextView tvInProgressVendorCount, tvLiveVendorCount, tvCountNotification;
+    TextView tvInProgressVendorCount, tvLiveVendorCount, tvCountNotification, tvCountTasks;
     Button ivSelect;
     SwipeRefreshLayout swLayout;
     Bitmap b, converted;
@@ -158,6 +158,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         tvInProgressVendorCount = findViewById(R.id.tvInProgressCount);
         tvLiveVendorCount = findViewById(R.id.tvLiveVendorCount);
         tvCountNotification = findViewById(R.id.tvCountNotification);
+        tvCountTasks = findViewById(R.id.tvCountTasks);
 
 
         llInProgressVendors = findViewById(R.id.llInProgressVendor);
@@ -607,11 +608,17 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                         } else {
                             tvCountNotification.setVisibility(View.VISIBLE);
                         }
+                        if (getnotificationdata.getTaskCount() == 0) {
+                            tvCountTasks.setVisibility(View.GONE);
+                        } else {
+                            tvCountTasks.setVisibility(View.VISIBLE);
+                        }
 
 
                         tvInProgressVendorCount.setText(String.valueOf(getnotificationdata.getInProgressCount()));
                         tvLiveVendorCount.setText(String.valueOf(getnotificationdata.getLiveVendorCount()));
                         tvCountNotification.setText(String.valueOf(getnotificationdata.getAgentNotificationCount()));
+                        tvCountTasks.setText(String.valueOf(getnotificationdata.getTaskCount()));
                         if (getnotificationdata.getResponse().equalsIgnoreCase("success")) {
                             Log.e("Sec", "Step done");
 

@@ -24,6 +24,80 @@ public class Datum {
     @SerializedName("assign_by")
     @Expose
     private String assignBy;
+
+    public String getDueTime() {
+        return dueTime;
+    }
+
+    public void setDueTime(String dueTime) {
+        this.dueTime = dueTime;
+    }
+
+    public String getStoreFullAddress() {
+        return storeFullAddress;
+    }
+
+    public void setStoreFullAddress(String storeFullAddress) {
+        this.storeFullAddress = storeFullAddress;
+    }
+
+    @SerializedName("due_time")
+    @Expose
+    private String dueTime;
+    @SerializedName("store_full_address")
+    @Expose
+    private String storeFullAddress;
+
+    public Integer getCompleteTime() {
+        return completeTime;
+    }
+
+    public void setCompleteTime(Integer completeTime) {
+        this.completeTime = completeTime;
+    }
+
+    @SerializedName("complete_time")
+    @Expose
+    private Integer completeTime;
+
+
+    public String getCompleteDateTime() {
+        return completeDateTime;
+    }
+
+    public void setCompleteDateTime(String completeDateTime) {
+        this.completeDateTime = completeDateTime;
+    }
+
+    @SerializedName("complete_date_time")
+    @Expose
+    private String completeDateTime;
+
+    public String getAssignTime() {
+        return assignTime;
+    }
+
+    public void setAssignTime(String assignTime) {
+        this.assignTime = assignTime;
+    }
+
+    @SerializedName("assign_time")
+    @Expose
+    private String assignTime;
+
+
+    @SerializedName("assign_by_name")
+    @Expose
+    private String assign_by_name;
+
+    public String getAssign_by_name() {
+        return assign_by_name;
+    }
+
+    public void setAssign_by_name(String assign_by_name) {
+        this.assign_by_name = assign_by_name;
+    }
+
     @SerializedName("type")
     @Expose
     private String type;

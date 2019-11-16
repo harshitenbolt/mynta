@@ -296,14 +296,37 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="@dimen/_45sdp"
-                            android:layout_height="@dimen/_45sdp"
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:layout_centerInParent="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:src="@drawable/reportmain" />
+
+                            android:layout_centerHorizontal="true">
+
+
+                            <TextView
+                                android:id="@+id/tvCountTasks"
+                                android:layout_width="@dimen/_18sdp"
+                                android:layout_height="@dimen/_18sdp"
+                                android:layout_marginLeft="@dimen/_40sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:text="12"
+                                android:visibility="visible"
+                                android:fontFamily="@font/montesemibold"
+                                android:gravity="center"
+                                android:textColor="@color/whitePrimary"
+                                android:background="@drawable/backgroundshapecirclefilled" />
+
+
+                            <ImageView
+                                android:id="@+id/ivTasks"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_width="@dimen/_40sdp"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_marginTop="@dimen/_25sdp"
+                                android:src="@drawable/reportmain" />
+                        </RelativeLayout>
 
                         <TextView
                             style="@style/TextviewwithoutSize"

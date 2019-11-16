@@ -37,6 +37,18 @@ public class NotificattionResponse {
     @Expose
     private int agentNotificationCount;
 
+    public int getTaskCount() {
+        return taskCount;
+    }
+
+    public void setTaskCount(int taskCount) {
+        this.taskCount = taskCount;
+    }
+
+    @SerializedName("task_count")
+    @Expose
+    private int taskCount;
+
 
 
     @SerializedName("in_procces_count")

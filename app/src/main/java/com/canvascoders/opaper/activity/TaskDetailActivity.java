@@ -1,12 +1,17 @@
 package com.canvascoders.opaper.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +33,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -51,9 +57,11 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     private Marker mPerth;
     ImageView ivBack;
     String timeduration = "";
-
+    TextView tvAssignedBy, tvTitleDueDate, tvAssignedTime, tvAddress, tvMobile, tvTaskId, tvTaskCompletedDuration, tvTaskTime, tvDueDate, tvDuration;
+    ImageView ivLocate;
 
     Button btStartTask;
+    LinearLayout llComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,20 +96,72 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
         tvStoreName = findViewById(R.id.tvStoreName);
         tvDescription = findViewById(R.id.tvDescription);
         btStartTask = findViewById(R.id.btStartTask);
+        llComplete = findViewById(R.id.llComplete);
+        tvAssignedBy = findViewById(R.id.tvAssignedBy);
+        tvAssignedTime = findViewById(R.id.tvAssignedTime);
+        tvTitleDueDate = findViewById(R.id.tvTitleDueDate);
+        ivLocate = findViewById(R.id.ivLocate);
+        tvAddress = findViewById(R.id.tvLocation);
+        tvMobile = findViewById(R.id.tvMobileNo);
+
+        tvTaskId = findViewById(R.id.tvTaskID);
+        tvTaskCompletedDuration = findViewById(R.id.tvTaskCompletedDuration);
+        tvTaskTime = findViewById(R.id.tvTaskTime);
+        tvDueDate = findViewById(R.id.tvDueDate);
+        tvDuration = findViewById(R.id.tvDuration);
         btStartTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (timeduration.equalsIgnoreCase("")) {
                     startApiCall();
                 } else {
-                    EndApiCall();
+                    showAlert();
                 }
 
             }
         });
 
+        ivLocate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", mDefaultLatitude, mDefaultLongitude);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(intent);
+            }
+        });
+        tvMobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tvMobile.getText().toString()));
+                startActivity(intent);
+            }
+        });
+
 
     }
+
+
+    private void showAlert() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(TaskDetailActivity.this);
+        alertDialog.setTitle("Alert !!!");
+        alertDialog.setMessage("Are you sure you want end this task?");
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                EndApiCall();
+            }
+        });
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+        alertDialog.show();
+    }
+
 
     private void startApiCall() {
 
@@ -188,9 +248,13 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                         tvStoreName.setText(getTaskDetailsResponse.getData().get(0).getBasicDetail().getStoreName());
                         tvTitleName.setText(getTaskDetailsResponse.getData().get(0).getType());
                         tvDescription.setText(getTaskDetailsResponse.getData().get(0).getDescription());
+                        tvAssignedBy.setText(getTaskDetailsResponse.getData().get(0).getAssign_by_name());
+                        tvAssignedTime.setText(getTaskDetailsResponse.getData().get(0).getAssignTime());
+                        tvMobile.setText(getTaskDetailsResponse.getData().get(0).getProcessDetail().getMobileNo());
+                        tvAddress.setText(getTaskDetailsResponse.getData().get(0).getStoreFullAddress());
                         mDefaultLatitude = Double.valueOf(getTaskDetailsResponse.getData().get(0).getProcessDetail().getLatitude());
                         mDefaultLongitude = Double.valueOf(getTaskDetailsResponse.getData().get(0).getProcessDetail().getLongitude());
-
+                        tvTaskId.setText(String.valueOf(getTaskDetailsResponse.getData().get(0).getId()));
                         mapFragment.getMapAsync(TaskDetailActivity.this);
                         mPerth.setPosition(new LatLng(mDefaultLatitude, mDefaultLongitude));
 
@@ -201,6 +265,26 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                         } else {
                             btStartTask.setBackgroundResource(R.drawable.rounded_bottom_corner_view_red);
                             btStartTask.setText("END TASK");
+                        }
+
+
+                        if (getTaskDetailsResponse.getData().get(0).getStatus().equalsIgnoreCase("1")) {
+
+
+                            btStartTask.setVisibility(View.GONE);
+                            llComplete.setVisibility(View.VISIBLE);
+                            if (getTaskDetailsResponse.getData().get(0).getCompleteTime() != 0) {
+                                tvTaskCompletedDuration.setText(getTaskDetailsResponse.getData().get(0).getCompleteTime() + " hours");
+                            }
+                            tvTaskTime.setText(getTaskDetailsResponse.getData().get(0).getCompleteDateTime());
+                        } else {
+                            if (!getTaskDetailsResponse.getData().get(0).getDueDate().equalsIgnoreCase("")) {
+                                tvTitleDueDate.setVisibility(View.VISIBLE);
+                                tvDueDate.setText(getTaskDetailsResponse.getData().get(0).getDueDate());
+                            }
+                            if (!getTaskDetailsResponse.getData().get(0).getDueTime().equalsIgnoreCase("")) {
+                                tvDuration.setText(getTaskDetailsResponse.getData().get(0).getDueTime());
+                            }
                         }
 
 
@@ -227,9 +311,6 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng sydney = new LatLng(mDefaultLatitude, mDefaultLongitude);
-        googleMap.addMarker(new MarkerOptions().position(sydney)
-                .title("Marker in Sydney"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
 
         mPerth = mMap.addMarker(new MarkerOptions()

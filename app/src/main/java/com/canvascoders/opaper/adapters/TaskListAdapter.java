@@ -1,7 +1,10 @@
 package com.canvascoders.opaper.adapters;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +29,7 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.TaskDetailActivity;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.RequestPermissionHandler;
 
 import java.util.List;
 
@@ -35,7 +39,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
     Context context;
     String value = "1";
     RecyclerViewClickListener recyclerViewClickListener;
-
+    RequestPermissionHandler requestPermissionHandler;
 
     public TaskListAdapter(List<TaskList> moreitemList, Context context, RecyclerViewClickListener recyclerViewClickListener) {
         this.vendorLists = moreitemList;
@@ -48,6 +52,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
     public RecordHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_list, parent, false);
         RecordHolder holder = new RecordHolder(view);
+
         return holder;
     }
 
@@ -56,18 +61,46 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
         holder.tvTitle.setText(vendorLists.get(position).getType());
         holder.tvMobile.setText(vendorLists.get(position).getMobileNo());
 
-        holder.tvStartName.setText("Due Date :- " + vendorLists.get(position).getDueDate());
+
+        holder.tvMobile.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + vendorLists.get(position).getMobileNo()));
+                context.startActivity(intent);
+
+            }
+        });
+
+        if (vendorLists.get(position).getStatus().equalsIgnoreCase("1")) {
+            holder.tvStartName.setText(vendorLists.get(position).getCompleteDatetime());
+        } else {
+            holder.tvStartName.setText("Due date :- " + vendorLists.get(position).getDueDate());
+
+
+            if (!vendorLists.get(position).getDueTime().equalsIgnoreCase("")) {
+                holder.tvDuration.setText(vendorLists.get(position).getDueTime());
+            }
+        }
+
         holder.tvStoreName.setText(vendorLists.get(position).getStoreName());
+        holder.tvTaskID.setText("#" + vendorLists.get(position).getId());
 
 
         if (vendorLists.get(position).getStatus().equalsIgnoreCase("0")) {
             holder.tvStatus.setText("Pending");
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorRed));
         } else if (vendorLists.get(position).getStatus().equalsIgnoreCase("1")) {
             holder.tvStatus.setText("Completed");
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         } else if (vendorLists.get(position).getStatus().equalsIgnoreCase("2")) {
             holder.tvStatus.setText("In progress");
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorBlack));
         } else if (vendorLists.get(position).getStatus().equalsIgnoreCase("3")) {
             holder.tvStatus.setText("Re-opened");
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorBlue));
         }
 
 
@@ -80,6 +113,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
             }
         });
 
+
     }
 
     @Override
@@ -89,7 +123,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
 
     public class RecordHolder extends RecyclerView.ViewHolder {
         ImageView ivStoreImage, ivStatusImage;
-        TextView tvStoreName, tvTitle, tvMobile, tvStatus, tvStartName;
+        TextView tvStoreName, tvTitle, tvMobile, tvStatus, tvStartName, tvTaskID, tvDuration;
         LinearLayout llMain;
         CardView cvMain;
 
@@ -99,9 +133,11 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
             tvStoreName = view.findViewById(R.id.tvStoreName);
             tvTitle = view.findViewById(R.id.tvTitle);
             tvMobile = view.findViewById(R.id.tvMobile);
+            tvTaskID = view.findViewById(R.id.tvTaskID);
             tvStatus = view.findViewById(R.id.tvStatus);
             tvStartName = view.findViewById(R.id.tvDueDate);
             cvMain = view.findViewById(R.id.cvMain);
+            tvDuration = view.findViewById(R.id.tvDuration);
             //     tvVehicle = view.findViewById(R.id.tvVehicle);
         }
     }

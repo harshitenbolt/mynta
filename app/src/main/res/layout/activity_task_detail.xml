@@ -19,6 +19,7 @@
             android:id="@+id/iv_back_process"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
+
             android:src="@drawable/back" />
 
         <TextView
@@ -83,141 +84,419 @@
                     android:clipToPadding="true"
                     android:elevation="@dimen/_5sdp">
 
-                    <LinearLayout
+                    <androidx.core.widget.NestedScrollView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:paddingLeft="@dimen/_15sdp"
-                        android:paddingTop="@dimen/_15sdp"
-                        android:paddingRight="@dimen/_15sdp"
-                        android:paddingBottom="@dimen/_15sdp">
-
+                        android:fillViewport="true">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            android:paddingLeft="@dimen/_15sdp"
+                            android:paddingTop="@dimen/_15sdp"
+                            android:paddingRight="@dimen/_15sdp"
+                            android:paddingBottom="@dimen/_15sdp">
 
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+
                                 android:orientation="vertical">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginTop="@dimen/_30sdp"
 
+                                    android:layout_gravity="center"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
                                     android:orientation="vertical">
 
-                                    <TextView
-                                        android:id="@+id/tvStoreName"
+                                    <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:enabled="false"
-                                        android:fontFamily="@font/monteregular"
-                                        android:gravity="center"
 
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:orientation="horizontal">
+
+                                        <androidx.cardview.widget.CardView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_70sdp"
+                                            android:layout_marginTop="@dimen/_12sdp"
+                                            android:layout_weight="1"
+                                            android:clipToPadding="true"
+                                            android:elevation="@dimen/_10sdp"
+                                            app:cardCornerRadius="@dimen/_5sdp">
+
+                                            <fragment
+                                                android:id="@+id/map"
+                                                android:name="com.google.android.gms.maps.SupportMapFragment"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="94dp" />
+
+                                        </androidx.cardview.widget.CardView>
+
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:layout_weight="1.5"
+                                            android:gravity="center">
+
+                                            <ImageView
+                                                android:id="@+id/ivLocate"
+                                                android:layout_width="@dimen/_25sdp"
+                                                android:layout_height="@dimen/_25sdp"
+                                                android:layout_gravity="center"
+                                                android:src="@drawable/navigation" />
+                                        </LinearLayout>
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:id="@+id/tvLocation"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_2sdp"
+                                        android:layout_marginTop="@dimen/_5sdp"
+                                        android:layout_marginRight="@dimen/_2sdp"
+                                        android:layout_weight="1"
+                                        android:text="" />
+
+
                                 </LinearLayout>
-
-                                <View
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/_1sdp"
-                                    android:layout_marginTop="@dimen/_10sdp"
-                                    android:background="@color/colorLightGrey" />
-
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="@dimen/_10sdp"
-                                    android:orientation="horizontal">
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
 
-
-                                    <TextView
-                                        android:id="@+id/tvDescription"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:editable="false"
-                                        android:enabled="false"
-                                        android:fontFamily="@font/monteregular"
-                                        android:text="gdsdfgsdgffdshgfdhgdfghgfhgfhfgdhhghghggfhdhgfhggfhhgfhgghfhgfghfhghgfhgfhgfhgffdghhghgfhhhhshsdgfhhdfdhhdfhfdhfhhhhsh"
-                                        android:textAllCaps="false"
-                                        android:textSize="@dimen/_11sdp" />
-
-
-                                </LinearLayout>
-                            </LinearLayout>
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:gravity="center">
-
-                                <androidx.cardview.widget.CardView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="@dimen/_185sdp"
-                                    android:layout_marginTop="@dimen/_12sdp"
-                                    android:clipToPadding="true"
-                                    android:elevation="@dimen/_10sdp"
-                                    app:cardCornerRadius="@dimen/_5sdp">
-
-                                    <fragment
-                                        android:id="@+id/map"
-                                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                                    <LinearLayout
                                         android:layout_width="match_parent"
-                                        android:layout_height="match_parent" />
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginTop="@dimen/_25sdp"
 
-                                </androidx.cardview.widget.CardView>
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/tvStoreName"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:enabled="false"
+                                            android:fontFamily="@font/montebold"
+                                            android:gravity="center"
+                                            android:textSize="@dimen/_15sdp" />
+                                    </LinearLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:background="@color/colorLightGrey" />
 
 
-                                <Button
-                                    android:id="@+id/btStartTask"
-                                    style="@style/Button_withGreen"
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+                                            android:id="@+id/tvDescription"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:editable="false"
+                                            android:enabled="false"
+                                            android:fontFamily="@font/monteregular"
+                                            android:text=""
+                                            android:textAllCaps="false"
+                                            android:textSize="@dimen/_11sdp" />
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_20sdp"
+                                            android:orientation="horizontal">
+
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center_vertical"
+                                                android:layout_weight="1"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    style="@style/TextviewwithoutSize"
+                                                    android:fontFamily="@font/montesemibold"
+                                                    android:text="Assigned By :- "
+                                                    android:textSize="@dimen/_10sdp" />
+
+                                                <TextView
+                                                    android:id="@+id/tvAssignedBy"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:editable="false"
+                                                    android:enabled="false"
+                                                    android:fontFamily="@font/monteregular"
+                                                    android:text=""
+                                                    android:textAllCaps="false"
+                                                    android:textSize="@dimen/_11sdp" />
+
+                                            </LinearLayout>
+
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="top"
+                                                android:layout_marginLeft="@dimen/_3sdp"
+                                                android:layout_weight="1.2"
+                                                android:orientation="vertical">
+
+
+                                                <TextView
+                                                    style="@style/TextviewwithoutSize"
+                                                    android:fontFamily="@font/montesemibold"
+                                                    android:text="Assigned Time"
+                                                    android:textSize="@dimen/_10sdp" />
+
+                                                <TextView
+                                                    android:id="@+id/tvAssignedTime"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+
+                                                    android:enabled="false"
+                                                    android:fontFamily="@font/monteregular"
+                                                    android:text=""
+                                                    android:textSize="@dimen/_11sdp" />
+                                            </LinearLayout>
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:orientation="horizontal">
+
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center_vertical"
+                                                android:layout_weight="1"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    style="@style/TextviewwithoutSize"
+                                                    android:fontFamily="@font/montesemibold"
+                                                    android:text="Mobile"
+                                                    android:textSize="@dimen/_10sdp" />
+
+                                                <TextView
+                                                    android:id="@+id/tvMobileNo"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/monteregular"
+                                                    android:text=""
+                                                    android:textAllCaps="false"
+                                                    android:textSize="@dimen/_11sdp" />
+
+                                            </LinearLayout>
+
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="top"
+                                                android:layout_marginLeft="@dimen/_3sdp"
+                                                android:layout_weight="1.2"
+                                                android:orientation="vertical">
+
+
+                                                <TextView
+                                                    style="@style/TextviewwithoutSize"
+                                                    android:fontFamily="@font/montesemibold"
+                                                    android:text="Task ID"
+                                                    android:textSize="@dimen/_10sdp" />
+
+                                                <TextView
+                                                    android:id="@+id/tvTaskID"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:enabled="false"
+                                                    android:fontFamily="@font/monteregular"
+                                                    android:text=""
+                                                    android:textSize="@dimen/_11sdp" />
+                                            </LinearLayout>
+                                        </LinearLayout>
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:orientation="horizontal">
+
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center_vertical"
+                                                android:layout_weight="1"
+                                                android:orientation="vertical">
+
+                                                <TextView
+                                                    android:id="@+id/tvTitleDueDate"
+                                                    style="@style/TextviewwithoutSize"
+                                                    android:fontFamily="@font/montesemibold"
+                                                    android:text="Due Date"
+                                                    android:visibility="gone"
+                                                    android:textSize="@dimen/_10sdp" />
+
+                                                <TextView
+                                                    android:id="@+id/tvDueDate"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/monteregular"
+                                                    android:text=""
+                                                    android:textAllCaps="false"
+                                                    android:textSize="@dimen/_11sdp" />
+
+
+                                                <TextView
+                                                    android:id="@+id/tvDuration"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:fontFamily="@font/monteregular"
+                                                    android:text=""
+                                                    android:textAllCaps="false"
+                                                    android:textSize="@dimen/_11sdp" />
+
+                                            </LinearLayout>
+
+
+
+                                        </LinearLayout>
+
+                                    </LinearLayout>
+                                </LinearLayout>
+
+
+                                <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/_25sdp"
-                                    android:layout_marginTop="@dimen/_145sdp"
-                                    android:layout_marginRight="@dimen/_25sdp"
-                                    android:text="Start Task" />
+                                    android:layout_marginTop="@dimen/_65sdp"
+                                    android:layout_weight="1"
+                                    android:gravity="center">
 
 
-                            </RelativeLayout>
+                                    <Button
+                                        android:id="@+id/btStartTask"
+                                        style="@style/Button_withGreen"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_25sdp"
+                                        android:layout_marginRight="@dimen/_25sdp"
+                                        android:visibility="visible"
+                                        android:text="Start Task" />
 
 
-                            <!-- <LinearLayout
+                                    <LinearLayout
+                                        android:id="@+id/llComplete"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:orientation="horizontal"
+                                        android:visibility="gone">
 
-                                 android:layout_width="match_parent"
-                                 android:layout_height="wrap_content"
-                                 android:layout_marginTop="@dimen/_10sdp"
-                                 android:visibility="gone">
 
-                                 <Button
-                                     style="@style/Button_withGreen"
-                                     android:layout_weight="1"
-                                     android:background="@color/colorBlue"
-                                     android:text="UPDATE CHEQUE DETAILS"
-                                     android:textSize="@dimen/_8sdp" />
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_vertical"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
 
-                                 <Button
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:text="Completion Duration"
+                                                android:textSize="@dimen/_10sdp" />
 
-                                     style="@style/Button_withGreen"
-                                     android:layout_weight="1"
-                                     android:background="@color/colorPrimary"
-                                     android:text="CHANGE RATE/ADD STORE TYPE"
-                                     android:textSize="@dimen/_8sdp" />
-                             </LinearLayout>-->
+                                            <TextView
+                                                android:id="@+id/tvTaskCompletedDuration"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/monteregular"
+                                                android:text=""
+                                                android:textAllCaps="false"
+                                                android:textSize="@dimen/_11sdp" />
 
+                                        </LinearLayout>
+
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="top"
+                                            android:layout_marginLeft="@dimen/_3sdp"
+                                            android:layout_weight="1.2"
+                                            android:orientation="vertical">
+
+
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:text="Completion Time"
+                                                android:textSize="@dimen/_10sdp" />
+
+                                            <TextView
+                                                android:id="@+id/tvTaskTime"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:enabled="false"
+                                                android:fontFamily="@font/monteregular"
+                                                android:text=""
+                                                android:textSize="@dimen/_11sdp" />
+                                        </LinearLayout>
+                                    </LinearLayout>
+
+
+                                </RelativeLayout>
+
+
+                                <!-- <LinearLayout
+
+                                     android:layout_width="match_parent"
+                                     android:layout_height="wrap_content"
+                                     android:layout_marginTop="@dimen/_10sdp"
+                                     android:visibility="gone">
+
+                                     <Button
+                                         style="@style/Button_withGreen"
+                                         android:layout_weight="1"
+                                         android:background="@color/colorBlue"
+                                         android:text="UPDATE CHEQUE DETAILS"
+                                         android:textSize="@dimen/_8sdp" />
+
+                                     <Button
+
+                                         style="@style/Button_withGreen"
+                                         android:layout_weight="1"
+                                         android:background="@color/colorPrimary"
+                                         android:text="CHANGE RATE/ADD STORE TYPE"
+                                         android:textSize="@dimen/_8sdp" />
+                                 </LinearLayout>-->
+
+                            </LinearLayout>
                         </LinearLayout>
-                    </LinearLayout>
+                    </androidx.core.widget.NestedScrollView>
+
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
