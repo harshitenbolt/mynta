@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -57,9 +58,9 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     private Marker mPerth;
     ImageView ivBack;
     String timeduration = "";
-    TextView tvAssignedBy, tvTitleDueDate, tvAssignedTime, tvAddress, tvMobile, tvTaskId, tvTaskCompletedDuration, tvTaskTime, tvDueDate, tvDuration;
-    ImageView ivLocate;
-
+    TextView tvAssignedBy, tvTimer, tvTitleDueDate, tvAssignedTime, tvAddress, tvMobile, tvTaskId, tvTaskCompletedDuration, tvTaskTime, tvDueDate, tvDuration;
+    TextView tvLocate;
+    private static final int DEFAULT_ZOOM = 15;
     Button btStartTask;
     LinearLayout llComplete;
 
@@ -100,7 +101,8 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
         tvAssignedBy = findViewById(R.id.tvAssignedBy);
         tvAssignedTime = findViewById(R.id.tvAssignedTime);
         tvTitleDueDate = findViewById(R.id.tvTitleDueDate);
-        ivLocate = findViewById(R.id.ivLocate);
+        tvTimer = findViewById(R.id.tvTimer);
+        tvLocate = findViewById(R.id.tvLocate);
         tvAddress = findViewById(R.id.tvLocation);
         tvMobile = findViewById(R.id.tvMobileNo);
 
@@ -121,7 +123,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
 
-        ivLocate.setOnClickListener(new View.OnClickListener() {
+        tvLocate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String uri = String.format(Locale.ENGLISH, "geo:%f,%f", mDefaultLatitude, mDefaultLongitude);
@@ -145,7 +147,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(TaskDetailActivity.this);
         alertDialog.setTitle("Alert !!!");
-        alertDialog.setMessage("Are you sure you want end this task?");
+        alertDialog.setMessage("Are you sure you want complete this task?");
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -252,10 +254,28 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                         tvAssignedTime.setText(getTaskDetailsResponse.getData().get(0).getAssignTime());
                         tvMobile.setText(getTaskDetailsResponse.getData().get(0).getProcessDetail().getMobileNo());
                         tvAddress.setText(getTaskDetailsResponse.getData().get(0).getStoreFullAddress());
+                        tvTimer.setText(String.valueOf(System.currentTimeMillis()));
+
+                        /*CountDownTimer timer=new CountDownTimer(300000, 1000) {
+                            public void onTick(long millisUntilFinished) {
+                                int seconds = (int) (millisUntilFinished / 1000) % 60 ;
+                                int minutes = (int) ((millisUntilFinished / (1000*60)) % 60);
+                                int hours   = (int) ((millisUntilFinished / (1000*60*60)) % 24);
+                                tvTimer.setText(String.format("%d:%d:%d",hours,minutes,seconds));
+                            }
+                            public void onFinish() {
+                                tvTimer.setText("Time Up");
+                            }
+                        };
+                        timer.start();*/
+
+
                         mDefaultLatitude = Double.valueOf(getTaskDetailsResponse.getData().get(0).getProcessDetail().getLatitude());
                         mDefaultLongitude = Double.valueOf(getTaskDetailsResponse.getData().get(0).getProcessDetail().getLongitude());
-                        tvTaskId.setText(String.valueOf(getTaskDetailsResponse.getData().get(0).getId()));
+                        tvTaskId.setText("#" + String.valueOf(getTaskDetailsResponse.getData().get(0).getId()));
                         mapFragment.getMapAsync(TaskDetailActivity.this);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(mDefaultLatitude, mDefaultLongitude), DEFAULT_ZOOM));
                         mPerth.setPosition(new LatLng(mDefaultLatitude, mDefaultLongitude));
 
                         timeduration = getTaskDetailsResponse.getData().get(0).getTaskStart();
@@ -273,6 +293,11 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
                             btStartTask.setVisibility(View.GONE);
                             llComplete.setVisibility(View.VISIBLE);
+                            tvDueDate.setText(getTaskDetailsResponse.getData().get(0).getDueDate());
+                            /*if (!getTaskDetailsResponse.getData().get(0).getDueTime().equalsIgnoreCase("")) {
+                                tvDuration.setText(getTaskDetailsResponse.getData().get(0).getDueTime());
+                            }*/
+
                             if (getTaskDetailsResponse.getData().get(0).getCompleteTime() != 0) {
                                 tvTaskCompletedDuration.setText(getTaskDetailsResponse.getData().get(0).getCompleteTime() + " hours");
                             }
@@ -282,9 +307,9 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                                 tvTitleDueDate.setVisibility(View.VISIBLE);
                                 tvDueDate.setText(getTaskDetailsResponse.getData().get(0).getDueDate());
                             }
-                            if (!getTaskDetailsResponse.getData().get(0).getDueTime().equalsIgnoreCase("")) {
+                           /* if (!getTaskDetailsResponse.getData().get(0).getDueTime().equalsIgnoreCase("")) {
                                 tvDuration.setText(getTaskDetailsResponse.getData().get(0).getDueTime());
-                            }
+                            }*/
                         }
 
 

@@ -117,7 +117,7 @@
             android:layout_weight="1.5"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_gravity="center_vertical|right"
             android:background="@android:color/transparent"
             android:drawableLeft="@drawable/pen_edit"
@@ -127,6 +127,7 @@
             android:paddingRight="25dp"
             android:textSize="@dimen/margin_15dp"
             android:text="EDIT RATE"
+
             android:textColor="@color/colorWhite"
             app:fontFamily="@font/rb_medium" />
     </LinearLayout>

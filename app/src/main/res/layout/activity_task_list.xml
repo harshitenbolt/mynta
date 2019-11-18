@@ -73,18 +73,19 @@
 
 
         <TextView
-            android:id="@+id/tvComplted"
+            android:id="@+id/tvPending"
             android:layout_width="@dimen/_110sdp"
             android:layout_height="@dimen/_40sdp"
             android:background="@drawable/leftsideroundedcorner"
             android:gravity="center"
-            android:text="COMPLETED"
+            android:text="PENDING"
             android:textAllCaps="true"
             android:textColor="@color/whitePrimary"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvPending"
+
+            android:id="@+id/tvComplted"
             android:layout_width="@dimen/_110sdp"
             android:layout_height="@dimen/_40sdp"
             android:layout_alignParentRight="true"
@@ -92,7 +93,7 @@
             android:layout_toStartOf="@+id/btOnboarding"
             android:background="@drawable/rightsideroundedcornerwhite"
             android:gravity="center"
-            android:text="PENDING"
+            android:text="COMPLETED"
             android:textColor="@color/colorBlack"
             android:textStyle="bold" />
 

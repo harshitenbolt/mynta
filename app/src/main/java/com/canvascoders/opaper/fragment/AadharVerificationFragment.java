@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -549,7 +551,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                 gatewayIntent.putExtra(QT_TRANSACTION_ID, GatewayId);
                 gatewayIntent.putExtra(QT_REQUEST_TYPE, OFFLINE_AADHAAR.getRequest());
                 startActivityForResult(gatewayIntent, REQUEST_AADHAARAPI);*/
-              //  ApiGetTransactionId();
+                //  ApiGetTransactionId();
 
                 break;
 
@@ -690,7 +692,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this,str_process_id);
+                EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, str_process_id);
                 editNameDialogFragment.setCancelable(false);
                 editNameDialogFragment.show(getChildFragmentManager(), "fragment_edit_name");
             }
@@ -1170,10 +1172,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
     }
 
 
-
-
-
-    public static void adharExtractMehots(String transactionId){
+    public static void adharExtractMehots(String transactionId) {
 
     }
 

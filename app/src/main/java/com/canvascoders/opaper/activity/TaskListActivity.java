@@ -90,28 +90,27 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         init();
 
 
-        if (background instanceof ShapeDrawable) {
-            ((ShapeDrawable) background).getPaint().setColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            tvComplted.setTextColor(getResources().getColor(R.color.colorWhite));
-        } else if (background instanceof GradientDrawable) {
-            ((GradientDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            tvComplted.setTextColor(getResources().getColor(R.color.colorWhite));
-        } else if (background instanceof ColorDrawable) {
-            ((ColorDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
-            tvComplted.setTextColor(getResources().getColor(R.color.colorWhite));
-        }
-
         if (background1 instanceof ShapeDrawable) {
-            ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(this, R.color.colorWhite));
-            tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+            ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            tvPending.setTextColor(getResources().getColor(R.color.colorWhite));
         } else if (background1 instanceof GradientDrawable) {
-            ((GradientDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorWhite));
-            tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+            ((GradientDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            tvPending.setTextColor(getResources().getColor(R.color.colorWhite));
         } else if (background1 instanceof ColorDrawable) {
-            ((ColorDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorWhite));
-            tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+            ((ColorDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            tvPending.setTextColor(getResources().getColor(R.color.colorWhite));
         }
 
+        if (background instanceof ShapeDrawable) {
+            ((ShapeDrawable) background).getPaint().setColor(ContextCompat.getColor(this, R.color.colorWhite));
+            tvComplted.setTextColor(getResources().getColor(R.color.colorBlack));
+        } else if (background instanceof GradientDrawable) {
+            ((GradientDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+            tvComplted.setTextColor(getResources().getColor(R.color.colorBlack));
+        } else if (background instanceof ColorDrawable) {
+            ((ColorDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+            tvComplted.setTextColor(getResources().getColor(R.color.colorBlack));
+        }
 
     }
 
@@ -212,7 +211,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         try {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-            object.put(Constants.PARAM_STATUS, "1");
+            //  object.put(Constants.PARAM_STATUS, "1");
         } catch (
                 JSONException e) {
 
@@ -377,7 +376,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                 try {
                     object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
                     object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-                    object.put(Constants.PARAM_STATUS, "0");
+                    //   object.put(Constants.PARAM_STATUS, "0");
                 } catch (
                         JSONException e) {
 

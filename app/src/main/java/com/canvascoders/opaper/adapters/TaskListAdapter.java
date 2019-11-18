@@ -97,10 +97,10 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
             holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorPrimary));
         } else if (vendorLists.get(position).getStatus().equalsIgnoreCase("2")) {
             holder.tvStatus.setText("In progress");
-            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorBlack));
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorBlue));
         } else if (vendorLists.get(position).getStatus().equalsIgnoreCase("3")) {
             holder.tvStatus.setText("Re-opened");
-            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorBlue));
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorYellow));
         }
 
 

@@ -6,7 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
 import com.google.android.material.navigation.NavigationView;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -265,6 +268,8 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
                         JSONObject result = jsonObject.getJSONArray("data").getJSONObject(0);
                         pdfUrlToSign = result.getString("pdf_url");
                         mWebView.loadData(result.getString("noc_html"), "text/html; charset=utf-8", "UTF-8");
+                        //  mWebView.loadDataWithBaseURL(null, result.getString("noc_html"), "text/html", "UTF-8", null);
+
                         btn_agree.setVisibility(View.GONE);
                     } else {
 
@@ -317,7 +322,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
                 isBiometrix = true;
                 isOtp = false;
                 img_bio.setBackground(getResources().getDrawable(R.drawable.bio_active));
-               // img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_normal));
+                // img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_normal));
             }
         });
 
@@ -630,11 +635,11 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
         }
         if (id == R.id.nav_4) {
 
-            Intent i = new Intent(AddendumEsignActivity.this,NotificationActivity.class);
+            Intent i = new Intent(AddendumEsignActivity.this, NotificationActivity.class);
             startActivity(i);
 
 
-           // commanFragmentCallWithoutBackStack(new NotificationFragment());
+            // commanFragmentCallWithoutBackStack(new NotificationFragment());
 
         }
         if (id == R.id.nav_5) {

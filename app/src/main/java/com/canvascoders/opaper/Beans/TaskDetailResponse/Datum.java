@@ -119,6 +119,20 @@ public class Datum {
     @SerializedName("description")
     @Expose
     private String description;
+
+    public String getStartTimer() {
+        return startTimer;
+    }
+
+    public void setStartTimer(String startTimer) {
+        this.startTimer = startTimer;
+    }
+
+    @SerializedName("start_timer")
+    @Expose
+    private String startTimer;
+
+
     @SerializedName("remark")
     @Expose
     private String remark;

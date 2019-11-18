@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,6 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -19,11 +20,11 @@
             android:id="@+id/iv_back_process"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
-
             android:src="@drawable/back" />
 
         <TextView
-            android:id="@+id/tv_title_Process"
+
+            android:id="@+id/tvStoreName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montesemibold"
@@ -46,9 +47,38 @@
             android:visibility="gone" />
     </androidx.appcompat.widget.Toolbar>
 
-    <FrameLayout
+
+    <LinearLayout
+        android:id="@+id/llAddress"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+
+        android:background="@color/whitePrimary"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="@dimen/_22sdp"
+            android:layout_height="@dimen/_22sdp"
+            android:layout_marginLeft="@dimen/_13sdp"
+            android:layout_marginBottom="@dimen/_7sdp"
+            android:src="@drawable/placeholder2" />
+
+        <TextView
+            android:id="@+id/tvLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:fontFamily="@font/monteregular"
+            android:text="" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/flShadow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llAddress">
 
         <!-- **** Place Your Content Here **** -->
 
@@ -59,45 +89,66 @@
 
     </FrameLayout>
 
-    <RelativeLayout
-        android:id="@+id/rvMain"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_below="@+id/flShadow"
+        android:layout_marginBottom="@dimen/_40sdp">
 
-        <androidx.core.widget.NestedScrollView
+        <RelativeLayout
+            android:id="@+id/rvMain"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:fillViewport="true">
 
-            <LinearLayout
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="@dimen/_195sdp" />
+
+            <TextView
+                android:id="@+id/tvLocate"
+                android:layout_width="@dimen/_75sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/_130sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:background="@drawable/rounded_corner_view_blue_more"
+                android:fontFamily="@font/montebold"
+                android:gravity="center"
+                android:padding="@dimen/_5sdp"
+                android:text="NAVIGATE ME"
+                android:textColor="@color/whitePrimary"
+                android:textSize="@dimen/_8sdp" />
 
 
-                <androidx.cardview.widget.CardView
-                    style="@style/CustomCardView"
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/_160sdp"
+                android:fillViewport="true">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:clipToPadding="true"
-                    android:elevation="@dimen/_5sdp">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <androidx.core.widget.NestedScrollView
+
+                    <androidx.cardview.widget.CardView
+                        style="@style/CustomCardView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fillViewport="true">
+                        android:layout_weight="1"
+                        android:clipToPadding="true"
+                        android:elevation="@dimen/_5sdp">
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:orientation="vertical"
-                            android:paddingLeft="@dimen/_15sdp"
-                            android:paddingTop="@dimen/_15sdp"
-                            android:paddingRight="@dimen/_15sdp"
-                            android:paddingBottom="@dimen/_15sdp">
+                            android:orientation="vertical">
 
 
                             <LinearLayout
@@ -109,61 +160,44 @@
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-
                                     android:layout_gravity="center"
+                                    android:layout_margin="@dimen/_10sdp"
                                     android:layout_weight="1"
                                     android:gravity="center"
                                     android:orientation="vertical">
 
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-
-                                        android:orientation="horizontal">
-
-                                        <androidx.cardview.widget.CardView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="@dimen/_70sdp"
-                                            android:layout_marginTop="@dimen/_12sdp"
-                                            android:layout_weight="1"
-                                            android:clipToPadding="true"
-                                            android:elevation="@dimen/_10sdp"
-                                            app:cardCornerRadius="@dimen/_5sdp">
-
-                                            <fragment
-                                                android:id="@+id/map"
-                                                android:name="com.google.android.gms.maps.SupportMapFragment"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="94dp" />
-
-                                        </androidx.cardview.widget.CardView>
-
-
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:layout_weight="1.5"
-                                            android:gravity="center">
-
-                                            <ImageView
-                                                android:id="@+id/ivLocate"
-                                                android:layout_width="@dimen/_25sdp"
-                                                android:layout_height="@dimen/_25sdp"
-                                                android:layout_gravity="center"
-                                                android:src="@drawable/navigation" />
-                                        </LinearLayout>
-                                    </LinearLayout>
 
                                     <TextView
-                                        android:id="@+id/tvLocation"
+                                        android:id="@+id/tvTaskID"
+                                        android:layout_width="@dimen/_75sdp"
+                                        android:layout_height="@dimen/_25sdp"
+                                        android:layout_gravity="start"
+                                        android:layout_marginTop="@dimen/_15sdp"
+                                        android:background="@drawable/rounded_corner_view_grey_more"
+                                        android:gravity="center"
+                                        android:text="# 1234"
+                                        android:textColor="@color/text_color_dark_grey" />
+
+                                    <TextView
+                                        android:id="@+id/tv_title_Process"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_15sdp"
+                                        android:fontFamily="@font/montebold"
+                                        android:text="Task Name Title"
+                                        android:textColor="@color/colorBlue"
+                                        android:textSize="@dimen/_12sdp" />
+
+                                    <TextView
+                                        android:id="@+id/tvDescription"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/_2sdp"
                                         android:layout_marginTop="@dimen/_5sdp"
                                         android:layout_marginRight="@dimen/_2sdp"
                                         android:layout_weight="1"
-                                        android:text="" />
+                                        android:text=""
+                                        android:textColor="@color/darkGrey" />
 
 
                                 </LinearLayout>
@@ -174,24 +208,6 @@
                                     android:layout_weight="1"
                                     android:orientation="vertical">
 
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_vertical"
-                                        android:layout_marginTop="@dimen/_25sdp"
-
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:id="@+id/tvStoreName"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_gravity="center"
-                                            android:enabled="false"
-                                            android:fontFamily="@font/montebold"
-                                            android:gravity="center"
-                                            android:textSize="@dimen/_15sdp" />
-                                    </LinearLayout>
 
                                     <View
                                         android:layout_width="match_parent"
@@ -203,20 +219,9 @@
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:layout_margin="@dimen/_15sdp"
                                         android:orientation="vertical">
 
-
-                                        <TextView
-                                            android:id="@+id/tvDescription"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:editable="false"
-                                            android:enabled="false"
-                                            android:fontFamily="@font/monteregular"
-                                            android:text=""
-                                            android:textAllCaps="false"
-                                            android:textSize="@dimen/_11sdp" />
 
                                         <LinearLayout
                                             android:layout_width="match_parent"
@@ -224,59 +229,289 @@
                                             android:layout_marginTop="@dimen/_20sdp"
                                             android:orientation="horizontal">
 
-
                                             <LinearLayout
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
-                                                android:layout_gravity="center_vertical"
                                                 android:layout_weight="1"
-                                                android:orientation="vertical">
+                                                android:orientation="horizontal">
 
-                                                <TextView
-                                                    style="@style/TextviewwithoutSize"
-                                                    android:fontFamily="@font/montesemibold"
-                                                    android:text="Assigned By :- "
-                                                    android:textSize="@dimen/_10sdp" />
-
-                                                <TextView
-                                                    android:id="@+id/tvAssignedBy"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:editable="false"
-                                                    android:enabled="false"
-                                                    android:fontFamily="@font/monteregular"
-                                                    android:text=""
-                                                    android:textAllCaps="false"
-                                                    android:textSize="@dimen/_11sdp" />
-
-                                            </LinearLayout>
+                                                <ImageView
+                                                    android:layout_width="@dimen/_13sdp"
+                                                    android:layout_height="@dimen/_13sdp"
+                                                    android:layout_gravity="bottom"
+                                                    android:src="@drawable/manuser" />
 
 
-                                            <LinearLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="top"
-                                                android:layout_marginLeft="@dimen/_3sdp"
-                                                android:layout_weight="1.2"
-                                                android:orientation="vertical">
-
-
-                                                <TextView
-                                                    style="@style/TextviewwithoutSize"
-                                                    android:fontFamily="@font/montesemibold"
-                                                    android:text="Assigned Time"
-                                                    android:textSize="@dimen/_10sdp" />
-
-                                                <TextView
-                                                    android:id="@+id/tvAssignedTime"
+                                                <LinearLayout
                                                     android:layout_width="match_parent"
                                                     android:layout_height="wrap_content"
+                                                    android:layout_gravity="center_vertical"
+                                                    android:layout_marginLeft="@dimen/_2sdp"
+                                                    android:orientation="vertical">
 
-                                                    android:enabled="false"
-                                                    android:fontFamily="@font/monteregular"
-                                                    android:text=""
-                                                    android:textSize="@dimen/_11sdp" />
+                                                    <TextView
+                                                        style="@style/TextviewwithoutSize"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text="Assigned By"
+
+                                                        android:textSize="@dimen/_8sdp" />
+
+                                                    <TextView
+                                                        android:id="@+id/tvAssignedBy"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginTop="@dimen/_2sdp"
+                                                        android:editable="false"
+                                                        android:enabled="false"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text=""
+                                                        android:textAllCaps="false"
+                                                        android:textSize="@dimen/_9sdp" />
+
+                                                </LinearLayout>
+
                                             </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="@dimen/_3sdp"
+                                                android:layout_weight="1">
+
+                                                <ImageView
+                                                    android:layout_width="@dimen/_13sdp"
+                                                    android:layout_height="@dimen/_13sdp"
+                                                    android:layout_gravity="bottom"
+                                                    android:src="@drawable/telephone" />
+
+                                                <LinearLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="top"
+                                                    android:layout_marginLeft="@dimen/_3sdp"
+                                                    android:layout_weight="1.2"
+                                                    android:orientation="vertical">
+
+
+                                                    <TextView
+                                                        style="@style/TextviewwithoutSize"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text="Make a call"
+                                                        android:textSize="@dimen/_8sdp" />
+
+                                                    <TextView
+                                                        android:id="@+id/tvMobileNo"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginTop="@dimen/_2sdp"
+
+                                                        android:enabled="false"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text=""
+                                                        android:textSize="@dimen/_9sdp" />
+                                                </LinearLayout>
+                                            </LinearLayout>
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_20sdp"
+                                            android:orientation="horizontal">
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1">
+
+                                                <ImageView
+                                                    android:layout_width="@dimen/_13sdp"
+                                                    android:layout_height="@dimen/_13sdp"
+                                                    android:layout_gravity="bottom"
+                                                    android:src="@drawable/calendar" />
+
+
+                                                <LinearLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="center_vertical"
+                                                    android:layout_marginLeft="@dimen/_3sdp"
+                                                    android:layout_weight="1"
+                                                    android:orientation="vertical">
+
+                                                    <TextView
+                                                        style="@style/TextviewwithoutSize"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text="Assigned Time"
+                                                        android:textSize="@dimen/_8sdp" />
+
+                                                    <TextView
+                                                        android:id="@+id/tvAssignedTime"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginTop="@dimen/_2sdp"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text=""
+                                                        android:textAllCaps="false"
+                                                        android:textSize="@dimen/_9sdp" />
+
+                                                </LinearLayout>
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1">
+
+                                                <ImageView
+                                                    android:layout_width="@dimen/_13sdp"
+                                                    android:layout_height="@dimen/_13sdp"
+                                                    android:layout_gravity="bottom"
+                                                    android:src="@drawable/calendar" />
+
+
+                                                <LinearLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="top"
+                                                    android:layout_marginLeft="@dimen/_3sdp"
+                                                    android:layout_weight="1.2"
+                                                    android:orientation="vertical">
+
+
+                                                    <TextView
+                                                        android:id="@+id/tvTitleDueDate"
+                                                        style="@style/TextviewwithoutSize"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text="Deadline Time"
+                                                        android:textSize="@dimen/_8sdp" />
+
+                                                    <TextView
+                                                        android:id="@+id/tvDueDate"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginTop="@dimen/_2sdp"
+                                                        android:enabled="false"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text=""
+                                                        android:textSize="@dimen/_9sdp" />
+
+                                                </LinearLayout>
+                                            </LinearLayout>
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:id="@+id/llComplete"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_20sdp"
+                                            android:orientation="horizontal"
+                                            android:visibility="gone">
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1">
+
+                                                <ImageView
+                                                    android:layout_width="@dimen/_13sdp"
+                                                    android:layout_height="@dimen/_13sdp"
+                                                    android:layout_gravity="bottom"
+                                                    android:src="@drawable/calendar" />
+
+
+                                                <LinearLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="center_vertical"
+                                                    android:layout_marginLeft="@dimen/_3sdp"
+                                                    android:layout_weight="1"
+                                                    android:orientation="vertical">
+
+                                                    <TextView
+                                                        style="@style/TextviewwithoutSize"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text="Completed Time"
+                                                        android:textSize="@dimen/_8sdp" />
+
+                                                    <TextView
+                                                        android:id="@+id/tvTaskTime"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginTop="@dimen/_2sdp"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text=""
+                                                        android:textAllCaps="false"
+                                                        android:textSize="@dimen/_9sdp" />
+
+                                                </LinearLayout>
+                                            </LinearLayout>
+
+                                            <LinearLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_weight="1">
+
+                                                <ImageView
+                                                    android:layout_width="@dimen/_13sdp"
+                                                    android:layout_height="@dimen/_13sdp"
+                                                    android:layout_gravity="bottom"
+                                                    android:src="@drawable/calendar" />
+
+
+                                                <LinearLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_gravity="top"
+                                                    android:layout_marginLeft="@dimen/_3sdp"
+                                                    android:layout_weight="1.2"
+                                                    android:orientation="vertical">
+
+
+                                                    <TextView
+                                                        style="@style/TextviewwithoutSize"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text="Task Duration"
+                                                        android:textSize="@dimen/_8sdp" />
+
+                                                    <TextView
+                                                        android:id="@+id/tvTaskCompletedDuration"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_marginTop="@dimen/_2sdp"
+                                                        android:enabled="false"
+                                                        android:fontFamily="@font/monteregular"
+                                                        android:text=""
+                                                        android:textSize="@dimen/_9sdp" />
+
+                                                </LinearLayout>
+                                            </LinearLayout>
+                                        </LinearLayout>
+
+
+                                        <LinearLayout
+                                            android:id="@+id/llTimer"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="@dimen/_20sdp"
+                                            android:orientation="vertical">
+
+                                            <View
+                                                android:layout_width="match_parent"
+                                                android:layout_height="@dimen/_1sdp"
+                                                android:background="@color/lightGrey" />
+
+                                            <TextView
+                                                android:visibility="gone"
+                                                android:id="@+id/tvTimer"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginTop="@dimen/_25sdp"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:gravity="center"
+                                                android:text="15:08"
+                                                android:textColor="@color/colorPrimary"
+                                                android:textSize="@dimen/_20sdp" />
                                         </LinearLayout>
 
                                         <LinearLayout
@@ -292,80 +527,6 @@
                                                 android:layout_gravity="center_vertical"
                                                 android:layout_weight="1"
                                                 android:orientation="vertical">
-
-                                                <TextView
-                                                    style="@style/TextviewwithoutSize"
-                                                    android:fontFamily="@font/montesemibold"
-                                                    android:text="Mobile"
-                                                    android:textSize="@dimen/_10sdp" />
-
-                                                <TextView
-                                                    android:id="@+id/tvMobileNo"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:fontFamily="@font/monteregular"
-                                                    android:text=""
-                                                    android:textAllCaps="false"
-                                                    android:textSize="@dimen/_11sdp" />
-
-                                            </LinearLayout>
-
-
-                                            <LinearLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="top"
-                                                android:layout_marginLeft="@dimen/_3sdp"
-                                                android:layout_weight="1.2"
-                                                android:orientation="vertical">
-
-
-                                                <TextView
-                                                    style="@style/TextviewwithoutSize"
-                                                    android:fontFamily="@font/montesemibold"
-                                                    android:text="Task ID"
-                                                    android:textSize="@dimen/_10sdp" />
-
-                                                <TextView
-                                                    android:id="@+id/tvTaskID"
-                                                    android:layout_width="match_parent"
-                                                    android:layout_height="wrap_content"
-                                                    android:enabled="false"
-                                                    android:fontFamily="@font/monteregular"
-                                                    android:text=""
-                                                    android:textSize="@dimen/_11sdp" />
-                                            </LinearLayout>
-                                        </LinearLayout>
-                                        <LinearLayout
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="@dimen/_10sdp"
-                                            android:orientation="horizontal">
-
-
-                                            <LinearLayout
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:layout_gravity="center_vertical"
-                                                android:layout_weight="1"
-                                                android:orientation="vertical">
-
-                                                <TextView
-                                                    android:id="@+id/tvTitleDueDate"
-                                                    style="@style/TextviewwithoutSize"
-                                                    android:fontFamily="@font/montesemibold"
-                                                    android:text="Due Date"
-                                                    android:visibility="gone"
-                                                    android:textSize="@dimen/_10sdp" />
-
-                                                <TextView
-                                                    android:id="@+id/tvDueDate"
-                                                    android:layout_width="wrap_content"
-                                                    android:layout_height="wrap_content"
-                                                    android:fontFamily="@font/monteregular"
-                                                    android:text=""
-                                                    android:textAllCaps="false"
-                                                    android:textSize="@dimen/_11sdp" />
 
 
                                                 <TextView
@@ -378,7 +539,6 @@
                                                     android:textSize="@dimen/_11sdp" />
 
                                             </LinearLayout>
-
 
 
                                         </LinearLayout>
@@ -395,19 +555,8 @@
                                     android:gravity="center">
 
 
-                                    <Button
-                                        android:id="@+id/btStartTask"
-                                        style="@style/Button_withGreen"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="@dimen/_25sdp"
-                                        android:layout_marginRight="@dimen/_25sdp"
-                                        android:visibility="visible"
-                                        android:text="Start Task" />
-
-
                                     <LinearLayout
-                                        android:id="@+id/llComplete"
+
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/_10sdp"
@@ -428,14 +577,6 @@
                                                 android:text="Completion Duration"
                                                 android:textSize="@dimen/_10sdp" />
 
-                                            <TextView
-                                                android:id="@+id/tvTaskCompletedDuration"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:fontFamily="@font/monteregular"
-                                                android:text=""
-                                                android:textAllCaps="false"
-                                                android:textSize="@dimen/_11sdp" />
 
                                         </LinearLayout>
 
@@ -455,14 +596,7 @@
                                                 android:text="Completion Time"
                                                 android:textSize="@dimen/_10sdp" />
 
-                                            <TextView
-                                                android:id="@+id/tvTaskTime"
-                                                android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
-                                                android:enabled="false"
-                                                android:fontFamily="@font/monteregular"
-                                                android:text=""
-                                                android:textSize="@dimen/_11sdp" />
+
                                         </LinearLayout>
                                     </LinearLayout>
 
@@ -495,14 +629,16 @@
 
                             </LinearLayout>
                         </LinearLayout>
-                    </androidx.core.widget.NestedScrollView>
 
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
 
-        </androidx.core.widget.NestedScrollView>
+                    </androidx.cardview.widget.CardView>
+                </LinearLayout>
 
-    </RelativeLayout>
+            </androidx.core.widget.NestedScrollView>
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -584,5 +720,14 @@
 
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/btStartTask"
+        style="@style/Button_withGreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Start Task"
+        android:visibility="visible" />
 
-</LinearLayout>
+
+</RelativeLayout>
