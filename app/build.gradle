@@ -80,5 +80,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
     implementation project(path: ':aadhaarapi_gateway_sdk')
+
+
 }
 apply plugin: 'com.google.gms.google-services'

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +32,9 @@ import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.RecordHolder> {
 
@@ -76,12 +79,37 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
 
         if (vendorLists.get(position).getStatus().equalsIgnoreCase("1")) {
             holder.tvStartName.setText(vendorLists.get(position).getCompleteDatetime());
+            holder.tvTimer.setVisibility(View.GONE);
         } else {
             holder.tvStartName.setText("Due date :- " + vendorLists.get(position).getDueDate());
 
 
             if (!vendorLists.get(position).getDueTime().equalsIgnoreCase("")) {
                 holder.tvDuration.setText(vendorLists.get(position).getDueTime());
+            }
+
+            if (vendorLists.get(position).getTaskStart().equalsIgnoreCase("")) {
+
+            } else {
+                String currentString = vendorLists.get(position).getStartTimer();
+                String[] separated = currentString.split(":");
+                long alarmtime = TimeUnit.MINUTES.toMillis(Long.parseLong(separated[1]));
+                Log.e("minutes:", separated[1]);
+                CountDownTimer newtimer = new CountDownTimer(alarmtime, 1000) {
+
+                    public void onTick(long millisUntilFinished) {
+                        Calendar c = Calendar.getInstance();
+                        c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(separated[0]));
+                        c.set(Calendar.MINUTE, Integer.parseInt(separated[1]));
+                        holder.tvTimer.setText(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND));
+                    }
+
+                    public void onFinish() {
+
+                    }
+                };
+                newtimer.start();
+
             }
         }
 
@@ -123,7 +151,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
 
     public class RecordHolder extends RecyclerView.ViewHolder {
         ImageView ivStoreImage, ivStatusImage;
-        TextView tvStoreName, tvTitle, tvMobile, tvStatus, tvStartName, tvTaskID, tvDuration;
+        TextView tvStoreName, tvTitle, tvMobile, tvStatus, tvStartName, tvTaskID, tvDuration, tvTimer;
         LinearLayout llMain;
         CardView cvMain;
 
@@ -138,6 +166,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
             tvStartName = view.findViewById(R.id.tvDueDate);
             cvMain = view.findViewById(R.id.cvMain);
             tvDuration = view.findViewById(R.id.tvDuration);
+            tvTimer = view.findViewById(R.id.tvTimer);
             //     tvVehicle = view.findViewById(R.id.tvVehicle);
         }
     }

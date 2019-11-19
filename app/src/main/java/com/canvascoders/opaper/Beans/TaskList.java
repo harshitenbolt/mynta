@@ -254,6 +254,17 @@ public class TaskList implements Serializable {
     @SerializedName("due_time")
     @Expose
     private String dueTime;
+    @SerializedName("start_timer")
+    @Expose
+    private String startTimer;
+
+    public String getStartTimer() {
+        return startTimer;
+    }
+
+    public void setStartTimer(String startTimer) {
+        this.startTimer = startTimer;
+    }
 
     public Integer getId() {
         return id;

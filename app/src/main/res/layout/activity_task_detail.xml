@@ -29,8 +29,10 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/montesemibold"
             android:gravity="center"
+            android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_45sdp"
             android:text="Task Details"
+            android:singleLine="true"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_14sdp" />
 
@@ -70,7 +72,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
             android:fontFamily="@font/monteregular"
-            android:text="" />
+            android:text=""
+            android:textSize="@dimen/_8sdp"/>
 
     </LinearLayout>
 
@@ -273,10 +276,14 @@
                                             </LinearLayout>
 
                                             <LinearLayout
+                                                android:id="@+id/llCall"
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:layout_marginLeft="@dimen/_3sdp"
-                                                android:layout_weight="1">
+                                                android:layout_weight="1"
+                                                android:clickable="true"
+                                                android:duplicateParentState="true"
+                                                android:focusable="true">
 
                                                 <ImageView
                                                     android:layout_width="@dimen/_13sdp"
@@ -305,9 +312,9 @@
                                                         android:layout_height="wrap_content"
                                                         android:layout_marginTop="@dimen/_2sdp"
 
-                                                        android:enabled="false"
                                                         android:fontFamily="@font/monteregular"
                                                         android:text=""
+                                                        android:textColor="@color/colorBlue"
                                                         android:textSize="@dimen/_9sdp" />
                                                 </LinearLayout>
                                             </LinearLayout>
@@ -502,16 +509,14 @@
                                                 android:background="@color/lightGrey" />
 
                                             <TextView
-                                                android:visibility="gone"
                                                 android:id="@+id/tvTimer"
-                                                android:layout_width="match_parent"
+                                                android:layout_width="fill_parent"
                                                 android:layout_height="wrap_content"
-                                                android:layout_marginTop="@dimen/_25sdp"
-                                                android:fontFamily="@font/montesemibold"
                                                 android:gravity="center"
-                                                android:text="15:08"
+                                                android:layout_marginTop="@dimen/_15sdp"
                                                 android:textColor="@color/colorPrimary"
-                                                android:textSize="@dimen/_20sdp" />
+                                                android:fontFamily="@font/montesemibold"
+                                                android:textSize="@dimen/_25sdp" />
                                         </LinearLayout>
 
                                         <LinearLayout

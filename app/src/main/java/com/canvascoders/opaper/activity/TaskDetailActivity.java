@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -33,9 +34,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +68,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     TextView tvLocate;
     private static final int DEFAULT_ZOOM = 15;
     Button btStartTask;
-    LinearLayout llComplete;
+    LinearLayout llComplete, llCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +104,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
         tvDescription = findViewById(R.id.tvDescription);
         btStartTask = findViewById(R.id.btStartTask);
         llComplete = findViewById(R.id.llComplete);
+        llCall = findViewById(R.id.llCall);
         tvAssignedBy = findViewById(R.id.tvAssignedBy);
         tvAssignedTime = findViewById(R.id.tvAssignedTime);
         tvTitleDueDate = findViewById(R.id.tvTitleDueDate);
@@ -132,6 +139,15 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
         tvMobile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tvMobile.getText().toString()));
+                startActivity(intent);
+            }
+        });
+
+
+        llCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tvMobile.getText().toString()));
@@ -181,6 +197,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     if (startTaskResponse.getResponseCode() == 200) {
                         btStartTask.setBackgroundResource(R.drawable.rounded_bottom_corner_view_red);
                         btStartTask.setText("END TASK");
+                        ApiCallgetDetails();
 
                     } else {
                         Toast.makeText(TaskDetailActivity.this, startTaskResponse.getResponse(), Toast.LENGTH_LONG).show();
@@ -254,7 +271,33 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                         tvAssignedTime.setText(getTaskDetailsResponse.getData().get(0).getAssignTime());
                         tvMobile.setText(getTaskDetailsResponse.getData().get(0).getProcessDetail().getMobileNo());
                         tvAddress.setText(getTaskDetailsResponse.getData().get(0).getStoreFullAddress());
-                        tvTimer.setText(String.valueOf(System.currentTimeMillis()));
+
+
+                        if (!getTaskDetailsResponse.getData().get(0).getStatus().equalsIgnoreCase("1")) {
+                            if (!getTaskDetailsResponse.getData().get(0).getStartTimer().equalsIgnoreCase("")) {
+                                String currentString = getTaskDetailsResponse.getData().get(0).getStartTimer();
+                                String[] separated = currentString.split(":");
+                                long alarmtime = TimeUnit.MINUTES.toMillis(Long.parseLong(separated[1]));
+                                Log.e("minutes:", separated[1]);
+                                CountDownTimer newtimer = new CountDownTimer(alarmtime, 1000) {
+
+                                    public void onTick(long millisUntilFinished) {
+                                        Calendar c = Calendar.getInstance();
+                                        c.set(Calendar.HOUR_OF_DAY, Integer.parseInt(separated[0]));
+                                        c.set(Calendar.MINUTE, Integer.parseInt(separated[1]));
+                                        tvTimer.setText(c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND));
+                                    }
+
+                                    public void onFinish() {
+
+                                    }
+                                };
+                                newtimer.start();
+                            }
+                        }
+
+
+                        //  tvTimer.setText(String.valueOf(System.currentTimeMillis()));
 
                         /*CountDownTimer timer=new CountDownTimer(300000, 1000) {
                             public void onTick(long millisUntilFinished) {

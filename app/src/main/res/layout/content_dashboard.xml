@@ -312,7 +312,7 @@
                                 android:layout_marginLeft="@dimen/_40sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:text="12"
-                                android:visibility="visible"
+                                android:visibility="gone"
                                 android:fontFamily="@font/montesemibold"
                                 android:gravity="center"
                                 android:textColor="@color/whitePrimary"

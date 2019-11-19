@@ -548,6 +548,8 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                             vList.setStatus(vendorList.getStatus());
                             vList.setDueDate(vendorList.getDueDate());
                             vList.setDueTime(vendorList.getDueTime());
+                            vList.setTaskStart(vendorList.getTaskStart());
+                            vList.setStartTimer(vendorList.getStartTimer());
 
                             page = 0;
                             page1 = 0;
