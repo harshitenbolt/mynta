@@ -28,6 +28,7 @@ import com.canvascoders.opaper.Beans.NotificationResponse.NotificattionResponse;
 import com.canvascoders.opaper.Beans.PanCardOcrResponse.PanCardSubmitResponse;
 import com.canvascoders.opaper.Beans.PanImageResponse.PanImageResponse;
 import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
+import com.canvascoders.opaper.Beans.PauseTaskResponse.PauseTaskResponse;
 import com.canvascoders.opaper.Beans.ResendOTPResponse.ResendOTPResponse;
 import com.canvascoders.opaper.Beans.ResetPassResponse.ResetPassResponse;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ResignAgreeDetailResponse;
@@ -568,10 +569,18 @@ public interface ApiInterface {
     Call<GetTaskDetailsResponse> getTaskDetailResponse(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
 
 
-
     @FormUrlEncoded
     @POST("task-start-end")
     Call<StartTaskResponse> startTask(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
+
+    @FormUrlEncoded
+    @POST("task-pause")
+    Call<PauseTaskResponse> pauseTask(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
+
+
+    @Multipart
+    @POST("task-pause")
+    Call<PauseTaskResponse> pauseTaskwithImage(@Header("Authorization") String token, @PartMap Map<String, String> apiVersionMap, @Part MultipartBody.Part attachment);
 
 
 }

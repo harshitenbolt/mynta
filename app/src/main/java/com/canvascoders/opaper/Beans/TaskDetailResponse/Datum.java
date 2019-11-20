@@ -48,17 +48,17 @@ public class Datum {
     @Expose
     private String storeFullAddress;
 
-    public Integer getCompleteTime() {
+    public String getCompleteTime() {
         return completeTime;
     }
 
-    public void setCompleteTime(Integer completeTime) {
+    public void setCompleteTime(String completeTime) {
         this.completeTime = completeTime;
     }
 
     @SerializedName("complete_time")
     @Expose
-    private Integer completeTime;
+    private String completeTime;
 
 
     public String getCompleteDateTime() {

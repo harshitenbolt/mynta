@@ -31,8 +31,8 @@
             android:gravity="center"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_45sdp"
-            android:text="Task Details"
             android:singleLine="true"
+            android:text="Task Details"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_14sdp" />
 
@@ -73,7 +73,7 @@
             android:layout_marginLeft="@dimen/_5sdp"
             android:fontFamily="@font/monteregular"
             android:text=""
-            android:textSize="@dimen/_8sdp"/>
+            android:textSize="@dimen/_8sdp" />
 
     </LinearLayout>
 
@@ -93,6 +93,7 @@
     </FrameLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nvMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/flShadow"
@@ -170,16 +171,41 @@
                                     android:orientation="vertical">
 
 
-                                    <TextView
-                                        android:id="@+id/tvTaskID"
-                                        android:layout_width="@dimen/_75sdp"
-                                        android:layout_height="@dimen/_25sdp"
-                                        android:layout_gravity="start"
-                                        android:layout_marginTop="@dimen/_15sdp"
-                                        android:background="@drawable/rounded_corner_view_grey_more"
-                                        android:gravity="center"
-                                        android:text="# 1234"
-                                        android:textColor="@color/text_color_dark_grey" />
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/tvTaskID"
+                                            android:layout_width="@dimen/_75sdp"
+                                            android:layout_height="@dimen/_25sdp"
+                                            android:layout_gravity="start"
+                                            android:layout_marginTop="@dimen/_20sdp"
+                                            android:background="@drawable/rounded_corner_view_grey_more"
+                                            android:gravity="center"
+                                            android:text="# 1234"
+                                            android:textColor="@color/text_color_dark_grey" />
+
+                                        <LinearLayout
+                                            android:id="@+id/llTimer"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:id="@+id/tvTimer"
+                                                android:layout_width="fill_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginRight="@dimen/_5sdp"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:gravity="end"
+                                                android:text=""
+                                                android:textColor="@color/colorPrimary"
+                                                android:textSize="@dimen/_25sdp" />
+                                        </LinearLayout>
+                                    </LinearLayout>
 
                                     <TextView
                                         android:id="@+id/tv_title_Process"
@@ -497,29 +523,6 @@
 
 
                                         <LinearLayout
-                                            android:id="@+id/llTimer"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="@dimen/_20sdp"
-                                            android:orientation="vertical">
-
-                                            <View
-                                                android:layout_width="match_parent"
-                                                android:layout_height="@dimen/_1sdp"
-                                                android:background="@color/lightGrey" />
-
-                                            <TextView
-                                                android:id="@+id/tvTimer"
-                                                android:layout_width="fill_parent"
-                                                android:layout_height="wrap_content"
-                                                android:gravity="center"
-                                                android:layout_marginTop="@dimen/_15sdp"
-                                                android:textColor="@color/colorPrimary"
-                                                android:fontFamily="@font/montesemibold"
-                                                android:textSize="@dimen/_25sdp" />
-                                        </LinearLayout>
-
-                                        <LinearLayout
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="@dimen/_10sdp"
@@ -725,14 +728,35 @@
 
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/btStartTask"
-        style="@style/Button_withGreen"
+    <LinearLayout
+        android:id="@+id/llBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="Start Task"
-        android:visibility="visible" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btPauseTask"
+            style="@style/Button_withYello"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:layout_weight="1"
+            android:text="Pause Task"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btStartTask"
+            style="@style/Button_withGreen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_2sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_weight="1"
+            android:text="Start Task"
+            android:visibility="visible" />
+    </LinearLayout>
 
 
 </RelativeLayout>

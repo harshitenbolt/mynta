@@ -80,8 +80,8 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     String TAG = "TaskList";
     SessionManager sessionManager;
     LinearLayout llNoData, llNoDataPending;
-    TextView tvComplted, tvPending;
-    Drawable background, background1;
+    TextView tvComplted, tvPending, tvPaused;
+    Drawable background, background1, backgroundpause;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +112,18 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
             tvComplted.setTextColor(getResources().getColor(R.color.colorBlack));
         }
 
+
+        if (backgroundpause instanceof ShapeDrawable) {
+            ((ShapeDrawable) backgroundpause).getPaint().setColor(ContextCompat.getColor(this, R.color.colorWhite));
+            tvPaused.setTextColor(getResources().getColor(R.color.colorBlack));
+        } else if (backgroundpause instanceof GradientDrawable) {
+            ((GradientDrawable) backgroundpause).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+            tvPaused.setTextColor(getResources().getColor(R.color.colorBlack));
+        } else if (backgroundpause instanceof ColorDrawable) {
+            ((ColorDrawable) backgroundpause).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+            tvPaused.setTextColor(getResources().getColor(R.color.colorBlack));
+        }
+
     }
 
     private void init() {
@@ -123,12 +135,15 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
         tvComplted = findViewById(R.id.tvComplted);
         tvPending = findViewById(R.id.tvPending);
+        tvPaused = findViewById(R.id.tvPaused);
+        tvPaused.setOnClickListener(this);
         tvComplted.setOnClickListener(this);
         tvPending.setOnClickListener(this);
 
         //
         background = tvComplted.getBackground();
         background1 = tvPending.getBackground();
+        backgroundpause = tvPaused.getBackground();
 
 
         ivBack = findViewById(R.id.iv_back);
@@ -366,6 +381,18 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                     ((ColorDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorWhite));
                     tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
                 }
+
+
+                if (backgroundpause instanceof ShapeDrawable) {
+                    ((ShapeDrawable) backgroundpause).getPaint().setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPaused.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (backgroundpause instanceof GradientDrawable) {
+                    ((GradientDrawable) backgroundpause).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPaused.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (backgroundpause instanceof ColorDrawable) {
+                    ((ColorDrawable) backgroundpause).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPaused.setTextColor(getResources().getColor(R.color.colorBlack));
+                }
                 break;
 
 
@@ -409,6 +436,73 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                     tvComplted.setTextColor(getResources().getColor(R.color.colorBlack));
                 }
 
+                if (backgroundpause instanceof ShapeDrawable) {
+                    ((ShapeDrawable) backgroundpause).getPaint().setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPaused.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (backgroundpause instanceof GradientDrawable) {
+                    ((GradientDrawable) backgroundpause).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPaused.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (backgroundpause instanceof ColorDrawable) {
+                    ((ColorDrawable) backgroundpause).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPaused.setTextColor(getResources().getColor(R.color.colorBlack));
+                }
+
+
+                break;
+
+
+            // fpr pause list
+            case R.id.tvPaused:
+
+
+                object = new JSONObject();
+                try {
+                    object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                    object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                    object.put(Constants.PARAM_IS_PAUSE, "1");
+                } catch (
+                        JSONException e) {
+
+                }
+                page1 = 1;
+                apiName = "task-list";
+                new GetVendorList(object.toString(), apiName).execute();
+
+                mSwipeRefreshLayoutPending.setVisibility(View.VISIBLE);
+                mSwipeRefreshLayout.setVisibility(View.GONE);
+                if (background1 instanceof ShapeDrawable) {
+                    ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background1 instanceof GradientDrawable) {
+                    ((GradientDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background1 instanceof ColorDrawable) {
+                    ((ColorDrawable) background1).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
+                }
+
+                if (background instanceof ShapeDrawable) {
+                    ((ShapeDrawable) background).getPaint().setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvComplted.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background instanceof GradientDrawable) {
+                    ((GradientDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvComplted.setTextColor(getResources().getColor(R.color.colorBlack));
+                } else if (background instanceof ColorDrawable) {
+                    ((ColorDrawable) background).setColor(ContextCompat.getColor(this, R.color.colorWhite));
+                    tvComplted.setTextColor(getResources().getColor(R.color.colorBlack));
+                }
+
+
+                if (backgroundpause instanceof ShapeDrawable) {
+                    ((ShapeDrawable) backgroundpause).getPaint().setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    tvPaused.setTextColor(getResources().getColor(R.color.colorWhite));
+                } else if (backgroundpause instanceof GradientDrawable) {
+                    ((GradientDrawable) backgroundpause).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    tvPaused.setTextColor(getResources().getColor(R.color.colorWhite));
+                } else if (backgroundpause instanceof ColorDrawable) {
+                    ((ColorDrawable) backgroundpause).setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                    tvPaused.setTextColor(getResources().getColor(R.color.colorWhite));
+                }
 
                 break;
         }

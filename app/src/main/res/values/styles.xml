@@ -138,6 +138,15 @@
         <item name="android:fontFamily">@font/montebold</item>
         <item name="android:layout_width">match_parent</item>
     </style>
+    <style name="Button_withYello" parent="Widget.AppCompat.Button">
+        <item name="android:layout_height">@dimen/_40sdp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/whitePrimary</item>
+        <item name="android:background">@drawable/rounded_corner_view_yellow</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="android:fontFamily">@font/montebold</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
 
     <style name="CustomCardView" parent="CardView">
         <item name="android:layout_width">match_parent</item>

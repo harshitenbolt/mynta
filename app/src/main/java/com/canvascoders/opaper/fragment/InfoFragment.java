@@ -623,7 +623,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                     }
                 } else {
                     if (validation(3)) {
-                       // hideKeyboardwithoutPopulate(getActivity());
+                        // hideKeyboardwithoutPopulate(getActivity());
 
                         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                             // getBankDetails(mContext,s.toString(),processId);

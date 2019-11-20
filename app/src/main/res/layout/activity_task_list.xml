@@ -74,7 +74,7 @@
 
         <TextView
             android:id="@+id/tvPending"
-            android:layout_width="@dimen/_110sdp"
+            android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_40sdp"
             android:background="@drawable/leftsideroundedcorner"
             android:gravity="center"
@@ -84,9 +84,20 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tvPaused"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:background="@drawable/middlecornerwhite"
+            android:gravity="center"
+            android:text="PAUSE"
+            android:textAllCaps="true"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold" />
+
+        <TextView
 
             android:id="@+id/tvComplted"
-            android:layout_width="@dimen/_110sdp"
+            android:layout_width="@dimen/_90sdp"
             android:layout_height="@dimen/_40sdp"
             android:layout_alignParentRight="true"
             android:layout_gravity="end"

@@ -4,10 +4,12 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 
 import androidx.core.content.ContextCompat;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -223,6 +225,80 @@ public class DialogUtil {
         dialog.show();
     }
 
+
+    /*public static void PauseDetails(Context mContext, String name, String id, String fathername, String birthdate, final DialogListner dialogInterface) {
+
+        Button btSubmit;
+        EditText etDescription;
+        ImageView ivClose, ivIssueImage;
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialoguetask_detail);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
+
+        etDescription = dialog.findViewById(R.id.etDescription);
+        ivClose = dialog.findViewById(R.id.ivClose);
+        ivIssueImage = dialog.findViewById(R.id.ivIssueImage);
+        ivIssueImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                IMAGE_SELCTED_IMG = IMAGE_SHOP_IMG;
+
+
+                Intent chooseImageIntent = ImagePicker.getCameraIntent(mContext);
+                mContext.startActivity(chooseImageIntent, IMAGE_SHOP_IMG);
+            }
+        });
+
+        btSubmit = dialog.findViewById(R.id.btSubmitReasonDetails);
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //dialogInterface.cancel();
+                dialogInterface.onClickDetails("", "", "", "");
+
+               *//* if (isValid(v)) {
+                    dialogInterface.onClickDetails(etVotername.getText().toString(), etVoterFatherName.getText().toString(), etVoterDateofBirth.getText().toString(), etVoterIdNumber.getText().toString());
+                }*//*
+            }
+
+            private boolean isValid(View v) {
+                if (etVotername.getText().toString().equalsIgnoreCase("")) {
+                    etVotername.setError("Provide name");
+                    return false;
+                }
+                if (etVoterFatherName.getText().toString().equalsIgnoreCase("")) {
+                    etVoterFatherName.setError("Provide father name");
+                    return false;
+                }
+                if (etVoterDateofBirth.getText().toString().equalsIgnoreCase("")) {
+                    etVoterDateofBirth.setError("Provide Date of Birth");
+                    return false;
+                }
+                if (etVoterIdNumber.getText().toString().equalsIgnoreCase("")) {
+                    etVoterIdNumber.setError("Provide Voter ID Number");
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+*/
 
     public static void DrivingDetail(Context mContext, String name, String fathername, String birthdate, String id, final DialogListner dialogInterface) {
 

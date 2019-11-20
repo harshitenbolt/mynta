@@ -2,28 +2,39 @@ package com.canvascoders.opaper.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.canvascoders.opaper.Beans.PauseTaskResponse.PauseTaskResponse;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
 import com.canvascoders.opaper.Beans.StartTaskResponse.StartTaskResponse;
 import com.canvascoders.opaper.Beans.TaskDetailResponse.GetTaskDetailsResponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.DialogUtil;
+import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,6 +45,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -57,18 +69,24 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     ProgressDialog progressDialog;
     SessionManager sessionManager;
     int taskid;
+    CountDownTimer newtimer;
     TextView tvTitleName, tvDescription, tvStoreName;
     SupportMapFragment mapFragment;
     LatLng sydney;
+    String taskImage;
     GoogleMap mMap;
     private Marker mPerth;
     ImageView ivBack;
+    private static Dialog dialog;
     String timeduration = "";
+    private static int IMAGE_SELCTED_IMG = 0;
     TextView tvAssignedBy, tvTimer, tvTitleDueDate, tvAssignedTime, tvAddress, tvMobile, tvTaskId, tvTaskCompletedDuration, tvTaskTime, tvDueDate, tvDuration;
     TextView tvLocate;
     private static final int DEFAULT_ZOOM = 15;
-    Button btStartTask;
-    LinearLayout llComplete, llCall;
+    Button btStartTask, btPauseTask;
+    LinearLayout llComplete, llCall, llBottom;
+    NestedScrollView nvMain;
+    ImageView ivClose, ivIssueImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +121,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
         tvStoreName = findViewById(R.id.tvStoreName);
         tvDescription = findViewById(R.id.tvDescription);
         btStartTask = findViewById(R.id.btStartTask);
+        btPauseTask = findViewById(R.id.btPauseTask);
         llComplete = findViewById(R.id.llComplete);
         llCall = findViewById(R.id.llCall);
         tvAssignedBy = findViewById(R.id.tvAssignedBy);
@@ -129,6 +148,45 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
             }
         });
+        llBottom = findViewById(R.id.llBottom);
+        btPauseTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                PauseDetails(TaskDetailActivity.this, "", "", "", "", new DialogListner() {
+                    @Override
+                    public void onClickPositive() {
+
+                    }
+
+                    @Override
+                    public void onClickNegative() {
+
+                    }
+
+                    @Override
+                    public void onClickDetails(String taskId, String sub_task_reason_id, String sub_task_reason_text, String description) {
+                        //  ApiCallSubmitKYC(name, fathername, dob, id);
+                        newtimer.cancel();
+                        tvTimer.setTextColor(getResources().getColor(R.color.colorYellow));
+                        btStartTask.setVisibility(View.GONE);
+                        btPauseTask.setText("RESUME TASK");
+                        dialog.dismiss();
+
+                        APiCallPauseList(taskId, sub_task_reason_id, sub_task_reason_text, description);
+                    }
+
+                    @Override
+                    public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                    }
+
+                });
+
+
+            }
+        });
+
 
         tvLocate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +210,41 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tvMobile.getText().toString()));
                 startActivity(intent);
+            }
+        });
+
+
+        nvMain = findViewById(R.id.nvMain);
+
+
+    }
+
+    private void APiCallPauseList(String taskId, String sub_task_reason_id, String sub_task_reason_text, String description) {
+
+        progressDialog.show();
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_TASK_ID, String.valueOf(taskid));
+        params.put(PARAM_TYPE, "start");
+
+        Call<PauseTaskResponse> call = ApiClient.getClient().create(ApiInterface.class).pauseTask("Bearer " + sessionManager.getToken(), params);
+        call.enqueue(new Callback<PauseTaskResponse>() {
+            @Override
+            public void onResponse(Call<PauseTaskResponse> call, Response<PauseTaskResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    PauseTaskResponse pauseTaskResponse = response.body();
+                    if (pauseTaskResponse.getResponseCode() == 200) {
+                        DialogUtil.dismiss();
+                    } else {
+                        Toast.makeText(TaskDetailActivity.this, pauseTaskResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PauseTaskResponse> call, Throwable t) {
+                progressDialog.dismiss();
+
             }
         });
 
@@ -197,6 +290,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     if (startTaskResponse.getResponseCode() == 200) {
                         btStartTask.setBackgroundResource(R.drawable.rounded_bottom_corner_view_red);
                         btStartTask.setText("END TASK");
+                        btPauseTask.setVisibility(View.VISIBLE);
                         ApiCallgetDetails();
 
                     } else {
@@ -279,7 +373,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                                 String[] separated = currentString.split(":");
                                 long alarmtime = TimeUnit.MINUTES.toMillis(Long.parseLong(separated[1]));
                                 Log.e("minutes:", separated[1]);
-                                CountDownTimer newtimer = new CountDownTimer(alarmtime, 1000) {
+                                newtimer = new CountDownTimer(alarmtime, 1000) {
 
                                     public void onTick(long millisUntilFinished) {
                                         Calendar c = Calendar.getInstance();
@@ -328,6 +422,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                         } else {
                             btStartTask.setBackgroundResource(R.drawable.rounded_bottom_corner_view_red);
                             btStartTask.setText("END TASK");
+                            btPauseTask.setVisibility(View.VISIBLE);
                         }
 
 
@@ -335,14 +430,16 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
 
                             btStartTask.setVisibility(View.GONE);
+                            btPauseTask.setVisibility(View.GONE);
+                            llBottom.setVisibility(View.GONE);
                             llComplete.setVisibility(View.VISIBLE);
                             tvDueDate.setText(getTaskDetailsResponse.getData().get(0).getDueDate());
                             /*if (!getTaskDetailsResponse.getData().get(0).getDueTime().equalsIgnoreCase("")) {
                                 tvDuration.setText(getTaskDetailsResponse.getData().get(0).getDueTime());
                             }*/
 
-                            if (getTaskDetailsResponse.getData().get(0).getCompleteTime() != 0) {
-                                tvTaskCompletedDuration.setText(getTaskDetailsResponse.getData().get(0).getCompleteTime() + " hours");
+                            if (!getTaskDetailsResponse.getData().get(0).getCompleteTime().equalsIgnoreCase("")) {
+                                tvTaskCompletedDuration.setText(getTaskDetailsResponse.getData().get(0).getCompleteTime());
                             }
                             tvTaskTime.setText(getTaskDetailsResponse.getData().get(0).getCompleteDateTime());
                         } else {
@@ -386,4 +483,96 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
     }
+
+
+    public void PauseDetails(Context mContext, String name, String id, String fathername, String birthdate, final DialogListner dialogInterface) {
+
+        Button btSubmit;
+        EditText etDescription;
+        ImageView ivClose;
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialoguetask_detail);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
+
+        etDescription = dialog.findViewById(R.id.etDescription);
+        ivClose = dialog.findViewById(R.id.ivClose);
+        ivIssueImage = dialog.findViewById(R.id.ivIssueImage);
+        ivIssueImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //IMAGE_SELCTED_IMG = IMAGE_SHOP_IMG;
+
+
+                Intent chooseImageIntent = ImagePicker.getCameraIntent(TaskDetailActivity.this);
+                startActivityForResult(chooseImageIntent, 200);
+
+            }
+        });
+
+        btSubmit = dialog.findViewById(R.id.btSubmitReasonDetails);
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //dialogInterface.cancel();
+                dialogInterface.onClickDetails("", "", "", "");
+
+               /* if (isValid(v)) {
+                    dialogInterface.onClickDetails(etVotername.getText().toString(), etVoterFatherName.getText().toString(), etVoterDateofBirth.getText().toString(), etVoterIdNumber.getText().toString());
+                }*/
+            }
+
+            private boolean isValid(View v) {
+                if (etDescription.getText().toString().equalsIgnoreCase("")) {
+                    etDescription.setError("Provide name");
+                    return false;
+                }
+
+                return true;
+            }
+        });
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // if the result is capturing Image
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == 200 && resultCode == RESULT_OK)) {
+
+            if (resultCode == RESULT_OK) {
+
+
+                Bitmap bitmap = ImagePicker.getImageFromResult(TaskDetailActivity.this, resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                taskImage = ImagePicker.getBitmapPath(bitmap, TaskDetailActivity.this); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+                Log.e("datadone",taskImage);
+                Glide.with(TaskDetailActivity.this).load(taskImage).into(ivIssueImage);
+
+
+            }
+
+
+            //setButtonImage();
+        }
+
+    }
+
+
 }

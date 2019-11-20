@@ -189,6 +189,7 @@ public class Constants {
 
 
     public static String PARAM_STATUS = "status";
+    public static String PARAM_IS_PAUSE = "is_pause";
     public static String PARAM_SEARCH = "search";
     public static String PARAM_ADUMDUM = "addendum";
     public static String PARAM_IMAGE = "image";
