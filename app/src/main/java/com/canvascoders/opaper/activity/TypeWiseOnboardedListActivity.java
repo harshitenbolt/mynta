@@ -85,6 +85,7 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
     private Spinner snDocType;
     ImageView ivBack;
     JSONObject objectSearch = new JSONObject();
+    TextView tvNoDatamsg;
 
 
     @Override
@@ -97,6 +98,7 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
     private void Initialize() {
 
         //edit_search_vendor = view.findViewById(R.id.etSearchPlace);
+        tvNoDatamsg = findViewById(R.id.tvNoDataMsg);
         sessionManager = new SessionManager(this);
         llNoData = findViewById(R.id.llNoData);
         tvTitle = findViewById(R.id.tv_title);
@@ -177,6 +179,7 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
                     object = new JSONObject();
                     page1 = 1;
                     apiName = "completed-vendors";
+                    tvNoDatamsg.setText("No any Expired vendors are available");
                     try {
                         object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
                         object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
@@ -196,6 +199,7 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
                         object.put(Constants.PARAM_EXPIRED_SOON, "1");
                     } catch (JSONException e) {
                     }
+                    tvNoDatamsg.setText("No any upcoming expire vendors are available");
                     tvTitle.setText("Upcoming Expire");
                     new GetVendorList(object.toString(), apiName).execute();
                 }
@@ -209,6 +213,7 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
                         object.put(Constants.PARAM_STATUS, "0");
                     } catch (JSONException e) {
                     }
+                    tvNoDatamsg.setText("No any in-progress vendors are available");
                     tvTitle.setText("In Progress Vendors");
                     new GetVendorList(object.toString(), apiName).execute();
                 }
@@ -222,6 +227,7 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
                         object.put(Constants.PARAM_STATUS, "1");
                     } catch (JSONException e) {
                     }
+                    tvNoDatamsg.setText("No any active vendors are available");
                     tvTitle.setText("Active Vendors");
                     new GetVendorList(object.toString(), apiName).execute();
                 }
@@ -236,6 +242,7 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
                     } catch (JSONException e) {
                     }
                     tvTitle.setText("Deactivated/Closed");
+                    tvNoDatamsg.setText("No any deactivated / closed vendors are available");
                     new GetVendorList(object.toString(), apiName).execute();
                 }
                 if (selectedItem.equals("Payment Hold")) {
@@ -248,6 +255,7 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
                         object.put(Constants.PARAM_STATUS, "3");
                     } catch (JSONException e) {
                     }
+                    tvNoDatamsg.setText("No any payment hold vendors are available");
                     new GetVendorList(object.toString(), apiName).execute();
                     tvTitle.setText("Payment Hold");
                 }
@@ -261,6 +269,8 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
                         object.put(Constants.PARAM_STATUS, "4");
                     } catch (JSONException e) {
                     }
+                    tvNoDatamsg.setText("No any black listed vendors are available");
+
                     tvTitle.setText("Black Listed");
                     new GetVendorList(object.toString(), apiName).execute();
                 }

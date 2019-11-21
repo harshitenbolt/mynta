@@ -33,6 +33,7 @@ import com.canvascoders.opaper.Beans.ResendOTPResponse.ResendOTPResponse;
 import com.canvascoders.opaper.Beans.ResetPassResponse.ResetPassResponse;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ResignAgreeDetailResponse;
 import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResponse;
+import com.canvascoders.opaper.Beans.ResumeTaskListResponse.ResumeTaskListResponse;
 import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
 import com.canvascoders.opaper.Beans.SendInvoiceEsignResponse.SendInvoiceLinkresponse;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
@@ -576,6 +577,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("task-pause")
     Call<PauseTaskResponse> pauseTask(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
+
+
+    @FormUrlEncoded
+    @POST("task-resume")
+    Call<ResumeTaskListResponse> resumeTask(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
 
 
     @Multipart

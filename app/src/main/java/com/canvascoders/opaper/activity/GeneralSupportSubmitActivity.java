@@ -156,7 +156,7 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
         Map<String, String> param = new HashMap<>();
 
         param.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-        param.put(Constants.PARAM_DESCRIPTION, etDescription.getText().toString());
+        param.put(Constants.PARAM_DESCREPTION, etDescription.getText().toString());
         param.put(Constants.PARAM_SUBJECT_NAME, ScreenName);
         param.put(Constants.PARAM_PRIORITY, "" + priority_id);
 

@@ -12,9 +12,6 @@
     </style>
 
 
-
-
-
     <style name="PinWidget" />
 
     <style name="PinWidget.PinView" parent="Widget.AppCompat.EditText">
@@ -109,6 +106,7 @@
         <item name="android:textSize">@dimen/_10sdp</item>
         <item name="android:layout_width">match_parent</item>
     </style>
+
     <style name="CustomDialog" parent="android:Theme.Dialog">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -117,7 +115,7 @@
 
     <style name="CustomPopup" parent="TextAppearance.AppCompat.Widget.DropDownItem">
         <item name="android:textSize">@dimen/_12sdp</item>
-       <item name="android:fontFamily">@font/montesemibold</item>
+        <item name="android:fontFamily">@font/montesemibold</item>
     </style>
 
 
@@ -138,6 +136,7 @@
         <item name="android:fontFamily">@font/montebold</item>
         <item name="android:layout_width">match_parent</item>
     </style>
+
     <style name="Button_withYello" parent="Widget.AppCompat.Button">
         <item name="android:layout_height">@dimen/_40sdp</item>
         <item name="android:singleLine">true</item>
@@ -176,6 +175,7 @@
     <style name="MyRadioButtonStyleRight" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:background">@drawable/custom_btn_radio_right</item>
     </style>
+
     <style name="MyRadioButtonStyleMiddle" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:background">@drawable/custom_btn_radio_middle</item>
     </style>
@@ -183,7 +183,6 @@
     <style name="KycRadioButton" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:background">@drawable/custom_radio_kyc</item>
     </style>
-
 
 
 </resources>

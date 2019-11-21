@@ -4,6 +4,8 @@ package com.canvascoders.opaper.Beans.TaskDetailResponse;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Datum {
 
     @SerializedName("id")
@@ -133,9 +135,21 @@ public class Datum {
     private String startTimer;
 
 
+    public Integer getIsPause() {
+        return isPause;
+    }
+
+    public void setIsPause(Integer isPause) {
+        this.isPause = isPause;
+    }
+
     @SerializedName("remark")
     @Expose
     private String remark;
+    @SerializedName("is_pause")
+    @Expose
+    private Integer isPause;
+
     @SerializedName("generate_by_system")
     @Expose
     private String generateBySystem;
@@ -315,4 +329,28 @@ public class Datum {
         this.basicDetail = basicDetail;
     }
 
+
+    @SerializedName("sub_task_reason")
+    @Expose
+    private List<SubTaskReason> subTaskReason = null;
+
+    public List<SubTaskReason> getSubTaskReason() {
+        return subTaskReason;
+    }
+
+    public void setSubTaskReason(List<SubTaskReason> subTaskReason) {
+        this.subTaskReason = subTaskReason;
+    }
+
+    @SerializedName("sub_task_list")
+    @Expose
+    private List<SubTaskList> subTaskList = null;
+
+    public List<SubTaskList> getSubTaskList() {
+        return subTaskList;
+    }
+
+    public void setSubTaskList(List<SubTaskList> subTaskList) {
+        this.subTaskList = subTaskList;
+    }
 }

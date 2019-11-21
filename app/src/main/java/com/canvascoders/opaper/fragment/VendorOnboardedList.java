@@ -163,7 +163,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent( getActivity(), TypeWiseOnboardedListActivity.class);
+                Intent i = new Intent(getActivity(), TypeWiseOnboardedListActivity.class);
                 startActivity(i);
             }
         });
@@ -199,6 +199,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
         try {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+            object.put(Constants.PARAM_STATUS, "1");
         } catch (
                 JSONException e) {
 
@@ -244,7 +245,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
                                 try {
                                     objectSearch.put(Constants.PARAM_TOKEN, sessionManager.getToken());
                                     objectSearch.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-
+                                    objectSearch.put(Constants.PARAM_STATUS, "1");
 
                                     if (spinnerArrayAdapter.getItem(position).toString() != null) {
                                         objectSearch.put(Constants.PARAM_SEARCH, actv.getText().toString());
@@ -326,6 +327,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
                 try {
                     objectSearch.put(Constants.PARAM_TOKEN, sessionManager.getToken());
                     objectSearch.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                    objectSearch.put(Constants.PARAM_STATUS, "1");
                     objectSearch.put(Constants.PARAM_SEARCH, actv.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -830,6 +832,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
                                 try {
                                     objectSearch.put(Constants.PARAM_TOKEN, sessionManager.getToken());
                                     objectSearch.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                                    objectSearch.put(Constants.PARAM_STATUS, "1");
 
                                     if (spinnerArrayAdapter.getItem(position).toString() != null) {
                                         objectSearch.put(Constants.PARAM_SEARCH, actv.getText().toString());

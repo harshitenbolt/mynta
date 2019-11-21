@@ -78,7 +78,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     Button btn_notification;
     Button btn_report;
     LinearLayout llOnboardNewVendor, llNotification, llLiveVendors, llInProgressVendors, llReports, llInvoice;
-    LinearLayout llNavonBoardNewVendor, llNavLiveVendor, llNavInProgressVendor, llNavInvoice, llNavGSTInvoice, llNavDebitInvoice, llNavReport, llNavLogut, llNavSupports;
+    LinearLayout llNavonBoardNewVendor, llNavLiveVendor, llNavInProgressVendor, llNavInvoice, llNavGSTInvoice, llNavDebitInvoice, llNavReport, llNavTask, llNavLogut, llNavSupports;
 
     private Menu menu;
     FrameLayout flImage;
@@ -197,6 +197,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         llNavGSTInvoice = v.findViewById(R.id.llNavGSTnote);
         llNavDebitInvoice = v.findViewById(R.id.llNavDebitNote);
         llNavReport = v.findViewById(R.id.llNavReports);
+        llNavTask = v.findViewById(R.id.llNavTask);
         llNavLogut = v.findViewById(R.id.llNavLogout);
         llNavSupports = v.findViewById(R.id.llNavSuppors);
 
@@ -211,6 +212,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         llNavDebitInvoice.setOnClickListener(this);
         llNavReport.setOnClickListener(this);
         llNavLogut.setOnClickListener(this);
+        llNavTask.setOnClickListener(this);
 
 
         getPermitionGrant();
@@ -368,6 +370,22 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 Intent i2 = new Intent(DashboardActivity.this, TaskListActivity.class);
                 startActivity(i2);
 
+                break;
+
+
+            case R.id.llNavTask:
+                tv_title.setText("Tasks");
+                llOnboardNewVendor.setBackgroundResource(0);
+                llNotification.setBackgroundResource(0);
+                llLiveVendors.setBackgroundResource(0);
+                llInProgressVendors.setBackgroundResource(0);
+                llReports.setBackgroundResource(R.drawable.rounded_corner_bordercolor_green);
+                llInvoice.setBackgroundResource(0);
+                drawer.closeDrawer(GravityCompat.START);
+                /*commanFragmentCallWithBackStack(new ReportFragment());*/
+
+                Intent i3 = new Intent(DashboardActivity.this, TaskListActivity.class);
+                startActivity(i3);
                 break;
             case R.id.llInvoice:
                 tv_title.setText("Invoices");

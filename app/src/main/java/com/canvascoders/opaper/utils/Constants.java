@@ -164,7 +164,9 @@ public class Constants {
 
     public static String PARAM_SUBJECT_NAME = "subject";
 
-    public static String PARAM_DESCRIPTION = "descreption";
+    public static String PARAM_DESCREPTION = "descreption";
+    public static String PARAM_DESCRIPTION = "description";
+
     public static String PARAM_PRIORITY = "priority";
 
 
@@ -185,10 +187,14 @@ public class Constants {
 
     public static String PARAM_YEAR = "year";
     public static String PARAM_TASK_ID = "task_id";
+    public static String PARAM_SUB_TASK_ID = "sub_task_id";
     public static String PARAM_IS_INVOICE = "is_invoice";
 
 
+
     public static String PARAM_STATUS = "status";
+    public static String PARAM_SUB_TASK_REASON_ID = "sub_task_reason_id";
+    public static String PARAM_SUB_TASK_REASON_TEXT = "sub_task_reason_text";
     public static String PARAM_IS_PAUSE = "is_pause";
     public static String PARAM_SEARCH = "search";
     public static String PARAM_ADUMDUM = "addendum";

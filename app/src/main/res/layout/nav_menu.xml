@@ -238,6 +238,35 @@
         android:layout_height="@dimen/_1sdp"/>
 
     <LinearLayout
+        android:id="@+id/llNavTask"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="wrap_content">
+        <ImageView
+            style="@style/smallImageSize"
+            android:duplicateParentState="true"
+            android:src="@drawable/agreement"
+            />
+        <TextView
+            style="@style/TextviewwithoutSize"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/_10sdp"
+            android:clickable="false"
+            android:duplicateParentState="true"
+            android:fontFamily="@font/montesemibold"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:text="TASKS"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/mediumLightGrey"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_40sdp"
+        android:layout_height="@dimen/_1sdp"/>
+
+
+    <LinearLayout
         android:id="@+id/llNavLogout"
         android:layout_width="match_parent"
         android:orientation="horizontal"

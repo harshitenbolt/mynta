@@ -152,7 +152,7 @@ public class ReportIssueActivity extends AppCompatActivity {
 
         param.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         param.put(Constants.PARAM_PROCESS_ID, enbolt_id);
-        param.put(Constants.PARAM_DESCRIPTION, etDescription.getText().toString());
+        param.put(Constants.PARAM_DESCREPTION, etDescription.getText().toString());
         param.put(Constants.PARAM_SUBJECT_NAME, ScreenName);
         param.put(Constants.PARAM_INVOICE_ID, invoiceId);
         param.put(Constants.PARAM_PRIORITY, "" + priority_id);
