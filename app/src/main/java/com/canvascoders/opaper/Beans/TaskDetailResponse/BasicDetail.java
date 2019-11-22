@@ -4,7 +4,9 @@ package com.canvascoders.opaper.Beans.TaskDetailResponse;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class BasicDetail {
+import java.io.Serializable;
+
+public class BasicDetail implements Serializable {
 
     @SerializedName("id")
     @Expose

@@ -4,9 +4,10 @@ package com.canvascoders.opaper.Beans.TaskDetailResponse;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Datum {
+public class Datum implements Serializable {
 
     @SerializedName("id")
     @Expose

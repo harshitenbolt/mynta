@@ -3,7 +3,9 @@ package com.canvascoders.opaper.Beans.TaskDetailResponse;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SubTaskReason {
+import java.io.Serializable;
+
+public class SubTaskReason implements Serializable {
 
     @SerializedName("id")
     @Expose

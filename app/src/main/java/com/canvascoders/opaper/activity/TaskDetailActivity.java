@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.NestedScrollView;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -33,6 +34,7 @@ import com.canvascoders.opaper.Beans.PauseTaskResponse.PauseTaskResponse;
 import com.canvascoders.opaper.Beans.ResumeTaskListResponse.ResumeTaskListResponse;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
 import com.canvascoders.opaper.Beans.StartTaskResponse.StartTaskResponse;
+import com.canvascoders.opaper.Beans.TaskDetailResponse.Datum;
 import com.canvascoders.opaper.Beans.TaskDetailResponse.GetTaskDetailsResponse;
 import com.canvascoders.opaper.Beans.TaskDetailResponse.SubTaskList;
 import com.canvascoders.opaper.Beans.TaskDetailResponse.SubTaskReason;
@@ -108,6 +110,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     ImageView ivClose, ivIssueImage;
     List<SubTaskReason> subtaskReasonList = new ArrayList<>();
     List<String> subTaskReasonNameList = new ArrayList<>();
+    Datum datum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +180,15 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     ApiCallResumeTask();
 
                 } else {
-                    PauseDetails(TaskDetailActivity.this, "", "", "", "", new DialogListner() {
+
+
+                    Intent i = new Intent(TaskDetailActivity.this, EditReasonPauseActivity.class);
+                    i.putExtra(Constants.DATA, datum);
+                    i.putExtra(Constants.PARAM_TASK_ID, taskid);
+                    startActivityForResult(i, 1);
+
+
+                  /*  PauseDetails(TaskDetailActivity.this, "", "", "", "", new DialogListner() {
                         @Override
                         public void onClickPositive() {
 
@@ -201,7 +212,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
                         }
 
-                    });
+                    });*/
 
                 }
 
@@ -270,59 +281,6 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
             }
         });
-
-    }
-
-    private void APiCallPauseList(String img, String sub_task_reason_id, String sub_task_reason_text, String description) {
-
-        Call<PauseTaskResponse> call;
-        MultipartBody.Part attachment_part = null;
-        progressDialog.show();
-        Map<String, String> params = new HashMap<>();
-        params.put(Constants.PARAM_TASK_ID, String.valueOf(taskid));
-        params.put(Constants.PARAM_SUB_TASK_REASON_ID, sub_task_reason_id);
-        params.put(Constants.PARAM_SUB_TASK_REASON_TEXT, sub_task_reason_text);
-        params.put(Constants.PARAM_DESCRIPTION, description);
-
-
-        if (img.equalsIgnoreCase("")) {
-            call = ApiClient.getClient().create(ApiInterface.class).pauseTask("Bearer " + sessionManager.getToken(), params);
-
-        } else {
-
-            File imagefile1 = new File(img);
-            attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(img)), imagefile1));
-
-            call = ApiClient.getClient().create(ApiInterface.class).pauseTaskwithImage("Bearer " + sessionManager.getToken(), params, attachment_part);
-
-        }
-        call.enqueue(new Callback<PauseTaskResponse>() {
-            @Override
-            public void onResponse(Call<PauseTaskResponse> call, Response<PauseTaskResponse> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    PauseTaskResponse pauseTaskResponse = response.body();
-                    if (pauseTaskResponse.getResponseCode() == 200) {
-                        newtimer.cancel();
-                        tvTimer.setTextColor(getResources().getColor(R.color.colorYellow));
-                        btStartTask.setVisibility(View.GONE);
-                        btPauseTask.setText("RESUME TASK");
-                        isResume = true;
-                        dialog.dismiss();
-                        ApiCallgetDetails();
-                    } else {
-                        Toast.makeText(TaskDetailActivity.this, pauseTaskResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<PauseTaskResponse> call, Throwable t) {
-                progressDialog.dismiss();
-
-            }
-        });
-
 
     }
 
@@ -432,7 +390,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     progressDialog.dismiss();
                     GetTaskDetailsResponse getTaskDetailsResponse = response.body();
                     if (getTaskDetailsResponse.getResponseCode() == 200) {
-
+                        datum = getTaskDetailsResponse.getData().get(0);
                         tvStoreName.setText(getTaskDetailsResponse.getData().get(0).getBasicDetail().getStoreName());
                         tvTitleName.setText(getTaskDetailsResponse.getData().get(0).getType());
                         tvDescription.setText(getTaskDetailsResponse.getData().get(0).getDescription());
@@ -440,6 +398,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                         tvAssignedTime.setText(getTaskDetailsResponse.getData().get(0).getAssignTime());
                         tvMobile.setText(getTaskDetailsResponse.getData().get(0).getProcessDetail().getMobileNo());
                         tvAddress.setText(getTaskDetailsResponse.getData().get(0).getStoreFullAddress());
+
                         subtaskReasonList = getTaskDetailsResponse.getData().get(0).getSubTaskReason();
                         for (int i = 0; i < subtaskReasonList.size(); i++) {
                             subTaskReasonNameList.add(subtaskReasonList.get(i).getName());
@@ -587,9 +546,6 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                 //IMAGE_SELCTED_IMG = IMAGE_SHOP_IMG;
 
 
-                Intent chooseImageIntent = ImagePicker.getCameraIntent(TaskDetailActivity.this);
-                startActivityForResult(chooseImageIntent, 200);
-
             }
         });
         if (!taskImage.equalsIgnoreCase("")) {
@@ -640,32 +596,6 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // if the result is capturing Image
-
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if ((requestCode == 200 && resultCode == RESULT_OK)) {
-
-            if (resultCode == RESULT_OK) {
-
-
-                Bitmap bitmap = ImagePicker.getImageFromResult(TaskDetailActivity.this, resultCode, data);
-                // img_doc_upload_2.setImageBitmap(bitmap);
-                taskImage = ImagePicker.getBitmapPath(bitmap, TaskDetailActivity.this); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
-
-
-            }
-
-
-            //setButtonImage();
-
-        }
-
-    }
-
-
     class CustomAdapter<T> extends ArrayAdapter<SubTaskReason> {
         public CustomAdapter(Context context, int textViewResourceId,
                              List<SubTaskReason> objects) {
@@ -711,4 +641,21 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
         ApiCallgetDetails();
 
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                String result = data.getStringExtra("result");
+                if (result.equalsIgnoreCase("stop")) {
+                    newtimer.cancel();
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onAct
 }
