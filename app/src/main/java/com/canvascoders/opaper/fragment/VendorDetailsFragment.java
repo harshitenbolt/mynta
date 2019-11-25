@@ -97,7 +97,7 @@ public class VendorDetailsFragment extends Fragment {
            //     btn_update_delivery_boy.setVisibility(View.VISIBLE);
             }
 
-            Glide.with(this).load(vendor.getShopImage())
+            Glide.with(getActivity()).load(vendor.getShopImage())
                     .placeholder(R.drawable.store_place)
                     .error(R.drawable.store_place)
                     .fallback(R.drawable.store_place)
@@ -165,7 +165,7 @@ public class VendorDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(mcontext, StoreTypeListingActivity.class);
-                myIntent.putExtra("data", vendor);
+                myIntent.putExtra("data", vendor.getProccessId());
                 startActivity(myIntent);
             }
         });

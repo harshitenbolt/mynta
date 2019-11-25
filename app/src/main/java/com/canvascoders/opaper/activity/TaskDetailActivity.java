@@ -111,6 +111,10 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     List<SubTaskReason> subtaskReasonList = new ArrayList<>();
     List<String> subTaskReasonNameList = new ArrayList<>();
     Datum datum;
+    List<String> valuesList = new ArrayList<>();
+    List<String> keyList = new ArrayList<>();
+    Button btGotoScreen;
+    String screenNumber = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,47 +182,17 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 if (isResume) {
                     ApiCallResumeTask();
-
                 } else {
-
-
                     Intent i = new Intent(TaskDetailActivity.this, EditReasonPauseActivity.class);
                     i.putExtra(Constants.DATA, datum);
                     i.putExtra(Constants.PARAM_TASK_ID, taskid);
                     startActivityForResult(i, 1);
-
-
-                  /*  PauseDetails(TaskDetailActivity.this, "", "", "", "", new DialogListner() {
-                        @Override
-                        public void onClickPositive() {
-
-                        }
-
-                        @Override
-                        public void onClickNegative() {
-
-                        }
-
-                        @Override
-                        public void onClickDetails(String img, String sub_task_reason_id, String sub_task_reason_text, String description) {
-                            //  ApiCallSubmitKYC(name, fathername, dob, id);
-
-
-                            APiCallPauseList(img, sub_task_reason_id, sub_task_reason_text, description);
-                        }
-
-                        @Override
-                        public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
-
-                        }
-
-                    });*/
-
                 }
 
 
             }
         });
+        btGotoScreen = findViewById(R.id.btGoscreen);
 
 
         tvLocate.setOnClickListener(new View.OnClickListener() {
@@ -248,6 +222,94 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
 
         nvMain = findViewById(R.id.nvMain);
+
+        btGotoScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (screenNumber.equalsIgnoreCase("0")) {
+
+                } else if (screenNumber.equalsIgnoreCase("1")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+                    }
+                    Intent i = new Intent(TaskDetailActivity.this, EditPanCardActivity.class);
+                    i.putExtra("data", proccess_id);
+                    startActivity(i);
+
+
+                } else if (screenNumber.equalsIgnoreCase("2")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+                    }
+                    Intent i = new Intent(TaskDetailActivity.this, ChangeMobileActivity.class);
+                    i.putExtra(Constants.KEY_VENDOR_MOBILE, proccess_id);
+                    startActivity(i);
+
+                } else if (screenNumber.equalsIgnoreCase("3")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+                    }
+                    Intent i = new Intent(TaskDetailActivity.this, VendorDetailActivity.class);
+                    startActivity(i);
+
+                } else if (screenNumber.equalsIgnoreCase("4")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+
+                    }
+
+                    Intent i = new Intent(TaskDetailActivity.this, StoreTypeListingActivity.class);
+                    i.putExtra("data", proccess_id);
+                    startActivity(i);
+
+                } else if (screenNumber.equalsIgnoreCase("5")) {
+                    Intent i = new Intent(TaskDetailActivity.this, GstListingActivity.class);
+                    startActivity(i);
+
+                } else if (screenNumber.equalsIgnoreCase("6")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+
+                    }
+                    Intent i = new Intent(TaskDetailActivity.this, AddDeliveryBoysActivity.class);
+                    i.putExtra("data", proccess_id);
+                    startActivity(i);
+
+                } else if (screenNumber.equalsIgnoreCase("7")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+
+                    }
+                    Intent i = new Intent(TaskDetailActivity.this, ResignAgreementActivity.class);
+                    startActivity(i);
+
+                } else if (screenNumber.equalsIgnoreCase("8")) {
+                    Intent i = new Intent(TaskDetailActivity.this, InvoiceDetailsActivity.class);
+                    startActivity(i);
+
+                }
+
+
+            }
+        });
 
 
     }
@@ -391,6 +453,26 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     GetTaskDetailsResponse getTaskDetailsResponse = response.body();
                     if (getTaskDetailsResponse.getResponseCode() == 200) {
                         datum = getTaskDetailsResponse.getData().get(0);
+                        List<Map<String, String>> list = new ArrayList<>();
+                        list = datum.getRedirectScreenParams();
+
+
+                        /*for (int i = 0; i < list.size(); i++) {
+
+
+                        }*/
+                        Log.e("ScreeName", datum.getRedirectScreenNumber());
+                        screenNumber = datum.getRedirectScreenNumber();
+                        for (Map<String, String> map : list)
+                            for (Map.Entry<String, String> mapEntry : map.entrySet()) {
+                                String key = mapEntry.getKey();
+                                String value = mapEntry.getValue();
+                                valuesList.add(String.valueOf(value));
+                                keyList.add(String.valueOf(key));
+                                Log.e("valuesFound", valuesList.get(0));
+                            }
+
+
                         tvStoreName.setText(getTaskDetailsResponse.getData().get(0).getBasicDetail().getStoreName());
                         tvTitleName.setText(getTaskDetailsResponse.getData().get(0).getType());
                         tvDescription.setText(getTaskDetailsResponse.getData().get(0).getDescription());
@@ -398,11 +480,13 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                         tvAssignedTime.setText(getTaskDetailsResponse.getData().get(0).getAssignTime());
                         tvMobile.setText(getTaskDetailsResponse.getData().get(0).getProcessDetail().getMobileNo());
                         tvAddress.setText(getTaskDetailsResponse.getData().get(0).getStoreFullAddress());
-
                         subtaskReasonList = getTaskDetailsResponse.getData().get(0).getSubTaskReason();
+
+
                         for (int i = 0; i < subtaskReasonList.size(); i++) {
                             subTaskReasonNameList.add(subtaskReasonList.get(i).getName());
                         }
+
                         subTaskLists = getTaskDetailsResponse.getData().get(0).getSubTaskList();
 
                         if (!getTaskDetailsResponse.getData().get(0).getStatus().equalsIgnoreCase("1")) {
@@ -467,6 +551,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                             llBottom.setVisibility(View.GONE);
                             llComplete.setVisibility(View.VISIBLE);
                             tvDueDate.setText(getTaskDetailsResponse.getData().get(0).getDueDate());
+
                             /*if (!getTaskDetailsResponse.getData().get(0).getDueTime().equalsIgnoreCase("")) {
                                 tvDuration.setText(getTaskDetailsResponse.getData().get(0).getDueTime());
                             }*/
@@ -632,6 +717,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             v.setText(subTaskReason.getName());
             return v;
         }
+
     }
 
 
@@ -658,4 +744,6 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             }
         }
     }//onAct
+
+
 }

@@ -51,8 +51,8 @@ public class ChangeMobileActivity extends AppCompatActivity implements View.OnCl
         sessionManager = new SessionManager(this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            vendor = (VendorList) bundle.getSerializable(Constants.KEY_VENDOR_MOBILE);
-            str_process_id = String.valueOf(vendor.getProccessId());
+           // vendor = (VendorList) ;
+            str_process_id = bundle.getString(Constants.KEY_VENDOR_MOBILE);
         }
         initView();
     }

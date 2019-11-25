@@ -366,7 +366,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
                 Intent i1 = new Intent(getActivity(), VendorDetailActivity.class);
 
                 //  commanFragmentCallWithBackStack(new VendorDetailsFragment(), vendorLists.get(i));
-                i1.putExtra("data", vendorLists.get(i));
+                i1.putExtra("data", vendorLists.get(i).getProccessId());
                 startActivity(i1);
                 break;
             }

@@ -205,7 +205,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
     private void goToUpdateStoreListing() {
 
         Intent myIntent = new Intent(AddendumEsignActivity.this, StoreTypeListingActivity.class);
-        myIntent.putExtra("data", vendor);
+        myIntent.putExtra("data", vendor.getProccessId());
         myIntent.putExtra("editFlag", true);
         startActivity(myIntent);
         finish();

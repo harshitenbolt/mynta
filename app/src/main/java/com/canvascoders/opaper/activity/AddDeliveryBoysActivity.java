@@ -122,8 +122,8 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         mProgressDialog.setCancelable(false);
         sessionManager = new SessionManager(AddDeliveryBoysActivity.this);
 
-        vendor = (VendorList) getIntent().getSerializableExtra("data");
-        str_process_id = String.valueOf(vendor.getProccessId());
+        //  vendor = (VendorList) getIntent().getSerializableExtra("data");
+        str_process_id = getIntent().getStringExtra("data");
         requestPermissionHandler = new RequestPermissionHandler();
         initalize();
     }

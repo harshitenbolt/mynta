@@ -45,6 +45,7 @@ import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResponse;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.Result;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
+import com.canvascoders.opaper.Beans.VendorDetailResponse.VendorDetailResponse;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.Screenshot.DragRectView;
@@ -115,16 +116,244 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     ImageView imageView, ivHome;
     Button ivSelect;
     FrameLayout flImage;
-
+    String str_proccess = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor_detail2);
+        str_proccess = String.valueOf(getIntent().getIntExtra("data", 0));
         mProgress = new ProgressDialog(this);
         mProgress.setCancelable(false);
         mProgress.setMessage("Please wait...");
         sessionManager = new SessionManager(this);
+        ApiCallGetDetailofVendor();
+
+
+    }
+
+    private void ApiCallGetDetailofVendor() {
+        mProgress.show();
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_PROCESS_ID, str_proccess);
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        ApiClient.getClient().create(ApiInterface.class).vendorDetailResponse("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<VendorDetailResponse>() {
+            @Override
+            public void onResponse(Call<VendorDetailResponse> call, Response<VendorDetailResponse> response) {
+                mProgress.dismiss();
+                if (response.isSuccessful()) {
+                    VendorDetailResponse vendorDetailResponse = response.body();
+                    vendor = vendorDetailResponse.getData().get(0);
+                    init();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<VendorDetailResponse> call, Throwable t) {
+                mProgress.dismiss();
+
+            }
+        });
+    }
+
+
+    private void ApiCallResendAgreement() {
+
+        mProgress.show();
+        ApiClient.getClient().create(ApiInterface.class).ResignAgreement("Bearer " + sessionManager.getToken(), process_id).enqueue(new Callback<ResignAgreementResponse>() {
+            @Override
+            public void onResponse(Call<ResignAgreementResponse> call, Response<ResignAgreementResponse> response) {
+                if (response.isSuccessful()) {
+                    mProgress.dismiss();
+                    ResignAgreementResponse resignAgreementResponse = response.body();
+                    if (resignAgreementResponse.getResponseCode() == 200) {
+                        Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    } else if (resignAgreementResponse.getResponseCode() == 411) {
+                        sessionManager.logoutUser(VendorDetailActivity.this);
+                    } else {
+                        Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResignAgreementResponse> call, Throwable t) {
+                mProgress.dismiss();
+
+            }
+        });
+    }
+
+
+    private void APiCallGST(String gst) {
+        mProgress.show();
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        params.put(Constants.PARAM_GSTN, gst);
+
+        mProgress.show();
+        ApiClient.getClient().create(ApiInterface.class).gstUpdate("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+                if (response.isSuccessful()) {
+                    mProgress.dismiss();
+
+                    CommonResponse resignAgreementResponse = response.body();
+                    if (resignAgreementResponse.getResponseCode() == 200) {
+                        dialog.dismiss();
+
+                        Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    } else if (resignAgreementResponse.getResponseCode() == 400) {
+                        Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    } else if (resignAgreementResponse.getResponseCode() == 411) {
+                        dialog.dismiss();
+                        sessionManager.logoutUser(VendorDetailActivity.this);
+                    } else {
+                        dialog.dismiss();
+                        Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
+                dialog.dismiss();
+                mProgress.dismiss();
+
+            }
+        });
+    }
+
+
+    private void ApiCallSignedDocList(String year) {
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_YEAR, year);
+
+        showWait();
+        ApiClient.getClient().create(ApiInterface.class).signedDocDetailResponse("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<SignedDocDetailResponse>() {
+            @Override
+            public void onResponse(Call<SignedDocDetailResponse> call, Response<SignedDocDetailResponse> response) {
+
+                if (response.isSuccessful()) {
+                    removeWait();
+                    try {
+
+                        SignedDocDetailResponse signedDocDetailResponse = response.body();
+                        if (signedDocDetailResponse.getResponse().equalsIgnoreCase("success")) {
+                            docList.clear();
+
+                            if (signedDocDetailResponse.getResult() != null && response.body().getResult().size() > 0) {
+
+                                docList.addAll(signedDocDetailResponse.getResult());
+                                documentListAdapter = new DocumentListAdapter(docList, VendorDetailActivity.this);
+                                rvDocuments.setAdapter(documentListAdapter);
+                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(VendorDetailActivity.this);
+                                linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                                rvDocuments.setLayoutManager(linearLayoutManager);
+                                rvDocuments.setVisibility(View.VISIBLE);
+                                tvNoData.setVisibility(View.GONE);
+                            } else {
+                                rvDocuments.setVisibility(View.GONE);
+                                tvNoData.setVisibility(View.VISIBLE);
+
+                            }
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignedDocDetailResponse> call, Throwable t) {
+                removeWait();
+
+            }
+        });
+    }
+
+    public MarkerOptions getMarker(int drawableId) {
+        return new MarkerOptions()
+                .position(new LatLng(Double.valueOf(vendor.getLatitude()), Double.valueOf(vendor.getLongitude())))
+                .icon(BitmapDescriptorFactory.fromResource(drawableId));
+    }
+
+
+   /* @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CHEQUE_UPDATE_INTENT && resultCode == RESULT_OK) {
+        }
+    }*/
+
+    /*@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("Hello","hello");
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                String result = data.getStringExtra("result");
+                if (result.equalsIgnoreCase("1")) {
+                    finish();
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }*/
+
+    public void commanFragmentCallWithBackStack(Fragment fragment, VendorList vendor) {
+
+        Fragment cFragment = fragment;
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable("data", vendor);
+
+        if (cFragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragment.setArguments(bundle);
+            fragmentTransaction.add(R.id.rvMain, cFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+    }
+
+   /* public void commanFragmentCallWithoutBackStack(Fragment fragment, VendorList vendor) {
+
+        Fragment cFragment = fragment;
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("data", vendor);
+
+        if (cFragment != null) {
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragment.setArguments(bundle);
+            fragmentTransaction.replace(R.id.content_main, cFragment);
+            fragmentTransaction.commit();
+
+        }
+    }*/
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+        init();
+    }
+
+    private void init() {
         linear_check = findViewById(R.id.linear_cheq);
         tv_ShopName = findViewById(R.id.tv_shop_name);
         tvStoreName = findViewById(R.id.tvStoreName);
@@ -237,23 +466,9 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         }
 
 
+        //  vendor = (VendorList) getIntent().getSerializableExtra("data");
 
 
-
-       /* tvExpand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (expand == false) {
-                    llEdit.setVisibility(View.VISIBLE);
-                    expand = true;
-                } else {
-                    llEdit.setVisibility(View.GONE);
-                    expand = false;
-                }
-
-            }
-        });*/
-        vendor = (VendorList) getIntent().getSerializableExtra("data");
         ivBack = findViewById(R.id.iv_back_process);
         tvAgreementExpirationDate = findViewById(R.id.tvAgreementExpirationDate);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -363,13 +578,6 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
 
             }
         });
-//        if (vendor.getBankDetailUpdationRequired().equalsIgnoreCase("1")) {
-//            btn_update_cheque.setVisibility(View.VISIBLE);
-//            linear_check.setVisibility(View.VISIBLE);
-//        } else {
-//            btn_update_cheque.setVisibility(View.GONE);
-//            linear_check.setVisibility(View.GONE);
-//        }
 
         cvCheque.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -384,7 +592,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(VendorDetailActivity.this, EditPanCardActivity.class);
-                i.putExtra("data", vendor);
+                i.putExtra("data", vendor.getProccessId());
                 startActivity(i);
 
             }
@@ -394,7 +602,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(VendorDetailActivity.this, ChangeMobileActivity.class);
-                i.putExtra(Constants.KEY_VENDOR_MOBILE, vendor);
+                i.putExtra(Constants.KEY_VENDOR_MOBILE, vendor.getProccessId());
                 startActivity(i);
             }
         });
@@ -404,7 +612,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(VendorDetailActivity.this, AddDeliveryBoysActivity.class);
-                myIntent.putExtra("data", vendor);
+                myIntent.putExtra("data", vendor.getProccessId());
                 startActivity(myIntent);
             }
         });
@@ -412,7 +620,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(VendorDetailActivity.this, StoreTypeListingActivity.class);
-                myIntent.putExtra("data", vendor);
+                myIntent.putExtra("data", vendor.getProccessId());
                 startActivity(myIntent);
             }
         });
@@ -421,7 +629,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(VendorDetailActivity.this, GstListingActivity.class);
-                myIntent.putExtra("data", vendor);
+                myIntent.putExtra("data", vendor.getProccessId());
                 startActivity(myIntent);
 
 
@@ -439,203 +647,6 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
-    }
-
-
-    private void ApiCallResendAgreement() {
-
-        mProgress.show();
-        ApiClient.getClient().create(ApiInterface.class).ResignAgreement("Bearer " + sessionManager.getToken(), process_id).enqueue(new Callback<ResignAgreementResponse>() {
-            @Override
-            public void onResponse(Call<ResignAgreementResponse> call, Response<ResignAgreementResponse> response) {
-                if (response.isSuccessful()) {
-                    mProgress.dismiss();
-                    ResignAgreementResponse resignAgreementResponse = response.body();
-                    if (resignAgreementResponse.getResponseCode() == 200) {
-                        Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                    } else if (resignAgreementResponse.getResponseCode() == 411) {
-                        sessionManager.logoutUser(VendorDetailActivity.this);
-                    } else {
-                        Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResignAgreementResponse> call, Throwable t) {
-                mProgress.dismiss();
-
-            }
-        });
-    }
-
-
-    private void APiCallGST(String gst) {
-        mProgress.show();
-        Map<String, String> params = new HashMap<>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
-        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-        params.put(Constants.PARAM_GSTN, gst);
-
-        mProgress.show();
-        ApiClient.getClient().create(ApiInterface.class).gstUpdate("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<CommonResponse>() {
-            @Override
-            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
-                if (response.isSuccessful()) {
-                    mProgress.dismiss();
-
-                    CommonResponse resignAgreementResponse = response.body();
-                    if (resignAgreementResponse.getResponseCode() == 200) {
-                        dialog.dismiss();
-
-                        Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                    } else if (resignAgreementResponse.getResponseCode() == 400) {
-                        Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                    } else if (resignAgreementResponse.getResponseCode() == 411) {
-                        dialog.dismiss();
-                        sessionManager.logoutUser(VendorDetailActivity.this);
-                    } else {
-                        dialog.dismiss();
-                        Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<CommonResponse> call, Throwable t) {
-                dialog.dismiss();
-                mProgress.dismiss();
-
-            }
-        });
-    }
-
-
-    private void ApiCallSignedDocList(String year) {
-        Map<String, String> params = new HashMap<>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
-        params.put(Constants.PARAM_YEAR, year);
-
-        showWait();
-        ApiClient.getClient().create(ApiInterface.class).signedDocDetailResponse("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<SignedDocDetailResponse>() {
-            @Override
-            public void onResponse(Call<SignedDocDetailResponse> call, Response<SignedDocDetailResponse> response) {
-
-                if (response.isSuccessful()) {
-                    removeWait();
-                    try {
-
-                        SignedDocDetailResponse signedDocDetailResponse = response.body();
-                        if (signedDocDetailResponse.getResponse().equalsIgnoreCase("success")) {
-                            docList.clear();
-
-                            if (signedDocDetailResponse.getResult() != null && response.body().getResult().size() > 0) {
-
-                                docList.addAll(signedDocDetailResponse.getResult());
-                                documentListAdapter = new DocumentListAdapter(docList, VendorDetailActivity.this);
-                                rvDocuments.setAdapter(documentListAdapter);
-                                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(VendorDetailActivity.this);
-                                linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-                                rvDocuments.setLayoutManager(linearLayoutManager);
-                                rvDocuments.setVisibility(View.VISIBLE);
-                                tvNoData.setVisibility(View.GONE);
-                            } else {
-                                rvDocuments.setVisibility(View.GONE);
-                                tvNoData.setVisibility(View.VISIBLE);
-
-                            }
-
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<SignedDocDetailResponse> call, Throwable t) {
-                removeWait();
-
-            }
-        });
-    }
-
-    public MarkerOptions getMarker(int drawableId) {
-        return new MarkerOptions()
-                .position(new LatLng(Double.valueOf(vendor.getLatitude()), Double.valueOf(vendor.getLongitude())))
-                .icon(BitmapDescriptorFactory.fromResource(drawableId));
-    }
-
-
-   /* @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CHEQUE_UPDATE_INTENT && resultCode == RESULT_OK) {
-        }
-    }*/
-
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e("Hello","hello");
-
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                String result = data.getStringExtra("result");
-                if (result.equalsIgnoreCase("1")) {
-                    finish();
-                }
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-        }
-    }*/
-
-    public void commanFragmentCallWithBackStack(Fragment fragment, VendorList vendor) {
-
-        Fragment cFragment = fragment;
-        Bundle bundle = new Bundle();
-
-        bundle.putSerializable("data", vendor);
-
-        if (cFragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
-            fragment.setArguments(bundle);
-            fragmentTransaction.add(R.id.rvMain, cFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-        }
-    }
-
-   /* public void commanFragmentCallWithoutBackStack(Fragment fragment, VendorList vendor) {
-
-        Fragment cFragment = fragment;
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("data", vendor);
-
-        if (cFragment != null) {
-
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragment.setArguments(bundle);
-            fragmentTransaction.replace(R.id.content_main, cFragment);
-            fragmentTransaction.commit();
-
-        }
-    }*/
-
-    @Override
-    public void onResume() {
-
-        super.onResume();
 
     }
 

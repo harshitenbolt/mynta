@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.GetGstListing.Datum;
 import com.canvascoders.opaper.Beans.GetGstListing.GetGstListing;
+import com.canvascoders.opaper.Beans.VendorDetailResponse.VendorDetailResponse;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.adapters.GSTListAdapter;
@@ -42,6 +43,7 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
     private ImageView ivBack;
     GSTListAdapter gstListAdapter;
     VendorList vendor;
+    String proccess_id = "";
     ProgressDialog progressDialog;
     List<Datum> list = new ArrayList<>();
     SessionManager sessionManager;
@@ -51,15 +53,17 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gst_listing);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please wait...");
+        progressDialog.setCancelable(false);
         sessionManager = new SessionManager(this);
-        vendor = (VendorList) getIntent().getSerializableExtra("data");
+        proccess_id = getIntent().getStringExtra("data");
+        ApiCallGetDetailofVendor();
         init();
     }
 
     private void init() {
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait...");
-        progressDialog.setCancelable(false);
+
         btnUpdateGst = findViewById(R.id.btnSubmit);
         btnUpdateGst.setOnClickListener(this);
         rvGSTl = findViewById(R.id.rvGSTDetails);
@@ -71,13 +75,41 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
                 finish();
             }
         });
+
         // ApiCallGetGSt();
     }
+
+
+    private void ApiCallGetDetailofVendor() {
+        progressDialog.show();
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_PROCESS_ID, proccess_id);
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        ApiClient.getClient().create(ApiInterface.class).vendorDetailResponse("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<VendorDetailResponse>() {
+            @Override
+            public void onResponse(Call<VendorDetailResponse> call, Response<VendorDetailResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    VendorDetailResponse vendorDetailResponse = response.body();
+                    vendor = vendorDetailResponse.getData().get(0);
+                    init();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<VendorDetailResponse> call, Throwable t) {
+                progressDialog.dismiss();
+
+            }
+        });
+    }
+
 
     private void ApiCallGetGSt() {
         progressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor));
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         Call<GetGstListing> call = ApiClient.getClient().create(ApiInterface.class).getgstListing("Bearer " + sessionManager.getToken(), params);
 
@@ -99,14 +131,14 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
                             tvNodate.setVisibility(View.GONE);
                         } else {
                             Intent i = new Intent(GstListingActivity.this, EditGSTActivity.class);
-                            i.putExtra("data", vendor);
+                            i.putExtra("data", vendor.getProccessId());
                             startActivity(i);
                             tvNodate.setVisibility(View.VISIBLE);
                         }
 
                     } else if (getGstListing.getResponseCode() == 403) {
                         Intent i = new Intent(GstListingActivity.this, EditGSTActivity.class);
-                        i.putExtra("data", vendor);
+                        i.putExtra("data", vendor.getProccessId());
                         startActivity(i);
                         finish();
                         tvNodate.setVisibility(View.VISIBLE);
@@ -132,7 +164,7 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.btnSubmit:
                 Intent i = new Intent(GstListingActivity.this, EditGSTActivity.class);
-                i.putExtra("data", vendor);
+                i.putExtra("data", vendor.getProccessId());
                 startActivity(i);
                 break;
         }
@@ -143,6 +175,7 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onResume() {
         super.onResume();
+        ApiCallGetDetailofVendor();
         ApiCallGetGSt();
 
     }

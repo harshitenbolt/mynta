@@ -187,6 +187,8 @@
                                             android:text="# 1234"
                                             android:textColor="@color/text_color_dark_grey" />
 
+
+
                                         <LinearLayout
                                             android:id="@+id/llTimer"
                                             android:layout_width="match_parent"
@@ -194,6 +196,18 @@
                                             android:layout_weight="1"
                                             android:orientation="vertical">
 
+
+                                            <Button
+                                                android:id="@+id/btGoscreen"
+                                                android:layout_gravity="end"
+                                                android:gravity="center"
+                                                android:textSize="@dimen/_8sdp"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:textColor="@color/whitePrimary"
+                                                android:text="GO TO TASK"
+                                                android:background="@drawable/rounded_corner_view_yellow"
+                                                android:layout_width="@dimen/_85sdp"
+                                                android:layout_height="@dimen/_25sdp" />
                                             <TextView
                                                 android:id="@+id/tvTimer"
                                                 android:layout_width="fill_parent"
@@ -204,7 +218,10 @@
                                                 android:text=""
                                                 android:textColor="@color/colorPrimary"
                                                 android:textSize="@dimen/_25sdp" />
+
+
                                         </LinearLayout>
+
                                     </LinearLayout>
 
                                     <TextView

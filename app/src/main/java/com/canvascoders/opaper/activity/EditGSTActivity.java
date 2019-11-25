@@ -174,8 +174,8 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_gst);
 
-        vendor = (VendorList) getIntent().getSerializableExtra("data");
-        str_process_id = String.valueOf(vendor.getProccessId());
+       // vendor = (VendorList) getIntent().getSerializableExtra("data");
+        str_process_id = getIntent().getStringExtra("data");
         Log.e("process_id", str_process_id);
         progressDialog = new ProgressDialog(this);
 
@@ -306,7 +306,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     private void APiCallCheckGSTStatus() {
         progressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(str_process_id));
 
         Call<CheckGstStatus> call = ApiClient.getClient().create(ApiInterface.class).checkGSTStatus("Bearer " + sessionManager.getToken(), params);
         call.enqueue(new Callback<CheckGstStatus>() {
@@ -951,7 +951,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         progressDialog.setMessage("Sending link...");
         progressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(str_process_id));
         params.put(Constants.PARAM_APPROVAL_GST_ID, approvalGSTId);
         Call<CheckGstStatus> call = ApiClient.getClient().create(ApiInterface.class).sendGStLink("Bearer " + sessionManager.getToken(), params);
         call.enqueue(new Callback<CheckGstStatus>() {
@@ -988,7 +988,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         MultipartBody.Part attachment_gst = null;
         MultipartBody.Part attachment_store = null;
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(str_process_id));
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         params.put(Constants.PARAM_GSTN, etGST.getText().toString());
         params.put(Constants.PARAM_STORE_NAME, etStoreNAme.getText().toString());
@@ -1066,7 +1066,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         MultipartBody.Part attachment_gst = null;
         MultipartBody.Part attachment_store = null;
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(str_process_id));
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         params.put(Constants.PARAM_GSTN, etGST.getText().toString());
         params.put(Constants.PARAM_STORE_NAME, etStoreNAme.getText().toString());
@@ -1136,7 +1136,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         MultipartBody.Part attachment_store = null;
         MultipartBody.Part attachment_cheque = null;
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(str_process_id));
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         params.put(Constants.PARAM_GSTN, etGST.getText().toString());
         params.put(Constants.PARAM_STORE_NAME, etStoreNAme.getText().toString());
@@ -1219,7 +1219,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         MultipartBody.Part attachment_store = null;
         MultipartBody.Part attachment_cheque = null;
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(str_process_id));
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         params.put(Constants.PARAM_GSTN, etGST.getText().toString());
         params.put(Constants.PARAM_STORE_NAME, etStoreNAme.getText().toString());
@@ -1391,7 +1391,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     private void APiCallVerifyGST() {
         progressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(str_process_id));
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         params.put(Constants.PARAM_GSTN, etGST.getText().toString());
 

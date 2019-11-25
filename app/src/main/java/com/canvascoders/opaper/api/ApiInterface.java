@@ -50,6 +50,7 @@ import com.canvascoders.opaper.Beans.TranscationIdResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.Beans.UpdatePanResponse.UpdatePancardResponse;
 import com.canvascoders.opaper.Beans.UserDetailTResponse.GetUserDetails;
+import com.canvascoders.opaper.Beans.VendorDetailResponse.VendorDetailResponse;
 import com.canvascoders.opaper.Beans.VendorListResponse.VendorListResponse;
 import com.canvascoders.opaper.Beans.VerifyGstResponse.VerifyGst;
 import com.canvascoders.opaper.Beans.ViewNotificationResponse.ViewNotificationResponse;
@@ -108,6 +109,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("agreement-resign")
     Call<ResignAgreementResponse> ResignAgreement(@Header("Authorization") String token, @Field("proccess_id") String data);
+
+
+    @FormUrlEncoded
+    @POST("completed-vendors")
+    Call<VendorDetailResponse> vendorDetailResponse(@Header("Authorization") String token, @FieldMap Map<String, String> param);
 
 
     @FormUrlEncoded

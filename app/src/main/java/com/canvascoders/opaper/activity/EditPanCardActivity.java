@@ -5,10 +5,12 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -101,13 +103,8 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_pan_card);
         sessionManager = new SessionManager(this);
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            vendor = (VendorList) bundle.getSerializable("data");
-            str_process_id = String.valueOf(vendor.getProccessId());
-            Log.e("process_id", str_process_id);
+        str_process_id = getIntent().getStringExtra("data");
 
-        }
         init();
         requestPermissionHandler = new RequestPermissionHandler();
 
@@ -130,6 +127,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         ivPanImage = findViewById(R.id.ivPanImage);
         tvPanClick = findViewById(R.id.ivPanCard);
         ivPanImageSelected = findViewById(R.id.tvClickPanSelected);
+        ivPanImageSelected.setOnClickListener(this);
         tvPanClick.setOnClickListener(this);
         tvPanName = findViewById(R.id.tvPanName);
         tvPanFatherName = findViewById(R.id.tvPanFatherName);
@@ -266,6 +264,10 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
 
             case R.id.ivPanCard:
+                capture_pan_card_image();
+                break;
+
+            case R.id.tvClickPanSelected:
                 capture_pan_card_image();
                 break;
 
@@ -413,7 +415,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_PAN) {
-               // deleteImages();
+                // deleteImages();
 //                Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                 Bitmap bitmap = ImagePicker.getImageFromResult(EditPanCardActivity.this, resultCode, data);
                 cameraimage = ImagePicker.getBitmapPath(bitmap, EditPanCardActivity.this);
@@ -533,7 +535,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                                         } else {
 
-                                          //  Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
+                                            //  Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                                 UpadatePan(name, fathername, id, storename);
                                             } else {

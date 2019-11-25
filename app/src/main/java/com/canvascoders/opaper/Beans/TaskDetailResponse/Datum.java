@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class Datum implements Serializable {
 
@@ -135,9 +136,21 @@ public class Datum implements Serializable {
     @Expose
     private String startTimer;
 
+    @SerializedName("redirect_screen_params")
+    @Expose
+    private List<Map<String,String>> redirectScreenParams = null;
+
 
     public Integer getIsPause() {
         return isPause;
+    }
+
+    public List<Map<String, String>> getRedirectScreenParams() {
+        return redirectScreenParams;
+    }
+
+    public void setRedirectScreenParams(List<Map<String, String>> redirectScreenParams) {
+        this.redirectScreenParams = redirectScreenParams;
     }
 
     public void setIsPause(Integer isPause) {
@@ -147,9 +160,23 @@ public class Datum implements Serializable {
     @SerializedName("remark")
     @Expose
     private String remark;
+    @SerializedName("redirect_screen_number")
+    @Expose
+    private String redirectScreenNumber;
+
+
+
     @SerializedName("is_pause")
     @Expose
     private Integer isPause;
+
+    public String getRedirectScreenNumber() {
+        return redirectScreenNumber;
+    }
+
+    public void setRedirectScreenNumber(String redirectScreenNumber) {
+        this.redirectScreenNumber = redirectScreenNumber;
+    }
 
     @SerializedName("generate_by_system")
     @Expose

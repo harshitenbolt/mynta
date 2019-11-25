@@ -79,7 +79,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
     String alterationselected = "";
     Toolbar toolbar;
 
-    VendorList vendor;
+    String vendor = "";
     ArrayList<StoreTypeBean> approvedStoreList;
     ArrayList<StoreTypeBean> rejectedStoreList;
     ArrayList<StoreTypeBean> neutralStoreList;
@@ -96,7 +96,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storetype_main);
 
-        vendor = (VendorList) getIntent().getSerializableExtra("data");
+        vendor = getIntent().getStringExtra("data");
         editFlag = getIntent().getBooleanExtra("editFlag", false);
         init();
 
@@ -116,7 +116,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
 
 
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-            getStoreListing(vendor.getProccessId());
+            getStoreListing(vendor);
         } else {
             Constants.ShowNoInternet(this);
         }
@@ -288,7 +288,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
         JsonObject dataObj = new JsonObject();
 
         dataObj.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
-        dataObj.addProperty(Constants.KEY_PROCESS_ID, vendor.getProccessId());
+        dataObj.addProperty(Constants.KEY_PROCESS_ID, vendor);
         dataObj.addProperty(Constants.KEY_AGENT_ID, sessionManager.getAgentID());
         dataObj.addProperty("is_rate_update_from_profile", 1);
         dataObj.add(Constants.KEY_STORES, jsonArray);
@@ -439,12 +439,12 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
     }
 
 
-    private void getStoreListing(Integer proccessId) {
+    private void getStoreListing(String proccessId) {
         progressDialog.setMessage("please wait...");
         progressDialog.show();
         JsonObject dataObj = new JsonObject();
         dataObj.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
-        dataObj.addProperty(Constants.KEY_PROCESS_ID, vendor.getProccessId());
+        dataObj.addProperty(Constants.KEY_PROCESS_ID, vendor);
         dataObj.addProperty(Constants.KEY_AGENT_ID, sessionManager.getAgentID());
         if (editFlag) {
             dataObj.addProperty(Constants.KEY_IS_EDIT_ADDENDUM_FLAG, 1);
