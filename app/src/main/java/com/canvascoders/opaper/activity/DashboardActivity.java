@@ -99,6 +99,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     Button ivSelect;
     SwipeRefreshLayout swLayout;
     Bitmap b, converted;
+    String screenOpenMobile = "";
     RelativeLayout rvMainWithRect;
     RequestPermissionHandler requestPermissionHandler;
 
@@ -296,8 +297,27 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             });
         }
 
+        // if task assigned from task list
+        if (getIntent().getExtras() != null) {
+            //do here
 
-    }
+            screenOpenMobile = getIntent().getExtras().getString("data");
+            if (screenOpenMobile.equalsIgnoreCase("1")) {
+                tv_title.setText("Mobile Verification");
+                llOnboardNewVendor.setBackgroundResource(R.drawable.rounded_corner_bordercolor_green);
+                llNotification.setBackgroundResource(0);
+                llLiveVendors.setBackgroundResource(0);
+                llInProgressVendors.setBackgroundResource(0);
+                llReports.setBackgroundResource(0);
+                llInvoice.setBackgroundResource(0);
+                commanFragmentCallWithBackStack(new MobileFragment());
+            }
+
+        }
+
+
+
+}
 
     @Override
     public void onClick(View v) {

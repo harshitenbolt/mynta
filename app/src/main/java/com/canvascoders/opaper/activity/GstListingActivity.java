@@ -109,7 +109,7 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
     private void ApiCallGetGSt() {
         progressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor));
+        params.put(Constants.PARAM_PROCESS_ID, proccess_id);
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         Call<GetGstListing> call = ApiClient.getClient().create(ApiInterface.class).getgstListing("Bearer " + sessionManager.getToken(), params);
 
@@ -131,14 +131,14 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
                             tvNodate.setVisibility(View.GONE);
                         } else {
                             Intent i = new Intent(GstListingActivity.this, EditGSTActivity.class);
-                            i.putExtra("data", vendor.getProccessId());
+                            i.putExtra("data",proccess_id);
                             startActivity(i);
                             tvNodate.setVisibility(View.VISIBLE);
                         }
 
                     } else if (getGstListing.getResponseCode() == 403) {
                         Intent i = new Intent(GstListingActivity.this, EditGSTActivity.class);
-                        i.putExtra("data", vendor.getProccessId());
+                        i.putExtra("data",proccess_id);
                         startActivity(i);
                         finish();
                         tvNodate.setVisibility(View.VISIBLE);
@@ -164,7 +164,7 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.btnSubmit:
                 Intent i = new Intent(GstListingActivity.this, EditGSTActivity.class);
-                i.putExtra("data", vendor.getProccessId());
+                i.putExtra("data",proccess_id);
                 startActivity(i);
                 break;
         }

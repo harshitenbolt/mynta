@@ -227,6 +227,9 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 if (screenNumber.equalsIgnoreCase("0")) {
+                    Intent i = new Intent(TaskDetailActivity.this, EditPanCardActivity.class);
+                    i.putExtra("data", "1");
+                    startActivity(i);
 
                 } else if (screenNumber.equalsIgnoreCase("1")) {
                     String proccess_id = "";
@@ -525,6 +528,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                         if (getTaskDetailsResponse.getData().get(0).getTaskStart().equalsIgnoreCase("")) {
                             btStartTask.setBackgroundResource(R.drawable.rounded_bottom_corner_view_green);
                             btStartTask.setText("START TASK");
+                            btGotoScreen.setVisibility(View.GONE);
                         } else {
                             btStartTask.setBackgroundResource(R.drawable.rounded_bottom_corner_view_red);
                             btStartTask.setText("END TASK");

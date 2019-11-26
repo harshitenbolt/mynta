@@ -592,7 +592,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(VendorDetailActivity.this, EditPanCardActivity.class);
-                i.putExtra("data", vendor.getProccessId());
+                i.putExtra("data", String.valueOf(vendor.getProccessId()));
                 startActivity(i);
 
             }
@@ -602,7 +602,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(VendorDetailActivity.this, ChangeMobileActivity.class);
-                i.putExtra(Constants.KEY_VENDOR_MOBILE, vendor.getProccessId());
+                i.putExtra(Constants.KEY_VENDOR_MOBILE, String.valueOf(vendor.getProccessId()));
                 startActivity(i);
             }
         });
@@ -612,7 +612,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View v) {
                 Intent myIntent = new Intent(VendorDetailActivity.this, AddDeliveryBoysActivity.class);
-                myIntent.putExtra("data", vendor.getProccessId());
+                myIntent.putExtra("data", String.valueOf(vendor.getProccessId()));
                 startActivity(myIntent);
             }
         });
@@ -620,7 +620,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(VendorDetailActivity.this, StoreTypeListingActivity.class);
-                myIntent.putExtra("data", vendor.getProccessId());
+                myIntent.putExtra("data", String.valueOf(vendor.getProccessId()));
                 startActivity(myIntent);
             }
         });
@@ -629,7 +629,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(VendorDetailActivity.this, GstListingActivity.class);
-                myIntent.putExtra("data", vendor.getProccessId());
+                myIntent.putExtra("data", String.valueOf(vendor.getProccessId()));
                 startActivity(myIntent);
 
 
