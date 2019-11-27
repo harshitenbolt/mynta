@@ -42,6 +42,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
     TextView tvTotalInvoice;
     List<Map<String, Map<String, List<MensaDelivery>>>> titleList = new ArrayList<>();
     List<Integer> valueName = new ArrayList<>();
+    String proccess_id="";
     ImageView ivBack;
 
     @Override
@@ -54,7 +55,9 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
-        vendorInvoiceList = (VendorInvoiceList) getIntent().getSerializableExtra("data");
+      //  vendorInvoiceList = (VendorInvoiceList) getIntent().getSerializableExtra("data");
+        proccess_id = getIntent().getStringExtra("data");
+
         init();
 
         APICall();
@@ -91,7 +94,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
         param.put("document", jsonObject.toString());*/
         //  param.put("purpose", "enbolt");
         //  param.put("signerCity", "ahmedabad");
-        param.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendorInvoiceList.getProccessId()));
+        param.put(Constants.PARAM_PROCESS_ID, String.valueOf(proccess_id));
 
         ApiClient.getClient().create(ApiInterface.class).getVendorInvoiceList("Bearer " + sessionManager.getToken(), param).enqueue(new Callback<GetVendorInvoiceDetails>() {
             @Override

@@ -11,12 +11,16 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -75,7 +79,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     private SessionManager sessionManager;
     private ImageView ivBack;
     WebView mWebView;
-    VendorList vendor;
+    // VendorList vendor;
     private ImageView ivSupport;
     Button ivSelect;
     RelativeLayout rvMainWithRect, rvMain;
@@ -103,7 +107,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     ImageView imageView, ivHome;
     Bitmap b, converted;
     RecyclerView rvRateAgain;
-
+    String proccess_id = "";
     LinearLayout llUpdated, llNotice;
 
     @Override
@@ -114,8 +118,8 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     }
 
     private void init() {
-        vendor = (VendorList) getIntent().getSerializableExtra("data");
-
+        // vendor = (VendorList) getIntent().getSerializableExtra("data");
+        proccess_id = getIntent().getStringExtra("data");
         btChangeRate = findViewById(R.id.btChangeRate);
         nestedScrollView = findViewById(R.id.nestedMain);
         btResign = findViewById(R.id.btResign);
@@ -161,7 +165,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
         try {
             jsonObject.put(Constants.PARAM_TOKEN, sessionManager.getToken());
-            jsonObject.put(Constants.KEY_PROCESS_ID, vendor.getProccessId());
+            jsonObject.put(Constants.KEY_PROCESS_ID, proccess_id);
             jsonObject.put(Constants.KEY_AGENT_ID, sessionManager.getAgentID());
             jsonObject.put(Constants.PARAM_IS_DOC, "1");
 
@@ -182,7 +186,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
 
                 Intent i = new Intent(ResignAgreementActivity.this, EditRateWhileResigAgreeActivity.class);
-                i.putExtra("data", vendor);
+                i.putExtra("data", proccess_id);
                 startActivityForResult(i, 1);
 
                /* if (AppApplication.networkConnectivity.isNetworkAvailable()) {
@@ -283,7 +287,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
         progressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+        params.put(Constants.PARAM_PROCESS_ID, proccess_id);
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
 
         Call<ResignAgreeDetailResponse> call = ApiClient.getClient().create(ApiInterface.class).getDetailsResignAgreement("Bearer " + sessionManager.getToken(), params);
@@ -573,7 +577,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     private void ApiCallResendAgreement() {
 
         progressDialog.show();
-        ApiClient.getClient().create(ApiInterface.class).ResignAgreement("Bearer " + sessionManager.getToken(), String.valueOf(vendor.getProccessId())).enqueue(new Callback<ResignAgreementResponse>() {
+        ApiClient.getClient().create(ApiInterface.class).ResignAgreement("Bearer " + sessionManager.getToken(), String.valueOf(proccess_id)).enqueue(new Callback<ResignAgreementResponse>() {
             @Override
             public void onResponse(Call<ResignAgreementResponse> call, retrofit2.Response<ResignAgreementResponse> response) {
                 if (response.isSuccessful()) {

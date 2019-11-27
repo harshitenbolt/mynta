@@ -302,10 +302,31 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
                     }
                     Intent i = new Intent(TaskDetailActivity.this, ResignAgreementActivity.class);
+                    i.putExtra("data", proccess_id);
                     startActivity(i);
 
                 } else if (screenNumber.equalsIgnoreCase("8")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+
+                    }
                     Intent i = new Intent(TaskDetailActivity.this, InvoiceDetailsActivity.class);
+                    i.putExtra("data", proccess_id);
+                    startActivity(i);
+
+                } else if (screenNumber.equalsIgnoreCase("9")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+
+                    }
+                    Intent i = new Intent(TaskDetailActivity.this, AddGstImageActivity.class);
+                    i.putExtra("data", proccess_id);
                     startActivity(i);
 
                 }

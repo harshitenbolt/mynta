@@ -87,7 +87,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     Button tvUpdateMobile, tvResendAgree, tvUpdatePan;
     TextView tvTitle, tvExpand;
     GoogleMap googleMap;
-    String isUpdationRequired, allowDEdit, allowEditDelBoy;
+    String isUpdationRequired, allowDEdit, allowEditDelBoy, allowGSTIMAGE;
     SessionManager sessionManager;
     TextView tvAgreementExpirationDate;
     String process_id;
@@ -101,7 +101,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     GoogleMap map;
     private static Dialog dialog;
     ProgressDialog mProgress;
-    CardView cvPan, cvMobile, cvCheque, cvRate, cvResignAgreement, cvDelBoy;
+    CardView cvPan, cvMobile, cvCheque, cvRate, cvResignAgreement, cvDelBoy, cvAddGSTIMAGE;
     private ImageView ivBack, ivSupport;
     RecyclerView rvDocuments;
     AppCompatSpinner spYear;
@@ -350,6 +350,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     public void onResume() {
 
         super.onResume();
+        ApiCallGetDetailofVendor();
         init();
     }
 
@@ -375,6 +376,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         cvGST = findViewById(R.id.cvGST);
         cvResignAgreement = findViewById(R.id.cvResign);
         cvDelBoy = findViewById(R.id.cvDelBoy);
+        cvAddGSTIMAGE = findViewById(R.id.cvGSTImage);
         spYear = findViewById(R.id.spYear);
 
 
@@ -502,6 +504,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             }
             allowDEdit = vendor.getAllowedit();
             allowEditDelBoy = vendor.getIsAddDeliveryBoy();
+            allowGSTIMAGE = vendor.getGSTImageRequire();
 
             if (allowDEdit.equalsIgnoreCase("1")) {
                 if (vendor.getIsUpdateGst().equalsIgnoreCase("1")) {
@@ -528,6 +531,17 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             } else {
                 cvDelBoy.setVisibility(View.GONE);
                 llDelBoy.setVisibility(View.GONE);
+            }
+
+
+            if (allowGSTIMAGE.equalsIgnoreCase("1")) {
+                cdEdit.setVisibility(View.VISIBLE);
+                llDelBoy.setVisibility(View.VISIBLE);
+                cvAddGSTIMAGE.setVisibility(View.VISIBLE);
+
+            } else {
+                cvAddGSTIMAGE.setVisibility(View.GONE);
+                // llDelBoy.setVisibility(View.GONE);
             }
 
             Glide.with(this).load(Constants.BaseImageURL + vendor.getShopImage())
@@ -571,7 +585,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                     Constants.ShowNoInternet(VendorDetailActivity.this);
                 }*/
                 Intent i = new Intent(VendorDetailActivity.this, ResignAgreementActivity.class);
-                i.putExtra("data", vendor);
+                i.putExtra("data", String.valueOf(vendor.getProccessId()));
                 startActivity(i);
                 finish();
 
@@ -613,6 +627,15 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             public void onClick(View v) {
                 Intent myIntent = new Intent(VendorDetailActivity.this, AddDeliveryBoysActivity.class);
                 myIntent.putExtra("data", String.valueOf(vendor.getProccessId()));
+                startActivity(myIntent);
+            }
+        });
+        cvAddGSTIMAGE.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(VendorDetailActivity.this, AddGstImageActivity.class);
+                myIntent.putExtra("data", String.valueOf(vendor.getProccessId()));
+               // myIntent.putExtra("store_name", vendor.getStoreName());
                 startActivity(myIntent);
             }
         });

@@ -295,6 +295,18 @@ public class VendorList implements Serializable {
     @Expose
     private String isAddDeliveryBoy;
 
+    public String getGSTImageRequire() {
+        return GSTImageRequire;
+    }
+
+    public void setGSTImageRequire(String GSTImageRequire) {
+        this.GSTImageRequire = GSTImageRequire;
+    }
+
+    @SerializedName("gst_image_require")
+    @Expose
+    private String GSTImageRequire;
+
 
     public String getBankDetailUpdationRequired() {
         return bankDetailUpdationRequired;

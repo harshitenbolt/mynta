@@ -130,6 +130,11 @@ public interface ApiInterface {
     @POST("pan-card-detail")
     Call<GetPanDetailsResponse> getPanDetails(@PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
 
+
+    @Multipart
+    @POST("gst-certificate-image")
+    Call<AddDelBoyResponse> addGSTCertiImage(@Header("Authorization") String token,@PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
+
     @FormUrlEncoded
     @POST
     Call<VendorListResponse> vendor_list(@Url String url, @Header("Authorization") String Header, @Field("agent_id") String data);

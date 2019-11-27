@@ -106,7 +106,7 @@ public class ReportIssueActivity extends AppCompatActivity {
         invoiceId = intent.getStringExtra(Constants.KEY_INVOICE_ID);
         storename = intent.getStringExtra(Constants.KEY_NAME);
         invoice_num = intent.getStringExtra(Constants.KEY_INVOICE_NUM);
-        Log.e("invoice_num",invoice_num);
+       // Log.e("invoice_num",invoice_num);
         imageView.setImageBitmap(bitmap);
         tvEnbolt.setText(storename);
         tvInvoiceNo.setText(invoice_num);

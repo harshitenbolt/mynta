@@ -340,7 +340,7 @@ public class InvoiceListingFragment extends Fragment implements SwipeRefreshLayo
                 Intent i1 = new Intent(getActivity(), InvoiceDetailsActivity.class);
 
                 //  commanFragmentCallWithBackStack(new VendorDetailsFragment(), vendorLists.get(i));
-                i1.putExtra("data", vendorLists.get(i));
+                i1.putExtra("data", String.valueOf(vendorLists.get(i).getProccessId()));
                 startActivity(i1);
                 break;
             }
@@ -647,7 +647,7 @@ public class InvoiceListingFragment extends Fragment implements SwipeRefreshLayo
                 Intent i1 = new Intent(getActivity(), InvoiceDetailsActivity.class);
 
                 //  commanFragmentCallWithBackStack(new VendorDetailsFragment(), vendorLists.get(i));
-                i1.putExtra("data", vendorLists.get(i));
+                i1.putExtra("data", String.valueOf(vendorLists.get(i).getProccessId()));
                 startActivity(i1);
                 break;
             }

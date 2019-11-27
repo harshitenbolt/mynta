@@ -67,6 +67,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
     private static Dialog dialog;
     ProgressDialog mPogress;
     String s = "1";
+    String proccess_id="";
     String alterationselected = "";
     private ArrayList<MensaAlteration> mensaalterationList = new ArrayList<>();
 
@@ -75,8 +76,8 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_rate_while_resig_agree);
         sessionManager = new SessionManager(this);
-        vendor = (VendorList) getIntent().getSerializableExtra("data");
-        processId = String.valueOf(vendor.getProccessId());
+        //vendor = (VendorList) getIntent().getSerializableExtra("data");
+        processId =getIntent().getStringExtra("data");
         rateTypeBeans = new ArrayList<>();
         ivBack = findViewById(R.id.iv_back_process);
         ivBack.setOnClickListener(new View.OnClickListener() {

@@ -154,6 +154,10 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
             relative_buttom.setVisibility(View.VISIBLE);
             btn_send_link.setVisibility(View.VISIBLE);
         }
+
+
+
+
         ivSupport = findViewById(R.id.ivSupport);
         imageView = findViewById(R.id.ivImage);
         ivSelect = findViewById(R.id.ivSelect);
