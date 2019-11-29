@@ -311,7 +311,7 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
                 Intent i1 = new Intent(TypeWiseOnboardedListActivity.this, VendorDetailActivity.class);
 
                 //  commanFragmentCallWithBackStack(new VendorDetailsFragment(), vendorLists.get(i));
-                i1.putExtra("data", vendorLists.get(i));
+                i1.putExtra("data", vendorLists.get(i).getProccessId());
                 startActivity(i1);
                 break;
             }

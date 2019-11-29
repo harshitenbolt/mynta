@@ -417,6 +417,7 @@ public class DialogUtil {
     public static void PanDetail(Context mContext, String name, String fathername, String pannumber, final DialogListner dialogInterface) {
 
         ImageView ivClose;
+        CheckBox cbMain;
         Button btSubmit;
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
@@ -429,6 +430,7 @@ public class DialogUtil {
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(true);
         dialog.findViewById(R.id.ivClose);
+        cbMain = dialog.findViewById(R.id.cbAgreeTC);
         etPanName = dialog.findViewById(R.id.etPanName);
         etPanName.setText(name);
         etPanFatherName = dialog.findViewById(R.id.etFatherName);
@@ -475,6 +477,11 @@ public class DialogUtil {
                                                 etPanNumber.requestFocus();
                                                 return false;
                                             }
+                                            if (!cbMain.isChecked()) {
+                                                cbMain.setError("Please verify all details with physical evidence.");
+                                                //showMSG(false, "Please verify all details with physical evidence.");
+                                                return false;
+                                            }
                                             return true;
                                         }
                                     }
@@ -496,6 +503,7 @@ public class DialogUtil {
 
         ImageView ivClose;
         Button btSubmit;
+        CheckBox cbMain;
 
         individua = individual;
 
@@ -513,7 +521,7 @@ public class DialogUtil {
         etPanName = dialog.findViewById(R.id.etPanName);
         llStoreDetails = dialog.findViewById(R.id.llStoreDetails);
         etStoreName = dialog.findViewById(R.id.etStoreName);
-
+        cbMain = dialog.findViewById(R.id.cbAgreeTC);
         etPanName.setText(name);
         etPanFatherName = dialog.findViewById(R.id.etFatherName);
         etPanNumber = dialog.findViewById(R.id.etPanNumber);
@@ -608,6 +616,11 @@ public class DialogUtil {
                                                 etPanNumber.requestFocus();
                                                 return false;
                                             }
+                                            if (!cbMain.isChecked()) {
+                                                cbMain.setError("Please verify all details with physical evidence.");
+                                                //showMSG(false, "Please verify all details with physical evidence.");
+                                                return false;
+                                            }
                                             return true;
                                         }
                                     }
@@ -624,7 +637,7 @@ public class DialogUtil {
 
         ImageView ivClose;
         Button btSubmit;
-
+        CheckBox cbMain;
 
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
@@ -640,7 +653,7 @@ public class DialogUtil {
         etPanName = dialog.findViewById(R.id.etPanName);
         llStoreDetails = dialog.findViewById(R.id.llStoreDetails);
         etStoreName = dialog.findViewById(R.id.etStoreName);
-
+        cbMain = dialog.findViewById(R.id.cbAgreeTC);
         etPanName.setText(name);
         etPanFatherName = dialog.findViewById(R.id.etFatherName);
         etPanNumber = dialog.findViewById(R.id.etPanNumber);
@@ -686,6 +699,11 @@ public class DialogUtil {
                                             } else if (!matcher.matches()) {
                                                 etPanNumber.setError("Provide Valid Pan Number");
                                                 etPanNumber.requestFocus();
+                                                return false;
+                                            }
+                                            if (!cbMain.isChecked()) {
+                                                cbMain.setError("Please verify all details with physical evidence.");
+                                                //showMSG(false, "Please verify all details with physical evidence.");
                                                 return false;
                                             }
                                             return true;

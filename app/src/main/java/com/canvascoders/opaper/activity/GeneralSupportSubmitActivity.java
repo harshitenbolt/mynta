@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+
 import androidx.core.content.res.ResourcesCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,8 +54,8 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
     private ArrayList<String> subjectList = new ArrayList<>();
     private List<String> priorityList = new ArrayList<>();
     private Spinner subject, priority;
-    private  TextView tvAgentId;
-    String priority_id="";
+    private TextView tvAgentId;
+    String priority_id = "";
     EditText etDescription;
     private String attachment = "";
     ImageView imageView;
@@ -96,8 +98,7 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
             // getBankDetails(mContext,s.toString(),processId);
             ApiCallGetSubject();
-        }
-        else {
+        } else {
             Constants.ShowNoInternet(this);
         }
 
@@ -142,7 +143,7 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
             return false;
 
         }
-        if(!priority_id.equalsIgnoreCase("")&& priority.getSelectedItem().equals("0")){
+        if (!priority_id.equalsIgnoreCase("") && priority.getSelectedItem().equals("0")) {
             Toast.makeText(this, "Please select Priority level", Toast.LENGTH_SHORT).show();
         }
         return true;

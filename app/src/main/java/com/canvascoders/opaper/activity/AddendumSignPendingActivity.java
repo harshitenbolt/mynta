@@ -6,8 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -38,6 +40,7 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
     LinearLayout llBottom;
     ImageView ivBack;
     VendorList vendor;
+    String proccess_id = "";
     ImageView ivSupport, imageView;
     String count = "", message = "", lastsigned = "", status = "";
     private SessionManager sessionManager;
@@ -55,7 +58,8 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
     }
 
     private void init() {
-        vendor = (VendorList) getIntent().getSerializableExtra("data");
+        //vendor = (VendorList) getIntent().getSerializableExtra("data");
+        proccess_id = getIntent().getStringExtra("data");
         count = getIntent().getStringExtra("count");
         message = getIntent().getStringExtra("message");
         lastsigned = getIntent().getStringExtra("last_signed");
@@ -81,15 +85,14 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
         }
         tvCounts.setText(count);
 
-        if(status.equalsIgnoreCase("1")){
+        if (status.equalsIgnoreCase("1")) {
             tvStatus.setText("Signed");
-            tvStatus.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
-        }
-        else if(status.equalsIgnoreCase("0")){
+            tvStatus.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        } else if (status.equalsIgnoreCase("0")) {
             tvStatus.setText("Pending");
-            tvStatus.setTextColor(ContextCompat.getColor(this,R.color.colorYellow));
+            tvStatus.setTextColor(ContextCompat.getColor(this, R.color.colorYellow));
         }
-       // tvStatus.setText(status);
+        // tvStatus.setText(status);
         tvMessage.setText(message);
         tvLastSigned.setText(lastsigned);
 
@@ -163,7 +166,6 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
         final DragRectView view = (DragRectView) findViewById(R.id.dragRect);
 
 
-
     }
 
     @Override
@@ -181,7 +183,6 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
         }
 
     }
-
 
 
     public Bitmap viewToBitmap(View view) {
@@ -205,11 +206,12 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
         }
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
+
     private void apiCallResend() {
 
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
-        params.put(Constants.KEY_PROCESS_ID, "" + vendor.getProccessId());
+        params.put(Constants.KEY_PROCESS_ID, "" + proccess_id);
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         params.put(Constants.PARAM_ADUMDUM, "1");
         Call<ResendOTPResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).resendOTP("Bearer " + sessionManager.getToken(), params);

@@ -3,6 +3,7 @@ package com.canvascoders.opaper.api;
 
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 
+import com.canvascoders.opaper.Beans.AdharocrResponse.AdharOCRResponse;
 import com.canvascoders.opaper.Beans.BankDetailResp;
 import com.canvascoders.opaper.Beans.BankDetailsResponse.BankDetailsResponse;
 import com.canvascoders.opaper.Beans.ChangeMobileResponse.ChangeMobileResponse;
@@ -599,5 +600,11 @@ public interface ApiInterface {
     @POST("task-pause")
     Call<PauseTaskResponse> pauseTaskwithImage(@Header("Authorization") String token, @PartMap Map<String, String> apiVersionMap, @Part MultipartBody.Part attachment);
 
+
+
+
+    @Multipart
+    @POST("aadhar-card-detail")
+    Call<AdharOCRResponse> adharOcr(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part List<MultipartBody.Part> attachment);
 
 }

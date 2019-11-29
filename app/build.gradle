@@ -50,6 +50,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
 }
 
 dependencies {
@@ -80,6 +81,8 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
     implementation project(path: ':aadhaarapi_gateway_sdk')
+
+
 
 
 }

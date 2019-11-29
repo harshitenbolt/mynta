@@ -160,6 +160,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
 
         recyclerview.setAdapter(vendorAdapter);
         fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -364,7 +365,6 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
             if (vendorLists.get(i).getProccessId() == position) {
                 //edit_search_vendor.setText("");
                 Intent i1 = new Intent(getActivity(), VendorDetailActivity.class);
-
                 //  commanFragmentCallWithBackStack(new VendorDetailsFragment(), vendorLists.get(i));
                 i1.putExtra("data", vendorLists.get(i).getProccessId());
                 startActivity(i1);

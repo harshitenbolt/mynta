@@ -42,10 +42,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.AadhaarCard;
+import com.canvascoders.opaper.Beans.AdharocrResponse.AdharOCRResponse;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.Beans.TranscationId1Response;
+import com.canvascoders.opaper.Beans.VerifyGstResponse.VerifyGst;
 import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
 import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.R;
@@ -497,7 +499,13 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                 if (kyc_type.equalsIgnoreCase("1")) {
                     if (!aadharImagepathFront.equals("") && !aadharImagepathBack.equalsIgnoreCase("")) {
 
-                        showEditDialog();
+
+                        //api OCR
+
+
+                        ApiCallOCRAdhar();
+
+
                     } else {
                         Toast.makeText(getActivity(), "Please upload Both Images.", Toast.LENGTH_SHORT).show();
                     }
@@ -556,6 +564,75 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                 break;
 
         }
+
+
+    }
+
+    private void ApiCallOCRAdhar() {
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.show();
+        MultipartBody.Part attachment_adharFront = null;
+        MultipartBody.Part attachment_adharback = null;
+
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+
+
+        File imagefile1 = new File(aadharImagepathFront);
+        attachment_adharFront = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathFront)), imagefile1));
+
+        File imagefile = new File(aadharImagepathBack);
+        attachment_adharback = MultipartBody.Part.createFormData(Constants.PARAM_BACKSIDE_IMAGE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathBack)), imagefile));
+
+
+        List<MultipartBody.Part> imagepart = new ArrayList<>();
+        imagepart.add(attachment_adharFront);
+        imagepart.add(attachment_adharback);
+
+        Call<AdharOCRResponse> call = ApiClient.getClient2().create(ApiInterface.class).adharOcr("Bearer " + sessionManager.getToken(), params, imagepart);
+        call.enqueue(new Callback<AdharOCRResponse>() {
+            @Override
+            public void onResponse(Call<AdharOCRResponse> call, Response<AdharOCRResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    AdharOCRResponse adharOCRResponse = response.body();
+                    if (!adharOCRResponse.getIsFrontOk() && adharOCRResponse.getIsBackOk()) {
+                        aadharImagepathFront = "";
+                        ivAdharFrontSelected.setVisibility(View.GONE);
+                        tvAdharFront.setVisibility(View.VISIBLE);
+                        Glide.with(getActivity()).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+                        Toast.makeText(getActivity(), adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
+                    } else if (!adharOCRResponse.getIsBackOk() && adharOCRResponse.getIsFrontOk()) {
+                        aadharImagepathBack = "";
+                        ivAdharABackSelected.setVisibility(View.GONE);
+                        tvAdharBack.setVisibility(View.VISIBLE);
+                        Glide.with(getActivity()).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                        Toast.makeText(getActivity(), adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
+                    } else if (adharOCRResponse.getIsFrontOk() && adharOCRResponse.getIsBackOk()) {
+                        showEditDialog();
+                    } else if (!adharOCRResponse.getIsFrontOk() && !adharOCRResponse.getIsBackOk()) {
+                        aadharImagepathFront = "";
+                        ivAdharFrontSelected.setVisibility(View.GONE);
+                        tvAdharFront.setVisibility(View.VISIBLE);
+                        Glide.with(getActivity()).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+                        Toast.makeText(getActivity(), adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
+                        aadharImagepathBack = "";
+                        ivAdharABackSelected.setVisibility(View.GONE);
+                        tvAdharBack.setVisibility(View.VISIBLE);
+                        Glide.with(getActivity()).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AdharOCRResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+
+            }
+        });
 
 
     }
@@ -1165,9 +1242,14 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         } catch (SQLiteConstraintException e) {
             Mylogger.getInstance().Logit("SQLiteConstraintException", e.toString());
         }
-
-
-        showEditDialog();
+        if (kyc_type.equalsIgnoreCase("1")) {
+            if (!aadharImagepathFront.equals("") && !aadharImagepathBack.equalsIgnoreCase("")) {
+                //api OCR
+                showEditDialog();
+            } else {
+                Toast.makeText(getActivity(), "Please upload Both Images.", Toast.LENGTH_SHORT).show();
+            }
+        }
 
     }
 

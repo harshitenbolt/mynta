@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.fragment.app.Fragment;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -60,6 +61,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
 
 
         initView();
+
 
         return view;
     }
@@ -129,7 +131,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
         user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
 
         Mylogger.getInstance().Logit(TAG, user.toString());
-        ApiClient.getClient().create(ApiInterface.class).sendOTP("Bearer "+sessionManager.getToken(),user).enqueue(new Callback<GetOTP>() {
+        ApiClient.getClient().create(ApiInterface.class).sendOTP("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetOTP>() {
             @Override
             public void onResponse(Call<GetOTP> call, Response<GetOTP> response) {
                 mProgressDialog.dismiss();
@@ -139,17 +141,16 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
                     Mylogger.getInstance().Logit(TAG, getOTP.getResponse());
                     if (getOTP.getResponseCode() == 200) {
                         Mylogger.getInstance().Logit(TAG, "OTP is =>" + getOTP.getData().get(0).getOtp().toString());
-                       // Toast.makeText(mcontext, getOTP.getResponse(), Toast.LENGTH_LONG).show();
+                        // Toast.makeText(mcontext, getOTP.getResponse(), Toast.LENGTH_LONG).show();
                         Intent i = new Intent(mcontext, OTPActivity.class);
                         i.putExtra("otp", getOTP.getData().get(0).getOtp().toString());
                         i.putExtra(Constants.KEY_EMP_MOBILE, edit_mobile_no.getText().toString());
                         startActivity(i);
                     } else if (getOTP.getResponseCode() == 405) {
                         sessionManager.logoutUser(mcontext);
-                    }
-                    else if (getOTP.getResponseCode()==411){
+                    } else if (getOTP.getResponseCode() == 411) {
                         sessionManager.logoutUser(mcontext);
-                    }else {
+                    } else {
                         showMSG(false, getOTP.getResponse());
                     }
                 } else {
@@ -195,7 +196,6 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
         final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
-
 
 
 }

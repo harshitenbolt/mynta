@@ -355,6 +355,10 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
                 page1 = 1;
                 apiName = "task-list";
+                taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
+
+                rvTaskList.setAdapter(taskListAdapter);
+                rvTaskListPending.setAdapter(taskListAdapter);
                 new GetVendorList(object.toString(), apiName).execute();
 
 
@@ -410,6 +414,10 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                 }
                 page1 = 1;
                 apiName = "task-list";
+                taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
+
+                rvTaskList.setAdapter(taskListAdapter);
+                rvTaskListPending.setAdapter(taskListAdapter);
                 new GetVendorList(object.toString(), apiName).execute();
 
                 mSwipeRefreshLayoutPending.setVisibility(View.VISIBLE);
@@ -455,6 +463,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
             case R.id.tvPaused:
 
 
+
                 object = new JSONObject();
                 try {
                     object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
@@ -466,6 +475,10 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                 }
                 page1 = 1;
                 apiName = "task-list";
+                taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
+
+                rvTaskList.setAdapter(taskListAdapter);
+                rvTaskListPending.setAdapter(taskListAdapter);
                 new GetVendorList(object.toString(), apiName).execute();
 
                 mSwipeRefreshLayoutPending.setVisibility(View.VISIBLE);
@@ -528,6 +541,10 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     public void onRefresh() {
         page1 = 1;
         //actv.getText().clear();
+        taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
+
+        rvTaskList.setAdapter(taskListAdapter);
+        rvTaskListPending.setAdapter(taskListAdapter);
         apiName = "task-list";
         new GetVendorList(object.toString(), apiName).execute();
 
@@ -830,6 +847,10 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         super.onResume();
         page1 = 1;
         //actv.getText().clear();
+        taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
+
+        rvTaskList.setAdapter(taskListAdapter);
+        rvTaskListPending.setAdapter(taskListAdapter);
         apiName = "task-list";
         new GetVendorList(object.toString(), apiName).execute();
     }

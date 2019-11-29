@@ -227,8 +227,9 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 if (screenNumber.equalsIgnoreCase("0")) {
-                    Intent i = new Intent(TaskDetailActivity.this, EditPanCardActivity.class);
+                    Intent i = new Intent(TaskDetailActivity.this, DashboardActivity.class);
                     i.putExtra("data", "1");
+                    i.putExtra("mobile_no", tvMobile.getText().toString());
                     startActivity(i);
 
                 } else if (screenNumber.equalsIgnoreCase("1")) {
@@ -272,7 +273,6 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                         }
 
                     }
-
                     Intent i = new Intent(TaskDetailActivity.this, StoreTypeListingActivity.class);
                     i.putExtra("data", proccess_id);
                     startActivity(i);

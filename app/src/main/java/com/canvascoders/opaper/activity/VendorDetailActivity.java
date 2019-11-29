@@ -47,6 +47,7 @@ import com.canvascoders.opaper.Beans.SignedDocDetailResponse.Result;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
 import com.canvascoders.opaper.Beans.VendorDetailResponse.VendorDetailResponse;
 import com.canvascoders.opaper.Beans.VendorList;
+
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.Screenshot.DragRectView;
 import com.canvascoders.opaper.Screenshot.Screenshot;
@@ -625,7 +626,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         cvDelBoy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(VendorDetailActivity.this, AddDeliveryBoysActivity.class);
+                Intent myIntent = new Intent(VendorDetailActivity.this, com.canvascoders.opaper.activity.AddDeliveryBoysActivity.class);
                 myIntent.putExtra("data", String.valueOf(vendor.getProccessId()));
                 startActivity(myIntent);
             }
@@ -633,7 +634,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         cvAddGSTIMAGE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(VendorDetailActivity.this, AddGstImageActivity.class);
+                Intent myIntent = new Intent(VendorDetailActivity.this, com.canvascoders.opaper.activity.AddGstImageActivity.class);
                 myIntent.putExtra("data", String.valueOf(vendor.getProccessId()));
                // myIntent.putExtra("store_name", vendor.getStoreName());
                 startActivity(myIntent);

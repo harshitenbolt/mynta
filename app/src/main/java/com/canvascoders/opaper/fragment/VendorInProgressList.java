@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -186,7 +188,6 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
         progressDialog.setMessage("Loading in progress. Please wait...");
 
         new GetVendorList(object.toString(), apiName).execute();
-
 
 
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
@@ -920,7 +921,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
 
             if (view instanceof TextView) {
                 ((TextView) view).setTextSize(15);
-                ((TextView)view).setPadding(15,15,0,5);
+                ((TextView) view).setPadding(15, 15, 0, 5);
                 ((TextView) view).setTransformationMethod(null);
                 Typeface typeface = ResourcesCompat.getFont(parent.getContext(), R.font.montesemibold);
 

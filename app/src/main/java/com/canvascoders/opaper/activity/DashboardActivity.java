@@ -58,6 +58,8 @@ import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 
+
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -100,6 +102,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     SwipeRefreshLayout swLayout;
     Bitmap b, converted;
     String screenOpenMobile = "";
+    String mobileNo = "";
     RelativeLayout rvMainWithRect;
     RequestPermissionHandler requestPermissionHandler;
 
@@ -146,7 +149,11 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
     private void initView() {
 
-
+        /*if (!OpenCVLoader.initDebug()) {
+            Log.e(this.getClass().getSimpleName(), "  OpenCVLoader.initDebug(), not working.");
+        } else {
+            Log.d(this.getClass().getSimpleName(), "  OpenCVLoader.initDebug(), working.");
+        }*/
         tv_title = findViewById(R.id.tvTitle);
         settitle("Dashboard");
 
@@ -310,14 +317,15 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 llInProgressVendors.setBackgroundResource(0);
                 llReports.setBackgroundResource(0);
                 llInvoice.setBackgroundResource(0);
-                commanFragmentCallWithBackStack(new MobileFragment());
+                mobileNo = getIntent().getExtras().getString("mobile_no");
+
+                commanFragmentCallWithBackStackwithData(new MobileFragment());
             }
 
         }
 
 
-
-}
+    }
 
     @Override
     public void onClick(View v) {
@@ -716,6 +724,30 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
         }
     }
+
+    public void commanFragmentCallWithBackStackwithData(Fragment fragment) {
+
+        Fragment cFragment = fragment;
+        Bundle bundle = new Bundle();
+
+        bundle.putString(Constants.KEY_EMP_MOBILE, mobileNo);
+
+
+        if (cFragment != null) {
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragment.setArguments(bundle);
+            //fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+
+            fragmentTransaction.replace(R.id.rvContentMain, cFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
+        }
+    }
+
 
     public void commanFragmentCallWithoutBackStack(Fragment fragment) {
 
