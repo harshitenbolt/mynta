@@ -50,7 +50,7 @@ public class InvoiceListCommonAdapter extends RecyclerView.Adapter<InvoiceListCo
     public void onBindViewHolder(@NonNull RecordHolder holder, int position) {
 
         VendorInvoiceList vendorLists1 = vendorLists.get(position);
-        holder.tvBillPeriod.setText(vendorLists1.getBillPeriod());
+      //  holder.tvBillPeriod.setText(vendorLists1.getBillPeriod());
         holder.tvStoreAddress.setText(vendorLists1.getStoreAddress());
         holder.tvMobile.setText(vendorLists1.getMobileNo());
         holder.tvStoreName.setText(vendorLists1.getStoreName());

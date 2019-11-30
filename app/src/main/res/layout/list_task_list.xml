@@ -153,6 +153,7 @@
                                     android:drawablePadding="@dimen/_5sdp"
                                     android:gravity="center"
                                     android:text=""
+                                    android:visibility="gone"
                                     android:textColor="@color/colorPrimary"
                                     android:fontFamily="@font/montesemibold"
                                     android:textSize="@dimen/_10sdp" />

@@ -106,7 +106,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
         } catch (JSONException e) {
         }
         apiName = "completed-vendors";
-        progressDialog.setMessage("please wait loading onboarded vendors...");
+        progressDialog.setMessage("please wait ...");
 
 
 //        rv_store_list.setHasFixedSize(true);
@@ -285,6 +285,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
     }
 
     private void submitStoreUpdateDetails(JsonArray jsonArray) {
+        progressDialog.show();
         JsonObject dataObj = new JsonObject();
 
         dataObj.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
@@ -297,7 +298,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
         retrofit.create(ApiInterface.class).setStoreTypeListing("Bearer " + sessionManager.getToken(), dataObj).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     try {
                         String res = response.body().toString();
@@ -353,6 +354,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });

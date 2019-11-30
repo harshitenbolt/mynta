@@ -1245,7 +1245,8 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         if (kyc_type.equalsIgnoreCase("1")) {
             if (!aadharImagepathFront.equals("") && !aadharImagepathBack.equalsIgnoreCase("")) {
                 //api OCR
-                showEditDialog();
+                ApiCallOCRAdhar();
+                //showEditDialog();
             } else {
                 Toast.makeText(getActivity(), "Please upload Both Images.", Toast.LENGTH_SHORT).show();
             }

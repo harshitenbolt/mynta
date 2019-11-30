@@ -178,7 +178,6 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
                     } else {
                         Toast.makeText(GeneralSupportSubmitActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
-
                 }
             }
 

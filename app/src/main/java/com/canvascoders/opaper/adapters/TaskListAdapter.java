@@ -69,8 +69,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
 
             @Override
             public void onClick(View v) {
-
-
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + vendorLists.get(position).getMobileNo()));
                 context.startActivity(intent);
 
@@ -80,7 +78,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
         if (vendorLists.get(position).getStatus().equalsIgnoreCase("1")) {
             holder.tvStartName.setText(vendorLists.get(position).getCompleteDatetime());
             holder.tvTimer.setVisibility(View.GONE);
+
         } else {
+
             holder.tvStartName.setText("Due date :- " + vendorLists.get(position).getDueDate());
 
 
@@ -89,8 +89,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
             }
 
             if (vendorLists.get(position).getTaskStart().equalsIgnoreCase("")) {
-
+                holder.tvTimer.setVisibility(View.GONE);
             } else {
+                if (vendorLists.get(position).getIsPause() == 1) {
+                    holder.tvTimer.setVisibility(View.GONE);
+                } else {
+                    holder.tvTimer.setVisibility(View.VISIBLE);
+                }
+
                 String currentString = vendorLists.get(position).getStartTimer();
                 String[] separated = currentString.split(":");
                 long alarmtime = TimeUnit.MINUTES.toMillis(Long.parseLong(separated[1]));
@@ -112,6 +118,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
 
             }
         }
+
 
         holder.tvStoreName.setText(vendorLists.get(position).getStoreName());
         holder.tvTaskID.setText("#" + vendorLists.get(position).getId());

@@ -65,7 +65,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     Button ivSelect;
     FrameLayout flImage;
     ProgressDialog progressDialog;
-    RecyclerView rvTaskList, rvTaskListPending;
+    RecyclerView rvTaskList;
     TaskListAdapter taskListAdapter;
     List<TaskList> taskLists = new ArrayList<>();
     SwipeRefreshLayout mSwipeRefreshLayout, mSwipeRefreshLayoutPending;
@@ -165,9 +165,11 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         mSwipeRefreshLayoutPending.setOnRefreshListener(this);
         // ivSearch = view.findViewById(R.id.ivSearch);
         rvTaskList = (RecyclerView) findViewById(R.id.rvTaskList);
-        rvTaskListPending = (RecyclerView) findViewById(R.id.rvTaskListPending);
+       // rvTaskListPending = (RecyclerView) findViewById(R.id.rvTaskListPending);
         rvTaskList.setHasFixedSize(true);
-        rvTaskListPending.setHasFixedSize(true);
+      //  rvTaskListPending.setHasFixedSize(true);
+
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
 
@@ -177,11 +179,11 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
 
         rvTaskList.setLayoutManager(linearLayoutManager);
-        rvTaskListPending.setLayoutManager(linearLayoutManager1);
+      //  rvTaskListPending.setLayoutManager(linearLayoutManager1);
         taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
 
         rvTaskList.setAdapter(taskListAdapter);
-        rvTaskListPending.setAdapter(taskListAdapter);
+     //   rvTaskListPending.setAdapter(taskListAdapter);
 
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -202,27 +204,8 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
             }
         };
-
-        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager1) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-
-                // this condition  is for pagination in both with Search and without search
-
-                if (search == true) {
-                    // this condition is for not getting Next URL from API
-                    if (!apiNameSearch.equalsIgnoreCase("")) ;
-                    new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
-                } else {
-                    if (!apiName.equalsIgnoreCase("")) {
-                        new GetVendorList(object.toString(), apiName).execute();
-                    }
-                }
-
-            }
-        };
+       // rvTaskList.addOnScrollListener(scrollListener);
         rvTaskList.addOnScrollListener(scrollListener);
-
         try {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
@@ -238,7 +221,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         onboard = true;
         progressDialog.setMessage("please wait loading tasks...");
 
-        // new GetVendorList(object.toString(), apiName).execute();
+    //    new GetVendorList(object.toString(), apiName).execute();
 
 
         ivSupport = findViewById(R.id.ivSupport);
@@ -355,10 +338,6 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
                 page1 = 1;
                 apiName = "task-list";
-                taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
-
-                rvTaskList.setAdapter(taskListAdapter);
-                rvTaskListPending.setAdapter(taskListAdapter);
                 new GetVendorList(object.toString(), apiName).execute();
 
 
@@ -414,14 +393,10 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                 }
                 page1 = 1;
                 apiName = "task-list";
-                taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
-
-                rvTaskList.setAdapter(taskListAdapter);
-                rvTaskListPending.setAdapter(taskListAdapter);
                 new GetVendorList(object.toString(), apiName).execute();
 
-                mSwipeRefreshLayoutPending.setVisibility(View.VISIBLE);
-                mSwipeRefreshLayout.setVisibility(View.GONE);
+                mSwipeRefreshLayoutPending.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 if (background1 instanceof ShapeDrawable) {
                     ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(this, R.color.colorPrimary));
                     tvPending.setTextColor(getResources().getColor(R.color.colorWhite));
@@ -463,7 +438,6 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
             case R.id.tvPaused:
 
 
-
                 object = new JSONObject();
                 try {
                     object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
@@ -473,16 +447,38 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                         JSONException e) {
 
                 }
-                page1 = 1;
-                apiName = "task-list";
                 taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                rvTaskList.setLayoutManager(linearLayoutManager);
 
                 rvTaskList.setAdapter(taskListAdapter);
-                rvTaskListPending.setAdapter(taskListAdapter);
+                scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+                    @Override
+                    public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
+                        // this condition  is for pagination in both with Search and without search
+
+                        if (search == true) {
+                            // this condition is for not getting Next URL from API
+                            if (!apiNameSearch.equalsIgnoreCase("")) ;
+                            new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
+                        } else {
+                            if (!apiName.equalsIgnoreCase("")) {
+                                new GetVendorList(object.toString(), apiName).execute();
+                            }
+                        }
+
+                    }
+                };
+                // rvTaskList.addOnScrollListener(scrollListener);
+                rvTaskList.addOnScrollListener(scrollListener);
+                page1 = 1;
+                apiName = "task-list";
                 new GetVendorList(object.toString(), apiName).execute();
 
-                mSwipeRefreshLayoutPending.setVisibility(View.VISIBLE);
-                mSwipeRefreshLayout.setVisibility(View.GONE);
+                mSwipeRefreshLayoutPending.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 if (background1 instanceof ShapeDrawable) {
                     ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(this, R.color.colorWhite));
                     tvPending.setTextColor(getResources().getColor(R.color.colorBlack));
@@ -542,14 +538,36 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         page1 = 1;
         //actv.getText().clear();
         taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        rvTaskList.setLayoutManager(linearLayoutManager);
 
         rvTaskList.setAdapter(taskListAdapter);
-        rvTaskListPending.setAdapter(taskListAdapter);
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
+                // this condition  is for pagination in both with Search and without search
+
+                if (search == true) {
+                    // this condition is for not getting Next URL from API
+                    if (!apiNameSearch.equalsIgnoreCase("")) ;
+                    new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
+                } else {
+                    if (!apiName.equalsIgnoreCase("")) {
+                        new GetVendorList(object.toString(), apiName).execute();
+                    }
+                }
+
+            }
+        };
+        // rvTaskList.addOnScrollListener(scrollListener);
+        rvTaskList.addOnScrollListener(scrollListener);
+        //  rvTaskListPending.setAdapter(taskListAdapter);
         apiName = "task-list";
         new GetVendorList(object.toString(), apiName).execute();
 
     }
-
 
     public class GetVendorList extends AsyncTask<String, Void, String> {
 
@@ -661,6 +679,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                             vList.setDueTime(vendorList.getDueTime());
                             vList.setTaskStart(vendorList.getTaskStart());
                             vList.setStartTimer(vendorList.getStartTimer());
+                            vList.setIsPause(vendorList.getIsPause());
 
                             page = 0;
                             page1 = 0;
@@ -674,10 +693,10 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                             rvTaskList.setVisibility(View.VISIBLE);
                             llNoData.setVisibility(View.GONE);
                             llNoDataPending.setVisibility(View.GONE);
-                            rvTaskListPending.setVisibility(View.VISIBLE);
+                            //rvTaskListPending.setVisibility(View.VISIBLE);
                         } else {
                             rvTaskList.setVisibility(View.GONE);
-                            rvTaskListPending.setVisibility(View.GONE);
+                           // rvTaskListPending.setVisibility(View.GONE);
                             llNoData.setVisibility(View.VISIBLE);
                             llNoDataPending.setVisibility(View.VISIBLE);
                         }
@@ -786,6 +805,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                             vList.setMobileNo(vendorList.getMobileNo());
                             vList.setStoreName(vendorList.getStoreName());
                             vList.setCompleteDatetime(vendorList.getCompleteDatetime());
+                            vList.setIsPause(vendorList.getIsPause());
                             vList.setType(vendorList.getType());
                             vList.setStatus(vendorList.getStatus());
                             vList.setDueDate(vendorList.getDueDate());
@@ -841,17 +861,40 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         return Bitmap.createScaledBitmap(image, width, height, true);
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         page1 = 1;
         //actv.getText().clear();
         taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        rvTaskList.setLayoutManager(linearLayoutManager);
 
         rvTaskList.setAdapter(taskListAdapter);
-        rvTaskListPending.setAdapter(taskListAdapter);
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
+                // this condition  is for pagination in both with Search and without search
+
+                if (search == true) {
+                    // this condition is for not getting Next URL from API
+                    if (!apiNameSearch.equalsIgnoreCase("")) ;
+                    new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
+                } else {
+                    if (!apiName.equalsIgnoreCase("")) {
+                        new GetVendorList(object.toString(), apiName).execute();
+                    }
+                }
+
+            }
+        };
+        // rvTaskList.addOnScrollListener(scrollListener);
+        rvTaskList.addOnScrollListener(scrollListener);
+      //  rvTaskListPending.setAdapter(taskListAdapter);
         apiName = "task-list";
         new GetVendorList(object.toString(), apiName).execute();
+
     }
 }

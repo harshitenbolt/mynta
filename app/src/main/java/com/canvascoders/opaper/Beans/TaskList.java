@@ -21,9 +21,21 @@ public class TaskList implements Serializable {
     @SerializedName("agent_id")
     @Expose
     private Integer agentId;
+
+    public Integer getIsPause() {
+        return isPause;
+    }
+
+    public void setIsPause(Integer isPause) {
+        this.isPause = isPause;
+    }
+
     @SerializedName("admin_id")
     @Expose
     private String adminId;
+    @SerializedName("is_pause")
+    @Expose
+    private Integer isPause;
 
     public String getCompleteDatetime() {
         return completeDatetime;
