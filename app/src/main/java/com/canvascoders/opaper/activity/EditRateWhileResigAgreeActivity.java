@@ -45,6 +45,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -181,14 +183,19 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
 
                                     JSONArray result = jsonObject.getJSONArray("Mensa - Alteration");
 
-                                    for (int i = 0; i < result.length(); i++) {
-                                        JSONObject o = result.getJSONObject(i);
-                                        MensaAlteration mensalist = gson.fromJson(o.toString(), MensaAlteration.class);
-                                        MensaAlteration mensaAlteration = new MensaAlteration(true, "", "");
-                                        mensaAlteration.setSubStoreType(mensalist.getSubStoreType());
-                                        mensaAlteration.setSubStoreTypeId(mensalist.getSubStoreTypeId());
-                                        mensaalterationList.add(mensaAlteration);
-                                    }
+                                 /* for (int i = 0; i < result.length(); i++) {
+                                            JSONObject o = result.getJSONObject(i);
+                                            MensaAlteration mensalist = gson.fromJson(o.toString(), MensaAlteration.class);
+                                            MensaAlteration mensaAlteration = new MensaAlteration(true, "", "");
+                                            mensaAlteration.setSubStoreType(mensalist.getSubStoreType());
+                                            mensaAlteration.setSubStoreTypeId(mensalist.getSubStoreTypeId());
+                                            mensaalterationList.add(mensaAlteration);
+                                        }*/
+                                    //mensaJsonArray = get
+
+                                    Map<String, String> yourHashMap = new Gson().fromJson(result.toString(), HashMap.class);
+
+
 
                                     Log.e("Found Stores", "" + rateJsonArray.length());
                                     ArrayList<StoreTypeBean> tempList = new ArrayList<>();
@@ -228,7 +235,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
 //                                    }
 
 
-                                    rateListAdapter = new RateListAdapter(rateTypeBeans, mensaalterationList, EditRateWhileResigAgreeActivity.this, EditRateWhileResigAgreeActivity.this);
+                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, EditRateWhileResigAgreeActivity.this, EditRateWhileResigAgreeActivity.this);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));

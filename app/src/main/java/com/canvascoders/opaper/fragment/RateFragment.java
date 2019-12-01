@@ -52,6 +52,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -79,7 +81,7 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
     RecyclerView recyclerView;
     VendorList vendor;
     private ArrayList<MensaAlteration> mensaalterationList = new ArrayList<>();
-    String alterationselected="";
+    String alterationselected = "";
     // se commit done Start
 
     // new branch change mobile
@@ -209,19 +211,23 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
 
                                 if (jsonObject.getString("responseCode").equalsIgnoreCase("200")) {
                                     JSONArray rateJsonArray = jsonObject.getJSONArray("data");
-                                    JSONArray result = jsonObject.getJSONArray("Mensa - Alteration");
+                                    JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
 
-                                    for (int i = 0; i < result.length(); i++) {
-                                        JSONObject o = result.getJSONObject(i);
-                                        MensaAlteration mensalist = gson.fromJson(o.toString(), MensaAlteration.class);
-                                        MensaAlteration mensaAlteration = new MensaAlteration(true, "", "");
-                                        mensaAlteration.setSubStoreType(mensalist.getSubStoreType());
-                                        mensaAlteration.setSubStoreTypeId(mensalist.getSubStoreTypeId());
-                                        mensaalterationList.add(mensaAlteration);
-                                    }
+                                       /* for (int i = 0; i < result.length(); i++) {
+                                            JSONObject o = result.getJSONObject(i);
+                                            MensaAlteration mensalist = gson.fromJson(o.toString(), MensaAlteration.class);
+                                            MensaAlteration mensaAlteration = new MensaAlteration(true, "", "");
+                                            mensaAlteration.setSubStoreType(mensalist.getSubStoreType());
+                                            mensaAlteration.setSubStoreTypeId(mensalist.getSubStoreTypeId());
+                                            mensaalterationList.add(mensaAlteration);
+                                        }*/
+                                    //mensaJsonArray = get
+
+                                    Map<String, String> yourHashMap = new Gson().fromJson(result.toString(), HashMap.class);
 
 
-                                    Log.e("Found Stores", "" + rateJsonArray.length());
+                                    Log.e("Found_Stores", "" + yourHashMap.toString());
+
                                     ArrayList<StoreTypeBean> tempList = new ArrayList<>();
                                     boolean isSecondTime = false;
                                     for (int i = 0; i < rateJsonArray.length(); i++) {
@@ -258,7 +264,7 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
 //                                    }
 
 
-                                    rateListAdapter = new RateListAdapter(rateTypeBeans, mensaalterationList, getContext(),RateFragment.this);
+                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, getContext(), RateFragment.this);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));

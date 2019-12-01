@@ -7,17 +7,41 @@ public class MensaAlteration {
 
 
     boolean isSelected;
+    String rate="";
 
-    public MensaAlteration(boolean isSelected, String subStoreType, String subStoreTypeId) {
+   /* public MensaAlteration(boolean isSelected, String subStoreType, String subStoreTypeId) {
         this.isSelected = isSelected;
         this.subStoreType = subStoreType;
         this.subStoreTypeId = subStoreTypeId;
+    }*/
+
+    public String getRate() {
+        return rate;
     }
 
-    @SerializedName("sub_store_type")
-    @Expose
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    public MensaAlteration(boolean isSelected, String subStoreType,String idType) {
+        this.isSelected = isSelected;
+        this.subStoreType = subStoreType;
+        this.idType = idType;
+    }
+
+
+
     private String subStoreType;
 
+    public String getIdType() {
+        return idType;
+    }
+
+    public void setIdType(String idType) {
+        this.idType = idType;
+    }
+
+    private String idType;
     public boolean isSelected() {
         return isSelected;
     }
@@ -26,9 +50,7 @@ public class MensaAlteration {
         isSelected = selected;
     }
 
-    @SerializedName("sub_store_type_id")
-    @Expose
-    private String subStoreTypeId;
+
 
     public String getSubStoreType() {
         return subStoreType;
@@ -38,12 +60,5 @@ public class MensaAlteration {
         this.subStoreType = subStoreType;
     }
 
-    public String getSubStoreTypeId() {
-        return subStoreTypeId;
-    }
-
-    public void setSubStoreTypeId(String subStoreTypeId) {
-        this.subStoreTypeId = subStoreTypeId;
-    }
 
 }

@@ -33,6 +33,7 @@ import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.adapters.ApprovedStoreListAdapter;
 import com.canvascoders.opaper.adapters.NeutralStoreListAdapter;
+import com.canvascoders.opaper.adapters.NoOFInvoicesListAdapter;
 import com.canvascoders.opaper.adapters.RejectedStoreListAdapter;
 import com.canvascoders.opaper.adapters.StoreReListingAdapter;
 import com.canvascoders.opaper.api.ApiClient;
@@ -53,7 +54,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -474,19 +477,23 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
                                         startAddendum();
                                     } else {
                                         JSONArray storeJsonArray = jsonObject.getJSONArray("data");
-                                        JSONArray result = jsonObject.getJSONArray("Mensa - Alteration");
+                                        JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
 
-                                        for (int i = 0; i < result.length(); i++) {
+                                       /* for (int i = 0; i < result.length(); i++) {
                                             JSONObject o = result.getJSONObject(i);
                                             MensaAlteration mensalist = gson.fromJson(o.toString(), MensaAlteration.class);
                                             MensaAlteration mensaAlteration = new MensaAlteration(true, "", "");
                                             mensaAlteration.setSubStoreType(mensalist.getSubStoreType());
                                             mensaAlteration.setSubStoreTypeId(mensalist.getSubStoreTypeId());
                                             mensaalterationList.add(mensaAlteration);
-                                        }
+                                        }*/
                                         //mensaJsonArray = get
 
-                                        Log.e("Found Stores", "" + storeJsonArray.length());
+                                        Map<String, String> yourHashMap = new Gson().fromJson(result.toString(), HashMap.class);
+
+
+
+                                        Log.e("Found_Stores", "" + yourHashMap.toString());
 
                                         for (int i = 0; i < storeJsonArray.length(); i++) {
                                             StoreTypeBean storeTypeBean = new StoreTypeBean(storeJsonArray.getJSONObject(i));
@@ -504,7 +511,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
 
                                         if (neutralStoreList.size() > 0) {
                                             llNeutral.setVisibility(View.VISIBLE);
-                                            storeReListingAdapter = new StoreReListingAdapter(neutralStoreList, mensaalterationList, StoreTypeListingActivity.this, StoreTypeListingActivity.this);
+                                            storeReListingAdapter = new StoreReListingAdapter(neutralStoreList, yourHashMap, StoreTypeListingActivity.this, StoreTypeListingActivity.this);
                                             rv_neutral.setAdapter(storeReListingAdapter);
                                         }
 //                                    if (rejectedStoreList.size() > 0) {

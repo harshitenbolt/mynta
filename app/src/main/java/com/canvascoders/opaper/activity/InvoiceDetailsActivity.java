@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -112,7 +113,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
 
                         titleList.addAll(champions.getData());
 
-
+                        Log.e("Found_Stores",list.toString());
                         noOFInvoicesListAdapter = new NoOFInvoicesListAdapter(list, InvoiceDetailsActivity.this);
 
                         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(InvoiceDetailsActivity.this, LinearLayoutManager.VERTICAL, false);

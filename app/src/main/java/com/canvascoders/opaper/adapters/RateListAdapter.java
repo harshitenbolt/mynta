@@ -1,5 +1,6 @@
 package com.canvascoders.opaper.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -28,24 +30,29 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.canvascoders.opaper.utils.Constants.dataRate;
 
 public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHolder> {
 
     public List<StoreTypeBean> dataViews;
-    List<MensaAlteration> mensaAlterationList;
+    Map<String, String> mensaAlterationList;
     RecyclerViewClickListener recyclerViewClickListener;
-
+    List<String> keysname = new ArrayList<>();
+    List<String> valueName = new ArrayList<>();
     Context mContext;
     CustomPopupRateStoreTypeAdapter customPopupStoreTypeAdapter;
 
-    public RateListAdapter(List<StoreTypeBean> dataViews, List<MensaAlteration> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener) {
+    public RateListAdapter(List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener) {
         this.dataViews = dataViews;
         this.mContext = mContext;
         this.mensaAlterationList = mensaAlterationList;
         this.recyclerViewClickListener = recyclerViewClickListener;
+        keysname.addAll(mensaAlterationList.keySet());
+        valueName.addAll(mensaAlterationList.values());
     }
 
     @NonNull
@@ -116,31 +123,40 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                     holder.edt_store_amount.setEnabled(false);
                     holder.rvSeperateRight.setVisibility(View.GONE);
                     holder.vSeperate.setVisibility(View.GONE);
+                    //dialogbox opeb
                     if (holder.check_box_store.isChecked()) {
-                        //dialogbox opeb
                         TextView tvtitleStoreType;
                         RecyclerView rvItems1;
                         Button btSubmit1;
+                        Dialog dialog;
                         ImageView ivClose1;
                         AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(mContext, R.style.CustomDialog);
 
-                        LayoutInflater inflater1 = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        View dialogView1 = inflater1.inflate(R.layout.dialogue_popup_list, null);
-                        mBuilder2.setView(dialogView1);
-                        tvtitleStoreType = dialogView1.findViewById(R.id.tvTitleListPopup);
-                        tvtitleStoreType.setText("Mensa Alteration Type");
-                        rvItems1 = dialogView1.findViewById(R.id.rvListPopup);
-                        btSubmit1 = dialogView1.findViewById(R.id.btSubmitDetail);
 
-                        customPopupStoreTypeAdapter = new CustomPopupRateStoreTypeAdapter(mensaAlterationList, mContext, "StoreType", this);
+                        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialog.setContentView(R.layout.dialogue_popup_list);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setCancelable(true);
+
+                        tvtitleStoreType = dialog.findViewById(R.id.tvTitleListPopup);
+                        tvtitleStoreType.setText("Mensa Alteration Type");
+                        rvItems1 = dialog.findViewById(R.id.rvListPopup);
+                        btSubmit1 = dialog.findViewById(R.id.btSubmitDetail);
+                        List<MensaAlteration> mensaAlterations = new ArrayList<>();
+                        for (int i = 0; i < keysname.size(); i++) {
+                            MensaAlteration mensaAlteration = new MensaAlteration(false, keysname.get(i), valueName.get(i));
+                            mensaAlterations.add(mensaAlteration);
+
+                        }
+
+                        customPopupStoreTypeAdapter = new CustomPopupRateStoreTypeAdapter(mensaAlterations, mContext, "StoreType", this);
 
                         LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
 
                         rvItems1.setLayoutManager(horizontalLayoutManager1);
 
                         rvItems1.setAdapter(customPopupStoreTypeAdapter);
-                        AlertDialog mDialog1 = mBuilder2.create();
-                        mDialog1.show();
 
                         btSubmit1.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -148,38 +164,43 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                                 // tvVendorTypeDetail.setText(selectedString);
                                 String str = "";
                                 if (dataRate != null) {
+                                    Log.e("suaave", dataRate.toString());
                                     str = TextUtils.join(",", dataRate);
                                     Log.e("itemlist", str);
-                                    mDialog1.dismiss();
+                                    dialog.dismiss();
                                 } else {
                                     holder.check_box_store.setChecked(false);
                                     str = "";
-                                    mDialog1.dismiss();
+                                    dialog.dismiss();
                                 }
                                 recyclerViewClickListener.SingleClick(str, position);
 
 
                             }
                         });
-                        ivClose1 = dialogView1.findViewById(R.id.ivClose);
+                        ivClose1 = dialog.findViewById(R.id.ivClose);
                         ivClose1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 String str = "";
                                 if (dataRate != null) {
+                                    Log.e("suaave", dataRate.toString());
                                     str = TextUtils.join(",", dataRate);
                                     Log.e("itemlist", str);
-                                    mDialog1.dismiss();
+                                    dialog.dismiss();
                                 } else {
                                     holder.check_box_store.setChecked(false);
                                     str = "";
-                                    mDialog1.dismiss();
+                                    dialog.dismiss();
                                 }
                                 holder.check_box_store.setChecked(false);
                             }
-
                         });
+
+
+                        dialog.show();
                     }
+
                 }
 
 
