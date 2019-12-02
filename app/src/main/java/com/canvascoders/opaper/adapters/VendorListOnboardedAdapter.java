@@ -67,20 +67,20 @@ public class VendorListOnboardedAdapter extends RecyclerView.Adapter<VendorListO
 
         }
         else if (vendorLists.get(position).getStatus().equalsIgnoreCase("1")) {
-            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorPrimary));
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorActive));
             holder.tvStatus.setText("Active");
             holder.ivStatusImage.setImageResource(R.drawable.active);
         } else if (vendorLists.get(position).getStatus().equalsIgnoreCase("2")) {
-            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorRed));
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorInActive));
             holder.tvStatus.setText("Deactivated/Closed");
             holder.ivStatusImage.setImageResource(R.drawable.deactivate);
 
         } else if (vendorLists.get(position).getStatus().equalsIgnoreCase("3")) {
-            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorBlue));
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorPaymentHold));
             holder.tvStatus.setText("Payment Hold");
             holder.ivStatusImage.setImageResource(R.drawable.hold);
         } else if (vendorLists.get(position).getStatus().equalsIgnoreCase("4")) {
-            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorBlack));
+            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorBlackListed));
             holder.tvStatus.setText("Black Listed");
             holder.ivStatusImage.setImageResource(R.drawable.blacklist);
         }

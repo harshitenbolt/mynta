@@ -74,6 +74,7 @@ public class CustomPopupRateStoreTypeAdapter extends RecyclerView.Adapter<Custom
 
     @Override
     public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
+        dataRate = null;
         MensaAlteration store = vendorTypeList.get(position);
 
         holder.tvName.setText("" + store.getIdType());
@@ -111,6 +112,7 @@ public class CustomPopupRateStoreTypeAdapter extends RecyclerView.Adapter<Custom
                 } else {
                     holder.edt_store_amount.setEnabled(false);
                     vendorTypeList.get(position).setSelected(false);
+                    store.setSelected(false);
                     holder.edt_store_amount.setText("0");
                 }
                 ArrayList<String> stringArrayList = new ArrayList<String>();
@@ -238,19 +240,7 @@ public class CustomPopupRateStoreTypeAdapter extends RecyclerView.Adapter<Custom
                     }
                 }
         );*/
-        if (store.isSelected()) {
 
-//                if (store.getIsApproved().equalsIgnoreCase("1")) {
-//                    holder.check_box_store.setEnabled(false);
-//                } else {
-//                    holder.check_box_store.setEnabled(true);
-//                    holder.check_box_store.setChecked(true);
-//                    holder.edt_store_amount.setEnabled(true);
-//                }
-
-        } else {
-            holder.cbSelect.setChecked(false);
-        }
 
         holder.edt_store_amount.addTextChangedListener(new
 
@@ -354,23 +344,23 @@ public class CustomPopupRateStoreTypeAdapter extends RecyclerView.Adapter<Custom
 
         // checking from rejected stores to get updated data.
 
-       /* ArrayList<String> stringArrayList = new ArrayList<String>();
-        for (int i = 0; i < vendorTypeList.size(); i++) {
-            if (vendorTypeList.get(i).isSelected()) {
-                String rate1 = "";
-                if (vendorTypeList.get(i).getRate().equalsIgnoreCase("")) {
-                    rate1 = "0";
 
-                } else {
-                    rate1 = vendorTypeList.get(i).getRate();
-                }
+        if (store.isSelected()) {
 
-                stringArrayList.add(vendorTypeList.get(i).getSubStoreType() + ":" + rate1);
+//                if (store.getIsApproved().equalsIgnoreCase("1")) {
+//                    holder.check_box_store.setEnabled(false);
+//                } else {
+//                    holder.check_box_store.setEnabled(true);
+//                    holder.check_box_store.setChecked(true);
+//                    holder.edt_store_amount.setEnabled(true);
+//                }
 
-            }
+
+        } else {
+            holder.cbSelect.setChecked(false);
         }
-        String[] stringArray = stringArrayList.toArray(new String[stringArrayList.size()]);
-        dataRate = stringArray;*/
+
+
     }
 
     @Override

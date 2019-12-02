@@ -730,7 +730,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 tvtitleStoreType.setText("Vendor Type Detail");
                 rvItems1 = dialogView1.findViewById(R.id.rvListPopup);
                 btSubmit1 = dialogView1.findViewById(R.id.btSubmitDetail);
-
+                CustomPopupStoreTypeAdapter customPopupStoreTypeAdapter;
                 customPopupStoreTypeAdapter = new CustomPopupStoreTypeAdapter(ListStore_type, getActivity(), this, "StoreType");
 
                 LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -748,7 +748,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
 
                         mDialog1.dismiss();
-
+                        selectedString = "";
 
                     }
                 });
@@ -782,14 +782,14 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                     ObjectPopup objectPopup = new ObjectPopup(false, localityType[i]);
                     listLocality.add(objectPopup);
                 }
-
-                customPopupLocalityAdapter = new CustomPopupLocalityAdapter(listLocality, mcontext, this, "Locality");
+                CustomPopupLocalityAdapter customPopupStoreTypeAdapter1;
+                customPopupStoreTypeAdapter1 = new CustomPopupLocalityAdapter(listLocality, mcontext, this, "Locality");
 
                 LinearLayoutManager horizontalLayoutManagerLocality = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
                 rvItemsLocality.setLayoutManager(horizontalLayoutManagerLocality);
 
-                rvItemsLocality.setAdapter(customPopupLocalityAdapter);
+                rvItemsLocality.setAdapter(customPopupStoreTypeAdapter1);
                 AlertDialog mDialogLocality = mBuilderLocality.create();
                 mDialogLocality.show();
 
@@ -799,6 +799,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                         tvLocality.setText(selectedString);
 
                         mDialogLocality.dismiss();
+                        selectedString = "";
                     }
                 });
                 ivCloseLocality = dialogViewLocality.findViewById(R.id.ivClose);

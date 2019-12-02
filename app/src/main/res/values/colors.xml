@@ -74,7 +74,6 @@
     <color name="color12">#EAEAEA</color>
 
 
-
     <!--new Colors-->
     <color name="colorLightGrey">#EFEDEE</color>
 
@@ -90,4 +89,17 @@
     <color name="colorYellow">#FDAB00</color>
 
     <color name="colorlightGrey">#DFDFDF</color>
+
+
+    <color name="colorOnBoarded">#3a6af2</color>
+
+    <color name="colorInProgress">#fcdc03</color>
+    <color name="colorActive">#cdf258</color>
+    <color name="colorInActive">#f8903f</color>
+
+    <color name="colorPaymentHold">#ff0000</color>
+
+    <color name="colorBlackListed">#938d88</color>
+
+
 </resources>

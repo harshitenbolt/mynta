@@ -180,7 +180,7 @@
                         android:layout_height="wrap_content"
                         android:buttonTint="@color/colorBlue"
                         android:fontFamily="@font/monteregular"
-                        android:text="remeber me"
+                        android:text="remember me"
                         android:textColor="@color/colorBlue"
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold" />

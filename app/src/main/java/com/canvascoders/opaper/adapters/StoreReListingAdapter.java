@@ -183,6 +183,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                                 // tvVendorTypeDetail.setText(selectedString);
                                 String str = "";
                                 if (dataRate != null) {
+                                    Log.e("suaave", dataRate.toString());
                                     str = TextUtils.join(",", dataRate);
                                     Log.e("itemlist", str);
                                     dialog.dismiss();
@@ -202,6 +203,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                             public void onClick(View view) {
                                 String str = "";
                                 if (dataRate != null) {
+                                    Log.e("suaave", dataRate.toString());
                                     str = TextUtils.join(",", dataRate);
                                     Log.e("itemlist", str);
                                     dialog.dismiss();

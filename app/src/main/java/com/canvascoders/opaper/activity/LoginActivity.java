@@ -369,7 +369,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btLogin) {
-            Constants.hideKeyboardwithoutPopulate(LoginActivity.this);
+           // Constants.hideKeyboardwithoutPopulate(LoginActivity.this);
             getPermitionGrant(v);
         }
         if (v.getId() == R.id.tvForgot) {
