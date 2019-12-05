@@ -106,6 +106,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     private boolean isedit = false;
     public static final int CROPPED_IMAGE = 5333;
     View view;
+    String email="",storename="",ownername="",dateofbirth="",storeaddress="",storeaddress1="",storeaddresslandmark="",storeaddressPincode="",storeaddressCity="",storeaddressState="",dc="",route="";
     String str_process_id, authUserID, authCreated, authID;
     private long authTTL;
     private TextView tvGoBack;
@@ -138,6 +139,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     private String from = "individualPan";
     private JSONObject panEssentials = new JSONObject();
     private ProgressDialog mProgressDialog;
+    Bundle bundle;
 
     private static File getOutputMediaFile(int type) {
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), IMAGE_DIRECTORY_NAME);
@@ -206,10 +208,21 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         btn_extract.setOnClickListener(this);
 
 
-        Bundle bundle = this.getArguments();
+        bundle = this.getArguments();
         if (bundle != null) {
             String is_edit = bundle.getString(Constants.KEY_EMP_MOBILE);
-
+            email = bundle.getString(Constants.KEY_EMAIL);
+            storename = bundle.getString(Constants.KEY_STORES);
+            ownername = bundle.getString(Constants.KEY_NAME);
+            dateofbirth = bundle.getString(Constants.PARAM_BIRTH_DATE);
+            storeaddress = bundle.getString(Constants.PARAM_STORE_ADDRESS);
+            storeaddress1 = bundle.getString(Constants.PARAM_STORE_ADDRESS1);
+            storeaddresslandmark = bundle.getString(Constants.PARAM_STORE_ADDRESS_LANDMARK);
+            storeaddressPincode = bundle.getString(Constants.PARAM_PINCODE);
+            storeaddressCity = bundle.getString(Constants.PARAM_CITY);
+            storeaddressState = bundle.getString(Constants.PARAM_STATE);
+            dc=bundle.getString(Constants.PARAM_DC);
+            route = bundle.getString(Constants.PARAM_ROUTE);
             if (is_edit != null) {
                 Log.e("isedit", is_edit);
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
@@ -412,7 +425,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                 e.printStackTrace();
             }
         } else if (v.getId() == R.id.llGonext) {
-            commanFragmentCallWithoutBackStack(new InfoFragment());
+            commanFragmentCallWithoutBackStack2(new InfoFragment());
         }
 
     }
@@ -1129,6 +1142,23 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         if (cFragment != null) {
 
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragmentTransaction.replace(R.id.rvContentMainOTP, cFragment);
+            fragmentTransaction.commit();
+
+        }
+    }
+
+    public void commanFragmentCallWithoutBackStack2(Fragment fragment) {
+
+        Fragment cFragment = fragment;
+
+        if (cFragment != null) {
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragment.setArguments(bundle);
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);

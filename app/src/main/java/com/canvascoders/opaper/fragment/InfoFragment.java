@@ -121,6 +121,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     CustomPopupLocalityAdapter customPopupLocalityAdapter;
     CustomPopupApproachAdapter customPopupApproachAdapter;
     CustomPopupShipmentAdapter customPopupShipmentAdapter;
+    String email = "", storename = "", ownername = "", dateofbirth = "", storeaddress = "", storeaddress1 = "", storeaddresslandmark = "", storeaddressPincode = "", storeaddressCity = "", dcdata = "", storeaddressState = "", route = "";
 
     View view2, view3;
     LinearLayout llOwnerInfo, llGeneraInfo, llAddrssInfo;
@@ -241,6 +242,37 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         shipmentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spShipment.setAdapter(shipmentAdapter);
 */
+        Bundle bundle = this.getArguments();
+        bundle = this.getArguments();
+        if (bundle != null) {
+            // String is_edit = bundle.getString(Constants.KEY_EMP_MOBILE);
+            email = bundle.getString(Constants.KEY_EMAIL);
+            storename = bundle.getString(Constants.KEY_STORES);
+            ownername = bundle.getString(Constants.KEY_NAME);
+            dateofbirth = bundle.getString(Constants.PARAM_BIRTH_DATE);
+            storeaddress = bundle.getString(Constants.PARAM_STORE_ADDRESS);
+            storeaddress1 = bundle.getString(Constants.PARAM_STORE_ADDRESS1);
+            storeaddresslandmark = bundle.getString(Constants.PARAM_STORE_ADDRESS_LANDMARK);
+            storeaddressPincode = bundle.getString(Constants.PARAM_PINCODE);
+            storeaddressCity = bundle.getString(Constants.PARAM_CITY);
+            storeaddressState = bundle.getString(Constants.PARAM_STATE);
+            dcdata = bundle.getString(Constants.PARAM_DC);
+            route = bundle.getString(Constants.PARAM_ROUTE);
+
+            etEmail.setText(email);
+            etStorename.setText(storename);
+            etOwnerName.setText(ownername);
+            tvDOB.setText(dateofbirth);
+            etStoreShopNo.setText(storeaddress);
+            etStoreStreet.setText(storeaddress1);
+            etStoreLandmark.setText(storeaddresslandmark);
+            etStorePincode.setText(storeaddressPincode);
+            etStoreCity.setText(storeaddressCity);
+            etStoreState.setText(storeaddressState);
+            etRoute.setText(route);
+
+
+        }
         return view;
     }
 
@@ -1048,6 +1080,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             llOwnerInfo.setVisibility(View.GONE);
                             view2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             llAddrssInfo.setVisibility(View.VISIBLE);
+                            btChangePan.setVisibility(View.GONE);
                             focusOnView("1");
                         } else if (i1 == 2) {
                             view3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -1927,6 +1960,18 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         if (cFragment != null) {
             Bundle bundle = new Bundle();
             bundle.putString(Constants.KEY_EMP_MOBILE, "is_edit");
+            bundle.putString(Constants.KEY_EMAIL, etEmail.getText().toString() + "");
+            bundle.putString(Constants.KEY_STORES, etStorename.getText().toString() + "");
+            bundle.putString(Constants.KEY_NAME, etOwnerName.getText().toString() + "");
+            bundle.putString(Constants.PARAM_BIRTH_DATE, tvDOB.getText().toString() + "");
+            bundle.putString(Constants.PARAM_STORE_ADDRESS, etStoreShopNo.getText().toString() + "");
+            bundle.putString(Constants.PARAM_STORE_ADDRESS1, etStoreStreet.getText().toString() + "");
+            bundle.putString(Constants.PARAM_STORE_ADDRESS_LANDMARK, etStoreLandmark.getText().toString() + "");
+            bundle.putString(Constants.PARAM_PINCODE, etStorePincode.getText().toString() + "");
+            bundle.putString(Constants.PARAM_CITY, etStoreCity.getText().toString() + "");
+            bundle.putString(Constants.PARAM_STATE, etStoreState.getText().toString() + "");
+         //   bundle.putString(Constants.PARAM_DC, dc.getSelectedItem().toString() + "");
+            bundle.putString(Constants.PARAM_ROUTE, etRoute.getText().toString() + "");
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragment.setArguments(bundle);
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
