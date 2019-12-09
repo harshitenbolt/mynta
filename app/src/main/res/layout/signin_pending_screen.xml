@@ -248,7 +248,7 @@
         android:background="@color/colorPrimary"
         android:fontFamily="@font/montemedium"
         android:gravity="center"
-        android:text="RESEND SIGN"
+        android:text="RESEND SIGN LINK"
         android:textColor="@color/whitePrimary"
         android:textSize="@dimen/_15sdp" />
 </RelativeLayout>

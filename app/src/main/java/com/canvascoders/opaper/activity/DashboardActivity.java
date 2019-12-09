@@ -12,6 +12,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import com.canvascoders.opaper.Beans.GeneralSupportResponse.GeneralSupportResponse;
+import com.canvascoders.opaper.Beans.SubmitImageResponse.SubmitImageResponse;
+import com.canvascoders.opaper.api.ApiClient;
+import com.canvascoders.opaper.utils.ImagePicker;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.fragment.app.Fragment;
@@ -59,15 +63,21 @@ import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 
 
-
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -92,6 +102,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     private String TAG = "DashboardActivity";
     private SessionManager sessionManager;
     private Integer newAppVesion = 0;
+    private String attachment = "";
     private TextView tv_current_version;
     static TextView tv_title, tvUsername;
     DrawerLayout drawer;
@@ -274,18 +285,16 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 Bitmap bitmap = v1.getDrawingCache();
                 BitmapDrawable drawable=new BitmapDrawable(bitmap);*/
 
+
                 final int color = 0xFFFFFF;
                 final Drawable drawable = new ColorDrawable(color);
                 flImage.setForeground(drawable);
                 findViewById(R.id.llButton).setVisibility(View.GONE);
                 findViewById(R.id.tverror).setVisibility(View.GONE);
                 Bitmap bitmap = viewToBitmap(rvMainWithRect);
+                ApiCallSendImageSupport(bitmap);
                 converted = getResizedBitmap(bitmap, 400);
-                Intent i = new Intent(DashboardActivity.this, GeneralSupportSubmitActivity.class);
-                i.putExtra("BitmapImage", converted);
 
-                i.putExtra(Constants.PARAM_SCREEN_NAME, "DashBoard");
-                startActivity(i);
                 findViewById(R.id.rvCaptured).setVisibility(View.GONE);
                 findViewById(R.id.rvMain).setVisibility(View.VISIBLE);
                 findViewById(R.id.llButton).setVisibility(View.VISIBLE);
@@ -326,6 +335,65 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
 
     }
+
+    private void ApiCallSendImageSupport(Bitmap bitmap) {
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.show();
+
+        MultipartBody.Part attachment_part = null;
+
+
+        //Log.e("Id_done", "" + priority_id);
+
+        attachment = ImagePicker.getBitmapPath(bitmap, this);
+        File imagefile1 = new File(attachment);
+        attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(attachment)), imagefile1));
+        ApiClient.getClient().create(ApiInterface.class).submitSupportImage("Bearer " + sessionManager.getToken(), attachment_part).enqueue(new Callback<SubmitImageResponse>() {
+            @Override
+            public void onResponse(Call<SubmitImageResponse> call, Response<SubmitImageResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    SubmitImageResponse submitReportResponse = response.body();
+                    if (submitReportResponse.getResponseCode() == 200) {
+                        Toast.makeText(DashboardActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(DashboardActivity.this, GeneralSupportSubmitActivity.class);
+                        i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+
+                        i.putExtra(Constants.PARAM_SCREEN_NAME, "DashBoard");
+                        startActivity(i);
+
+
+                        // finish();
+                    } else {
+                        Toast.makeText(DashboardActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+
+            }
+        });
+
+    }
+
+    private void persistImage(Bitmap bitmap, String name) {
+        File filesDir = DashboardActivity.this.getFilesDir();
+        File imageFile = new File(filesDir, name + ".jpg");
+
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+        }
+    }
+
 
     @Override
     public void onClick(View v) {

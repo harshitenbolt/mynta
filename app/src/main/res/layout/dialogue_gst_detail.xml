@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CustomCardView"
+    android:layout_width="match_parent"
+    android:background="@color/whitePrimary"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/whitePrimary"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/lineardata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/montesemibold"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlack"
+                    android:text="GST Certificate Details" />
+
+                <ImageView
+                    android:id="@+id/ivClose"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:padding="@dimen/_2sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:src="@drawable/close" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/lightGrey" />
+
+            <LinearLayout
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/etShopHouseNo"
+                    style="@style/App_EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:hint="Shop/House Number"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/etPayeeName"
+                    />
+
+                <EditText
+                    android:id="@+id/etStreetName"
+                    style="@style/App_EditTextStyle"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:hint="Street/Apartment/Locality"
+                    android:textAllCaps="true"
+                    android:nextFocusDown="@+id/etIfscCode"
+                    />
+
+                <EditText
+                    android:id="@+id/etLandmark"
+                    android:maxLength="12"
+                    style="@style/App_EditTextStyle"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:hint="Landmark"
+                    android:imeOptions="actionDone"
+                    android:textAllCaps="true"
+                    />
+
+                <EditText
+                    android:id="@+id/etStorePincode"
+                    style="@style/App_EditTextStyle"
+
+                    android:textAllCaps="true"
+                    android:enabled="false"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:hint="Store Pincode"
+                    android:clickable="false"
+                    />
+
+                <EditText
+                    android:id="@+id/etStoreCity"
+                    style="@style/App_EditTextStyle"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:hint="City Name"
+                    android:enabled="false"
+                    android:clickable="false"
+                    android:textAllCaps="true"
+                    />
+
+                <EditText
+                    android:id="@+id/etStoreState"
+                    style="@style/App_EditTextStyle"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:hint="Bank Address"
+                    android:clickable="false"
+                    android:enabled="false"
+                    android:textAllCaps="true"
+                    />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/etfieldbackgroundgrey">
+
+                    <Spinner
+                        android:id="@+id/dc"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textSize="@dimen/_10sdp" />
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
+                    android:layout_marginTop="@dimen/margin_10dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/cbAgreeTC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margin_10dp"
+                        android:checked="false"
+                        android:padding="5dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_10dp"
+                        android:text="I have verified the above data with physical copy of GST Certificate." />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <Button
+            android:id="@+id/btSubmitGSTDetail"
+            android:layout_below="@+id/lineardata"
+            android:text="SUBMIT"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/rounded_bottom_corner_view_green"
+            style="@style/Button_withGreen" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

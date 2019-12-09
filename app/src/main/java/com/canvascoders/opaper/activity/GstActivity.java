@@ -124,7 +124,7 @@ public class GstActivity extends AppCompatActivity implements NavigationView.OnN
 
         mWebView = (WebView) findViewById(R.id.web_view_id);
         btn_agree = (AppCompatTextView) findViewById(R.id.btn_agree);
-        progressDialog = new ProgressDialog(GstActivity.this);
+        progressDialog = new ProgressDialog( GstActivity.this);
         mWebView.setWebChromeClient(new WebChromeClient() {
             public void onProgressChanged(WebView view, int progress) {
                 if (progress == 100) {

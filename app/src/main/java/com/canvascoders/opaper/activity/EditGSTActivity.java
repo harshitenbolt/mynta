@@ -1434,6 +1434,29 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                         }
 
 
+                        DialogUtil.addressDetails(EditGSTActivity.this, store_address, store_address1, store_address_landmark, store_pincode, store_city, store_state, new DialogListner() {
+                            @Override
+                            public void onClickPositive() {
+
+                            }
+
+                            @Override
+                            public void onClickNegative() {
+
+                            }
+
+                            @Override
+                            public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                            }
+                        });
+
+
                     } else if (getGSTVerify.getResponseCode() == 400) {
                         if (getGSTVerify.getValidation() != null) {
                             Validation validation = getGSTVerify.getValidation();

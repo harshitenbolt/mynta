@@ -22,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.GeneralSupportResponse.GeneralSupportResponse;
 import com.canvascoders.opaper.Beans.SupportSubjectResponse.SupportSubjectResponse;
 import com.canvascoders.opaper.R;
@@ -59,7 +60,7 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
     EditText etDescription;
     private String attachment = "";
     ImageView imageView;
-    Bitmap bitmap;
+    String bitmap;
     private Button btSubmit;
 
     @Override
@@ -72,7 +73,7 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
         sessionManager = new SessionManager(this);
 
         Intent intent = getIntent();
-        bitmap = (Bitmap) intent.getParcelableExtra("BitmapImage");
+        bitmap = intent.getStringExtra("BitmapImage");
         ScreenName = intent.getStringExtra(Constants.PARAM_SCREEN_NAME);
         initView();
     }
@@ -80,7 +81,7 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
     private void initView() {
         etDescription = findViewById(R.id.etDescription);
         imageView = findViewById(R.id.issue);
-        imageView.setImageBitmap(bitmap);
+        Glide.with(this).load(bitmap).into(imageView);
         ivBack = findViewById(R.id.iv_back_process);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,10 +164,10 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
 
         Log.e("Id_done", "" + priority_id);
 
-        attachment = ImagePicker.getBitmapPath(bitmap, this);
-        File imagefile1 = new File(attachment);
-        attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(attachment)), imagefile1));
-        ApiClient.getClient().create(ApiInterface.class).generalSupportResponse("Bearer " + sessionManager.getToken(), param, attachment_part).enqueue(new Callback<GeneralSupportResponse>() {
+       // attachment = ImagePicker.getBitmapPath(bitmap, this);
+      //  File imagefile1 = new File(attachment);
+       // attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(attachment)), imagefile1));
+        ApiClient.getClient().create(ApiInterface.class).generalSupportResponse("Bearer " + sessionManager.getToken(), param).enqueue(new Callback<GeneralSupportResponse>() {
             @Override
             public void onResponse(Call<GeneralSupportResponse> call, Response<GeneralSupportResponse> response) {
                 progressDialog.dismiss();

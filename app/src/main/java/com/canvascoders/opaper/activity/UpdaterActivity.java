@@ -7,11 +7,15 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Environment;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -86,7 +90,7 @@ public class UpdaterActivity extends AppCompatActivity {
         if (file.exists())
             file.delete();
         String url = Constants.APKROOT + "apk/opaper.apk";
-       /* String url = "http://139.59.94.135/apk/opaper.apk"; */ //Constants.BaseURL + "apk/opaper.apk";//
+        /* String url = "http://139.59.94.135/apk/opaper.apk"; */ //Constants.BaseURL + "apk/opaper.apk";//
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setDescription("opaper Version" + Constants.APP_VERSION);
         request.setTitle("Opaper Update");

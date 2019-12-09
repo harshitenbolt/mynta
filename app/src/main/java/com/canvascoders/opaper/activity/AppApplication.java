@@ -2,6 +2,7 @@ package com.canvascoders.opaper.activity;
 
 import android.content.Context;
 import android.os.StrictMode;
+
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
@@ -13,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import io.fabric.sdk.android.Fabric;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -37,13 +39,13 @@ public class AppApplication extends MultiDexApplication {
     public static final String BASE_URL = Constants.BaseURL;
 
     public static Retrofit retrofit = null;
-    public  static  Retrofit retrofit2 = null;
+    public static Retrofit retrofit2 = null;
     public static NetworkConnectivity networkConnectivity;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        // Fabric.with(this, new Crashlytics());
 
         mInstance = this;
 

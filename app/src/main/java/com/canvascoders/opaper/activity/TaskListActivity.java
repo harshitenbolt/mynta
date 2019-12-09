@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canvascoders.opaper.Beans.SubmitImageResponse.SubmitImageResponse;
 import com.canvascoders.opaper.Beans.TaskList;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
@@ -34,10 +35,13 @@ import com.canvascoders.opaper.Screenshot.DragRectView;
 import com.canvascoders.opaper.Screenshot.Screenshot;
 import com.canvascoders.opaper.adapters.TaskListAdapter;
 import com.canvascoders.opaper.adapters.VendorListOnboardedAdapter;
+import com.canvascoders.opaper.api.ApiClient;
+import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.VendorOnboardedList;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.EndlessRecyclerViewScrollListener;
+import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -47,15 +51,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class TaskListActivity extends AppCompatActivity implements View.OnClickListener, RecyclerViewClickListener, SwipeRefreshLayout.OnRefreshListener {
     ImageView ivBack, ivSupport;
@@ -82,6 +90,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     LinearLayout llNoData, llNoDataPending;
     TextView tvComplted, tvPending, tvPaused;
     Drawable background, background1, backgroundpause;
+    String attachment = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,9 +174,9 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         mSwipeRefreshLayoutPending.setOnRefreshListener(this);
         // ivSearch = view.findViewById(R.id.ivSearch);
         rvTaskList = (RecyclerView) findViewById(R.id.rvTaskList);
-       // rvTaskListPending = (RecyclerView) findViewById(R.id.rvTaskListPending);
+        // rvTaskListPending = (RecyclerView) findViewById(R.id.rvTaskListPending);
         rvTaskList.setHasFixedSize(true);
-      //  rvTaskListPending.setHasFixedSize(true);
+        //  rvTaskListPending.setHasFixedSize(true);
 
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -179,11 +188,11 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
 
         rvTaskList.setLayoutManager(linearLayoutManager);
-      //  rvTaskListPending.setLayoutManager(linearLayoutManager1);
+        //  rvTaskListPending.setLayoutManager(linearLayoutManager1);
         taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
 
         rvTaskList.setAdapter(taskListAdapter);
-     //   rvTaskListPending.setAdapter(taskListAdapter);
+        //   rvTaskListPending.setAdapter(taskListAdapter);
 
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -204,7 +213,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
             }
         };
-       // rvTaskList.addOnScrollListener(scrollListener);
+        // rvTaskList.addOnScrollListener(scrollListener);
         rvTaskList.addOnScrollListener(scrollListener);
         try {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
@@ -221,7 +230,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         onboard = true;
         progressDialog.setMessage("please wait loading tasks...");
 
-    //    new GetVendorList(object.toString(), apiName).execute();
+        //    new GetVendorList(object.toString(), apiName).execute();
 
 
         ivSupport = findViewById(R.id.ivSupport);
@@ -281,11 +290,9 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                 findViewById(R.id.llButton).setVisibility(View.GONE);
                 findViewById(R.id.tverror).setVisibility(View.GONE);
                 Bitmap bitmap = viewToBitmap(rvMainWithRect);
+                ApiCallSendImageSupport(bitmap);
                 converted = getResizedBitmap(bitmap, 400);
-                Intent i = new Intent(TaskListActivity.this, GeneralSupportSubmitActivity.class);
-                i.putExtra("BitmapImage", converted);
-                i.putExtra(Constants.PARAM_SCREEN_NAME, "tasklist");
-                startActivity(i);
+
                 findViewById(R.id.rvCaptured).setVisibility(View.GONE);
                 findViewById(R.id.rvMain).setVisibility(View.VISIBLE);
                 findViewById(R.id.llButton).setVisibility(View.VISIBLE);
@@ -696,7 +703,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                             //rvTaskListPending.setVisibility(View.VISIBLE);
                         } else {
                             rvTaskList.setVisibility(View.GONE);
-                           // rvTaskListPending.setVisibility(View.GONE);
+                            // rvTaskListPending.setVisibility(View.GONE);
                             llNoData.setVisibility(View.VISIBLE);
                             llNoDataPending.setVisibility(View.VISIBLE);
                         }
@@ -892,9 +899,58 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         };
         // rvTaskList.addOnScrollListener(scrollListener);
         rvTaskList.addOnScrollListener(scrollListener);
-      //  rvTaskListPending.setAdapter(taskListAdapter);
+        //  rvTaskListPending.setAdapter(taskListAdapter);
         apiName = "task-list";
         new GetVendorList(object.toString(), apiName).execute();
+
+    }
+
+
+    private void ApiCallSendImageSupport(Bitmap bitmap) {
+        progressDialog.setMessage("Please wait...");
+        progressDialog.show();
+
+        MultipartBody.Part attachment_part = null;
+
+
+        //Log.e("Id_done", "" + priority_id);
+
+        attachment = ImagePicker.getBitmapPath(bitmap, this);
+        File imagefile1 = new File(attachment);
+        attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(attachment)), imagefile1));
+        ApiClient.getClient().create(ApiInterface.class).submitSupportImage("Bearer " + sessionManager.getToken(), attachment_part).enqueue(new Callback<SubmitImageResponse>() {
+            @Override
+            public void onResponse(Call<SubmitImageResponse> call, retrofit2.Response<SubmitImageResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    SubmitImageResponse submitReportResponse = response.body();
+                    if (submitReportResponse.getResponseCode() == 200) {
+                        Toast.makeText(TaskListActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+                    /*    Intent i = new Intent(TaskListActivity.this, GeneralSupportSubmitActivity.class);
+                        i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+
+                        i.putExtra(Constants.PARAM_SCREEN_NAME, "DashBoard");
+                        startActivity(i);*/
+
+
+                        Intent i = new Intent(TaskListActivity.this, GeneralSupportSubmitActivity.class);
+                        i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+                        i.putExtra(Constants.PARAM_SCREEN_NAME, "tasklist");
+                        startActivity(i);
+
+                        // finish();
+                    } else {
+                        Toast.makeText(TaskListActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
+                progressDialog.dismiss();
+
+            }
+        });
 
     }
 }

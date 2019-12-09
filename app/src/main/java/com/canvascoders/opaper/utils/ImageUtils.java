@@ -19,6 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Created by piyush on 28/02/2018.
@@ -188,6 +189,13 @@ public class ImageUtils {
      * @param selectedImage Image URI
      * @return The resulted Bitmap after manipulation
      */
+
+
+
+
+
+
+
     private static Bitmap rotateImageIfRequired(Context context, Bitmap img, Uri selectedImage) throws IOException {
 
         InputStream input = context.getContentResolver().openInputStream(selectedImage);

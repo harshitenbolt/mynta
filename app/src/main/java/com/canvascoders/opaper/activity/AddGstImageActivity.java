@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
+import com.canvascoders.opaper.Beans.SubmitImageResponse.SubmitImageResponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.Screenshot.DragRectView;
 import com.canvascoders.opaper.Screenshot.Screenshot;
@@ -65,6 +66,7 @@ public class AddGstImageActivity extends AppCompatActivity implements View.OnCli
     ProgressDialog mProgressDialog;
     SessionManager sessionManager;
     ImageView ivBack;
+    String attachment = "";
     private String panImagepath = "", imagecamera = "", identityType = "", identityEmail = "", identityCallbackUrl = "", identityAccessToken = "", identityID = "", identityPatronId = "";
 
     @Override
@@ -74,7 +76,7 @@ public class AddGstImageActivity extends AppCompatActivity implements View.OnCli
         requestPermissionHandler = new RequestPermissionHandler();
         mProgressDialog = new ProgressDialog(this);
         str_process_id = getIntent().getStringExtra("data");
-       // store_name = getIntent().getStringExtra("store_name");
+        // store_name = getIntent().getStringExtra("store_name");
         sessionManager = new SessionManager(this);
 
         init();
@@ -153,15 +155,9 @@ public class AddGstImageActivity extends AppCompatActivity implements View.OnCli
                 findViewById(R.id.llButton).setVisibility(View.GONE);
                 findViewById(R.id.tverror).setVisibility(View.GONE);
                 Bitmap bitmap = viewToBitmap(rvMainWithRect);
-                converted = getResizedBitmap(bitmap, 400);
-                Intent i = new Intent(AddGstImageActivity.this, GeneralSupportSubmitActivity.class);
-                i.putExtra("BitmapImage", converted);
-                i.putExtra(Constants.PARAM_SCREEN_NAME, "Add GST Image");
-                i.putExtra(Constants.KEY_PROCESS_ID, str_process_id);
-                //i.putExtra(Constants.KEY_INVOICE_NUM, invoice_num);
-                i.putExtra(Constants.KEY_NAME, "");
-               // i.putExtra(Constants.KEY_INVOICE_ID, invoice_id);
-                startActivity(i);
+                ApiCallSendImageSupport(bitmap);
+                //converted = getResizedBitmap(bitmap, 400);
+
             }
         });
         final DragRectView view = (DragRectView) findViewById(R.id.dragRect);
@@ -325,6 +321,51 @@ public class AddGstImageActivity extends AppCompatActivity implements View.OnCli
 
             }
         }
+
+    }
+
+
+    private void ApiCallSendImageSupport(Bitmap bitmap) {
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.show();
+
+        MultipartBody.Part attachment_part = null;
+
+
+        //Log.e("Id_done", "" + priority_id);
+
+        attachment = ImagePicker.getBitmapPath(bitmap, this);
+        File imagefile1 = new File(attachment);
+        attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(attachment)), imagefile1));
+        ApiClient.getClient().create(ApiInterface.class).submitSupportImage("Bearer " + sessionManager.getToken(), attachment_part).enqueue(new Callback<SubmitImageResponse>() {
+            @Override
+            public void onResponse(Call<SubmitImageResponse> call, Response<SubmitImageResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    SubmitImageResponse submitReportResponse = response.body();
+                    if (submitReportResponse.getResponseCode() == 200) {
+                        Toast.makeText(AddGstImageActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(AddGstImageActivity.this, GeneralSupportSubmitActivity.class);
+                        i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+                        i.putExtra(Constants.PARAM_SCREEN_NAME, "Add GST Image");
+                        i.putExtra(Constants.KEY_PROCESS_ID, str_process_id);
+                        //i.putExtra(Constants.KEY_INVOICE_NUM, invoice_num);
+                        i.putExtra(Constants.KEY_NAME, "");
+                        // i.putExtra(Constants.KEY_INVOICE_ID, invoice_id);
+                        startActivity(i);
+                        // finish();
+                    } else {
+                        Toast.makeText(AddGstImageActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+
+            }
+        });
 
     }
 

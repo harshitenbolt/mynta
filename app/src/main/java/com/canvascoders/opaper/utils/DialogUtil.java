@@ -2,53 +2,67 @@ package com.canvascoders.opaper.utils;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canvascoders.opaper.Beans.dc.DC;
+import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.activity.EditGSTActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.fragment.InfoFragment;
 import com.canvascoders.opaper.fragment.PanVerificationFragment;
 import com.canvascoders.opaper.helper.DialogListner;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DialogUtil {
     private static Dialog dialog;
     static Boolean selected = false;
-    public static EditText etDlName, etFathername, etDlDob, etDlNumber;
+    public static EditText etDlName, etFathername, etDlDob, etDlNumber,etCity,etState;
     private static SessionManager sessionManager;
     //pan widgets
     public static EditText etPanName, etStoreName, etPanFatherName, etPanNumber, etChequeNumber, etPayeeName, etIfscCode, etBankName, etBranchName, etBankAddress;
@@ -58,10 +72,14 @@ public class DialogUtil {
     public static EditText etVotername, etVoterFatherName, etVoterDateofBirth, etVoterIdNumber;
     public static LinearLayout llStoreDetails;
     Button btSubmit;
-    Context context;
+    static Context context;
+    static ProgressDialog progressDialog;
     ImageView ivClose;
+    public static Spinner dc;
+    private static ArrayList<String> dcLists = new ArrayList<>();
 
     static String order_type = "1";
+    private static final String TAG = "DialogUtil";
 
 
     public static void AdharDetail(Context mContext, String name, String year, String pincode, String udi, final DialogListner dialogInterface) {
@@ -224,9 +242,6 @@ public class DialogUtil {
         });
         dialog.show();
     }
-
-
-
 
 
     public static void GSTDetails(Context mContext, String name, String id, String fathername, String birthdate, final DialogListner dialogInterface) {
@@ -958,6 +973,177 @@ public class DialogUtil {
     }
 
 
+    public static void addressDetails(Context mContext, String shopnumber, String streetname, String landmark, String pincode, String city, String state, final DialogListner dialogInterface) {
+
+        ImageView ivClose;
+        CheckBox cbMain;
+        Button btSubmit;
+        EditText etShopNo, etStreetName, etLandmark, etPincode;
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_gst_detail);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
+
+        etShopNo = dialog.findViewById(R.id.etShopHouseNo);
+        etStreetName = dialog.findViewById(R.id.etStreetName);
+        etLandmark = dialog.findViewById(R.id.etLandmark);
+        etPincode = dialog.findViewById(R.id.etStorePincode);
+        etCity = dialog.findViewById(R.id.etStoreCity);
+        etState = dialog.findViewById(R.id.etStoreState);
+        cbMain = dialog.findViewById(R.id.cbAgreeTC);
+        ivClose = dialog.findViewById(R.id.ivClose);
+        dc = dialog.findViewById(R.id.dc);
+        etShopNo.setText(shopnumber);
+        etStreetName.setText(streetname);
+        etLandmark.setText(landmark);
+        etPincode.setText(pincode);
+        etCity.setText(city);
+        etState.setText(state);
+        etPincode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() == 6) {
+
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        addDC(s.toString());
+                    } else {
+                        Constants.ShowNoInternet(mContext);
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        btSubmit = dialog.findViewById(R.id.btSubmitChequeDetail);
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (validation(v)) {
+                                                //dialog.dismiss();
+                                                dialogInterface.onClickChequeDetails(etShopNo.getText().toString(), etStreetName.getText().toString(), etLandmark.getText().toString(), etPincode.getText().toString(), etCity.getText().toString(), etState.getText().toString());
+                                            }
+                                        }
+
+                                        private boolean validation(View v) {
+                                            if (etShopNo.getText().toString().equalsIgnoreCase("")) {
+                                                etShopNo.setError("Provide Shop Number");
+                                                etShopNo.requestFocus();
+                                                return false;
+                                            }
+                                            if (etStreetName.getText().toString().equalsIgnoreCase("")) {
+                                                etStreetName.setError("Provide Street name");
+                                                etStreetName.requestFocus();
+                                                return false;
+                                            }
+                                            if (etLandmark.getText().toString().equalsIgnoreCase("")) {
+                                                etLandmark.setError("Provide Landmark");
+                                                etLandmark.requestFocus();
+                                                return false;
+                                            }
+                                            if (etPincode.getText().toString().equalsIgnoreCase("")) {
+                                                etPincode.setError("Provide Pincode");
+                                                etPincode.requestFocus();
+                                                return false;
+                                            }
+                                            if (etBankAddress.getText().toString().equalsIgnoreCase("")) {
+                                                etBankAddress.setError("Provide Bank Adress");
+                                                etBankAddress.requestFocus();
+                                                return false;
+                                            }
+                                            if (etBranchName.getText().toString().equalsIgnoreCase("")) {
+                                                etBranchName.setError("Provide Branch Name");
+                                                etBranchName.requestFocus();
+                                                return false;
+                                            }
+                                            if (!cbMain.isChecked()) {
+                                                cbMain.setError("Please verify all details with physical evidence.");
+                                                //showMSG(false, "Please verify all details with physical evidence.");
+                                                return false;
+                                            }
+                                            return true;
+                                        }
+                                    }
+        );
+
+
+        dialog.show();
+    }
+
+    private static void addDC(String pcode) {
+        // state is DC and DC is state
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Please wait...");
+        progressDialog.setCancelable(false);
+        dcLists.clear();
+        progressDialog.show();
+
+        JsonObject user = new JsonObject();
+        user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
+        user.addProperty(Constants.PARAM_PINCODE, pcode);
+        ApiClient.getClient().create(ApiInterface.class).getDC("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetDC>() {
+            @Override
+            public void onResponse(Call<GetDC> call, Response<GetDC> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetDC getUserDetails = response.body();
+
+                    if (getUserDetails.getResponseCode() == 200) {
+
+                        for (int i = 0; i < getUserDetails.getData().size(); i++) {
+                            for (DC dc : getUserDetails.getData().get(i).getDc()) {
+                                dcLists.add(dc.getDc());
+                            }
+                            etCity.setText(getUserDetails.getData().get(i).getState());
+                            etState.setText(getUserDetails.getData().get(i).getCity());
+                        }
+
+
+                        CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(context, android.R.layout.simple_spinner_item, dcLists);
+                        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        dc.setAdapter(spinnerArrayAdapter);
+                        dc.setSelection(0);
+
+                    } else if (getUserDetails.getResponseCode() == 405) {
+                        sessionManager.logoutUser(context);
+                    } else {
+                        Toast.makeText(context, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetDC> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(context, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
     public boolean validation(String type) {
         return true;
     }
@@ -1054,4 +1240,21 @@ public class DialogUtil {
     }
 
 
+    static class CustomAdapter<T> extends ArrayAdapter<T> {
+        public CustomAdapter(Context context, int textViewResourceId,
+                             List<T> objects) {
+            super(context, textViewResourceId, objects);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+            if (view instanceof TextView) {
+                ((TextView) view).setTextSize(12);
+                Typeface typeface = ResourcesCompat.getFont(parent.getContext(), R.font.rb_regular);
+                ((TextView) view).setTypeface(typeface);
+            }
+            return view;
+        }
+    }
 }

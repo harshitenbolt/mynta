@@ -45,6 +45,7 @@ import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResponse;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.Result;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
+import com.canvascoders.opaper.Beans.SubmitImageResponse.SubmitImageResponse;
 import com.canvascoders.opaper.Beans.VendorDetailResponse.VendorDetailResponse;
 import com.canvascoders.opaper.Beans.VendorList;
 
@@ -56,6 +57,7 @@ import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.ChequeDataListingFragment;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -65,6 +67,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -72,6 +75,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,7 +97,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     String isUpdationRequired, allowDEdit, allowEditDelBoy, allowGSTIMAGE;
     SessionManager sessionManager;
     TextView tvAgreementExpirationDate;
-    String process_id;
+    String process_id, attachment = "";
     DocumentListAdapter documentListAdapter;
     Context mcontext;
     private static Double mDefaultLatitude = 12.972442;
@@ -445,11 +451,9 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                 findViewById(R.id.llButton).setVisibility(View.GONE);
                 findViewById(R.id.tverror).setVisibility(View.GONE);
                 Bitmap bitmap = viewToBitmap(rvMainWithRect);
+                ApiCallSendImageSupport(bitmap);
                 converted = getResizedBitmap(bitmap, 400);
-                Intent i = new Intent(VendorDetailActivity.this, GeneralSupportSubmitActivity.class);
-                i.putExtra("BitmapImage", converted);
-                i.putExtra(Constants.PARAM_SCREEN_NAME, "VendorProfile");
-                startActivity(i);
+
                 findViewById(R.id.rvCaptured).setVisibility(View.GONE);
                 findViewById(R.id.rvMain).setVisibility(View.VISIBLE);
                 findViewById(R.id.llButton).setVisibility(View.VISIBLE);
@@ -636,7 +640,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             public void onClick(View v) {
                 Intent myIntent = new Intent(VendorDetailActivity.this, com.canvascoders.opaper.activity.AddGstImageActivity.class);
                 myIntent.putExtra("data", String.valueOf(vendor.getProccessId()));
-               // myIntent.putExtra("store_name", vendor.getStoreName());
+                // myIntent.putExtra("store_name", vendor.getStoreName());
                 startActivity(myIntent);
             }
         });
@@ -818,6 +822,54 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             width = (int) (height * bitmapRatio);
         }
         return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+
+    private void ApiCallSendImageSupport(Bitmap bitmap) {
+        mProgress.setMessage("Please wait...");
+        mProgress.show();
+
+        MultipartBody.Part attachment_part = null;
+
+
+        //Log.e("Id_done", "" + priority_id);
+
+        attachment = ImagePicker.getBitmapPath(bitmap, this);
+        File imagefile1 = new File(attachment);
+        attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(attachment)), imagefile1));
+        ApiClient.getClient().create(ApiInterface.class).submitSupportImage("Bearer " + sessionManager.getToken(), attachment_part).enqueue(new Callback<SubmitImageResponse>() {
+            @Override
+            public void onResponse(Call<SubmitImageResponse> call, Response<SubmitImageResponse> response) {
+                mProgress.dismiss();
+                if (response.isSuccessful()) {
+                    SubmitImageResponse submitReportResponse = response.body();
+                    if (submitReportResponse.getResponseCode() == 200) {
+                        Toast.makeText(VendorDetailActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+                        /*Intent i = new Intent(VendorDetailActivity.this, GeneralSupportSubmitActivity.class);
+                        i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+
+                        i.putExtra(Constants.PARAM_SCREEN_NAME, "DashBoard");
+                        startActivity(i);*/
+                        Intent i = new Intent(VendorDetailActivity.this, GeneralSupportSubmitActivity.class);
+                        i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+                        i.putExtra(Constants.PARAM_SCREEN_NAME, "VendorProfile");
+                        startActivity(i);
+
+
+                        // finish();
+                    } else {
+                        Toast.makeText(VendorDetailActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
+                mProgress.dismiss();
+
+            }
+        });
+
     }
 
 

@@ -556,6 +556,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                             btPauseTask.setText("PAUSE TASK");
                             btStartTask.setVisibility(View.VISIBLE);
                             btPauseTask.setVisibility(View.VISIBLE);
+                            btGotoScreen.setVisibility(View.VISIBLE);
                             isResume = false;
                         }
 

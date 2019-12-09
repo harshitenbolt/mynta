@@ -69,7 +69,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
     private static Dialog dialog;
     ProgressDialog mPogress;
     String s = "1";
-    String proccess_id="";
+    String proccess_id = "";
     String alterationselected = "";
     private ArrayList<MensaAlteration> mensaalterationList = new ArrayList<>();
 
@@ -79,7 +79,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
         setContentView(R.layout.activity_edit_rate_while_resig_agree);
         sessionManager = new SessionManager(this);
         //vendor = (VendorList) getIntent().getSerializableExtra("data");
-        processId =getIntent().getStringExtra("data");
+        processId = getIntent().getStringExtra("data");
         rateTypeBeans = new ArrayList<>();
         ivBack = findViewById(R.id.iv_back_process);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +181,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
                                     JSONArray rateJsonArray = jsonObject.getJSONArray("data");
 
 
-                                    JSONArray result = jsonObject.getJSONArray("Mensa - Alteration");
+                                    JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
 
                                  /* for (int i = 0; i < result.length(); i++) {
                                             JSONObject o = result.getJSONObject(i);
@@ -196,8 +196,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
                                     Map<String, String> yourHashMap = new Gson().fromJson(result.toString(), HashMap.class);
 
 
-
-                                    Log.e("Found Stores", "" + rateJsonArray.length());
+                                    Log.e("Found_Stores", "" + yourHashMap.toString());
                                     ArrayList<StoreTypeBean> tempList = new ArrayList<>();
                                     boolean isSecondTime = false;
                                     for (int i = 0; i < rateJsonArray.length(); i++) {

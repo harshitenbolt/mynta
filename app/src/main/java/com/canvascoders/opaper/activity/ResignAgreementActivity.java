@@ -39,6 +39,7 @@ import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ApprovalRateDetai
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.BasicDetailRateDetail;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ResignAgreeDetailResponse;
 import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResponse;
+import com.canvascoders.opaper.Beans.SubmitImageResponse.SubmitImageResponse;
 import com.canvascoders.opaper.Beans.SubmitPopValue;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
@@ -52,17 +53,20 @@ import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -94,7 +98,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     List<ApprovalRateDetail> approvalRateDetails = new ArrayList<>();
     View viewSeperate;
     TextView tvPending, tvApprove;
-
+    String attachment="";
     List<ApprovalRateDetail> approvedList = new ArrayList<>();
     List<ApprovalRateDetail> approvalRateUnderPending = new ArrayList<>();
     CurrentRateListAdapter currentRateListAdapter;
@@ -258,11 +262,9 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
                 findViewById(R.id.llButton).setVisibility(View.GONE);
                 findViewById(R.id.tverror).setVisibility(View.GONE);
                 Bitmap bitmap = viewToBitmap(rvMainWithRect);
+                ApiCallSendImageSupport(bitmap);
                 converted = getResizedBitmap(bitmap, 400);
-                Intent i = new Intent(ResignAgreementActivity.this, GeneralSupportSubmitActivity.class);
-                i.putExtra("BitmapImage", converted);
-                i.putExtra(Constants.PARAM_SCREEN_NAME, "ResignAgreement");
-                startActivity(i);
+
                 findViewById(R.id.rvCaptured).setVisibility(View.GONE);
                 findViewById(R.id.rvMain).setVisibility(View.VISIBLE);
                 findViewById(R.id.llButton).setVisibility(View.VISIBLE);
@@ -704,5 +706,55 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
             }
         }
+    }
+
+
+
+    private void ApiCallSendImageSupport(Bitmap bitmap) {
+        progressDialog.setMessage("Please wait...");
+        progressDialog.show();
+
+        MultipartBody.Part attachment_part = null;
+
+
+        //Log.e("Id_done", "" + priority_id);
+
+        attachment = ImagePicker.getBitmapPath(bitmap, this);
+        File imagefile1 = new File(attachment);
+        attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(attachment)), imagefile1));
+        ApiClient.getClient().create(ApiInterface.class).submitSupportImage("Bearer " + sessionManager.getToken(), attachment_part).enqueue(new Callback<SubmitImageResponse>() {
+            @Override
+            public void onResponse(Call<SubmitImageResponse> call, retrofit2.Response<SubmitImageResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    SubmitImageResponse submitReportResponse = response.body();
+                    if (submitReportResponse.getResponseCode() == 200) {
+                        Toast.makeText(ResignAgreementActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+                        /*Intent i = new Intent(ResignAgreementActivity.this, GeneralSupportSubmitActivity.class);
+                        i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+
+                        i.putExtra(Constants.PARAM_SCREEN_NAME, "DashBoard");
+                        startActivity(i);*/
+
+
+                        Intent i = new Intent(ResignAgreementActivity.this, GeneralSupportSubmitActivity.class);
+                        i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+                        i.putExtra(Constants.PARAM_SCREEN_NAME, "ResignAgreement");
+                        startActivity(i);
+
+                        // finish();
+                    } else {
+                        Toast.makeText(ResignAgreementActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
+                progressDialog.dismiss();
+
+            }
+        });
+
     }
 }

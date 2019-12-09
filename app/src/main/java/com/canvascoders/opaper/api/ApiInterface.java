@@ -39,6 +39,7 @@ import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
 import com.canvascoders.opaper.Beans.SendInvoiceEsignResponse.SendInvoiceLinkresponse;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
 import com.canvascoders.opaper.Beans.StartTaskResponse.StartTaskResponse;
+import com.canvascoders.opaper.Beans.SubmitImageResponse.SubmitImageResponse;
 import com.canvascoders.opaper.Beans.SubmitReportResponse.SubmitReportResponse;
 import com.canvascoders.opaper.Beans.SupportDetailResponse.SupportDetailResponse;
 import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
@@ -285,6 +286,11 @@ public interface ApiInterface {
                                          @Part MultipartBody.Part pancard);
 
 
+
+    @Multipart
+    @POST("support-attachment-save")
+    Call<SubmitImageResponse> submitSupportImage(@Header("Authorization") String token, @Part MultipartBody.Part pancard);
+
     @Multipart
     @POST("update-pan-details")
     Call<UpdatePancardResponse> updatePanDetails(@Header("Authorization") String token, @PartMap() Map<String, String> data,
@@ -485,8 +491,7 @@ public interface ApiInterface {
 
     @Multipart
     @POST("general-support")
-    Call<GeneralSupportResponse> generalSupportResponse(@Header("Authorization") String token, @PartMap() Map<String, String> data,
-                                                        @Part MultipartBody.Part attachment);
+    Call<GeneralSupportResponse> generalSupportResponse(@Header("Authorization") String token, @PartMap() Map<String, String> data);
 
 
 /*

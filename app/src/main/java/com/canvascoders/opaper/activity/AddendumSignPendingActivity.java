@@ -1,5 +1,6 @@
 package com.canvascoders.opaper.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.ResendOTPResponse.ResendOTPResponse;
+import com.canvascoders.opaper.Beans.SubmitImageResponse.SubmitImageResponse;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.Screenshot.DragRectView;
@@ -27,13 +29,19 @@ import com.canvascoders.opaper.Screenshot.Screenshot;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.SessionManager;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddendumSignPendingActivity extends AppCompatActivity implements View.OnClickListener {
     TextView tvTitle, tvMessage, tvSendLink, tvStatus, tvCounts, tvLastSigned;
@@ -49,11 +57,15 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
     FrameLayout flImage;
     RelativeLayout rvMain;
     Button ivSelect;
+    ProgressDialog progressDialog;
+    String attachment="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin_pending_screen);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
         init();
     }
 
@@ -152,11 +164,9 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
                 findViewById(R.id.llButton).setVisibility(View.GONE);
                 findViewById(R.id.tverror).setVisibility(View.GONE);
                 Bitmap bitmap = viewToBitmap(rvMainWithRect);
-                converted = getResizedBitmap(bitmap, 400);
-                Intent i = new Intent(AddendumSignPendingActivity.this, GeneralSupportSubmitActivity.class);
-                i.putExtra("BitmapImage", converted);
-                i.putExtra(Constants.PARAM_SCREEN_NAME, "Addendum");
-                startActivity(i);
+                ApiCallSendImageSupport(bitmap);
+               // converted = getResizedBitmap(bitmap, 400);
+
                 findViewById(R.id.rvCaptured).setVisibility(View.GONE);
                 findViewById(R.id.rvMain).setVisibility(View.VISIBLE);
                 findViewById(R.id.llButton).setVisibility(View.VISIBLE);
@@ -167,6 +177,51 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
 
 
     }
+
+
+    private void ApiCallSendImageSupport(Bitmap bitmap) {
+        progressDialog.setMessage("Please wait...");
+        progressDialog.show();
+
+        MultipartBody.Part attachment_part = null;
+
+
+        //Log.e("Id_done", "" + priority_id);
+
+        attachment = ImagePicker.getBitmapPath(bitmap, this);
+        File imagefile1 = new File(attachment);
+        attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(attachment)), imagefile1));
+        ApiClient.getClient().create(ApiInterface.class).submitSupportImage("Bearer " + sessionManager.getToken(), attachment_part).enqueue(new Callback<SubmitImageResponse>() {
+            @Override
+            public void onResponse(Call<SubmitImageResponse> call, Response<SubmitImageResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    SubmitImageResponse submitReportResponse = response.body();
+                    if (submitReportResponse.getResponseCode() == 200) {
+                        Toast.makeText(AddendumSignPendingActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+
+                        Intent i = new Intent(AddendumSignPendingActivity.this, GeneralSupportSubmitActivity.class);
+                        i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+                        i.putExtra(Constants.PARAM_SCREEN_NAME, "Addendum");
+                        startActivity(i);
+
+
+                        // finish();
+                    } else {
+                        Toast.makeText(AddendumSignPendingActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
+                progressDialog.dismiss();
+
+            }
+        });
+
+    }
+
 
     @Override
 
