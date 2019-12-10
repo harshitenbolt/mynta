@@ -174,7 +174,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_gst);
 
-       // vendor = (VendorList) getIntent().getSerializableExtra("data");
+        // vendor = (VendorList) getIntent().getSerializableExtra("data");
         str_process_id = getIntent().getStringExtra("data");
         Log.e("process_id", str_process_id);
         progressDialog = new ProgressDialog(this);
@@ -870,6 +870,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
 
                                 }
+
+                                @Override
+                                public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                                }
                             });
                            /* edit_ac_no.setText(accountNumber);
                             edit_ifsc.setText(ifscCode);
@@ -913,6 +918,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                 }
 
                                 //    storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
                             }
                         });
                         Toast.makeText(EditGSTActivity.this, "There is some issue retrieving data from cheque image, Reselect image or enter manually", Toast.LENGTH_SHORT).show();
@@ -1454,6 +1464,21 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                             public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                             }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+                                // etCity.getText().toString(), etState.getText().toString(),""+dc.getSelectedItem());
+                                store_address = accName;
+                                store_address1 = payeename;
+                                store_address_landmark = ifsc;
+                                store_pincode = bankname;
+                                store_city = BranchName;
+                                store_state = bankAdress;
+                                addDC(store_pincode);
+                                store_full_address = store_address + " " + store_address1 + " " + store_address_landmark + " " + store_pincode + " " + store_city + " " + store_state;
+                                etStoreAddress.setText(store_full_address);
+
+                            }
                         });
 
 
@@ -1829,6 +1854,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                     public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                     }
+
+                                    @Override
+                                    public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                                    }
                                 });
 
                             } else {
@@ -1873,6 +1903,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
                                         @Override
                                         public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                        }
+
+                                        @Override
+                                        public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
 
                                         }
                                     });

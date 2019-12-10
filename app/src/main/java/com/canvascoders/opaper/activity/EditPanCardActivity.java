@@ -550,6 +550,11 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                     public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                     }
+
+                                    @Override
+                                    public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                                    }
                                 });
 
                             } else {
@@ -602,6 +607,11 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                                         @Override
                                         public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                        }
+
+                                        @Override
+                                        public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
 
                                         }
                                     });

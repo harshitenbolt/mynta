@@ -515,6 +515,11 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                                     Constants.ShowNoInternet(getActivity());
                                 }
                             }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                            }
                         });
 
 

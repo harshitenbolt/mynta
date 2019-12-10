@@ -62,7 +62,7 @@ import retrofit2.Response;
 public class DialogUtil {
     private static Dialog dialog;
     static Boolean selected = false;
-    public static EditText etDlName, etFathername, etDlDob, etDlNumber,etCity,etState;
+    public static EditText etDlName, etFathername, etDlDob, etDlNumber, etCity, etState;
     private static SessionManager sessionManager;
     //pan widgets
     public static EditText etPanName, etStoreName, etPanFatherName, etPanNumber, etChequeNumber, etPayeeName, etIfscCode, etBankName, etBranchName, etBankAddress;
@@ -1003,8 +1003,10 @@ public class DialogUtil {
         etStreetName.setText(streetname);
         etLandmark.setText(landmark);
         etPincode.setText(pincode);
-        etCity.setText(city);
+        addDC(mContext, pincode);
+        /*etCity.setText(city);
         etState.setText(state);
+        */
         etPincode.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1016,7 +1018,7 @@ public class DialogUtil {
                 if (s.length() == 6) {
 
                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                        addDC(s.toString());
+                        addDC(mContext, s.toString());
                     } else {
                         Constants.ShowNoInternet(mContext);
                     }
@@ -1038,13 +1040,14 @@ public class DialogUtil {
         });
 
 
-        btSubmit = dialog.findViewById(R.id.btSubmitChequeDetail);
+        btSubmit = dialog.findViewById(R.id.btSubmitGSTDetail);
         btSubmit.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
                                             if (validation(v)) {
                                                 //dialog.dismiss();
-                                                dialogInterface.onClickChequeDetails(etShopNo.getText().toString(), etStreetName.getText().toString(), etLandmark.getText().toString(), etPincode.getText().toString(), etCity.getText().toString(), etState.getText().toString());
+                                                dialogInterface.onClickAddressDetails(etShopNo.getText().toString(), etStreetName.getText().toString(), etLandmark.getText().toString(), etPincode.getText().toString(), etCity.getText().toString(), etState.getText().toString(),""+dc.getSelectedItem());
+                                                dialog.dismiss();
                                             }
                                         }
 
@@ -1069,14 +1072,14 @@ public class DialogUtil {
                                                 etPincode.requestFocus();
                                                 return false;
                                             }
-                                            if (etBankAddress.getText().toString().equalsIgnoreCase("")) {
-                                                etBankAddress.setError("Provide Bank Adress");
-                                                etBankAddress.requestFocus();
+                                            if (etCity.getText().toString().equalsIgnoreCase("")) {
+                                                etCity.setError("Provide City");
+                                                etCity.requestFocus();
                                                 return false;
                                             }
-                                            if (etBranchName.getText().toString().equalsIgnoreCase("")) {
-                                                etBranchName.setError("Provide Branch Name");
-                                                etBranchName.requestFocus();
+                                            if (etState.getText().toString().equalsIgnoreCase("")) {
+                                                etState.setError("Provide State Name");
+                                                etState.requestFocus();
                                                 return false;
                                             }
                                             if (!cbMain.isChecked()) {
@@ -1093,13 +1096,14 @@ public class DialogUtil {
         dialog.show();
     }
 
-    private static void addDC(String pcode) {
+    private static void addDC(Context context, String pcode) {
         // state is DC and DC is state
-        progressDialog = new ProgressDialog(context);
+        /*progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Please wait...");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(false);*/
+        sessionManager = new SessionManager(context);
         dcLists.clear();
-        progressDialog.show();
+        //progressDialog.show();
 
         JsonObject user = new JsonObject();
         user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
@@ -1107,7 +1111,7 @@ public class DialogUtil {
         ApiClient.getClient().create(ApiInterface.class).getDC("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetDC>() {
             @Override
             public void onResponse(Call<GetDC> call, Response<GetDC> response) {
-                progressDialog.dismiss();
+                // progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     GetDC getUserDetails = response.body();
 
@@ -1137,7 +1141,7 @@ public class DialogUtil {
 
             @Override
             public void onFailure(Call<GetDC> call, Throwable t) {
-                progressDialog.dismiss();
+//                progressDialog.dismiss();
                 Toast.makeText(context, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });

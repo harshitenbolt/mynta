@@ -7,7 +7,6 @@ package com.canvascoders.opaper.utils;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
@@ -24,20 +23,19 @@ import android.os.Parcelable;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 
 import android.util.Log;
 
+import androidx.core.content.FileProvider;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Author: Mario Velasco Casquero
@@ -51,7 +49,7 @@ public class ImagePicker {
     private static final String TEMP_IMAGE_NAME = "tempImage";
 
     public static int minWidthQuality = DEFAULT_MIN_WIDTH_QUALITY;
-
+    public static String filePath = "";
 
     public static Intent getGalleryIntenr(Context context) {
         Intent pickIntent = new Intent(Intent.ACTION_PICK,
@@ -71,51 +69,14 @@ public class ImagePicker {
         takePhotoIntent.putExtra("return-data", true);
         if (Build.VERSION.SDK_INT > 21) {
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile()));
+            Log.e("datadtaa", String.valueOf(FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile())));
         } else {
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile()));
+            Log.e("datadtaa", String.valueOf(Uri.fromFile(getTempFile())));
 
         }
         return takePhotoIntent;
     }
-
-
-
-
-
-
-  /*  private void saveImage(Context context,Bitmap bitmap, @NonNull String name) throws IOException {
-        boolean saved;
-        OutputStream fos;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ContentResolver resolver =context.getContentResolver();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/" + IMAGES_FOLDER_NAME);
-            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-            fos = resolver.openOutputStream(imageUri);
-        } else {
-            String imagesDir = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DCIM).toString() + File.separator + IMAGES_FOLDER_NAME;
-
-            File file = new File(imagesDir);
-
-            if (!file.exists()) {
-                file.mkdir();
-            }
-
-            File image = new File(imagesDir, name + ".png");
-            fos = new FileOutputStream(image)
-
-        }
-
-        saved = bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        fos.flush();
-        fos.close();
-    }
-*/
-
 
     public static Intent getPickImageIntent(Context context) {
         Intent chooserIntent = null;
@@ -196,25 +157,18 @@ public class ImagePicker {
             boolean isCamera = (imageReturnedIntent == null ||
                     imageReturnedIntent.getData() == null ||
                     imageReturnedIntent.getData().toString().contains(imageFile.toString()));
-            if (isCamera) {     /** CAMERA **/
-                if (Build.VERSION.SDK_INT > 21 /*&& Build.VERSION.SDK_INT < Build.VERSION_CODES.Q*/) { //use this if Lollipop_Mr1 (API 22) or above
+            if (isCamera) {
+                Log.e("build_versionn", String.valueOf(Build.VERSION.SDK_INT));/** CAMERA **/
+                if (Build.VERSION.SDK_INT > 21) { //use this if Lollipop_Mr1 (API 22) or above
                     selectedImage = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", imageFile);
-                }/* else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    ContentResolver resolver = context.getContentResolver();
-                    ContentValues contentValues = new ContentValues();
-                    *//*contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name);
-                    contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/png");
-                    contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "DCIM/" + IMAGES_FOLDER_NAME);*//*
-                    selectedImage = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-
-                }*/ else {
+                } else {
                     selectedImage = Uri.fromFile(imageFile);
                 }
             } else {            /** ALBUM **/
                 selectedImage = imageReturnedIntent.getData();
             }
             filePath = selectedImage.getPath();
-            Log.d(TAG, "selectedImage: " + selectedImage);
+            Log.d( "selectedImage:" , selectedImage.toString());
 
             bm = getImageResized(context, selectedImage);
             int rotation = getRotation(context, selectedImage, isCamera);
@@ -223,7 +177,7 @@ public class ImagePicker {
         return bm;
     }
 
-    public static String filePath = "";
+
 
     private static final String IMAGE_DIRECTORY_NAME = ".oppr";
 
@@ -303,7 +257,7 @@ public class ImagePicker {
             ContentResolver content = context.getContentResolver();
 
             content.notifyChange(imageFile, null);
-            ExifInterface exif = new ExifInterface(imageFile.getPath());
+            ExifInterface exif = new ExifInterface(Objects.requireNonNull(imageFile.getPath()));
             int orientation = exif.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_NORMAL);
@@ -357,7 +311,6 @@ public class ImagePicker {
     }
 
     public static String getImagePath() {
-        Log.e("file", filePath);
         return filePath;
     }
 
@@ -426,19 +379,18 @@ public class ImagePicker {
 
     public static String getBitmapPath(Bitmap bmp, Context mContext) {
         try {
+            //String path = MediaStore.Images.Media.insertImage(contentResolver, inImage, "Title",null);
             String path = MediaStore.Images.Media.insertImage(mContext.getContentResolver(), bmp, "Title", null);
             Uri tempUri = Uri.parse(path);
             Cursor cursor = mContext.getContentResolver().query(tempUri, null, null, null, null);
             cursor.moveToFirst();
             int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            Log.e("file", cursor.getString(idx));
             return cursor.getString(idx);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
     }
-
     public static Bitmap getBitmapFromURL(String src) {
         try {
             java.net.URL url = new java.net.URL(src);

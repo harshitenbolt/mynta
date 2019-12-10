@@ -285,6 +285,11 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                             public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                             }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                            }
                         });
 
 
@@ -319,6 +324,11 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
                             @Override
                             public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
 
                             }
                         });
@@ -751,6 +761,11 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                                     public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                     }
+
+                                    @Override
+                                    public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                                    }
                                 });
 
                             } else {
@@ -795,6 +810,11 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
                                         @Override
                                         public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                        }
+
+                                        @Override
+                                        public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
 
                                         }
                                     });

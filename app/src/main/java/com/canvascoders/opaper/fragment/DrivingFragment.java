@@ -182,6 +182,11 @@ public class DrivingFragment extends Fragment implements View.OnClickListener {
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                 }
+
+                                @Override
+                                public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                                }
                             });
 
 
@@ -214,6 +219,11 @@ public class DrivingFragment extends Fragment implements View.OnClickListener {
 
                                 @Override
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                }
+
+                                @Override
+                                public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
 
                                 }
                             });

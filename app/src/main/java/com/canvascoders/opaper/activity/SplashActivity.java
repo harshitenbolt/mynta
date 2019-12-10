@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.facedetectcamera.MainActivity;
+
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;

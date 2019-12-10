@@ -417,6 +417,11 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
                                     storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
                                 }
+
+                                @Override
+                                public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                                }
                             });
                            /* edit_ac_no.setText(accountNumber);
                             edit_ifsc.setText(ifscCode);
@@ -446,6 +451,11 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                             @Override
                             public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
                                 storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
                             }
                         });
                         Toast.makeText(getActivity(), "There is some issue retrieving data from cheque image, Reselect image or enter manually", Toast.LENGTH_SHORT).show();

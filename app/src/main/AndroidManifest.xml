@@ -18,6 +18,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
     <permission
         android:name="com.canvascoders.opaper.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
@@ -158,18 +161,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <activity
-            android:name=".facedetectcamera.activity.FaceDetectGrayActivity"
-            android:screenOrientation="fullSensor" />
-
-        <activity
-            android:name=".facedetectcamera.activity.FaceDetectRGBActivity"
-            android:screenOrientation="fullSensor" />
-
-        <activity
-            android:name=".facedetectcamera.activity.PhotoDetectActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
             android:name=".activity.TaskCompletedActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -244,10 +235,7 @@
             android:name=".activity.AddendumEsignActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".facedetectcamera.MainActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"

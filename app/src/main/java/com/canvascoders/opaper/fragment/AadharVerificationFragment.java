@@ -998,6 +998,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
                                 }
 
+                                @Override
+                                public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                                }
+
                             });
 
 
@@ -1022,6 +1027,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
                                 @Override
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                }
+
+                                @Override
+                                public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
 
                                 }
 
@@ -1114,6 +1124,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                 }
+
+                                @Override
+                                public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                                }
                             });
 
 
@@ -1141,6 +1156,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
                                 @Override
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                }
+
+                                @Override
+                                public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
 
                                 }
                             });
