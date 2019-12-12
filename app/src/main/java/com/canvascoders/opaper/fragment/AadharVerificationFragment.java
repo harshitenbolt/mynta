@@ -133,6 +133,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
     private boolean isAadhaarFrontSelected = false;
     private boolean isAadhaarBackSelected = false;
     Context mcontext;
+    EditNameDialogFragment editNameDialogFragment;
 
     private Spinner snDocType;
 
@@ -769,7 +770,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, str_process_id);
+                editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, str_process_id);
                 editNameDialogFragment.setCancelable(false);
                 editNameDialogFragment.show(getChildFragmentManager(), "fragment_edit_name");
             }
@@ -1346,6 +1347,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
                         if (getaadhardetail.getResponseCode() == 200) {
 
+                            if (editNameDialogFragment != null) {
+                                editNameDialogFragment.dismiss();
+                            }
+
+
                             File casted_image = new File(aadharImagepathFront);
                             if (casted_image.exists()) {
                                 casted_image.delete();
@@ -1392,13 +1398,21 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                     } else if (validation.getAdharCardBack() != null && validation.getAdharCardBack().length() > 0) {
                                         Toast.makeText(getActivity(), validation.getAdharCardBack(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getUid() != null && validation.getUid().length() > 0) {
-                                        Toast.makeText(getActivity(), validation.getUid(), Toast.LENGTH_LONG).show();
+                                        editNameDialogFragment.edit_anumber.setError(validation.getUid());
+                                        editNameDialogFragment.edit_anumber.requestFocus();
+                                        // Toast.makeText(getActivity(), validation.getUid(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getName() != null && validation.getName().length() > 0) {
-                                        Toast.makeText(getActivity(), validation.getName(), Toast.LENGTH_LONG).show();
+                                        editNameDialogFragment.edit_aname.setError(validation.getName());
+                                        editNameDialogFragment.edit_aname.requestFocus();
+                                        //Toast.makeText(getActivity(), validation.getName(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getYob() != null && validation.getYob().length() > 0) {
-                                        Toast.makeText(getActivity(), validation.getYob(), Toast.LENGTH_LONG).show();
+                                        editNameDialogFragment.edit_ayear.setError(validation.getYob());
+                                        editNameDialogFragment.edit_ayear.requestFocus();
+                                        //Toast.makeText(getActivity(), validation.getYob(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getPincode() != null && validation.getPincode().length() > 0) {
-                                        Toast.makeText(getActivity(), validation.getPincode(), Toast.LENGTH_LONG).show();
+                                        editNameDialogFragment.edit_apincode.setError(validation.getPincode());
+                                        editNameDialogFragment.edit_apincode.requestFocus();
+                                        // Toast.makeText(getActivity(), validation.getPincode(), Toast.LENGTH_LONG).show();
                                     } else {
                                         Toast.makeText(mcontext, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
                                     }

@@ -130,6 +130,7 @@ public class VendorListInProgressAdapter extends RecyclerView.Adapter<VendorList
             holder.tvStatuswhileOnBoarding.setTextColor(context.getResources().getColor(R.color.color11));
             tintViewDrawable(holder.tvStatuswhileOnBoarding, context.getResources().getColor(R.color.color11));
         }
+
     }
 
     private void tintViewDrawable(TextView view, int color) {

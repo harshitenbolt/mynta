@@ -19,6 +19,18 @@ public class Datum {
     @Expose
     private String screenMsg;
 
+    public boolean getIfEcom() {
+        return ifEcom;
+    }
+
+    public void setIfEcom(boolean ifEcom) {
+        this.ifEcom = ifEcom;
+    }
+
+    @SerializedName("if_ecom")
+    @Expose
+    private boolean ifEcom;
+
     public String getIfGst() {
         return ifGst;
     }

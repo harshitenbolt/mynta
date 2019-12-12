@@ -566,6 +566,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                             tvTimer.setTextColor(getResources().getColor(R.color.colorYellow));
                             btStartTask.setVisibility(View.GONE);
                             btPauseTask.setText("RESUME TASK");
+                            btGotoScreen.setVisibility(View.GONE);
                             isResume = true;
                         }
 
@@ -575,6 +576,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                             btStartTask.setVisibility(View.GONE);
                             btPauseTask.setVisibility(View.GONE);
                             llBottom.setVisibility(View.GONE);
+                            btGotoScreen.setVisibility(View.GONE);
                             llComplete.setVisibility(View.VISIBLE);
                             tvDueDate.setText(getTaskDetailsResponse.getData().get(0).getDueDate());
 

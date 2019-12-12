@@ -94,6 +94,7 @@
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:clickable="false"
+                        android:enabled="false"
                         android:hint="Store Pincode"
                         android:inputType="number"
                         android:maxLength="6"
@@ -106,6 +107,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:clickable="false"
                         android:enabled="false"
+                        android:editable="false"
                         android:hint="City Name"
                         android:textAllCaps="true" />
 
@@ -116,6 +118,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:clickable="false"
                         android:enabled="false"
+                        android:editable="false"
                         android:hint="State Name"
                         android:textAllCaps="true" />
 

@@ -69,6 +69,7 @@
                     android:id="@+id/edit_ayear"
                     style="@style/App_EditTextStyle"
                     android:inputType="number"
+                    android:maxLength="4"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:hint="Year of Birth" />
@@ -78,6 +79,7 @@
                     style="@style/App_EditTextStyle"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:maxLength="6"
                     android:inputType="number"
                     android:hint="Pincode" />
 
@@ -87,6 +89,7 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:inputType="number"
+                    android:maxLength="12"
                     android:hint="AADHAR Number" />
             </LinearLayout>
 

@@ -48,13 +48,14 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
     private String lattitude = "", longitude = "";
     GPSTracker gps;
     final int sdk = android.os.Build.VERSION.SDK_INT;
-    RelativeLayout rvGST;
+    RelativeLayout rvGST, rvECOM;
     private ImageView ivAgreeStatus, ivGstStatus, ivAssessStatus, ivNocStatus;
     private Boolean resend = false;
     private String TAG = "Process_info";
     ProgressDialog progressDialog;
     int pL, pT, pR, pB;
     LinearLayout llNoc, llAgreement, llGSt, llAssesment;
+    boolean main = true;
 
 
     @Override
@@ -95,6 +96,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
         btnResend = findViewById(R.id.btnResend);
         btnResend.setOnClickListener(this);
         rvGST = findViewById(R.id.rvGst);
+        rvECOM = findViewById(R.id.rvECOM);
         llAgreement = findViewById(R.id.llAgreement);
         llNoc = findViewById(R.id.llNoc);
         llGSt = findViewById(R.id.llGST);
@@ -201,6 +203,12 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                             startActivity(new Intent(ProcessInfoActivity.this, TaskCompletedActivity.class));
                         } else {
                             //  Constants.showAlert(tv_message.getRootView(), checkEsignResponse.getData().get(0).getScreenMsg(), true);
+                            if (checkEsignResponse.getData().get(0).getIfEcom()) {
+                                rvECOM.setVisibility(View.VISIBLE);
+                            } else {
+                                rvECOM.setVisibility(View.GONE);
+                            }
+
                             if (checkEsignResponse.getData().get(0).getIfGst() != null) {
                                 if (checkEsignResponse.getData().get(0).getIfGst().equalsIgnoreCase("no")) {
                                     rvGST.setVisibility(View.VISIBLE);
@@ -299,17 +307,17 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         }
 
-                                    } else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("Assessment Screen.")) {
+                                    } else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("Ecom Agreement Sign.")) {
                                         if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                                             ivAgreeStatus.setBackgroundDrawable(null);
                                             llAgreement.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llAgreement.setPadding(pL, pT, pR, pB);
-
-                                            ivNocStatus.setBackgroundDrawable(null);
+                                           // ivGstStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
+                                            ivNocStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
                                             llNoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llNoc.setPadding(pL, pT, pR, pB);
 
-                                            ivGstStatus.setBackgroundDrawable(null);
+                                            ivGstStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
                                             llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llGSt.setPadding(pL, pT, pR, pB);
 
@@ -322,11 +330,11 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             llAgreement.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llAgreement.setPadding(pL, pT, pR, pB);
 
-                                            ivNocStatus.setBackground(null);
+                                            ivNocStatus.setBackground(getResources().getDrawable(R.drawable.pending));
                                             llNoc.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llNoc.setPadding(pL, pT, pR, pB);
 
-                                            ivGstStatus.setBackground(null);
+                                            ivGstStatus.setBackground(getResources().getDrawable(R.drawable.pending));
                                             llGSt.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llGSt.setPadding(pL, pT, pR, pB);
 
@@ -434,17 +442,17 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         }
 
-                                    } else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("Assessment Screen.")) {
+                                    } else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("Ecom Agreement Sign.")) {
                                         if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                                             ivAgreeStatus.setBackgroundDrawable(null);
                                             llAgreement.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llAgreement.setPadding(pL, pT, pR, pB);
 
-                                            ivNocStatus.setBackgroundDrawable(null);
+                                            ivNocStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
                                             llNoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llNoc.setPadding(pL, pT, pR, pB);
 
-                                            ivGstStatus.setBackgroundDrawable(null);
+                                            ivGstStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
                                             llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llGSt.setPadding(pL, pT, pR, pB);
 
@@ -457,11 +465,11 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             llAgreement.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llAgreement.setPadding(pL, pT, pR, pB);
 
-                                            ivNocStatus.setBackground(null);
+                                            ivNocStatus.setBackground(getResources().getDrawable(R.drawable.pending));
                                             llNoc.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llNoc.setPadding(pL, pT, pR, pB);
 
-                                            ivGstStatus.setBackground(null);
+                                            ivGstStatus.setBackground(getResources().getDrawable(R.drawable.pending));
                                             llGSt.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llGSt.setPadding(pL, pT, pR, pB);
 
@@ -572,17 +580,17 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                         llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                     }
 
-                                } else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("Assessment Screen.")) {
+                                } else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("Ecom Agreement Sign.")) {
                                     if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                                         ivAgreeStatus.setBackgroundDrawable(null);
                                         llAgreement.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         llAgreement.setPadding(pL, pT, pR, pB);
 
-                                        ivNocStatus.setBackgroundDrawable(null);
+                                        ivNocStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
                                         llNoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         llNoc.setPadding(pL, pT, pR, pB);
 
-                                        ivGstStatus.setBackgroundDrawable(null);
+                                        ivGstStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
                                         llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         llGSt.setPadding(pL, pT, pR, pB);
 
@@ -595,11 +603,11 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                         llAgreement.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         llAgreement.setPadding(pL, pT, pR, pB);
 
-                                        ivNocStatus.setBackground(null);
+                                        ivNocStatus.setBackground(getResources().getDrawable(R.drawable.pending));
                                         llNoc.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         llNoc.setPadding(pL, pT, pR, pB);
 
-                                        ivGstStatus.setBackground(null);
+                                        ivGstStatus.setBackground(getResources().getDrawable(R.drawable.pending));
                                         llGSt.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         llGSt.setPadding(pL, pT, pR, pB);
 

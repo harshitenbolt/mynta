@@ -3,8 +3,10 @@ package com.canvascoders.opaper.fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -130,7 +132,7 @@ public class EditNameDialogFragment extends DialogFragment {
                             apiCallGetTrasactionId();
                         } else {
                             aadharVerificationFragment.storeAadhar();
-                            dismiss();
+                           // dismiss();
                         }
 
                         //
@@ -262,6 +264,12 @@ public class EditNameDialogFragment extends DialogFragment {
 
             return false;
         }
+        if (edit_anumber.getText().length() < 12) {
+            edit_anumber.requestFocus();
+            edit_anumber.setError("Please enter valid Aadhar number");
+
+            return false;
+        }
 
         return true;
     }
@@ -278,7 +286,7 @@ public class EditNameDialogFragment extends DialogFragment {
                 if (resultCode == ESIGN_SUCCESS) {
 
                     aadharVerificationFragment.storeAadhar();
-                    dismiss();
+                    //dismiss();
 
                     String responseString = data.getStringExtra(QT_RESULT); //handle
                 }
