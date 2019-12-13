@@ -852,6 +852,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                         startActivity(i);*/
                         Intent i = new Intent(VendorDetailActivity.this, GeneralSupportSubmitActivity.class);
                         i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+                        i.putExtra(Constants.PARAM_ATTACHMENT,submitReportResponse.getData().get(0).getAttachment_name());
                         i.putExtra(Constants.PARAM_SCREEN_NAME, "VendorProfile");
                         startActivity(i);
 

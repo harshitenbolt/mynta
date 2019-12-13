@@ -358,7 +358,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                         Toast.makeText(DashboardActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                         Intent i = new Intent(DashboardActivity.this, GeneralSupportSubmitActivity.class);
                         i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
-
+                        i.putExtra(Constants.PARAM_ATTACHMENT, submitReportResponse.getData().get(0).getAttachment_name());
                         i.putExtra(Constants.PARAM_SCREEN_NAME, "DashBoard");
                         startActivity(i);
 

@@ -130,6 +130,13 @@ public class VendorListInProgressAdapter extends RecyclerView.Adapter<VendorList
             holder.tvStatuswhileOnBoarding.setTextColor(context.getResources().getColor(R.color.color11));
             tintViewDrawable(holder.tvStatuswhileOnBoarding, context.getResources().getColor(R.color.color11));
         }
+        else if (!TextUtils.isEmpty(vendorLists.get(position).getEcomAgreeement()) && !vendorLists.get(position).getEcomAgreeement().equalsIgnoreCase("0")) {
+            holder.tvStatuswhileOnBoarding.setText(" " + vendorLists.get(position).getEcomAgreeement());
+            holder.tvStatuswhileOnBoarding.setTextColor(context.getResources().getColor(R.color.color10));
+            tintViewDrawable(holder.tvStatuswhileOnBoarding, context.getResources().getColor(R.color.color10));
+        }
+
+
 
     }
 

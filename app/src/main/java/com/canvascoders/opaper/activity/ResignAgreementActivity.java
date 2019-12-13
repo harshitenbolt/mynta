@@ -739,6 +739,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
                         Intent i = new Intent(ResignAgreementActivity.this, GeneralSupportSubmitActivity.class);
                         i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+                        i.putExtra(Constants.PARAM_ATTACHMENT,submitReportResponse.getData().get(0).getAttachment_name());
                         i.putExtra(Constants.PARAM_SCREEN_NAME, "ResignAgreement");
                         startActivity(i);
 

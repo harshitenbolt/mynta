@@ -202,6 +202,7 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
 
                         Intent i = new Intent(AddendumSignPendingActivity.this, GeneralSupportSubmitActivity.class);
                         i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
+                        i.putExtra(Constants.PARAM_ATTACHMENT,submitReportResponse.getData().get(0).getAttachment_name());
                         i.putExtra(Constants.PARAM_SCREEN_NAME, "Addendum");
                         startActivity(i);
 

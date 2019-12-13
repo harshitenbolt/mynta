@@ -18,7 +18,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <permission
@@ -38,7 +39,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".activity.AddGstImageActivity"
+        <activity
+            android:name=".activity.AddGstImageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
@@ -121,7 +123,7 @@
         <activity
             android:name=".activity.ChangeMobileOTPActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.ChangeMobileActivity"
             android:screenOrientation="portrait"
@@ -227,7 +229,7 @@
         <activity
             android:name=".activity.StoreTypeListingActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.AddendumSignPendingActivity"
             android:screenOrientation="portrait" />

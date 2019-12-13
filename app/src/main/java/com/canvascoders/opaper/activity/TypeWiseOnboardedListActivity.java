@@ -450,6 +450,7 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
                             vList.setAllowedit(vendorList.getAllowedit());
                             vList.setIsAddDeliveryBoy(vendorList.getIsAddDeliveryBoy());
                             vList.setAgreement(vendorList.getAgreement());
+                            vList.setEcomAgreeement(vendorList.getEcomAgreeement());
                             vList.setStoreAddress(vendorList.getStoreAddress());
                             vList.setAssessmentverify(vendorList.getAssessmentverify());
                             vList.setIsUpdateGst(vendorList.getIsUpdateGst());
@@ -626,6 +627,7 @@ public class TypeWiseOnboardedListActivity extends AppCompatActivity implements 
                             vList.setAllowedit(vendorList.getAllowedit());
                             vList.setIsAddDeliveryBoy(vendorList.getIsAddDeliveryBoy());
                             vList.setAgreement(vendorList.getAgreement());
+                            vList.setEcomAgreeement(vendorList.getEcomAgreeement());
                             page = 0;
                             page1 = 0;
                             vendorLists.add(vList);

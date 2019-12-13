@@ -254,7 +254,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             ivGstStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
                                             llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
 
-                                            ivAssessStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
+                                            ivAssessStatus.setBackgroundDrawable(null);
                                             llAssesment.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
 
                                         } else {
@@ -269,7 +269,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             ivGstStatus.setBackground(getResources().getDrawable(R.drawable.pending));
                                             llGSt.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
 
-                                            ivAssessStatus.setBackground(getResources().getDrawable(R.drawable.pending));
+                                            ivAssessStatus.setBackground(null);
                                             llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         }
 
@@ -287,7 +287,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
                                             llGSt.setPadding(pL, pT, pR, pB);
 
-                                            ivAssessStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
+                                            ivAssessStatus.setBackgroundDrawable(null);
                                             llAssesment.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
 
                                         } else {
@@ -303,7 +303,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             llGSt.setBackground(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
                                             llGSt.setPadding(pL, pT, pR, pB);
 
-                                            ivAssessStatus.setBackground(getResources().getDrawable(R.drawable.pending));
+                                            ivAssessStatus.setBackground(null);
                                             llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         }
 
@@ -389,7 +389,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             ivGstStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
                                             llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
 
-                                            ivAssessStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
+                                            ivAssessStatus.setBackgroundDrawable(null);
                                             llAssesment.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
 
                                         } else {
@@ -404,7 +404,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             ivGstStatus.setBackground(getResources().getDrawable(R.drawable.pending));
                                             llGSt.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
 
-                                            ivAssessStatus.setBackground(getResources().getDrawable(R.drawable.pending));
+                                            ivAssessStatus.setBackground(null);
                                             llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         }
 
@@ -422,7 +422,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
                                             llGSt.setPadding(pL, pT, pR, pB);
 
-                                            ivAssessStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
+                                            ivAssessStatus.setBackgroundDrawable(null);
                                             llAssesment.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
 
                                         } else {
@@ -438,7 +438,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             llGSt.setBackground(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
                                             llGSt.setPadding(pL, pT, pR, pB);
 
-                                            ivAssessStatus.setBackground(getResources().getDrawable(R.drawable.pending));
+                                            ivAssessStatus.setBackground(null);
                                             llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                         }
 
@@ -527,7 +527,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                         ivGstStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
                                         llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
 
-                                        ivAssessStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
+                                        ivAssessStatus.setBackgroundDrawable(null);
                                         llAssesment.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
 
                                     } else {
@@ -542,7 +542,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                         ivGstStatus.setBackground(getResources().getDrawable(R.drawable.pending));
                                         llGSt.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
 
-                                        ivAssessStatus.setBackground(getResources().getDrawable(R.drawable.pending));
+                                        ivAssessStatus.setBackground(null);
                                         llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                     }
 
@@ -560,7 +560,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                         llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
                                         llGSt.setPadding(pL, pT, pR, pB);
 
-                                        ivAssessStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
+                                        ivAssessStatus.setBackgroundDrawable(null);
                                         llAssesment.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
 
                                     } else {
@@ -576,7 +576,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                         llGSt.setBackground(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
                                         llGSt.setPadding(pL, pT, pR, pB);
 
-                                        ivAssessStatus.setBackground(getResources().getDrawable(R.drawable.pending));
+                                        ivAssessStatus.setBackground(null);
                                         llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
                                     }
 

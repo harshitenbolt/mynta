@@ -2,6 +2,7 @@ package com.canvascoders.opaper.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.NestedScrollView;
 
@@ -11,6 +12,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -78,6 +80,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.Manifest.permission.CALL_PHONE;
 import static com.canvascoders.opaper.utils.Constants.PARAM_TYPE;
 
 public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -207,7 +210,12 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tvMobile.getText().toString()));
-                startActivity(intent);
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(intent);
+                } else {
+                    requestPermissions(new String[]{CALL_PHONE}, 1);
+                }
+
             }
         });
 
@@ -216,7 +224,11 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + tvMobile.getText().toString()));
-                startActivity(intent);
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                    startActivity(intent);
+                } else {
+                    requestPermissions(new String[]{CALL_PHONE}, 1);
+                }
             }
         });
 

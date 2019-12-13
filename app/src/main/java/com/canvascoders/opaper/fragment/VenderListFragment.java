@@ -500,6 +500,7 @@ public class VenderListFragment extends Fragment implements SwipeRefreshLayout.O
                             vList.setAllowedit(vendorList.getAllowedit());
                             vList.setIsAddDeliveryBoy(vendorList.getIsAddDeliveryBoy());
                             vList.setAgreement(vendorList.getAgreement());
+                            vList.setEcomAgreeement(vendorList.getEcomAgreeement());
                             page = 0;
                             page1 = 0;
                             vendorLists.add(vList);
@@ -645,6 +646,7 @@ public class VenderListFragment extends Fragment implements SwipeRefreshLayout.O
                             vList.setAllowedit(vendorList.getAllowedit());
                             vList.setIsAddDeliveryBoy(vendorList.getIsAddDeliveryBoy());
                             vList.setAgreement(vendorList.getAgreement());
+                            vList.setEcomAgreeement(vendorList.getEcomAgreeement());
 
                             vendorLists.add(vList);
                             vendorLists1.add(vList);

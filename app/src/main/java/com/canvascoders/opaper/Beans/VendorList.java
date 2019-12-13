@@ -263,6 +263,18 @@ public class VendorList implements Serializable {
     @SerializedName("agreement")
     @Expose
     private String agreement;
+    @SerializedName("ecom_agreement")
+    @Expose
+    private String ecomAgreeement;
+
+    public String getEcomAgreeement() {
+        return ecomAgreeement;
+    }
+
+    public void setEcomAgreeement(String ecomAgreeement) {
+        this.ecomAgreeement = ecomAgreeement;
+    }
+
     @SerializedName("gstdeclaration")
     @Expose
     private String gstdeclaration;

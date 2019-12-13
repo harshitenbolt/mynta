@@ -348,6 +348,7 @@ public class AddGstImageActivity extends AppCompatActivity implements View.OnCli
                         Intent i = new Intent(AddGstImageActivity.this, GeneralSupportSubmitActivity.class);
                         i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
                         i.putExtra(Constants.PARAM_SCREEN_NAME, "Add GST Image");
+                        i.putExtra(Constants.PARAM_ATTACHMENT,submitReportResponse.getData().get(0).getAttachment_name());
                         i.putExtra(Constants.KEY_PROCESS_ID, str_process_id);
                         //i.putExtra(Constants.KEY_INVOICE_NUM, invoice_num);
                         i.putExtra(Constants.KEY_NAME, "");

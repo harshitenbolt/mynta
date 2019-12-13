@@ -49,7 +49,7 @@ import retrofit2.Response;
 public class GeneralSupportSubmitActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView ivBack;
-    private String ScreenName = "";
+    private String ScreenName = "", image_name = "";
     private SessionManager sessionManager;
     private ProgressDialog progressDialog;
     private ArrayList<String> subjectList = new ArrayList<>();
@@ -75,6 +75,7 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
         Intent intent = getIntent();
         bitmap = intent.getStringExtra("BitmapImage");
         ScreenName = intent.getStringExtra(Constants.PARAM_SCREEN_NAME);
+        image_name = intent.getStringExtra(Constants.PARAM_ATTACHMENT);
         initView();
     }
 
@@ -161,12 +162,12 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
         param.put(Constants.PARAM_DESCREPTION, etDescription.getText().toString());
         param.put(Constants.PARAM_SUBJECT_NAME, ScreenName);
         param.put(Constants.PARAM_PRIORITY, "" + priority_id);
-
+        param.put(Constants.PARAM_ATTACHMENT, image_name);
         Log.e("Id_done", "" + priority_id);
 
-       // attachment = ImagePicker.getBitmapPath(bitmap, this);
-      //  File imagefile1 = new File(attachment);
-       // attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(attachment)), imagefile1));
+        // attachment = ImagePicker.getBitmapPath(bitmap, this);
+        //  File imagefile1 = new File(attachment);
+        // attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(attachment)), imagefile1));
         ApiClient.getClient().create(ApiInterface.class).generalSupportResponse("Bearer " + sessionManager.getToken(), param).enqueue(new Callback<GeneralSupportResponse>() {
             @Override
             public void onResponse(Call<GeneralSupportResponse> call, Response<GeneralSupportResponse> response) {

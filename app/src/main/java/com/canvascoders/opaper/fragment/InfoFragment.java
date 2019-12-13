@@ -392,7 +392,9 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 } else {
                     isgsttn = "no";
                     edit_gstn.setHint("GSTN");
+                    edit_gstn.setText("");
                     llGst.setVisibility(View.GONE);
+                    gstPath = "";
                 }
             }
         });
@@ -1970,7 +1972,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             bundle.putString(Constants.PARAM_PINCODE, etStorePincode.getText().toString() + "");
             bundle.putString(Constants.PARAM_CITY, etStoreCity.getText().toString() + "");
             bundle.putString(Constants.PARAM_STATE, etStoreState.getText().toString() + "");
-         //   bundle.putString(Constants.PARAM_DC, dc.getSelectedItem().toString() + "");
+            //   bundle.putString(Constants.PARAM_DC, dc.getSelectedItem().toString() + "");
             bundle.putString(Constants.PARAM_ROUTE, etRoute.getText().toString() + "");
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             fragment.setArguments(bundle);

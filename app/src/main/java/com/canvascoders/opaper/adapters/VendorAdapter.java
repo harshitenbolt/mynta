@@ -164,6 +164,13 @@ public class VendorAdapter extends RecyclerView.Adapter implements Filterable {
                 itemHolder.txt_reason.setTextColor(mContext.getResources().getColor(R.color.color7));
                 tintViewDrawable(itemHolder.txt_reason, mContext.getResources().getColor(R.color.color7));
             }
+            else if (!TextUtils.isEmpty(vendorList.getEcomAgreeement()) && !vendorList.getEcomAgreeement().equalsIgnoreCase("0")) {
+                itemHolder.txt_reason.setText(" " + vendorList.getEcomAgreeement());
+                itemHolder.txt_reason.setTextColor(mContext.getResources().getColor(R.color.color9));
+                tintViewDrawable(itemHolder.txt_reason, mContext.getResources().getColor(R.color.color9));
+            }
+
+
 
 
             Mylogger.getInstance().Logit("img", vendorList.getShopImage());

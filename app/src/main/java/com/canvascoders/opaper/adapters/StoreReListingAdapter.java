@@ -1,5 +1,6 @@
 package com.canvascoders.opaper.adapters;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 
@@ -22,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -187,10 +189,16 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                                     str = TextUtils.join(",", dataRate);
                                     Log.e("itemlist", str);
                                     dialog.dismiss();
+                                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
+//Hide:
+                                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                                 } else {
                                     holder.check_box_store.setChecked(false);
                                     str = "";
                                     dialog.dismiss();
+                                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
+//Hide:
+                                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                                 }
                                 recyclerViewClickListener.SingleClick(str, position);
 

@@ -535,6 +535,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
                             vList.setAllowedit(vendorList.getAllowedit());
                             vList.setIsAddDeliveryBoy(vendorList.getIsAddDeliveryBoy());
                             vList.setAgreement(vendorList.getAgreement());
+                            vList.setEcomAgreeement(vendorList.getEcomAgreeement());
 
                             vendorLists.add(vList);
                             vendorLists1.add(vList);
@@ -696,6 +697,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
                             vList.setAllowedit(vendorList.getAllowedit());
                             vList.setIsAddDeliveryBoy(vendorList.getIsAddDeliveryBoy());
                             vList.setAgreement(vendorList.getAgreement());
+                            vList.setEcomAgreeement(vendorList.getEcomAgreeement());
                             page = 0;
                             page1 = 0;
                             vendorLists.add(vList);

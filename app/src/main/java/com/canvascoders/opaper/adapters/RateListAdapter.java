@@ -1,5 +1,6 @@
 package com.canvascoders.opaper.adapters;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -96,6 +98,45 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
         }
 
 
+        if (store.isSelected()) {
+            {
+                if (store.getIsApproved().equalsIgnoreCase("1")) {
+                    holder.check_box_store.setEnabled(false);
+                } else {
+                    holder.check_box_store.setEnabled(true);
+                    holder.check_box_store.setChecked(true);
+                    holder.edt_store_amount.setEnabled(true);
+                }
+            }
+        } else {
+            holder.check_box_store.setChecked(false);
+        }
+
+        holder.edt_store_amount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                try {
+                    float rate = Float.parseFloat(editable.toString());
+                    dataViews.get(position).setRate("" + rate);
+                } catch (Exception e) {
+                    e.printStackTrace();
+//                    Toast.makeText(mContext, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+
         holder.check_box_store.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +162,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                     holder.edt_store_amount.setHint("");
                     holder.edt_store_amount.setText("     ");
                     holder.edt_store_amount.setEnabled(false);
+                    holder.edt_store_amount.setFocusable(false);
                     holder.rvSeperateRight.setVisibility(View.GONE);
                     holder.vSeperate.setVisibility(View.GONE);
                     //dialogbox opeb
@@ -168,10 +210,17 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                                     str = TextUtils.join(",", dataRate);
                                     Log.e("itemlist", str);
                                     dialog.dismiss();
+                                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
+//Hide:
+                                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+
                                 } else {
                                     holder.check_box_store.setChecked(false);
                                     str = "";
                                     dialog.dismiss();
+                                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
+//Hide:
+                                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                                 }
                                 recyclerViewClickListener.SingleClick(str, position);
 
@@ -242,43 +291,6 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
         });
 
 
-        if (store.isSelected()) {
-            {
-                if (store.getIsApproved().equalsIgnoreCase("1")) {
-                    holder.check_box_store.setEnabled(false);
-                } else {
-                    holder.check_box_store.setEnabled(true);
-                    holder.check_box_store.setChecked(true);
-                    holder.edt_store_amount.setEnabled(true);
-                }
-            }
-        } else {
-            holder.check_box_store.setChecked(false);
-        }
-
-        holder.edt_store_amount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                try {
-                    float rate = Float.parseFloat(editable.toString());
-                    dataViews.get(position).setRate("" + rate);
-                } catch (Exception e) {
-                    e.printStackTrace();
-//                    Toast.makeText(mContext, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
         if (store.getStoreType().contains(Constants.CAC_STORE)) {
             holder.check_box_store.setChecked(false);
             holder.check_box_store.setEnabled(true);

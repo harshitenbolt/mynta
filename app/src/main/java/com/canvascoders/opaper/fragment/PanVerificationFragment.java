@@ -106,7 +106,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     private boolean isedit = false;
     public static final int CROPPED_IMAGE = 5333;
     View view;
-    String email="",storename="",ownername="",dateofbirth="",storeaddress="",storeaddress1="",storeaddresslandmark="",storeaddressPincode="",storeaddressCity="",storeaddressState="",dc="",route="";
+    String email = "", storename = "", ownername = "", dateofbirth = "", storeaddress = "", storeaddress1 = "", storeaddresslandmark = "", storeaddressPincode = "", storeaddressCity = "", storeaddressState = "", dc = "", route = "";
     String str_process_id, authUserID, authCreated, authID;
     private long authTTL;
     private TextView tvGoBack;
@@ -221,7 +221,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             storeaddressPincode = bundle.getString(Constants.PARAM_PINCODE);
             storeaddressCity = bundle.getString(Constants.PARAM_CITY);
             storeaddressState = bundle.getString(Constants.PARAM_STATE);
-            dc=bundle.getString(Constants.PARAM_DC);
+            dc = bundle.getString(Constants.PARAM_DC);
             route = bundle.getString(Constants.PARAM_ROUTE);
             if (is_edit != null) {
                 Log.e("isedit", is_edit);
@@ -771,7 +771,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                             } else {
                                 if (getPanDetailsResponse.getReselectImage() != null && getPanDetailsResponse.getReselectImage().equalsIgnoreCase("1")) {
                                     panImagepath = "";
-                                    Glide.with(getActivity()).load(panImagepath).into(ivPanImage);
+                                    Glide.with(getActivity()).load(panImagepath).placeholder(R.drawable.pancard).into(ivPanImage);
                                     isPanSelected = false;
                                     btn_pan_card_select.setVisibility(View.GONE);
                                     tvClickPan.setVisibility(View.VISIBLE);

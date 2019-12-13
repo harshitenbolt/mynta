@@ -578,7 +578,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
 
                                 } else {
-                                    Toast.makeText(getActivity(), chequeDetail.getStatus(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), chequeDetail.getResponse(), Toast.LENGTH_LONG).show();
                                 }
 
                                 // ErrorResponsePanCard errorResponsePanCard = response.body();
