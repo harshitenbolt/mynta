@@ -44,7 +44,7 @@ android {
         main.java.srcDirs += 'src/main/api9'
         main.java.srcDirs += 'src/main/api14'
         main.java.srcDirs += 'src/main/api21'
-        main.java.srcDirs += 'src/main/api23'
+        main.java.srcDirs += 'src/main/api23' 
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

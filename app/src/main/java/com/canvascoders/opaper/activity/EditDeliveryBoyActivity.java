@@ -9,11 +9,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -39,6 +41,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.Datum;
+import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
@@ -92,7 +95,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     String str_process_id;
     private ArrayList<String> dcLists = new ArrayList<>();
     private SessionManager sessionManager;
-    EditText etCurrentHouseNo, etCurrentStreet, etCurrentLandmark, etCurrentPincode, etCurrentCity, etCurrentState, etPerHouseNo, etPermStreet, etPerLandmark, etPerPincode, etPerCity, etPerState;
+    EditText etCurrentHouseNo, etOtp, etCurrentStreet, etCurrentLandmark, etCurrentPincode, etCurrentCity, etCurrentState, etPerHouseNo, etPermStreet, etPerLandmark, etPerPincode, etPerCity, etPerState;
 
     String[] select_language = {
             "English", "Assamese", "Bengali", "Gujarati", "Hindi",
@@ -102,8 +105,9 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     private TextView tvLanguage, dob;
     private CheckBox cbSame;
     private String isUpdate = "";
-
+    String otp = "";
     Datum datum;
+    Button btGetOtp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +152,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         etDrivingNumber.setText(datum.getDrivingLicenceNum());
         etVehicle = findViewById(R.id.etVehicleForDelivery);
         etVehicle.setText(datum.getVehicleForDelivery());
+        etOtp = findViewById(R.id.etOtp);
         dob = findViewById(R.id.tvDateofBirth);
         dob.setText(datum.getDrivingLicenceDob());
         dob.setOnClickListener(this);
@@ -218,6 +223,22 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         etCurrentState = findViewById(R.id.etCurrentState);
         etCurrentState.setText(datum.getCurrentAddressState());
         cbSame = findViewById(R.id.cbSameAsAbove);
+        btGetOtp = findViewById(R.id.btGetOtp);
+
+        btGetOtp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isValid()) {
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        APiCallCheckMobileNumber();
+                    } else {
+                        Constants.ShowNoInternet(EditDeliveryBoyActivity.this);
+                    }
+
+                }
+
+            }
+        });
 
         etPerHouseNo = findViewById(R.id.etPermShopNo);
         etPerHouseNo.setText(datum.getPermanentResidentialAddress());
@@ -283,8 +304,54 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     }
 
 
+    private boolean isValid() {
+        if (etPhoneNumber.getText().toString().equalsIgnoreCase("")) {
+            etPhoneNumber.setError("Please provide mobile number");
+            etPhoneNumber.requestFocus();
+            return false;
+        }
+        return true;
+    }
 
 
+    private void APiCallCheckMobileNumber() {
+        mProgressDialog.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.PHONE_NUMBER, etPhoneNumber.getText().toString());
+        // params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+
+
+        Call<SendOtpDelBoyresponse> call = ApiClient.getClient().create(ApiInterface.class).deliveryBoysSendOTP("Bearer " + sessionManager.getToken(), params);
+        call.enqueue(new Callback<SendOtpDelBoyresponse>() {
+            @Override
+            public void onResponse(Call<SendOtpDelBoyresponse> call, Response<SendOtpDelBoyresponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    SendOtpDelBoyresponse sendOtpDelBoyresponse = response.body();
+                    if (sendOtpDelBoyresponse.getResponseCode() == 200) {
+                        Toast.makeText(EditDeliveryBoyActivity.this, sendOtpDelBoyresponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        otp = sendOtpDelBoyresponse.getData().get(0).getOtp();
+                    } else {
+                        if (sendOtpDelBoyresponse.getResponseCode() == 400) {
+                            if (!sendOtpDelBoyresponse.getValidation().getPhoneNumber().equalsIgnoreCase("") && sendOtpDelBoyresponse.getValidation().getPhoneNumber() != null) {
+                                btGetOtp.setError(sendOtpDelBoyresponse.getValidation().getPhoneNumber());
+                                Toast.makeText(EditDeliveryBoyActivity.this, sendOtpDelBoyresponse.getValidation().getPhoneNumber(), Toast.LENGTH_SHORT).show();
+                                //btGetOtp.requestFocus();
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SendOtpDelBoyresponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+            }
+        });
+
+
+    }
    /* public static Bitmap getBitmapFromURL(String src) {
         try {
             java.net.URL url = new java.net.URL(src);
@@ -504,6 +571,18 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
             if (TextUtils.isEmpty(etRoute.getText().toString())) {
                 etRoute.requestFocus();
                 etRoute.setError("Provide Route");
+                // showMSG(false, "Provide Pincode");
+                return false;
+            }
+            if (TextUtils.isEmpty(etOtp.getText().toString())) {
+                etOtp.requestFocus();
+                etOtp.setError("Provide OTP");
+                // showMSG(false, "Provide Pincode");
+                return false;
+            }
+            if (!etOtp.getText().toString().equalsIgnoreCase(otp)) {
+                etOtp.requestFocus();
+                etOtp.setError("Provide Valid OTP");
                 // showMSG(false, "Provide Pincode");
                 return false;
             }

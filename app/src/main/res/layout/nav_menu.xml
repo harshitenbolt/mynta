@@ -1,291 +1,342 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/_15sdp"
     android:layout_marginTop="@dimen/_10sdp"
     android:clickable="true"
-    android:paddingBottom="@dimen/_35sdp"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/_35sdp">
 
     <LinearLayout
         android:id="@+id/llNavOnboardNewVendor"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <ImageView
             style="@style/smallImageSize"
             android:duplicateParentState="true"
-            android:src="@drawable/manuser"/>
+            android:src="@drawable/manuser" />
+
         <TextView
             style="@style/TextviewwithoutSize"
             android:layout_height="match_parent"
-            android:duplicateParentState="true"
-            android:textSize="@dimen/_10sdp"
-            android:clickable="false"
-            android:fontFamily="@font/montesemibold"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:text="ONBOARD NEW VENDOR"/>
+            android:clickable="false"
+            android:duplicateParentState="true"
+            android:fontFamily="@font/montesemibold"
+            android:text="ONBOARD NEW VENDOR"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
-        android:background="@color/mediumLightGrey"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="@dimen/_1sdp"
         android:layout_marginLeft="@dimen/_40sdp"
-        android:layout_height="@dimen/_1sdp"/>
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/mediumLightGrey" />
 
     <LinearLayout
         android:id="@+id/llNavLiveVendor"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <ImageView
             style="@style/smallImageSize"
             android:duplicateParentState="true"
-            android:src="@drawable/livevendors"/>
+            android:src="@drawable/livevendors" />
+
         <TextView
             style="@style/TextviewwithoutSize"
             android:layout_height="match_parent"
-            android:textSize="@dimen/_10sdp"
-            android:duplicateParentState="true"
-            android:clickable="false"
-            android:fontFamily="@font/montesemibold"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:text="LIVE VENDORS"/>
+            android:clickable="false"
+            android:duplicateParentState="true"
+            android:fontFamily="@font/montesemibold"
+            android:text="LIVE VENDORS"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
-        android:background="@color/mediumLightGrey"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="@dimen/_1sdp"
         android:layout_marginLeft="@dimen/_40sdp"
-        android:layout_height="@dimen/_1sdp"/>
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/mediumLightGrey" />
 
 
     <LinearLayout
         android:id="@+id/llNavInProgressVendor"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <ImageView
             style="@style/smallImageSize"
             android:duplicateParentState="true"
-            android:src="@drawable/inprogressvendors"
-            />
+            android:src="@drawable/inprogressvendors" />
+
         <TextView
             style="@style/TextviewwithoutSize"
-            android:clickable="false"
             android:layout_height="match_parent"
-            android:duplicateParentState="true"
-            android:textSize="@dimen/_10sdp"
-            android:fontFamily="@font/montesemibold"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:text="IN-PROGRESS VENDORS"/>
+            android:clickable="false"
+            android:duplicateParentState="true"
+            android:fontFamily="@font/montesemibold"
+            android:text="IN-PROGRESS VENDORS"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
-        android:background="@color/mediumLightGrey"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="@dimen/_1sdp"
         android:layout_marginLeft="@dimen/_40sdp"
-        android:layout_height="@dimen/_1sdp"/>
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/mediumLightGrey" />
 
 
     <LinearLayout
         android:id="@+id/llNavInvoice"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <ImageView
             style="@style/smallImageSize"
             android:duplicateParentState="true"
-            android:src="@drawable/invoices"
-            />
+            android:src="@drawable/invoices" />
+
         <TextView
             style="@style/TextviewwithoutSize"
             android:layout_height="match_parent"
-            android:duplicateParentState="true"
-            android:clickable="false"
-            android:textSize="@dimen/_10sdp"
-            android:fontFamily="@font/montesemibold"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:text="INVOICE"/>
+            android:clickable="false"
+            android:duplicateParentState="true"
+            android:fontFamily="@font/montesemibold"
+            android:text="INVOICE"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
-        android:background="@color/mediumLightGrey"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:visibility="gone"
+        android:layout_height="@dimen/_1sdp"
         android:layout_marginLeft="@dimen/_40sdp"
-        android:layout_height="@dimen/_1sdp"/>
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/mediumLightGrey"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/llNavGSTnote"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:visibility="gone"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal"
+        android:visibility="gone">
+
         <ImageView
             style="@style/smallImageSize"
-            android:src="@drawable/gst"
             android:duplicateParentState="true"
-            />
+            android:src="@drawable/gst" />
+
         <TextView
             style="@style/TextviewwithoutSize"
             android:layout_height="match_parent"
-            android:textSize="@dimen/_10sdp"
-            android:fontFamily="@font/montesemibold"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:clickable="false"
             android:duplicateParentState="true"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:text="GST INVOICE"/>
+            android:fontFamily="@font/montesemibold"
+            android:text="GST INVOICE"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
-        android:background="@color/mediumLightGrey"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:visibility="gone"
+        android:layout_height="@dimen/_1sdp"
         android:layout_marginLeft="@dimen/_40sdp"
-        android:layout_height="@dimen/_1sdp"/>
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/mediumLightGrey"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/llNavDebitNote"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:visibility="gone"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal"
+        android:visibility="gone">
+
         <ImageView
             style="@style/smallImageSize"
             android:duplicateParentState="true"
-            android:src="@drawable/creditcard"
-            />
+            android:src="@drawable/creditcard" />
+
         <TextView
             style="@style/TextviewwithoutSize"
-            android:duplicateParentState="true"
             android:layout_height="match_parent"
-            android:textSize="@dimen/_10sdp"
-            android:clickable="false"
-            android:fontFamily="@font/montesemibold"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:text="DEBIT NOTE"/>
+            android:clickable="false"
+            android:duplicateParentState="true"
+            android:fontFamily="@font/montesemibold"
+            android:text="DEBIT NOTE"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
-        android:background="@color/mediumLightGrey"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="@dimen/_1sdp"
         android:layout_marginLeft="@dimen/_40sdp"
-        android:layout_height="@dimen/_1sdp"/>
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/mediumLightGrey" />
 
     <LinearLayout
         android:id="@+id/llNavSuppors"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <ImageView
             style="@style/smallImageSize"
             android:duplicateParentState="true"
-            android:src="@drawable/support"
-            />
+            android:src="@drawable/support" />
+
         <TextView
             style="@style/TextviewwithoutSize"
             android:layout_height="match_parent"
-            android:textSize="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:clickable="false"
             android:duplicateParentState="true"
             android:fontFamily="@font/montesemibold"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:text="SUPPORTS"/>
+            android:text="SUPPORTS"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
-        android:background="@color/mediumLightGrey"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="@dimen/_1sdp"
         android:layout_marginLeft="@dimen/_40sdp"
-        android:layout_height="@dimen/_1sdp"/>
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/mediumLightGrey" />
 
 
     <LinearLayout
         android:id="@+id/llNavReports"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <ImageView
             style="@style/smallImageSize"
             android:duplicateParentState="true"
-            android:src="@drawable/reports"
-            />
+            android:src="@drawable/reports" />
+
         <TextView
             style="@style/TextviewwithoutSize"
             android:layout_height="match_parent"
-            android:textSize="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:clickable="false"
             android:duplicateParentState="true"
             android:fontFamily="@font/montesemibold"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:text="REPORT"/>
+            android:text="REPORT"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
-        android:background="@color/mediumLightGrey"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="@dimen/_1sdp"
         android:layout_marginLeft="@dimen/_40sdp"
-        android:layout_height="@dimen/_1sdp"/>
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/mediumLightGrey" />
 
     <LinearLayout
         android:id="@+id/llNavTask"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <ImageView
             style="@style/smallImageSize"
             android:duplicateParentState="true"
-            android:src="@drawable/agreement"
-            />
+            android:src="@drawable/agreement" />
+
         <TextView
             style="@style/TextviewwithoutSize"
             android:layout_height="match_parent"
-            android:textSize="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
             android:clickable="false"
             android:duplicateParentState="true"
             android:fontFamily="@font/montesemibold"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:text="TASKS"/>
+            android:text="TASKS"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
-        android:background="@color/mediumLightGrey"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_height="@dimen/_1sdp"
         android:layout_marginLeft="@dimen/_40sdp"
-        android:layout_height="@dimen/_1sdp"/>
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/mediumLightGrey" />
+
+    <LinearLayout
+        android:id="@+id/llNavAssessmnt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:orientation="horizontal">
+
+        <ImageView
+            style="@style/smallImageSize"
+            android:duplicateParentState="true"
+            android:src="@drawable/assessment" />
+
+        <TextView
+            style="@style/TextviewwithoutSize"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:clickable="false"
+            android:duplicateParentState="true"
+            android:fontFamily="@font/montesemibold"
+            android:text="ASSESSMENT "
+            android:textSize="@dimen/_10sdp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_marginLeft="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@color/mediumLightGrey" />
 
 
     <LinearLayout
         android:id="@+id/llNavLogout"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:orientation="horizontal">
+
         <ImageView
             style="@style/smallImageSize"
-            android:src="@drawable/logout"
             android:duplicateParentState="true"
-            />
+            android:src="@drawable/logout" />
+
         <TextView
             style="@style/TextviewwithoutSize"
             android:layout_height="match_parent"
-            android:textSize="@dimen/_10sdp"
-            android:clickable="false"
-            android:fontFamily="@font/montesemibold"
-            android:duplicateParentState="true"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:text="LOGOUT"/>
+            android:clickable="false"
+            android:duplicateParentState="true"
+            android:fontFamily="@font/montesemibold"
+            android:text="LOGOUT"
+            android:textSize="@dimen/_10sdp" />
     </LinearLayout>
 
 

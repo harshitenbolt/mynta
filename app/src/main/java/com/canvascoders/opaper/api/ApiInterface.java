@@ -37,6 +37,7 @@ import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResp
 import com.canvascoders.opaper.Beans.ResumeTaskListResponse.ResumeTaskListResponse;
 import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
 import com.canvascoders.opaper.Beans.SendInvoiceEsignResponse.SendInvoiceLinkresponse;
+import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
 import com.canvascoders.opaper.Beans.StartTaskResponse.StartTaskResponse;
 import com.canvascoders.opaper.Beans.SubmitImageResponse.SubmitImageResponse;
@@ -536,6 +537,13 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("resign-agreement-detail")
     Call<ResignAgreeDetailResponse> getDetailsResignAgreement(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+    @FormUrlEncoded
+    @POST("delivery-boys-verify")
+    Call<SendOtpDelBoyresponse> deliveryBoysSendOTP(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
 
 
     @FormUrlEncoded

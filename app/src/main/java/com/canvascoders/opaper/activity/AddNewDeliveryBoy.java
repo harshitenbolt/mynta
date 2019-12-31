@@ -13,8 +13,11 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.appcompat.widget.AppCompatCheckBox;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -39,6 +42,7 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
+import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
@@ -88,7 +92,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     String str_process_id;
     private ArrayList<String> dcLists = new ArrayList<>();
     private SessionManager sessionManager;
-    EditText etCurrentHouseNo, etCurrentStreet, etCurrentLandmark, etCurrentPincode, etCurrentCity, etCurrentState, etPerHouseNo, etPermStreet, etPerLandmark, etPerPincode, etPerCity, etPerState;
+    EditText etCurrentHouseNo, etOtp, etCurrentStreet, etCurrentLandmark, etCurrentPincode, etCurrentCity, etCurrentState, etPerHouseNo, etPermStreet, etPerLandmark, etPerPincode, etPerCity, etPerState;
 
     String[] select_language = {
             "English", "Assamese", "Bengali", "Gujarati", "Hindi",
@@ -98,6 +102,8 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     private TextView tvLanguage, dob;
     private CheckBox cbSame;
     private String isUpdate = "";
+    Button btGetOtp;
+    String otp = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,6 +165,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         llDrivingDetails = findViewById(R.id.llDrivingInformation);
 
         etCurrentHouseNo = findViewById(R.id.etCurrentShopNo);
+        etOtp = findViewById(R.id.etOtp);
         etCurrentStreet = findViewById(R.id.etCurrentStreet);
         etCurrentLandmark = findViewById(R.id.etCurrentLandmark);
         etCurrentPincode = findViewById(R.id.etCurrentPincode);
@@ -173,7 +180,22 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         etPerPincode = findViewById(R.id.etPerPincode);
         etPerCity = findViewById(R.id.etPerCity);
         etPerState = findViewById(R.id.etPerState);
+        btGetOtp = findViewById(R.id.btGetOtp);
 
+        btGetOtp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isValid()) {
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        APiCallCheckMobileNumber();
+                    } else {
+                        Constants.ShowNoInternet(AddNewDeliveryBoy.this);
+                    }
+
+                }
+
+            }
+        });
 
         etCurrentPincode.addTextChangedListener(new TextWatcher() {
             @Override
@@ -222,6 +244,53 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         });
 
         //ApiCallGetDc();
+    }
+
+    private boolean isValid() {
+        if (etPhoneNumber.getText().toString().equalsIgnoreCase("")) {
+            etPhoneNumber.setError("Please provide mobile number");
+            etPhoneNumber.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private void APiCallCheckMobileNumber() {
+        mProgressDialog.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.PHONE_NUMBER, etPhoneNumber.getText().toString());
+        // params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+
+
+        Call<SendOtpDelBoyresponse> call = ApiClient.getClient().create(ApiInterface.class).deliveryBoysSendOTP("Bearer " + sessionManager.getToken(), params);
+        call.enqueue(new Callback<SendOtpDelBoyresponse>() {
+            @Override
+            public void onResponse(Call<SendOtpDelBoyresponse> call, Response<SendOtpDelBoyresponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    SendOtpDelBoyresponse sendOtpDelBoyresponse = response.body();
+                    if (sendOtpDelBoyresponse.getResponseCode() == 200) {
+                        Toast.makeText(AddNewDeliveryBoy.this, sendOtpDelBoyresponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        otp = sendOtpDelBoyresponse.getData().get(0).getOtp();
+                    } else {
+                        if (sendOtpDelBoyresponse.getResponseCode() == 400) {
+                            if (!sendOtpDelBoyresponse.getValidation().getPhoneNumber().equalsIgnoreCase("") && sendOtpDelBoyresponse.getValidation().getPhoneNumber() != null) {
+                                btGetOtp.setError(sendOtpDelBoyresponse.getValidation().getPhoneNumber());
+                                btGetOtp.requestFocus();
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SendOtpDelBoyresponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+            }
+        });
+
+
     }
 
    /* private void ApiCallGetDc() {
@@ -458,21 +527,20 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         } else if (i1 == 2) {
             params.put(Constants.PARAM_CURRENT_RESIDENTIAL, currentAdress);
             params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
-            params.put(Constants.PARAM_CURRENT_ADDRESS,etCurrentHouseNo.getText().toString().trim());
+            params.put(Constants.PARAM_CURRENT_ADDRESS, etCurrentHouseNo.getText().toString().trim());
 
 
-
-            params.put(Constants.PARAM_CURRENT_ADDRESS1,etCurrentStreet.getText().toString().trim());
-            params.put(Constants.PARAM_CURRENT_ADDRESS_LANDMARK,etCurrentLandmark.getText().toString());
-            params.put(Constants.PARAM_CURRENT_ADDRESS_PINCODE,etCurrentPincode.getText().toString());
-            params.put(Constants.PARAM_CURRENT_ADDRESS_CITY,etCurrentCity.getText().toString().trim());
-            params.put(Constants.PARAM_CURRENT_ADDRESS_STATE,etCurrentState.getText().toString());
-            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS,etPerHouseNo.getText().toString());
-            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS1,etPermStreet.getText().toString());
-            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_LANDMARK,etPerLandmark.getText().toString());
-            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_PINCODE,etPerPincode.getText().toString());
-            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_CITY,etPerCity.getText().toString());
-            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_STATE,etPerState.getText().toString());
+            params.put(Constants.PARAM_CURRENT_ADDRESS1, etCurrentStreet.getText().toString().trim());
+            params.put(Constants.PARAM_CURRENT_ADDRESS_LANDMARK, etCurrentLandmark.getText().toString());
+            params.put(Constants.PARAM_CURRENT_ADDRESS_PINCODE, etCurrentPincode.getText().toString());
+            params.put(Constants.PARAM_CURRENT_ADDRESS_CITY, etCurrentCity.getText().toString().trim());
+            params.put(Constants.PARAM_CURRENT_ADDRESS_STATE, etCurrentState.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS, etPerHouseNo.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS1, etPermStreet.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_LANDMARK, etPerLandmark.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_PINCODE, etPerPincode.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_CITY, etPerCity.getText().toString());
+            params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_STATE, etPerState.getText().toString());
 
             params.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
             call = ApiClient.getClient().create(ApiInterface.class).DeliveryBoysDetailsValid2("Bearer " + sessionManager.getToken(), validationapiUrl, params);
@@ -735,18 +803,18 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         params.put(Constants.PARAM_CURRENT_RESIDENTIAL, currentAdress);
         params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
 
-        params.put(Constants.PARAM_CURRENT_ADDRESS,etCurrentHouseNo.getText().toString().trim());
-        params.put(Constants.PARAM_CURRENT_ADDRESS1,etCurrentStreet.getText().toString().trim());
-        params.put(Constants.PARAM_CURRENT_ADDRESS_LANDMARK,etCurrentLandmark.getText().toString());
-        params.put(Constants.PARAM_CURRENT_ADDRESS_PINCODE,etCurrentPincode.getText().toString());
-        params.put(Constants.PARAM_CURRENT_ADDRESS_CITY,etCurrentCity.getText().toString().trim());
-        params.put(Constants.PARAM_CURRENT_ADDRESS_STATE,etCurrentState.getText().toString());
-        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS,etPerHouseNo.getText().toString());
-        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS1,etPermStreet.getText().toString());
-        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_LANDMARK,etPerLandmark.getText().toString());
-        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_PINCODE,etPerPincode.getText().toString());
-        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_CITY,etPerCity.getText().toString());
-        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_STATE,etPerState.getText().toString());
+        params.put(Constants.PARAM_CURRENT_ADDRESS, etCurrentHouseNo.getText().toString().trim());
+        params.put(Constants.PARAM_CURRENT_ADDRESS1, etCurrentStreet.getText().toString().trim());
+        params.put(Constants.PARAM_CURRENT_ADDRESS_LANDMARK, etCurrentLandmark.getText().toString());
+        params.put(Constants.PARAM_CURRENT_ADDRESS_PINCODE, etCurrentPincode.getText().toString());
+        params.put(Constants.PARAM_CURRENT_ADDRESS_CITY, etCurrentCity.getText().toString().trim());
+        params.put(Constants.PARAM_CURRENT_ADDRESS_STATE, etCurrentState.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS, etPerHouseNo.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS1, etPermStreet.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_LANDMARK, etPerLandmark.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_PINCODE, etPerPincode.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_CITY, etPerCity.getText().toString());
+        params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_STATE, etPerState.getText().toString());
 
         params.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
         params.put(Constants.ROUTE_NUMBER, etRoute.getText().toString().trim());
@@ -917,7 +985,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                 //showMSG(false, "Provide Store address");
                 return false;
             }
-            if (etPhoneNumber.length()<10) {
+            if (etPhoneNumber.length() < 10) {
                 etPhoneNumber.requestFocus();
                 etPhoneNumber.setError("Provide Valid number");
                 //showMSG(false, "Provide Store address");
@@ -926,6 +994,18 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             if (TextUtils.isEmpty(etRoute.getText().toString())) {
                 etRoute.requestFocus();
                 etRoute.setError("Provide Route");
+                // showMSG(false, "Provide Pincode");
+                return false;
+            }
+            if (TextUtils.isEmpty(etOtp.getText().toString())) {
+                etOtp.requestFocus();
+                etOtp.setError("Provide OTP");
+                // showMSG(false, "Provide Pincode");
+                return false;
+            }
+            if (!etOtp.getText().toString().equalsIgnoreCase(otp)) {
+                etOtp.requestFocus();
+                etOtp.setError("Provide Valid OTP");
                 // showMSG(false, "Provide Pincode");
                 return false;
             }

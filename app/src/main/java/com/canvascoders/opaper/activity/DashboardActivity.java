@@ -90,7 +90,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     Button btn_notification;
     Button btn_report;
     LinearLayout llOnboardNewVendor, llNotification, llLiveVendors, llInProgressVendors, llReports, llInvoice;
-    LinearLayout llNavonBoardNewVendor, llNavLiveVendor, llNavInProgressVendor, llNavInvoice, llNavGSTInvoice, llNavDebitInvoice, llNavReport, llNavTask, llNavLogut, llNavSupports;
+    LinearLayout llNavonBoardNewVendor, llNavAssessmnt, llNavLiveVendor, llNavInProgressVendor, llNavInvoice, llNavGSTInvoice, llNavDebitInvoice, llNavReport, llNavTask, llNavLogut, llNavSupports;
 
     private Menu menu;
     FrameLayout flImage;
@@ -210,6 +210,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
 
         llNavonBoardNewVendor = v.findViewById(R.id.llNavOnboardNewVendor);
+        llNavAssessmnt = v.findViewById(R.id.llNavAssessmnt);
         llNavLiveVendor = v.findViewById(R.id.llNavLiveVendor);
         llNavInProgressVendor = v.findViewById(R.id.llNavInProgressVendor);
         llNavInvoice = v.findViewById(R.id.llNavInvoice);
@@ -224,6 +225,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         llNavSupports.setOnClickListener(this);
 
         llNavonBoardNewVendor.setOnClickListener(this);
+        llNavAssessmnt.setOnClickListener(this);
         llNavLiveVendor.setOnClickListener(this);
         llNavInProgressVendor.setOnClickListener(this);
         llNavInvoice.setOnClickListener(this);
@@ -500,6 +502,12 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
                 commanFragmentCallWithBackStack(new MobileFragment());
                 drawer.closeDrawer(GravityCompat.START);
+                break;
+
+
+            case R.id.llNavAssessmnt:
+                Intent i4 = new Intent(DashboardActivity.this, AssessmentScreenActivity.class);
+                startActivity(i4);
                 break;
             case R.id.llNavLiveVendor:
                 tv_title.setText("Live Vendors");

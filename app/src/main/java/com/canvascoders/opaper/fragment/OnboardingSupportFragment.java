@@ -94,7 +94,7 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
         supportListAdapter = new SupportListAdapter(supportList, getActivity(), OnboardingSupportFragment.this);
         rvOnboardingSupport.setAdapter(supportListAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         rvOnboardingSupport.setLayoutManager(linearLayoutManager);
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {

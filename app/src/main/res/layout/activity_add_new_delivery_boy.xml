@@ -191,7 +191,7 @@
                         <TextView
                             style="@style/App_TextViewSmall"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:text="Phone Name"
+                            android:text="Phone "
                             android:textColor="@color/colorBlue" />
 
                         <EditText
@@ -205,6 +205,38 @@
                             android:nextFocusDown="@+id/etRouteNo"
                             android:textColor="@color/colorBlack"
                             android:textSize="@dimen/_10sdp" />
+
+
+                        <Button
+                            android:id="@+id/btGetOtp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_20sdp"
+                            android:text="Get OTP"
+                            android:fontFamily="@font/montesemibold"
+                            android:textSize="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:background="@drawable/rounded_corner_view_grey_more"/>
+
+                        <TextView
+                            style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="OTP"
+                            android:textColor="@color/colorBlue" />
+
+                        <EditText
+                            android:id="@+id/etOtp"
+                            style="@style/App_EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:nextFocusDown="@+id/etRouteNo"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_10sdp" />
+
+
+
+
 
                         <TextView
                             style="@style/App_TextViewSmall"

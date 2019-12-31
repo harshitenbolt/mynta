@@ -210,6 +210,20 @@ public class Validation {
 
 
 
+    @SerializedName("phone_number")
+    @Expose
+    private String phoneNumber;
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+
+
     @SerializedName("permanent_address")
     @Expose
     private String permanentAddress;
