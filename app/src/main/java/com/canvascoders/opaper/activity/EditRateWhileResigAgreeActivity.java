@@ -29,6 +29,7 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.adapters.RateListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.fragment.ResignAgreementLinkFragment;
 import com.canvascoders.opaper.fragment.TaskCompletedFragment2;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
@@ -238,6 +239,9 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));
+                                } else if (jsonObject.getString("responseCode").equalsIgnoreCase("203")) {
+                                    showAlert1(jsonObject.getString("response"));
+
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(EditRateWhileResigAgreeActivity.this);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("411")) {
@@ -395,6 +399,8 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
 
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));
+                                } else if (jsonObject.getString("responseCode").equalsIgnoreCase("203")) {
+                                    showAlert1(jsonObject.getString("response"));
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("405")) {
                                     sessionManager.logoutUser(EditRateWhileResigAgreeActivity.this);
                                 } else {
@@ -466,6 +472,61 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
             public void onClick(View view) {
                 TaskCompletedFragment2 taskCompletedFragment2 = new TaskCompletedFragment2();
                 taskCompletedFragment2.setMesssge(msg);
+                commanFragmentCallWithoutBackStack(taskCompletedFragment2);
+
+                s = "2";
+                dialog.dismiss();
+
+            }
+        });
+
+        dialog.setCancelable(false);
+
+        dialog.show();
+
+
+    }
+
+    private void showAlert1(String msg) {
+
+        String[] separated = msg.split("____");
+        Button btSubmit;
+        TextView tvMessage, tvTitle;
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(EditRateWhileResigAgreeActivity.this);
+        dialog = new Dialog(EditRateWhileResigAgreeActivity.this, R.style.DialogLSideBelow);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_success);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        btSubmit = dialog.findViewById(R.id.btSubmit);
+        tvMessage = dialog.findViewById(R.id.tvMessage);
+        tvTitle = dialog.findViewById(R.id.tvTitle);
+        tvTitle.setText("Approval Pending");
+
+        tvMessage.setText(separated[1]);
+
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                // apiName = separated[1];
+
+                ResignAgreementLinkFragment taskCompletedFragment2 = new ResignAgreementLinkFragment();
+                taskCompletedFragment2.setMesssge(separated[1]);
+                taskCompletedFragment2.setTitle(separated[0]);
+                taskCompletedFragment2.setProcess(processId);
                 commanFragmentCallWithoutBackStack(taskCompletedFragment2);
 
                 s = "2";

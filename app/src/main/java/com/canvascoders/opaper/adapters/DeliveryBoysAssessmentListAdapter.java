@@ -1,32 +1,41 @@
 package com.canvascoders.opaper.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.canvascoders.opaper.Beans.SupportListResponse.Datum;
+import com.canvascoders.opaper.Beans.DeliveryBoyList;
+import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
+import com.canvascoders.opaper.utils.Constants;
 
 import java.util.List;
 
 public class DeliveryBoysAssessmentListAdapter extends RecyclerView.Adapter<DeliveryBoysAssessmentListAdapter.RecordHolder> {
 
-    private List<Datum> moreitemList;
+    private List<DeliveryBoyList> vendorLists;
     Context context;
+    String value = "1";
     RecyclerViewClickListener recyclerViewClickListener;
-    final int sdk = android.os.Build.VERSION.SDK_INT;
 
-    public DeliveryBoysAssessmentListAdapter(List<Datum> moreitemList, Context context, RecyclerViewClickListener recyclerViewClickListener) {
-        this.moreitemList = moreitemList;
+
+    public DeliveryBoysAssessmentListAdapter(List<DeliveryBoyList> moreitemList, Context context, RecyclerViewClickListener recyclerViewClickListener) {
+        this.vendorLists = moreitemList;
         this.context = context;
         this.recyclerViewClickListener = recyclerViewClickListener;
     }
@@ -34,97 +43,90 @@ public class DeliveryBoysAssessmentListAdapter extends RecyclerView.Adapter<Deli
     @NonNull
     @Override
     public RecordHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View groceryProductView = LayoutInflater.from(parent.getContext()).inflate(R.layout.support_list, parent, false);
-        RecordHolder gvh = new RecordHolder(groceryProductView);
-        return gvh;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.deliveryboy_assessment_list, parent, false);
+        RecordHolder holder = new RecordHolder(view);
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecordHolder holder, int position) {
-        holder.tvTicketName.setText(moreitemList.get(position).getTicketNumber());
-        Glide.with(context).load(moreitemList.get(position).getAttachmentUrl()).into(holder.ivAttachment);
-        holder.tvSubject.setText(moreitemList.get(position).getSubjectdesc());
-        if (moreitemList.get(position).getPriority().equalsIgnoreCase("0")) {
-            holder.tvPriority.setText("low");
+        holder.tvName.setText(vendorLists.get(position).getName());
+        holder.tvMobile.setText(vendorLists.get(position).getPhoneNumber());
+        holder.tvRoute.setText(vendorLists.get(position).getCurrentAddressState());
+        // holder.tvLiveFrom.setText(vendorLists.get(position).getRateApproveDate());
+        holder.tvStoreName.setText(vendorLists.get(position).getStoreName());
+        //  holder.tvStatus.setText(vendorLists.get(position).getStatus());
 
-        } else if (moreitemList.get(position).getPriority().equalsIgnoreCase("1")) {
-            holder.tvPriority.setText("Medium");
-            holder.tvPriority.setTextColor(context.getResources().getColor(R.color.colorBlue));
-        } else if (moreitemList.get(position).getPriority().equalsIgnoreCase("2")) {
-            holder.tvPriority.setText("High");
-            holder.tvPriority.setTextColor(context.getResources().getColor(R.color.colorRed));
-        }
 
-        if (moreitemList.get(position).getStatus().equalsIgnoreCase("0")) {
-            holder.tvStatus.setText("Reopen");
-            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorPrimary));
-
-            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                holder.tvStatus.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_green));
-            } else {
-                holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_green));
-            }
-        } else if (moreitemList.get(position).getStatus().equalsIgnoreCase("1")) {
+        if (vendorLists.get(position).getAssessmentVerify() == 0 && vendorLists.get(position).getAssessmentTried() == 0) {
+            holder.tvStatus.setText("PENDING");
             holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorYellow));
-            holder.tvStatus.setText("pending");
 
-            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                holder.tvStatus.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_yellow));
+        } else {
+            if (vendorLists.get(position).getAssessmentVerify() == 1) {
+                holder.tvStatus.setText("PASS");
+                holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorPrimary));
             } else {
-                holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_yellow));
-            }
-
-
-        } else if (moreitemList.get(position).getStatus().equalsIgnoreCase("2")) {
-            holder.tvStatus.setText("in-progress");
-            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorBlue));
-
-            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                holder.tvStatus.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_blue));
-            } else {
-                holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_blue));
-            }
-
-        } else if (moreitemList.get(position).getStatus().equalsIgnoreCase("3")) {
-            holder.tvStatus.setText("closed");
-            holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorRed));
-            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                holder.tvStatus.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_red));
-            } else {
-                holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.rounded_circle_bordercolor_red));
+                holder.tvStatus.setText("FAIL");
+                holder.tvStatus.setTextColor(context.getResources().getColor(R.color.colorRed));
             }
         }
 
-        holder.cvMain.setOnClickListener(new View.OnClickListener() {
+        Log.e("URL", "" + Constants.BaseImageURL + vendorLists.get(position).getPhoneNumber());
+        Glide.with(context).load(Constants.BaseImageURL + vendorLists.get(position).getImage()).placeholder(R.drawable.image_placeholder).into(holder.ivStoreImage);
+        holder.llMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recyclerViewClickListener.onClick(view, position);
+
+                recyclerViewClickListener.SingleClick("", vendorLists.get(position).getProccessId());
+
             }
         });
-
-
     }
 
     @Override
     public int getItemCount() {
-        return moreitemList.size();
+        return vendorLists.size();
     }
 
     public class RecordHolder extends RecyclerView.ViewHolder {
-        ImageView ivAttachment;
-        TextView tvTicketName, tvPriority, tvStatus, tvSubject;
-        CardView cvMain;
+        ImageView ivStoreImage, ivStatusImage;
+        TextView tvStoreName, tvName, tvMobile, tvRoute, tvLiveFrom, tvStatus;
+        LinearLayout llMain;
 
         public RecordHolder(View view) {
             super(view);
-            //image_icon = view.findViewById(R.id.iv_rec_prof_boy);
-            tvTicketName = view.findViewById(R.id.tvTicketNo);
-            cvMain = view.findViewById(R.id.cvMain);
-            //tvAddress = view.findViewById(R.id.tv_address);
-            tvPriority = view.findViewById(R.id.tvPriority);
+            llMain = view.findViewById(R.id.llMain);
+            ivStoreImage = view.findViewById(R.id.ivStoreImage);
+            tvName = view.findViewById(R.id.tvName);
+            tvStoreName = view.findViewById(R.id.tvStoreName);
+            tvLiveFrom = view.findViewById(R.id.tvLiveFrom);
+            tvMobile = view.findViewById(R.id.tvMobile);
+            ivStatusImage = view.findViewById(R.id.ivStatus);
+            tvRoute = view.findViewById(R.id.tvRoute);
             tvStatus = view.findViewById(R.id.tvStatus);
-            tvSubject = view.findViewById(R.id.tvSubject);
-            ivAttachment = view.findViewById(R.id.ivAttachment);
+            //     tvVehicle = view.findViewById(R.id.tvVehicle);
         }
     }
+
+
+    public void commanFragmentCallWithBackStack(Fragment fragment, String mobileno) {
+
+        Fragment cFragment = fragment;
+
+        if (cFragment != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.KEY_EMP_MOBILE, mobileno);
+
+            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragment.setArguments(bundle);
+            fragmentTransaction.add(R.id.content_main, cFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
+        }
+    }
+
+
 }

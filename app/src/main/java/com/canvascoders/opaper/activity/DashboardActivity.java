@@ -508,6 +508,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             case R.id.llNavAssessmnt:
                 Intent i4 = new Intent(DashboardActivity.this, AssessmentScreenActivity.class);
                 startActivity(i4);
+                drawer.closeDrawer(GravityCompat.START);
                 break;
             case R.id.llNavLiveVendor:
                 tv_title.setText("Live Vendors");

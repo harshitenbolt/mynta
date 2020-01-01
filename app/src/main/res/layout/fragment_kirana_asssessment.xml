@@ -70,54 +70,54 @@
         android:layout_margin="@dimen/_15sdp"
         android:layout_weight="1"
         android:clipToPadding="true">
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipe_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:visibility="gone">
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvOnboarding"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         <LinearLayout
+            android:id="@+id/llNoData"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:src="@drawable/livevendorphone" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvOnboarding"
+            <TextView
+                android:id="@+id/tvNoDataMsg"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:fontFamily="@font/monteregular"
+                android:gravity="center_horizontal"
+                android:text="No data available"
+                android:textColor="@color/colorGrey"
+                android:textSize="@dimen/_15sdp" />
         </LinearLayout>
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <LinearLayout
-        android:id="@+id/llNoData"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_marginBottom="@dimen/_15sdp"
-            android:src="@drawable/livevendorphone" />
-
-        <TextView
-            android:id="@+id/tvNoDataMsg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:fontFamily="@font/monteregular"
-            android:gravity="center_horizontal"
-            android:text="No data available"
-            android:textColor="@color/colorGrey"
-            android:textSize="@dimen/_15sdp" />
-    </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>

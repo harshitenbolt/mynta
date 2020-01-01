@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.AssessmentDetaildeliveryBoyActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <ImageView
+            android:id="@+id/iv_back_process"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_title_Process"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montesemibold"
+            android:gravity="center"
+            android:paddingRight="@dimen/_45sdp"
+            android:text="Assessment Details"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+        <ImageView
+            android:id="@+id/ivSupport"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_gravity="end"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
+            android:src="@drawable/support" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- **** Place Your Content Here **** -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_3sdp"
+            android:background="@drawable/toolbarshadow" />
+
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/rvMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_45sdp"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                            style="@style/CustomCardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clipToPadding="true"
+                            android:elevation="@dimen/_5sdp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:orientation="vertical"
+                                android:paddingLeft="@dimen/_15sdp"
+                                android:paddingTop="@dimen/_15sdp"
+                                android:paddingRight="@dimen/_15sdp"
+                                android:paddingBottom="@dimen/_15sdp">
+
+
+                                <ImageView
+                                    android:id="@+id/ivProfileImage"
+                                    android:layout_width="@dimen/_95sdp"
+                                    android:layout_height="@dimen/_95sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:background="@drawable/backgroundshapecircledotted"
+                                    android:padding="@dimen/_25sdp"
+                                    android:src="@drawable/photocamera" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:orientation="horizontal">
+
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_vertical"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:text="Name"
+                                                android:textSize="@dimen/_10sdp" />
+
+                                            <TextView
+                                                android:id="@+id/tv_name"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:editable="false"
+                                                android:enabled="false"
+                                                android:fontFamily="@font/monteregular"
+                                                android:text=""
+                                                android:textAllCaps="false"
+                                                android:textSize="@dimen/_11sdp" />
+
+                                        </LinearLayout>
+
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="top"
+                                            android:layout_marginLeft="@dimen/_3sdp"
+                                            android:layout_weight="1.2"
+                                            android:orientation="vertical">
+
+
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:text="Mobile"
+                                                android:textSize="@dimen/_10sdp" />
+
+                                            <TextView
+                                                android:id="@+id/tv_mobile"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+
+                                                android:enabled="false"
+                                                android:fontFamily="@font/monteregular"
+                                                android:text=""
+                                                android:textSize="@dimen/_11sdp" />
+                                        </LinearLayout>
+                                    </LinearLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:background="@color/colorLightGrey" />
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+                                            style="@style/TextviewwithoutSize"
+                                            android:fontFamily="@font/montesemibold"
+                                            android:text="Store Name"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                        <TextView
+                                            android:id="@+id/tvStoreName"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:enabled="false"
+                                            android:fontFamily="@font/monteregular"
+                                            android:text=""
+                                            android:textSize="@dimen/_11sdp" />
+                                    </LinearLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:background="@color/colorLightGrey" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:orientation="horizontal">
+
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_vertical"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:singleLine="true"
+                                                android:text="No.of Assessment attempt"
+                                                android:textSize="@dimen/_9sdp" />
+
+                                            <TextView
+                                                android:id="@+id/tvNoofTimeAttempt"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:editable="false"
+                                                android:enabled="false"
+                                                android:fontFamily="@font/monteregular"
+                                                android:singleLine="true"
+                                                android:text=""
+                                                android:textSize="@dimen/_11sdp" />
+
+                                        </LinearLayout>
+
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_vertical"
+                                            android:layout_weight="1.2"
+                                            android:orientation="vertical">
+
+
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:text="Status"
+                                                android:textSize="@dimen/_10sdp" />
+
+                                            <TextView
+                                                android:id="@+id/tvStatus"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:enabled="false"
+                                                android:fontFamily="@font/monteregular"
+                                                android:text=""
+                                                android:textSize="@dimen/_11sdp" />
+                                        </LinearLayout>
+
+
+                                    </LinearLayout>
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:background="@color/colorLightGrey"
+                                        android:visibility="gone" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal"
+                                        android:visibility="gone">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_vertical"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+
+
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:text="Address"
+                                                android:textSize="@dimen/_10sdp" />
+
+                                            <TextView
+                                                android:id="@+id/tvAddress"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginBottom="@dimen/_15sdp"
+                                                android:enabled="false"
+                                                android:fontFamily="@font/monteregular"
+                                                android:lines="2"
+                                                android:text=""
+                                                android:textSize="@dimen/_11sdp" />
+                                        </LinearLayout>
+
+
+                                    </LinearLayout>
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:visibility="gone">
+
+                                        <ImageView
+                                            android:layout_width="@dimen/_12sdp"
+                                            android:layout_height="@dimen/_12sdp"
+                                            android:src="@drawable/shop" />
+
+                                        <TextView
+                                            style="@style/TextviewwithoutSize"
+                                            android:layout_marginLeft="@dimen/_5sdp"
+                                            android:drawablePadding="@dimen/_15sdp"
+                                            android:fontFamily="@font/montesemibold"
+                                            android:text="Store Name"
+
+                                            android:textSize="@dimen/_8sdp" />
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:id="@+id/tv_shop_name"
+                                        style="@style/App_EditTextStyle"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_30sdp"
+                                        android:layout_marginTop="@dimen/_5sdp"
+                                        android:fontFamily="@font/monteregular"
+                                        android:paddingLeft="@dimen/_15sdp"
+                                        android:textSize="@dimen/_10sdp"
+                                        android:visibility="gone" />
+
+
+                                    <LinearLayout
+                                        android:id="@+id/linear_cheq"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_20sdp"
+                                        android:orientation="vertical"
+                                        android:visibility="gone">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+
+                                                style="@style/TextviewwithoutSize"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:layout_gravity="center"
+                                                android:layout_weight="1"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:gravity="center"
+                                                android:text="Change PAN Details"
+                                                android:textAllCaps="false"
+                                                android:textColor="@color/colorPrimary" />
+
+                                            <TextView
+
+                                                style="@style/TextviewwithoutSize"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_gravity="center"
+                                                android:layout_weight="1"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:gravity="center"
+                                                android:text="Change Mobile Number"
+                                                android:textColor="@color/colorPrimary" />
+
+                                            <TextView
+                                                android:id="@+id/btn_resend_agreement"
+                                                style="@style/TextviewwithoutSize"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_gravity="center"
+                                                android:layout_weight="1"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:gravity="center"
+                                                android:text="Resend Agreement Link"
+                                                android:textAllCaps="false"
+                                                android:textColor="@color/colorPrimary"
+                                                android:visibility="gone" />
+                                        </LinearLayout>
+
+                                        <TextView
+                                            android:id="@+id/btn_update_delivery_boy"
+                                            style="@style/TextviewwithoutSize"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:layout_weight="1"
+                                            android:fontFamily="@font/montesemibold"
+                                            android:gravity="center"
+                                            android:text="Update Delivery Boys"
+                                            android:textAllCaps="false"
+                                            android:textColor="@color/colorPrimary"
+                                            android:visibility="gone" />
+
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+
+                            style="@style/CustomCardView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="true"
+                            android:elevation="@dimen/_5sdp"
+
+                            android:visibility="visible">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingLeft="@dimen/_15sdp"
+                                android:paddingTop="@dimen/_15sdp"
+                                android:paddingRight="@dimen/_15sdp"
+                                android:paddingBottom="@dimen/_22sdp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_20sdp"
+                                    android:layout_gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        style="@style/TextviewwithoutSize"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="start"
+                                        android:layout_weight="1"
+                                        android:focusable="false"
+                                        android:fontFamily="@font/montesemibold"
+                                        android:text="Assessment attempt details"
+                                        android:textColor="@color/text_color_dark_grey"
+                                        android:textSize="@dimen/_8sdp" />
+
+                                    <androidx.appcompat.widget.AppCompatSpinner
+                                        android:id="@+id/spYear"
+                                        style="@style/Spinner"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="right"
+                                        android:layout_weight="3"></androidx.appcompat.widget.AppCompatSpinner>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:visibility="visible">
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_1sdp"
+                                        android:layout_marginTop="@dimen/_5sdp"
+                                        android:background="@color/colorLightGrey" />
+
+
+                                    <androidx.recyclerview.widget.RecyclerView
+                                        android:id="@+id/rvExamDetails"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_5sdp"></androidx.recyclerview.widget.RecyclerView>
+
+                                    <ProgressBar
+                                        android:id="@+id/mProgress"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_centerInParent="true"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:layout_weight="3.5"
+                                        android:visibility="gone"
+                                        tools:visibility="visible" />
+
+                                    <TextView
+                                        android:id="@+id/tvNodata"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:fontFamily="@font/montesemibold"
+                                        android:text="No Assessment attempted yet"
+                                        android:textColor="@color/colorGrey"
+                                        android:textSize="@dimen/_8sdp" />
+
+                                </LinearLayout>
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+                    <!-- <LinearLayout
+
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_10sdp"
+                         android:visibility="gone">
+
+                         <Button
+                             style="@style/Button_withGreen"
+                             android:layout_weight="1"
+                             android:background="@color/colorBlue"
+                             android:text="UPDATE CHEQUE DETAILS"
+                             android:textSize="@dimen/_8sdp" />
+
+                         <Button
+
+                             style="@style/Button_withGreen"
+                             android:layout_weight="1"
+                             android:background="@color/colorPrimary"
+                             android:text="CHANGE RATE/ADD STORE TYPE"
+                             android:textSize="@dimen/_8sdp" />
+                     </LinearLayout>-->
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+        <Button
+            android:id="@+id/btSendLink"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:fontFamily="@font/montesemibold"
+            android:text="SEND TEST LINK"
+            android:textColor="@color/whitePrimary"
+            android:textSize="@dimen/_12sdp" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rvCaptured"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:visibility="gone">
+
+
+        <RelativeLayout
+            android:id="@+id/rlWithMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/flImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/ivImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tverror"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:gravity="center"
+                android:text="Select area to show error..."
+                android:textColor="#ffffff"
+                android:visibility="visible" />
+
+            <com.canvascoders.opaper.Screenshot.DragRectView
+                android:id="@+id/dragRect"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/llButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_30sdp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/ivSelect"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/_15sdp"
+                    android:text="Select" />
+
+                <Button
+                    android:id="@+id/ivClose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_3sdp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/_15sdp"
+                    android:text="Cancel" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

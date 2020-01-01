@@ -15,6 +15,7 @@ import com.canvascoders.opaper.Beans.DelBoysNextScreenResponse.DelBoysNextRespon
 import com.canvascoders.opaper.Beans.DelBoysResponse.DelBoyResponse;
 import com.canvascoders.opaper.Beans.DeleteDeliveryResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.DeliveryboyListResponse;
+import com.canvascoders.opaper.Beans.DetailsAssessDelBoyResponse.DetailAssessmentDelBoyResponse;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.EditUserResponse.EditUserResponse;
 import com.canvascoders.opaper.Beans.GeneralSupportResponse.GeneralSupportResponse;
@@ -35,6 +36,7 @@ import com.canvascoders.opaper.Beans.ResetPassResponse.ResetPassResponse;
 import com.canvascoders.opaper.Beans.ResignAgreeDetailResponse.ResignAgreeDetailResponse;
 import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResponse;
 import com.canvascoders.opaper.Beans.ResumeTaskListResponse.ResumeTaskListResponse;
+import com.canvascoders.opaper.Beans.SearchAssessmentDeliveryBoy.SearchResponseAssessment;
 import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
 import com.canvascoders.opaper.Beans.SendInvoiceEsignResponse.SendInvoiceLinkresponse;
 import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
@@ -46,10 +48,8 @@ import com.canvascoders.opaper.Beans.SupportDetailResponse.SupportDetailResponse
 import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
 import com.canvascoders.opaper.Beans.SupportSubjectResponse.SupportSubjectResponse;
 import com.canvascoders.opaper.Beans.TaskDetailResponse.GetTaskDetailsResponse;
-import com.canvascoders.opaper.Beans.ThreadCommentsResponse.CommentThreadResponse;
 import com.canvascoders.opaper.Beans.TransactionIDResponse.TransactionIdResponse;
 import com.canvascoders.opaper.Beans.TranscationId1Response;
-import com.canvascoders.opaper.Beans.TranscationIdResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.Beans.UpdatePanResponse.UpdatePancardResponse;
 import com.canvascoders.opaper.Beans.UserDetailTResponse.GetUserDetails;
@@ -66,7 +66,6 @@ import com.canvascoders.opaper.Beans.verifylocation.GetLocationResponse;
 import com.canvascoders.opaper.Beans.verifymobile.GetMobileResponse;
 import com.google.gson.JsonObject;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,7 +77,6 @@ import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
-import retrofit2.http.HeaderMap;
 import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -112,6 +110,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("agreement-resign")
     Call<ResignAgreementResponse> ResignAgreement(@Header("Authorization") String token, @Field("proccess_id") String data);
+
+
+    @FormUrlEncoded
+    @POST
+    Call<DetailAssessmentDelBoyResponse> detailAssesmentDelBoyResponse(@Url String url,@Header("Authorization") String token, @FieldMap Map<String, String> param);
 
 
     @FormUrlEncoded
@@ -481,6 +484,17 @@ public interface ApiInterface {
     Call<ResendOTPResponse> resendOTP(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 
 
+
+    @FormUrlEncoded
+    @POST("resend-resign-link")
+    Call<ResendOTPResponse> sendOTPResign(@Header("Authorization") String token, @FieldMap Map<String, String> data);
+
+    @FormUrlEncoded
+    @POST
+    Call<ResendOTPResponse> sendDeliveryLink(@Url String url,@Header("Authorization") String token, @FieldMap Map<String, String> data);
+
+
+
     @POST("send-invoice-esign-link")
     Call<SendInvoiceLinkresponse> sendInvoice(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 
@@ -532,6 +546,12 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("all-completed-vendors")
     Call<SearchListResponse> getSearchListResponse(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+    @FormUrlEncoded
+    @POST("delivery-boy-assessment-search")
+    Call<SearchResponseAssessment> getSearchListDeliveryBoy(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
 
 
     @FormUrlEncoded

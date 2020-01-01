@@ -26,20 +26,15 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.canvascoders.opaper.Beans.SearchAssessmentDeliveryBoy.SearchResponseAssessment;
-import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
-import com.canvascoders.opaper.Beans.SupportListResponse.Datum;
 import com.canvascoders.opaper.Beans.DeliveryBoyList;
+import com.canvascoders.opaper.Beans.SearchAssessmentDeliveryBoy.SearchResponseAssessment;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.AssessmentDetaildeliveryBoyActivity;
-import com.canvascoders.opaper.activity.VendorDetailActivity;
 import com.canvascoders.opaper.adapters.DeliveryBoysAssessmentListAdapter;
-import com.canvascoders.opaper.adapters.SupportListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
@@ -71,9 +66,7 @@ import retrofit2.Callback;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
-
-
+public class KiranaAsssessmentFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RecyclerViewClickListener {
     View v;
     private String support_id;
     View view;
@@ -93,9 +86,9 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
     List<String> mobileList = new ArrayList<>();
     // Spinner snDocType;
     String status = "";
-    private String apiName = "delivery-boy-assessment-list";
+    private String apiName = "vendor-assessment-list";
     private boolean onboard = true;
-    private String apiNameSearch = "delivery-boy-assessment-list";
+    private String apiNameSearch = "vendor-assessment-list";
     JSONObject objectSearch = new JSONObject();
     private ImageView ivSearch;
     AutoCompleteTextView actv;
@@ -112,7 +105,9 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
     private List<DeliveryBoyList> DeliveryBoyLists1 = new ArrayList<>();
     String TAG = "VendorLis";
 
-    public DeliveryBoyAssessmentFragment() {
+
+
+    public KiranaAsssessmentFragment() {
         // Required empty public constructor
     }
 
@@ -121,12 +116,11 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_delivery_boy_assessment, container, false);
+        view= inflater.inflate(R.layout.fragment_kirana_asssessment, container, false);
         sessionManager = new SessionManager(getActivity());
         init();
         return view;
     }
-
 
     private void init() {
         mProgress = new ProgressDialog(getActivity());
@@ -140,7 +134,7 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
         ivSearch = view.findViewById(R.id.ivSearch);
         llNoData = view.findViewById(R.id.llNoData);
         rvOnboardingSupport = view.findViewById(R.id.rvOnboarding);
-        supportListAdapter = new DeliveryBoysAssessmentListAdapter(DeliveryBoyLists, getActivity(), DeliveryBoyAssessmentFragment.this);
+        supportListAdapter = new DeliveryBoysAssessmentListAdapter(DeliveryBoyLists, getActivity(), KiranaAsssessmentFragment.this);
         rvOnboardingSupport.setAdapter(supportListAdapter);
 
 
@@ -191,7 +185,7 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
         doctypeadapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
-        apiName = "delivery-boy-assessment-list";
+        apiName = "vendor-assessment-list";
         onboard = true;
         progressDialog.setMessage("please wait ...");
 
@@ -246,10 +240,10 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
                                 search = true;
                                 // this condition is for radio button that which is selected so we can call that api
                                 if (onboard == true) {           // with Search keywords we are calling this apis
-                                    apiNameSearch = "delivery-boy-assessment-list";
+                                    apiNameSearch = "vendor-assessment-list";
                                     new GetDeliveryBoyListSearch(objectSearch.toString(), apiNameSearch).execute();
                                 } else {
-                                    apiNameSearch = "delivery-boy-assessment-list";
+                                    apiNameSearch = "vendor-assessment-list";
                                     new GetDeliveryBoyListSearch(objectSearch.toString(), apiNameSearch).execute();
                                 }
                             }
@@ -270,12 +264,12 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
                     if (onboard == true) {
                         page1 = 1;
                         page = 1;
-                        apiName = "delivery-boy-assessment-list";
+                        apiName = "vendor-assessment-list";
                         new GetDeliveryBoyList(object.toString(), apiName).execute();
                     } else {
                         page = 1;
                         page1 = 1;
-                        apiName = "delivery-boy-assessment-list";
+                        apiName = "vendor-assessment-list";
                         //  new GetDeliveryBoyList(object.toString(), apiName).execute();
                     }
                 }
@@ -321,10 +315,10 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
                 search = true;
                 // this condition is for radio button that which is selected so we can call that api
                 if (onboard == true) {           // with Search keywords we are calling this apis
-                    apiNameSearch = "delivery-boy-assessment-list";
+                    apiNameSearch = "vendor-assessment-list";
                     new GetDeliveryBoyListSearch(objectSearch.toString(), apiNameSearch).execute();
                 } else {
-                    apiNameSearch = "delivery-boy-assessment-list";
+                    apiNameSearch = "vendor-assessment-list";
                     new GetDeliveryBoyListSearch(objectSearch.toString(), apiNameSearch).execute();
                 }
             }
@@ -337,7 +331,7 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
     public void onRefresh() {
         page1 = 1;
         actv.getText().clear();
-        apiName = "delivery-boy-assessment-list";
+        apiName = "vendor-assessment-list";
         new GetDeliveryBoyList(object.toString(), apiName).execute();
 
     }
@@ -360,7 +354,7 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
                 Intent i1 = new Intent(getActivity(), AssessmentDetaildeliveryBoyActivity.class);
                 //  commanFragmentCallWithBackStack(new VendorDetailsFragment(), DeliveryBoyLists.get(i));
                 i1.putExtra("data", DeliveryBoyLists.get(i).getId());
-                i1.putExtra("flag","1");
+                i1.putExtra("flag","2");
                 startActivity(i1);
                 break;
             }
@@ -432,7 +426,7 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
                                 try {
                                     objectSearch.put(Constants.PARAM_TOKEN, sessionManager.getToken());
                                     objectSearch.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-                                   // objectSearch.put(Constants.PARAM_STATUS, "1");
+                                    // objectSearch.put(Constants.PARAM_STATUS, "1");
 
                                     if (spinnerArrayAdapter.getItem(position).toString() != null) {
                                         objectSearch.put(Constants.PARAM_SEARCH, actv.getText().toString());
@@ -448,10 +442,10 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
                                 search = true;
                                 // this condition is for radio button that which is selected so we can call that api
                                 if (onboard == true) {           // with Search keywords we are calling this apis
-                                    apiNameSearch = "delivery-boy-assessment-list";
+                                    apiNameSearch = "vendor-assessment-list";
                                     new GetDeliveryBoyListSearch(objectSearch.toString(), apiNameSearch).execute();
                                 } else {
-                                    apiNameSearch = "delivery-boy-assessment-list";
+                                    apiNameSearch = "vendor-assessment-list";
                                     new GetDeliveryBoyListSearch(objectSearch.toString(), apiNameSearch).execute();
                                 }
                             }
@@ -743,6 +737,5 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
             supportListAdapter.notifyDataSetChanged();
         }
     }
-
 
 }

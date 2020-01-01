@@ -14,10 +14,13 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.canvascoders.opaper.Beans.SupportListResponse.Datum;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.fragment.DeliveryBoyAssessmentFragment;
+import com.canvascoders.opaper.fragment.KiranaAsssessmentFragment;
 import com.canvascoders.opaper.fragment.OnboardingSupportFragment;
 import com.canvascoders.opaper.fragment.PaymentSupportFragment;
 import com.canvascoders.opaper.utils.SessionManager;
@@ -29,14 +32,22 @@ public class AssessmentScreenActivity extends AppCompatActivity implements View.
     Drawable background, background1;
     private RecyclerView rvSupport;
     private SessionManager sessionManager;
+    ImageView ivBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assessment_screen);
+        ivBack = findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         init();
 
-        commanFragmentCallWithBackStack(new OnboardingSupportFragment());
+        commanFragmentCallWithBackStack(new DeliveryBoyAssessmentFragment());
         if (background1 instanceof ShapeDrawable) {
             ((ShapeDrawable) background1).getPaint().setColor(ContextCompat.getColor(this, R.color.colorPrimary));
             tvDeliveryBoy.setTextColor(getResources().getColor(R.color.colorWhite));
@@ -78,7 +89,7 @@ public class AssessmentScreenActivity extends AppCompatActivity implements View.
         switch (v.getId()) {
 
             case R.id.tvKiranaAssessment:
-                commanFragmentCallWithBackStack(new PaymentSupportFragment());
+                commanFragmentCallWithBackStack(new KiranaAsssessmentFragment());
 
                 if (background instanceof ShapeDrawable) {
                     ((ShapeDrawable) background).getPaint().setColor(ContextCompat.getColor(this, R.color.colorPrimary));
@@ -107,7 +118,7 @@ public class AssessmentScreenActivity extends AppCompatActivity implements View.
 
 
             case R.id.tvDeliveryAsssessment:
-                commanFragmentCallWithBackStack(new OnboardingSupportFragment());
+                commanFragmentCallWithBackStack(new DeliveryBoyAssessmentFragment());
 
 
                 if (background1 instanceof ShapeDrawable) {
@@ -133,7 +144,6 @@ public class AssessmentScreenActivity extends AppCompatActivity implements View.
                 }
 
                 break;
-
 
 
         }
