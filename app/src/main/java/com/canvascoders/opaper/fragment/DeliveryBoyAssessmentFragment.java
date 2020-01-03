@@ -177,7 +177,7 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
         try {
             object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-            object.put(Constants.PARAM_STATUS, "1");
+          //  object.put(Constants.PARAM_STATUS, "1");
         } catch (
                 JSONException e) {
 
@@ -230,7 +230,7 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
                                 try {
                                     objectSearch.put(Constants.PARAM_TOKEN, sessionManager.getToken());
                                     objectSearch.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-                                    objectSearch.put(Constants.PARAM_STATUS, "1");
+                                  //  objectSearch.put(Constants.PARAM_STATUS, "1");
 
                                     if (spinnerArrayAdapter.getItem(position).toString() != null) {
                                         objectSearch.put(Constants.PARAM_SEARCH, actv.getText().toString());
@@ -276,7 +276,7 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
                         page = 1;
                         page1 = 1;
                         apiName = "delivery-boy-assessment-list";
-                        //  new GetDeliveryBoyList(object.toString(), apiName).execute();
+                        new GetDeliveryBoyList(object.toString(), apiName).execute();
                     }
                 }
 
@@ -312,7 +312,7 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
                 try {
                     objectSearch.put(Constants.PARAM_TOKEN, sessionManager.getToken());
                     objectSearch.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-                    objectSearch.put(Constants.PARAM_STATUS, "1");
+                   // objectSearch.put(Constants.PARAM_STATUS, "1");
                     objectSearch.put(Constants.PARAM_SEARCH, actv.getText().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();

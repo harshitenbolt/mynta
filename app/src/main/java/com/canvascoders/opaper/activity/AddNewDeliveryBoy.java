@@ -252,6 +252,12 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             etPhoneNumber.requestFocus();
             return false;
         }
+        if (etPhoneNumber.length() < 10) {
+            etPhoneNumber.requestFocus();
+            etPhoneNumber.setError("Provide Valid number");
+            //showMSG(false, "Provide Store address");
+            return false;
+        }
         return true;
     }
 
@@ -279,6 +285,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                         if (sendOtpDelBoyresponse.getResponseCode() == 400) {
                             if (!sendOtpDelBoyresponse.getValidation().getPhoneNumber().equalsIgnoreCase("") && sendOtpDelBoyresponse.getValidation().getPhoneNumber() != null) {
                                 btGetOtp.setError(sendOtpDelBoyresponse.getValidation().getPhoneNumber());
+                                Toast.makeText(AddNewDeliveryBoy.this, sendOtpDelBoyresponse.getValidation().getPhoneNumber(), Toast.LENGTH_LONG).show();
                                 btGetOtp.requestFocus();
                             }
                         }

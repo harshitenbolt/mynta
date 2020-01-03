@@ -39,8 +39,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".activity.AssessmentDetaildeliveryBoyActivity"></activity>
-        <activity android:name=".activity.AssessmentScreenActivity" />
+        <activity
+            android:name=".activity.AssessmentDetaildeliveryBoyActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".activity.AssessmentScreenActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.AddGstImageActivity"
             android:screenOrientation="portrait"

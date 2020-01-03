@@ -105,7 +105,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     private TextView tvLanguage, dob;
     private CheckBox cbSame;
     private String isUpdate = "";
-    String otp = "";
+    String otp = "", mobile_number = "";
     Datum datum;
     Button btGetOtp;
 
@@ -310,6 +310,17 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
             etPhoneNumber.requestFocus();
             return false;
         }
+
+        if (etPhoneNumber.getText().toString().equalsIgnoreCase(datum.getPhoneNumber())) {
+            Toast.makeText(EditDeliveryBoyActivity.this, "Please enter another mobile number", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if (etPhoneNumber.length() < 10) {
+            etPhoneNumber.requestFocus();
+            etPhoneNumber.setError("Provide Valid number");
+            //showMSG(false, "Provide Store address");
+            return false;
+        }
         return true;
     }
 
@@ -332,6 +343,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                     if (sendOtpDelBoyresponse.getResponseCode() == 200) {
                         Toast.makeText(EditDeliveryBoyActivity.this, sendOtpDelBoyresponse.getResponse(), Toast.LENGTH_SHORT).show();
                         otp = sendOtpDelBoyresponse.getData().get(0).getOtp();
+                        mobile_number = etPhoneNumber.getText().toString();
                     } else {
                         if (sendOtpDelBoyresponse.getResponseCode() == 400) {
                             if (!sendOtpDelBoyresponse.getValidation().getPhoneNumber().equalsIgnoreCase("") && sendOtpDelBoyresponse.getValidation().getPhoneNumber() != null) {
@@ -574,16 +586,32 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                 // showMSG(false, "Provide Pincode");
                 return false;
             }
-            if (TextUtils.isEmpty(etOtp.getText().toString())) {
-                etOtp.requestFocus();
-                etOtp.setError("Provide OTP");
-                // showMSG(false, "Provide Pincode");
-                return false;
+
+            if (!etPhoneNumber.getText().toString().equalsIgnoreCase(datum.getPhoneNumber())) {
+                if (TextUtils.isEmpty(etOtp.getText().toString())) {
+                    etOtp.requestFocus();
+                    etOtp.setError("Provide OTP");
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
+                if (!etOtp.getText().toString().equalsIgnoreCase(otp)) {
+                    etOtp.requestFocus();
+                    etOtp.setError("Provide Valid OTP");
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
+                if (!etPhoneNumber.getText().toString().equalsIgnoreCase(mobile_number)) {
+                    etPhoneNumber.requestFocus();
+                    etPhoneNumber.setError("Provide Same mobile number");
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
             }
-            if (!etOtp.getText().toString().equalsIgnoreCase(otp)) {
-                etOtp.requestFocus();
-                etOtp.setError("Provide Valid OTP");
-                // showMSG(false, "Provide Pincode");
+
+            if (etPhoneNumber.length() < 10) {
+                etPhoneNumber.requestFocus();
+                etPhoneNumber.setError("Provide Valid number");
+                //showMSG(false, "Provide Store address");
                 return false;
             }
         } else if (i == 2) {

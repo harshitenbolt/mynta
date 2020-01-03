@@ -74,6 +74,18 @@ public class Datum implements Serializable {
     @SerializedName("dc")
     @Expose
     private String dc;
+    @SerializedName("boy_status")
+    @Expose
+    private String boystatus;
+
+    public String getBoystatus() {
+        return boystatus;
+    }
+
+    public void setBoystatus(String boystatus) {
+        this.boystatus = boystatus;
+    }
+
     @SerializedName("route_number")
     @Expose
     private String routeNumber;

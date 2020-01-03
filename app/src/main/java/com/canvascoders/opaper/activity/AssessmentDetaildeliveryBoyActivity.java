@@ -114,6 +114,8 @@ public class AssessmentDetaildeliveryBoyActivity extends AppCompatActivity {
                         tvMobile.setText(detailAssessmentDelBoyResponse.getData().getPhoneNumber());
                         tvStoreName.setText(detailAssessmentDelBoyResponse.getData().getStoreName());
                         tvExampAttemtedTimes.setText(detailAssessmentDelBoyResponse.getData().getAssessmentTried() + "");
+                        ivHome.setPadding(0, 0, 0, 0);
+                        //Glide.with(AssessmentDetaildeliveryBoyActivity.this).load(Constants.BaseImageURL + detailAssessmentDelBoyResponse.getData().getImage()).placeholder(R.drawable.image_placeholder).into(ivHome);
 
                         Glide.with(AssessmentDetaildeliveryBoyActivity.this).load(Constants.BaseImageURL + detailAssessmentDelBoyResponse.getData().getImage()).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivHome) {
                             @Override
@@ -121,7 +123,7 @@ public class AssessmentDetaildeliveryBoyActivity extends AppCompatActivity {
                                 RoundedBitmapDrawable circularBitmapDrawable =
                                         RoundedBitmapDrawableFactory.create(AssessmentDetaildeliveryBoyActivity.this.getResources(), resource);
                                 circularBitmapDrawable.setCircular(true);
-                                ivHome.setPadding(0, 0, 0, 0);
+                                // ivHome.setPadding(0, 0, 0, 0);
                                 ivHome.setImageDrawable(circularBitmapDrawable);
                             }
                         });

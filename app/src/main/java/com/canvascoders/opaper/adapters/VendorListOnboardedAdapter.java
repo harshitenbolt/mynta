@@ -54,7 +54,7 @@ public class VendorListOnboardedAdapter extends RecyclerView.Adapter<VendorListO
         holder.tvName.setText(vendorLists.get(position).getName());
         holder.tvMobile.setText(vendorLists.get(position).getMobileNo());
         holder.tvRoute.setText(vendorLists.get(position).getStoreAddress());
-        holder.tvLiveFrom.setText(vendorLists.get(position).getRateApproveDate());
+       // holder.tvLiveFrom.setText(vendorLists.get(position).getRateApproveDate());
         holder.tvStoreName.setText(vendorLists.get(position).getStoreName());
         //  holder.tvStatus.setText(vendorLists.get(position).getStatus());
 
