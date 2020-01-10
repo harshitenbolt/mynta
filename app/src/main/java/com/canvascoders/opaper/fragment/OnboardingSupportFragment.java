@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.SupportListResponse.Datum;
 import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
@@ -134,14 +137,14 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
                 status = selectedItem;
                 if (selectedItem.equalsIgnoreCase("Select Filter")) {
 
-                        supportList.clear();
-                        next_page_url = "support-listing";
-                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                            status = "";
-                            ApiCallgetReports(status);
-                        } else {
-                            Constants.ShowNoInternet(getActivity());
-                        }
+                    supportList.clear();
+                    next_page_url = "support-listing";
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        status = "";
+                        ApiCallgetReports(status);
+                    } else {
+                        Constants.ShowNoInternet(getActivity());
+                    }
 
 
                 }
@@ -250,12 +253,14 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
                     }
                 } else {
                     mProgress.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode 2069 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SupportListResponse> call, Throwable t) {
                 mProgress.dismiss();
+                Toast.makeText(getActivity(), "#errorcode 2069 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
                 mSwipeRefreshLayout.setRefreshing(false);
             }

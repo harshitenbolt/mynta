@@ -765,16 +765,19 @@ public class InvoiceListingFragment extends Fragment implements SwipeRefreshLayo
                         });
 
                     } else {
+                        Toast.makeText(getActivity(), supportListResponse.getResponse(), Toast.LENGTH_LONG).show();
+
                         Log.e("harshit", supportListResponse.getResponse());
                     }
                 } else {
-
+                    Toast.makeText(getActivity(), "#errorcode 2073 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SearchListResponse> call, Throwable t) {
 
+                Toast.makeText(getActivity(), "#errorcode 2073 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 mSwipeRefreshLayout.setRefreshing(false);
             }

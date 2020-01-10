@@ -98,7 +98,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     List<ApprovalRateDetail> approvalRateDetails = new ArrayList<>();
     View viewSeperate;
     TextView tvPending, tvApprove;
-    String attachment="";
+    String attachment = "";
     List<ApprovalRateDetail> approvedList = new ArrayList<>();
     List<ApprovalRateDetail> approvalRateUnderPending = new ArrayList<>();
     CurrentRateListAdapter currentRateListAdapter;
@@ -459,6 +459,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
                 } catch (Exception e) {
                     progressDialog.dismiss();
+                    Toast.makeText(ResignAgreementActivity.this, "#errorcode 2075 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             }
@@ -466,8 +467,8 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
             @Override
             public void onFailure(Call<ResignAgreeDetailResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(ResignAgreementActivity.this, "No data Found", Toast.LENGTH_LONG).show();
-               /* if (delivery_boys_list.isEmpty()) {
+                Toast.makeText(ResignAgreementActivity.this, "#errorcode 2075 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                   /* if (delivery_boys_list.isEmpty()) {
                     tv_note.setVisibility(View.VISIBLE);
                     btnSubmit.setVisibility(View.GONE);
                 } else {
@@ -600,6 +601,9 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
                     } else {
                         Toast.makeText(ResignAgreementActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(ResignAgreementActivity.this, "#errorcode :- 2015 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
 
             }
@@ -607,6 +611,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
             @Override
             public void onFailure(Call<ResignAgreementResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                Toast.makeText(ResignAgreementActivity.this, "#errorcode :- 2015 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -709,7 +714,6 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     }
 
 
-
     private void ApiCallSendImageSupport(Bitmap bitmap) {
         progressDialog.setMessage("Please wait...");
         progressDialog.show();
@@ -739,7 +743,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
                         Intent i = new Intent(ResignAgreementActivity.this, GeneralSupportSubmitActivity.class);
                         i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
-                        i.putExtra(Constants.PARAM_ATTACHMENT,submitReportResponse.getData().get(0).getAttachment_name());
+                        i.putExtra(Constants.PARAM_ATTACHMENT, submitReportResponse.getData().get(0).getAttachment_name());
                         i.putExtra(Constants.PARAM_SCREEN_NAME, "ResignAgreement");
                         startActivity(i);
 
@@ -747,12 +751,16 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
                     } else {
                         Toast.makeText(ResignAgreementActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
+                } else {
+                    Toast.makeText(ResignAgreementActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                Toast.makeText(ResignAgreementActivity.this, "#errorcode :- 2038 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });

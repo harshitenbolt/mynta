@@ -221,102 +221,110 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                 @Override
                 public void onResponse(Call<AddDelBoyResponse> call, Response<AddDelBoyResponse> response) {
                     mProgressDialog.dismiss();
-                    AddDelBoyResponse addDelBoyResponse = response.body();
-                    if (addDelBoyResponse.getResponseCode() == 200) {
-                        b.dismiss();
-                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                            // getBankDetails(mContext,s.toString(),processId);
-                            ApiCallGetLists();
-                        } else {
-                            Constants.ShowNoInternet(AddDeliveryBoysActivity.this);
+                    if (response.isSuccessful()) {
+
+
+                        AddDelBoyResponse addDelBoyResponse = response.body();
+                        if (addDelBoyResponse.getResponseCode() == 200) {
+                            b.dismiss();
+                            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                // getBankDetails(mContext,s.toString(),processId);
+                                ApiCallGetLists();
+                            } else {
+                                Constants.ShowNoInternet(AddDeliveryBoysActivity.this);
+                            }
+
+                            Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        }
+                        if (addDelBoyResponse.getResponseCode() == 411) {
+                            sessionManager.logoutUser(AddDeliveryBoysActivity.this);
                         }
 
-                        Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                    }
-                    if (addDelBoyResponse.getResponseCode() == 411) {
-                        sessionManager.logoutUser(AddDeliveryBoysActivity.this);
-                    }
+                        if (addDelBoyResponse.getResponseCode() == 400) {
 
-                    if (addDelBoyResponse.getResponseCode() == 400) {
+                            mProgressDialog.dismiss();
+                            if (addDelBoyResponse.getValidation() != null) {
+                                AddDelBoyResponse.Validation validation = addDelBoyResponse.getValidation();
+                                if (validation.getImage() != null && validation.getImage().length() > 0) {
+                                    Toast.makeText(AddDeliveryBoysActivity.this, validation.getImage(), Toast.LENGTH_LONG).show();
+                                    finish();
+                                }
+                                if (validation.getName() != null && validation.getName().length() > 0) {
+                                    et_name.setError(validation.getName());
+                                    et_name.requestFocus();
+                                }
+                                if (validation.getFather_name() != null && validation.getFather_name().length() > 0) {
+                                    etFatherName.setError(validation.getName());
+                                    etFatherName.requestFocus();
+                                }
+                                if (validation.getPhoneNumber() != null && validation.getPhoneNumber().length() > 0) {
 
-                        mProgressDialog.dismiss();
-                        if (addDelBoyResponse.getValidation() != null) {
-                            AddDelBoyResponse.Validation validation = addDelBoyResponse.getValidation();
-                            if (validation.getImage() != null && validation.getImage().length() > 0) {
-                                Toast.makeText(AddDeliveryBoysActivity.this, validation.getImage(), Toast.LENGTH_LONG).show();
-                                finish();
-                            }
-                            if (validation.getName() != null && validation.getName().length() > 0) {
-                                et_name.setError(validation.getName());
-                                et_name.requestFocus();
-                            }
-                            if (validation.getFather_name() != null && validation.getFather_name().length() > 0) {
-                                etFatherName.setError(validation.getName());
-                                etFatherName.requestFocus();
-                            }
-                            if (validation.getPhoneNumber() != null && validation.getPhoneNumber().length() > 0) {
+                                    et_phone.setError(validation.getPhoneNumber());
+                                    et_phone.requestFocus();
+                                }
+                                if (validation.getCurrent_residential_address() != null && validation.getCurrent_residential_address().length() > 0) {
+                                    etCurrentAdd.setError(validation.getCurrent_residential_address());
+                                    etCurrentAdd.requestFocus();
+                                }
+                                if (validation.getPermanent_address() != null && validation.getPermanent_address().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etPermAdd.setError(validation.getPermanent_address());
+                                    etPermAdd.requestFocus();
 
-                                et_phone.setError(validation.getPhoneNumber());
-                                et_phone.requestFocus();
-                            }
-                            if (validation.getCurrent_residential_address() != null && validation.getCurrent_residential_address().length() > 0) {
-                                etCurrentAdd.setError(validation.getCurrent_residential_address());
-                                etCurrentAdd.requestFocus();
-                            }
-                            if (validation.getPermanent_address() != null && validation.getPermanent_address().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                etPermAdd.setError(validation.getPermanent_address());
-                                etPermAdd.requestFocus();
-
-                            }
-                            if (validation.getDc() != null && validation.getDc().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                Toast.makeText(AddDeliveryBoysActivity.this, validation.getDc(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getDc() != null && validation.getDc().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(AddDeliveryBoysActivity.this, validation.getDc(), Toast.LENGTH_LONG).show();
 
 
-                            }
-                            if (validation.getRoute_number() != null && validation.getRoute_number().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                etRoute.setError(validation.getRoute_number());
-                                etRoute.requestFocus();
+                                }
+                                if (validation.getRoute_number() != null && validation.getRoute_number().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etRoute.setError(validation.getRoute_number());
+                                    etRoute.requestFocus();
 
-                            }
-                            if (validation.getDriving_licence_num() != null && validation.getDriving_licence_num().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                etDlNumber.setError(validation.getDriving_licence_num());
-                                etDlNumber.requestFocus();
-                            }
-                            if (validation.getDriving_licence_dob() != null && validation.getDriving_licence_dob().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                tvDob.setError(validation.getDriving_licence_dob());
-                                tvDob.requestFocus();
-                            }
-                            if (validation.getDriving_licence_image() != null && validation.getDriving_licence_image().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                Toast.makeText(AddDeliveryBoysActivity.this, validation.getDriving_licence_image(), Toast.LENGTH_SHORT).show();
-                            }
-                            if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                etVehicleDel.setError(validation.getDriving_licence_dob());
-                                etVehicleDel.requestFocus();
-                            }
-                            if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                Toast.makeText(AddDeliveryBoysActivity.this, validation.getLanguages(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getDriving_licence_num() != null && validation.getDriving_licence_num().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etDlNumber.setError(validation.getDriving_licence_num());
+                                    etDlNumber.requestFocus();
+                                }
+                                if (validation.getDriving_licence_dob() != null && validation.getDriving_licence_dob().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    tvDob.setError(validation.getDriving_licence_dob());
+                                    tvDob.requestFocus();
+                                }
+                                if (validation.getDriving_licence_image() != null && validation.getDriving_licence_image().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(AddDeliveryBoysActivity.this, validation.getDriving_licence_image(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    etVehicleDel.setError(validation.getDriving_licence_dob());
+                                    etVehicleDel.requestFocus();
+                                }
+                                if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
+                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(AddDeliveryBoysActivity.this, validation.getLanguages(), Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
+                                }
+
                             } else {
                                 Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
+
+
                             }
 
                         } else {
-                            Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
-
+                            Log.e("RESP", "" + addDelBoyResponse.getResponse().toString());
+                            Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                            mProgressDialog.dismiss();
 
                         }
 
                     } else {
-                        Log.e("RESP", "" + addDelBoyResponse.getResponse().toString());
-                        Toast.makeText(AddDeliveryBoysActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                        mProgressDialog.dismiss();
+                        Toast.makeText(AddDeliveryBoysActivity.this, "#errorcode :- 2043 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                     }
                 }
@@ -324,6 +332,8 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                 @Override
                 public void onFailure(Call<AddDelBoyResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
+                    Toast.makeText(AddDeliveryBoysActivity.this,"#errorcode :- 2043 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                     Log.e("something_error", t.getMessage());
                 }
             });
@@ -369,7 +379,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                     }
                     deliveryBoysAdapter = new DeliveryBoysAdapter(delivery_boys_list, getApplicationContext(), AddDeliveryBoysActivity.this);
 
-                    LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                    LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
 
                     rv_deliveryboy_list.setLayoutManager(horizontalLayoutManager);
                     rv_deliveryboy_list.setAdapter(deliveryBoysAdapter);
@@ -377,6 +387,10 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
 
                 } catch (Exception e) {
                     mProgressDialog.dismiss();
+
+
+
+                    Toast.makeText(AddDeliveryBoysActivity.this,"#errorcode :- 2049 "+getString(R.string.something_went_wrong),Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
@@ -393,6 +407,8 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                     btnSubmit.setVisibility(View.VISIBLE);
                 }
                 Log.e("something", t.getMessage());
+                Toast.makeText(AddDeliveryBoysActivity.this,"#errorcode :- 2049 "+getString(R.string.something_went_wrong),Toast.LENGTH_LONG).show();
+
                 t.getMessage();
             }
         });
@@ -783,13 +799,16 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                     } else {
                         Toast.makeText(AddDeliveryBoysActivity.this, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(AddDeliveryBoysActivity.this,"#errorcode :- 2032 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetDC> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(AddDeliveryBoysActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(AddDeliveryBoysActivity.this, "#errorcode :- 2032 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                //  Toast.makeText(AddDeliveryBoysActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -845,14 +864,19 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
             @Override
             public void onResponse(Call<DeleteDeliveryResponse> call, Response<DeleteDeliveryResponse> response) {
                 mProgressDialog.dismiss();
-                DeleteDeliveryResponse deleteDeliveryResponse = response.body();
+                if(response.isSuccessful()) {
+                    DeleteDeliveryResponse deleteDeliveryResponse = response.body();
 
-                if (deleteDeliveryResponse.getResponseCode() == 200) {
-                    Toast.makeText(AddDeliveryBoysActivity.this, deleteDeliveryResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                    ApiCallGetLists();
-                } else {
-                    Toast.makeText(AddDeliveryBoysActivity.this, deleteDeliveryResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    if (deleteDeliveryResponse.getResponseCode() == 200) {
+                        Toast.makeText(AddDeliveryBoysActivity.this, deleteDeliveryResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        ApiCallGetLists();
+                    } else {
+                        Toast.makeText(AddDeliveryBoysActivity.this, deleteDeliveryResponse.getResponse(), Toast.LENGTH_SHORT).show();
 
+                    }
+                }
+                else{
+                    Toast.makeText(AddDeliveryBoysActivity.this, "#errorcode 2071 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -860,7 +884,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
             @Override
             public void onFailure(Call<DeleteDeliveryResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-
+                Toast.makeText(AddDeliveryBoysActivity.this, "#errorcode 2071 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 t.getMessage();
             }
         });

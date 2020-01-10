@@ -152,6 +152,8 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                     VendorDetailResponse vendorDetailResponse = response.body();
                     vendor = vendorDetailResponse.getData().get(0);
                     init();
+                } else {
+                    Toast.makeText(VendorDetailActivity.this, "#errorcode :- 2017 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -159,6 +161,8 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             @Override
             public void onFailure(Call<VendorDetailResponse> call, Throwable t) {
                 mProgress.dismiss();
+                Toast.makeText(VendorDetailActivity.this,"#errorcode :- 2017 "+ getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -181,6 +185,9 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                     } else {
                         Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(VendorDetailActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
 
             }
@@ -223,6 +230,9 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                         Toast.makeText(VendorDetailActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
                 }
+                else{
+                    Toast.makeText(VendorDetailActivity.this, "#errorcode :- 2046 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
 
             }
 
@@ -230,6 +240,8 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             public void onFailure(Call<CommonResponse> call, Throwable t) {
                 dialog.dismiss();
                 mProgress.dismiss();
+                Toast.makeText(VendorDetailActivity.this, "#errorcode :- 2046 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -273,14 +285,21 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        Toast.makeText(VendorDetailActivity.this, "#errorcode:- 2018"+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
 
                     }
+                } else {
+                    Toast.makeText(VendorDetailActivity.this, "#errorcode:- 2018"+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<SignedDocDetailResponse> call, Throwable t) {
                 removeWait();
+                Toast.makeText(VendorDetailActivity.this, "#errorcode:- 2018"+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
 
             }
         });
@@ -862,11 +881,16 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                         Toast.makeText(VendorDetailActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 }
+                else{
+                    Toast.makeText(VendorDetailActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
             }
 
             @Override
             public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
                 mProgress.dismiss();
+                Toast.makeText(VendorDetailActivity.this, "#errorcode :- 2038 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });

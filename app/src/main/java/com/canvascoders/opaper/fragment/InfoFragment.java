@@ -59,6 +59,7 @@ import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
+import com.canvascoders.opaper.activity.ChangeMobileActivity;
 import com.canvascoders.opaper.adapters.CustomPopupAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupApproachAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupLocalityAdapter;
@@ -537,7 +538,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             }
         });
 
-        ApiCallGetVendorType();
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            ApiCallGetVendorType();
+        } else {
+            Constants.ShowNoInternet(getActivity());
+        }
 
 
         checkedItems = new boolean[select_language.length];
@@ -612,13 +617,17 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                     } else {
                         Toast.makeText(mcontext, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode :-2032 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetDC> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode :-2032 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                // Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -630,11 +639,12 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             case R.id.btNext:
                 if (i == 0) {
                     if (validation(1)) {
-                        i = 1;
-                        validationapiUrl = "1";
+
                         hideKeyboardwithoutPopulate(getActivity());
                         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                             // getBankDetails(mContext,s.toString(),processId);
+                            i = 1;
+                            validationapiUrl = "1";
                             ApiCallValidationCheck(validationapiUrl, 1);
                         } else {
                             Constants.ShowNoInternet(getActivity());
@@ -644,11 +654,12 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                     }
                 } else if (i == 1) {
                     if (validation(2)) {
-                        i = 2;
-                        validationapiUrl = "2";
+
                         hideKeyboardwithoutPopulate(getActivity());
                         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                             // getBankDetails(mContext,s.toString(),processId);
+                            i = 2;
+                            validationapiUrl = "2";
                             ApiCallValidationCheck(validationapiUrl, 2);
                         } else {
                             Constants.ShowNoInternet(getActivity());
@@ -1288,11 +1299,15 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                         }
 
                     }
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode :- 2030" + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetUserDetailResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(getActivity(), "#errorcode :- 2030" + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -1618,16 +1633,24 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             checkedStoreType = new boolean[select_Store_type.size()];
                         } else if (getVendorTypeDetails.getResponseCode() == 411) {
                             sessionManager.logoutUser(mcontext);
+                        } else {
+                            Toast.makeText(getActivity(), getVendorTypeDetails.getResponse(), Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
+                        Toast.makeText(getActivity(), "#errorcode :- 2014 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                     }
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode :- 2014 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetVendorTypeDetails> call, Throwable t) {
+                Toast.makeText(getActivity(), "#errorcode :- 2014 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -1942,14 +1965,16 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                         }
                     }
                 } else {
-                    Constants.showAlert(v, getString(R.string.something_went_wrong), false);
+                    Constants.showAlert(v, "#errorcode :- 2029 " + getString(R.string.something_went_wrong), false);
                 }
             }
 
             @Override
             public void onFailure(Call<GetUserDetailResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(mcontext, "#errorcode :- 2029 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //   Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
     }

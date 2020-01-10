@@ -151,6 +151,9 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
 
                     }
                 }
+                else{
+                    Toast.makeText(InvoiceDetailsActivity.this, "#errorcode 2078 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
 
 
             }
@@ -158,7 +161,7 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<GetVendorInvoiceDetails> call, Throwable t) {
                 mProgress.dismiss();
-                Toast.makeText(InvoiceDetailsActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(InvoiceDetailsActivity.this, "#errorcode 2078 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });

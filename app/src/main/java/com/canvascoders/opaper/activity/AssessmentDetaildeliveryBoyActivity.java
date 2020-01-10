@@ -172,12 +172,17 @@ public class AssessmentDetaildeliveryBoyActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(AssessmentDetaildeliveryBoyActivity.this, detailAssessmentDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(AssessmentDetaildeliveryBoyActivity.this, "#errorcode :- 2016 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<DetailAssessmentDelBoyResponse> call, Throwable t) {
                 mProgress.dismiss();
+                Toast.makeText(AssessmentDetaildeliveryBoyActivity.this, "#errorcode :- 2016 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -314,12 +319,16 @@ public class AssessmentDetaildeliveryBoyActivity extends AppCompatActivity {
                         Toast.makeText(AssessmentDetaildeliveryBoyActivity.this, resendOTPResponse.getResponse(), Toast.LENGTH_SHORT).show();
 
                     }
+                } else {
+                    Toast.makeText(AssessmentDetaildeliveryBoyActivity.this, "#errorcode 2065 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResendOTPResponse> call, Throwable t) {
                 mProgress.dismiss();
+                Toast.makeText(AssessmentDetaildeliveryBoyActivity.this, "#errorcode 2065 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -386,13 +395,15 @@ public class AssessmentDetaildeliveryBoyActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(AssessmentDetaildeliveryBoyActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
+                } else {
+                    Toast.makeText(AssessmentDetaildeliveryBoyActivity.this, "#errorcode :- 2038 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
                 mProgress.dismiss();
-
+                Toast.makeText(AssessmentDetaildeliveryBoyActivity.this, "#errorcode :- 2038 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 

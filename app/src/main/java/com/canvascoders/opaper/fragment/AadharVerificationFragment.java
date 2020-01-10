@@ -51,7 +51,9 @@ import com.canvascoders.opaper.Beans.VerifyGstResponse.VerifyGst;
 import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
 import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.CropImage2Activity;
+import com.canvascoders.opaper.activity.EditGSTActivity;
 import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.DialogUtil;
 import com.canvascoders.opaper.utils.GPSTracker;
@@ -578,7 +580,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         Map<String, String> params = new HashMap<String, String>();
 
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
-
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
 
         File imagefile1 = new File(aadharImagepathFront);
         attachment_adharFront = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathFront)), imagefile1));
@@ -623,14 +625,19 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                         tvAdharBack.setVisibility(View.VISIBLE);
                         Glide.with(getActivity()).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
 
+                    } else {
+                        Toast.makeText(getActivity(), adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
                     }
 
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode 2089 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AdharOCRResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
+                Toast.makeText(getActivity(), "#errorcode 2089 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -702,6 +709,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
     private void ApiCallSubmitOcr(String name, String fathername, String dob, String id, String detailsId, String filename, String fileUrl) {
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         JSONObject jsonObject = new JSONObject();
         if (kyc_type.equalsIgnoreCase("2")) {
 
@@ -752,14 +760,19 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                 try {
                     if (response.isSuccessful()) {
 
+                    } else {
+                        Toast.makeText(getActivity(), "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
-                    Toast.makeText(getActivity(), " Contact administartor immediately", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                    //  Toast.makeText(getActivity(), " Contact administartor immediately", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ApiSubmitOCRPanVoterDlResponse> call, Throwable t) {
+                Toast.makeText(getActivity(), "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -844,7 +857,13 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
             if (requestCode == REQUEST_SCANNER && (data != null)) {
-                processScannedData(data.getStringExtra(Constants.CONTENT));
+                if(AppApplication.networkConnectivity.isNetworkAvailable()){
+                    processScannedData(data.getStringExtra(Constants.CONTENT));
+                }
+                else{
+                    Constants.ShowNoInternet(getActivity());
+                }
+
             }
             if (requestCode == IMAGE_VOTER_FRONT) {
                 Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
@@ -950,6 +969,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
 
         File imagefile = new File(voterImagePathFront);
         voter_front_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathFront)), imagefile));
@@ -1040,19 +1060,25 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
                             Toast.makeText(getActivity(), voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                    }
+                    } else {
+                        Toast.makeText(getActivity(), "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     mProgressDialog.dismiss();
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                    //  Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<VoterOCRGetDetaisResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //   Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -1071,6 +1097,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
 
        /* File imagefile = new File(voterImagePathFront);
         voter_front_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathFront)), imagefile));
@@ -1167,19 +1194,24 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                             });
 
                         }
+                    } else {
+                        Toast.makeText(getActivity(), "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     mProgressDialog.dismiss();
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                    //  Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<DrivingLicenceDetailResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //      Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -1266,7 +1298,12 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         if (kyc_type.equalsIgnoreCase("1")) {
             if (!aadharImagepathFront.equals("") && !aadharImagepathBack.equalsIgnoreCase("")) {
                 //api OCR
-                ApiCallOCRAdhar();
+                if(AppApplication.networkConnectivity.isNetworkAvailable()) {
+                    ApiCallOCRAdhar();
+                }
+                else{
+                    Constants.ShowNoInternet(getActivity());
+                }
                 //showEditDialog();
             } else {
                 Toast.makeText(getActivity(), "Please upload Both Images.", Toast.LENGTH_SHORT).show();
@@ -1378,12 +1415,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
                         } else {
-                            if (getaadhardetail.getResponseCode() == 405) {
-                                sessionManager.logoutUser(mcontext);
-                            }
-                            if (getaadhardetail.getResponseCode() == 411) {
-                                sessionManager.logoutUser(getActivity());
-                            }
+
 
                             if (getaadhardetail.getResponseCode() == 400) {
                                 if (getaadhardetail.getValidation() != null) {
@@ -1420,12 +1452,20 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                     Toast.makeText(mcontext, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
 
                                 }
+                            } else if (getaadhardetail.getResponseCode() == 405) {
+                                sessionManager.logoutUser(mcontext);
+                            } else if (getaadhardetail.getResponseCode() == 411) {
+                                sessionManager.logoutUser(getActivity());
+                            } else {
+                                showAlert2(getaadhardetail.getResponse());
                             }
-                            showAlert2(getaadhardetail.getResponse());
+
                         }
 
                     } else {
-                        Toast.makeText(mcontext, "No response", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                        //   Toast.makeText(mcontext, "No response", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -1433,6 +1473,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });
@@ -1769,7 +1810,9 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                         }
 
                     } else {
-                        Toast.makeText(mcontext, "Contact administrator immediately", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                        //   Toast.makeText(mcontext, "Contact administrator immediately", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -1777,6 +1820,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });

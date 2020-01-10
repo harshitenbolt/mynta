@@ -872,14 +872,18 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
 
                     } else {
                         Log.e("harshit", supportListResponse.getResponse());
+                        Toast.makeText(getActivity(), supportListResponse.getResponse(), Toast.LENGTH_LONG).show();
+
                     }
                 } else {
+                    Toast.makeText(getActivity(), "#errorcode 2073 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             }
 
             @Override
             public void onFailure(Call<SearchListResponse> call, Throwable t) {
+                Toast.makeText(getActivity(), "#errorcode 2073 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
 
                 mSwipeRefreshLayout.setRefreshing(false);

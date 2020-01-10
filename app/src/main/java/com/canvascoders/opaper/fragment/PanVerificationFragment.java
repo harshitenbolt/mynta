@@ -334,11 +334,18 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                         });
                     }
                 }
+                else {
+                    Toast.makeText(getActivity(), "#errorcode :- 2047 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+
+                }
             }
 
             @Override
             public void onFailure(Call<UpdatePanDetailResponse> call, Throwable t) {
                 llGoback.setEnabled(true);
+                Toast.makeText(getActivity(), "#errorcode :- 2047 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -492,6 +499,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         param.put(Constants.PARAM_FILE_NAME, filename);
         param.put(Constants.PARAM_FILE_URL, FileUrl);
         param.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        param.put(Constants.PARAM_PROCESS_ID, str_process_id);
         Call<PanCardSubmitResponse> call = ApiClient.getClient2().create(ApiInterface.class).SubmitPancardOCR(param);
         call.enqueue(new Callback<PanCardSubmitResponse>() {
             @Override
@@ -504,11 +512,17 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                         Toast.makeText(getActivity(), panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
+                else{
+                    Toast.makeText(getActivity(),"#errorcode :- 2027 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
             }
 
             @Override
             public void onFailure(Call<PanCardSubmitResponse> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"#errorcode :- 2027 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
             }
         });
     }
@@ -630,7 +644,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
 
                     } else {
-                        Toast.makeText(mcontext, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(mcontext,"#errorcode :- 2037 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -638,6 +652,8 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
+                    Toast.makeText(mcontext,"#errorcode :- 2037 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
 
                 }
             });
@@ -672,6 +688,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         MultipartBody.Part typedFile = null;
         HashMap<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         if (!TextUtils.isEmpty(panImagepath)) {
 
             mProgressDialog.setMessage("Extracting image..");
@@ -825,14 +842,16 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(getActivity(), "NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "#errorcode :- 2020 NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<GetPanDetailsResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "#errorcode :- 2020 NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
+
+                 //   Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 

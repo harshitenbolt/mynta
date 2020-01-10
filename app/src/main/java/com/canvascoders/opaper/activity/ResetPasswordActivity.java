@@ -2,7 +2,9 @@ package com.canvascoders.opaper.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -84,25 +86,29 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onResponse(Call<ResetPassResponse> call, Response<ResetPassResponse> response) {
                 progressDialog.dismiss();
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     ResetPassResponse resetPassResponse = response.body();
-                    if(resetPassResponse.getResponseCode()==200){
+                    if (resetPassResponse.getResponseCode() == 200) {
                         Toast.makeText(ResetPasswordActivity.this, resetPassResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(ResetPasswordActivity.this, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
-                     }
-                     else{
-                        Toast.makeText(ResetPasswordActivity.this, resetPassResponse.getStatus(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(ResetPasswordActivity.this, resetPassResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
+                } else {
+                    Toast.makeText(ResetPasswordActivity.this,"#errorcode :- 2019 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<ResetPassResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(ResetPasswordActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResetPasswordActivity.this, "#errorcode :- 2019 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                // Toast.makeText(ResetPasswordActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -124,12 +130,12 @@ public class ResetPasswordActivity extends AppCompatActivity implements View.OnC
         }
 
 
-        if(!isValidPassword(etNewpw.getText().toString())){
+        if (!isValidPassword(etNewpw.getText().toString())) {
             showAlert(v, "Provide Password in proper format ", false);
             etNewpw.requestFocus();
             return false;
         }
-        if(etNewpw.getText().toString().length()<8) {
+        if (etNewpw.getText().toString().length() < 8) {
             showAlert(v, "Password length should be eight or more", false);
             etNewpw.requestFocus();
             return false;

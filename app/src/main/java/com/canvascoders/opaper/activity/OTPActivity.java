@@ -280,19 +280,23 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                     } else if (mobileResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(OTPActivity.this);
                     } else {
-                        showMSG(false, response.body().getResponse());
+
                         if (response.body().getResponseCode() == 405) {
                             sessionManager.logoutUser(OTPActivity.this);
+                        } else {
+                            showMSG(false, response.body().getResponse());
                         }
                     }
                 } else {
-                    showMSG(false, getString(R.string.something_went_wrong));
+                    showMSG(false, "#errorcode :- 2022 "+getString(R.string.something_went_wrong));
                 }
             }
 
             @Override
             public void onFailure(Call<GetMobileResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
+                Toast.makeText(OTPActivity.this, "#errorcode :- 2022 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
             }
         });
     }
@@ -776,22 +780,24 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                         // Toast.makeText(getApplicationContext(), getOTP.getResponse(), Toast.LENGTH_LONG).show();
                         otp = getOTP.getData().get(0).getOtp();
                     } else {
-                        showMSG(false, getOTP.getResponse());
+
                         if (getOTP.getResponseCode() == 405) {
                             sessionManager.logoutUser(OTPActivity.this);
                         } else if (getOTP.getResponseCode() == 411) {
                             sessionManager.logoutUser(OTPActivity.this);
+                        } else {
+                            showMSG(false, getOTP.getResponse());
                         }
                     }
                 } else {
-                    showMSG(false, getString(R.string.something_went_wrong));
+                    showMSG(false, "#errorcode :- 2012 " + getString(R.string.something_went_wrong));
                 }
             }
 
             @Override
             public void onFailure(Call<GetOTP> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "#errorcode :- 2012 " +getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -955,7 +961,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                         startActivity(i);*/
                         Intent i = new Intent(OTPActivity.this, GeneralSupportSubmitActivity.class);
                         i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
-                        i.putExtra(Constants.PARAM_ATTACHMENT,submitReportResponse.getData().get(0).getAttachment_name());
+                        i.putExtra(Constants.PARAM_ATTACHMENT, submitReportResponse.getData().get(0).getAttachment_name());
                         i.putExtra(Constants.PARAM_SCREEN_NAME, screenFinal);
                         startActivity(i);
 
@@ -963,13 +969,16 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                     } else {
                         Toast.makeText(OTPActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
+                } else {
+                    Toast.makeText(OTPActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-
+                Toast.makeText(OTPActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 

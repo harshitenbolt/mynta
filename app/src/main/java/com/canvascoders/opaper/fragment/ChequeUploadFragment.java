@@ -37,6 +37,7 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.CropImage2Activity;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.OTPActivity;
+import com.canvascoders.opaper.activity.TaskListActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
@@ -588,11 +589,15 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                             }
 
                         } else {
-                            Toast.makeText(mcontext, response.message(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(mcontext, "#errorcode :- 2040 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                           // Toast.makeText(mcontext, response.message(), Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         progressDialog.dismiss();
                         e.printStackTrace();
+                        Toast.makeText(getActivity(), "#errorcode :- 2040 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                     }
 
 
@@ -695,10 +700,14 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                         e.printStackTrace();
                     }
                 }
+                else{
+                    Toast.makeText(getActivity(), "#errorcode 2053" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getActivity(), "#errorcode 2053" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });

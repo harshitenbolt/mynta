@@ -369,16 +369,24 @@ public class AgreementDetailActivity extends AppCompatActivity implements Naviga
                                 Toast.makeText(AgreementDetailActivity.this, "Could not store your agreement to our server", Toast.LENGTH_LONG).show();
                             }
                         }
+                        else{
+                            Toast.makeText(AgreementDetailActivity.this, "#errorcode :- 2026 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                        }
 
                     } else {
-                        Toast.makeText(AgreementDetailActivity.this, "Could not store your agreement to our server", Toast.LENGTH_LONG).show();
+                      //  Toast.makeText(AgreementDetailActivity.this, "Could not store your agreement to our server", Toast.LENGTH_LONG).show();
                         Mylogger.getInstance().Logit(TAG, "response is null here ");
+                        Toast.makeText(AgreementDetailActivity.this, "#errorcode :- 2026 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                     }
                 }
 
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
                     Mylogger.getInstance().Logit(TAG, t.toString());
+                    Toast.makeText(AgreementDetailActivity.this,  "#errorcode :- 2026 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             });
         } else {
@@ -622,7 +630,8 @@ public class AgreementDetailActivity extends AppCompatActivity implements Naviga
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+
+                Toast.makeText(getApplicationContext(),"#errorcode 2054 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -646,7 +655,9 @@ public class AgreementDetailActivity extends AppCompatActivity implements Naviga
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"#errorcode 2054 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+              //  Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -13,12 +13,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.CommonResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.DashboardActivity;
+import com.canvascoders.opaper.activity.EditGSTActivity;
+import com.canvascoders.opaper.activity.VendorDetailActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
@@ -231,11 +234,17 @@ public class PanApprovalPending extends Fragment {
 
                     }
                 }
+                else{
+                    Toast.makeText(getActivity(), "#errorcode :- 2047 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+                }
             }
 
             @Override
             public void onFailure(Call<UpdatePanDetailResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
+                Toast.makeText(getActivity(), "#errorcode :- 2047 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -298,11 +307,17 @@ public class PanApprovalPending extends Fragment {
 
                     }
                 }
+                else{
+                    Toast.makeText(getActivity(), "#errorcode :- 2048 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+                }
             }
 
             @Override
             public void onFailure(Call<CommonResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
+                Toast.makeText(getActivity(), "#errorcode :- 2048 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
             }
         });
     }

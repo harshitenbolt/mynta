@@ -259,11 +259,18 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
 
 
                 }
+                else{
+                    Toast.makeText(SupportDetailActivity.this, "#errorcode 2072 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                }
+
+
             }
 
             @Override
             public void onFailure(Call<CommentResponse> call, Throwable t) {
                 removeWait();
+                Toast.makeText(SupportDetailActivity.this, "#errorcode 2072 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -286,14 +293,18 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
                         //  Glide.with(SupportDetailActivity.this).load(supportDetailResponse.getData().get(0).getAttachment()).into(holder.ivAttachment);
 
                     } else {
+                        Toast.makeText(SupportDetailActivity.this, supportDetailResponse.getResponse(), Toast.LENGTH_LONG).show();
                         //    Toast.makeText(SupportDetailActivity.this, supportDetailResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                }
+                else{
+                    Toast.makeText(SupportDetailActivity.this, "#errorcode 2070 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SupportDetailResponse> call, Throwable t) {
-
+                Toast.makeText(SupportDetailActivity.this, "#errorcode 2070 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
     }

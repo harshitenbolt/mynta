@@ -194,7 +194,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             startActivity(intent);
                         }
                     })
-                    .setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(LoginActivity.this, "Please allow Location Permission", Toast.LENGTH_LONG).show();
@@ -354,14 +354,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         tvForgot.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    showAlert(v, getString(R.string.something_went_wrong), false);
+                    showAlert(v, "#errorcode :- 2011 " + getString(R.string.something_went_wrong), false);
                 }
             }
 
             @Override
             public void onFailure(Call<GetUserDetails> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                showAlert(v, "#errorcode :- 2011 " + getString(R.string.something_went_wrong), false);
+                // Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -369,7 +370,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btLogin) {
-           // Constants.hideKeyboardwithoutPopulate(LoginActivity.this);
+            // Constants.hideKeyboardwithoutPopulate(LoginActivity.this);
             getPermitionGrant(v);
         }
         if (v.getId() == R.id.tvForgot) {

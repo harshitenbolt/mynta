@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.cardview.widget.CardView;
+
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -33,7 +36,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ChangeMobileActivity extends AppCompatActivity implements View.OnClickListener {
-    private CardView cvFirst,cvSecond;
+    private CardView cvFirst, cvSecond;
     private EditText edit_mobile_no;
     private Button btn_next;
     private SessionManager sessionManager;
@@ -51,14 +54,14 @@ public class ChangeMobileActivity extends AppCompatActivity implements View.OnCl
         sessionManager = new SessionManager(this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-           // vendor = (VendorList) ;
+            // vendor = (VendorList) ;
             str_process_id = bundle.getString(Constants.KEY_VENDOR_MOBILE);
         }
         initView();
     }
 
     private void initView() {
-      //  cvFirst = findViewById(R.id.cvfirst);
+        //  cvFirst = findViewById(R.id.cvfirst);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Sending OTP to mobile.");
         edit_mobile_no = findViewById(R.id.edit_mobile);
@@ -95,7 +98,7 @@ public class ChangeMobileActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_next:
                 if (TextUtils.isEmpty(edit_mobile_no.getText())) {
                     showMSG(false, "Mobile Not Valid");
@@ -144,7 +147,7 @@ public class ChangeMobileActivity extends AppCompatActivity implements View.OnCl
         user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
 
         Mylogger.getInstance().Logit(TAG, user.toString());
-        ApiClient.getClient().create(ApiInterface.class).sendOTP("Bearer "+sessionManager.getToken(),user).enqueue(new Callback<GetOTP>() {
+        ApiClient.getClient().create(ApiInterface.class).sendOTP("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetOTP>() {
             @Override
             public void onResponse(Call<GetOTP> call, Response<GetOTP> response) {
                 mProgressDialog.dismiss();
@@ -158,27 +161,26 @@ public class ChangeMobileActivity extends AppCompatActivity implements View.OnCl
                         Intent i = new Intent(ChangeMobileActivity.this, ChangeMobileOTPActivity.class);
                         i.putExtra("otp", getOTP.getData().get(0).getOtp().toString());
                         i.putExtra(Constants.KEY_EMP_MOBILE, edit_mobile_no.getText().toString());
-                        i.putExtra(Constants.KEY_PROCESS_ID,str_process_id);
+                        i.putExtra(Constants.KEY_PROCESS_ID, str_process_id);
                         startActivity(i);
                         finish();
 
                     } else if (getOTP.getResponseCode() == 405) {
                         sessionManager.logoutUser(ChangeMobileActivity.this);
-                    }
-                    else if (getOTP.getResponseCode()==411){
+                    } else if (getOTP.getResponseCode() == 411) {
                         sessionManager.logoutUser(ChangeMobileActivity.this);
-                    }else {
+                    } else {
                         showMSG(false, getOTP.getResponse());
                     }
                 } else {
-                    showMSG(false, getString(R.string.something_went_wrong));
+                    showMSG(false, "#errorcode :- 2012 " + getString(R.string.something_went_wrong));
                 }
             }
 
             @Override
             public void onFailure(Call<GetOTP> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(ChangeMobileActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(ChangeMobileActivity.this, "#errorcode :- 2012 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
     }

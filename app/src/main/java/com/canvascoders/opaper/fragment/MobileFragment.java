@@ -154,14 +154,16 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
                         showMSG(false, getOTP.getResponse());
                     }
                 } else {
-                    showMSG(false, getString(R.string.something_went_wrong));
+                    showMSG(false, "#errorcode :- 2012 " +getString(R.string.something_went_wrong));
                 }
             }
 
             @Override
             public void onFailure(Call<GetOTP> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode :- 2012 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+              //  Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
     }

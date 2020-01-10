@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +32,7 @@ import com.canvascoders.opaper.Beans.DelBoysResponse.DelBoyResponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AddNewDeliveryBoy;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.activity.DelBoyListingActivity;
 import com.canvascoders.opaper.activity.OTPActivity;
 import com.canvascoders.opaper.adapters.DeliveryBoysListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
@@ -51,7 +54,7 @@ import retrofit2.Response;
  */
 public class DeliveryBoyFragment extends Fragment implements View.OnClickListener {
 
-    private Button btAddDelBoy,btSubmit;
+    private Button btAddDelBoy, btSubmit;
     View view;
     private ProgressDialog mProgressDialog;
     Context mcontext;
@@ -64,6 +67,7 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
     private List<Datum> delivery_boys_list = new ArrayList<>();
     private int DEL_BOY = 100;
     private LinearLayout llNoData;
+
     public DeliveryBoyFragment() {
         // Required empty public constructor
     }
@@ -80,7 +84,7 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
         str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
         OTPActivity.settitle(Constants.TITLE_ADD_DEL_BOY);
         init();
-        return  view;
+        return view;
     }
 
     private void init() {
@@ -90,8 +94,8 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
         btAddDelBoy.setOnClickListener(this);
         btSubmit = view.findViewById(R.id.btSubmit);
         btSubmit.setOnClickListener(this);
-        rvDelBoysList =view.findViewById(R.id.rvDelBoyList);
-        llNoData =view.findViewById(R.id.llNoData);
+        rvDelBoysList = view.findViewById(R.id.rvDelBoyList);
+        llNoData = view.findViewById(R.id.llNoData);
 
         ApiCallGetLists();
     }
@@ -105,7 +109,7 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
 
-        Call<DelBoyResponse> call = ApiClient.getClient().create(ApiInterface.class).getDelBoys("Bearer "+sessionManager.getToken(),params);
+        Call<DelBoyResponse> call = ApiClient.getClient().create(ApiInterface.class).getDelBoys("Bearer " + sessionManager.getToken(), params);
         call.enqueue(new Callback<DelBoyResponse>() {
             @Override
             public void onResponse(Call<DelBoyResponse> call, Response<DelBoyResponse> response) {
@@ -115,11 +119,10 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
                         mProgressDialog.dismiss();
 //                        Toast.makeText(AddDeliveryBoysActivity.this,deliveryBoysList.getResponse(),Toast.LENGTH_SHORT).show();
                         delivery_boys_list.addAll(deliveryBoysList.getData());
-                      //  deliveryBoysListAdapter.notifyDataSetChanged();
-                    }
-                    else if (deliveryBoysList.getResponseCode()==411){
+                        //  deliveryBoysListAdapter.notifyDataSetChanged();
+                    } else if (deliveryBoysList.getResponseCode() == 411) {
                         sessionManager.logoutUser(getActivity());
-                    }else {
+                    } else {
                         mProgressDialog.dismiss();
                         //  Toast.makeText(getActivity(), deliveryBoysList.getResponse(), Toast.LENGTH_SHORT).show();
                     }
@@ -129,8 +132,8 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
                         btSubmit.setEnabled(false);
                         btSubmit.setVisibility(View.GONE);
                         llNoData.setVisibility(View.VISIBLE);
-                        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                            btSubmit.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_button_grey) );
+                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                            btSubmit.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.rounded_corner_button_grey));
                         } else {
                             btSubmit.setBackground(ContextCompat.getDrawable(mcontext, R.drawable.rounded_corner_button_grey));
                         }
@@ -140,13 +143,13 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
                         btSubmit.setVisibility(View.VISIBLE);
 
                         btSubmit.setEnabled(true);
-                        if(sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                            btSubmit.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary) );
+                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                            btSubmit.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
                         } else {
                             btSubmit.setBackgroundColor(ContextCompat.getColor(mcontext, R.color.colorPrimary));
                         }
                     }
-                    deliveryBoysListAdapter = new DeliveryBoysListAdapter(delivery_boys_list, getActivity(),"0");
+                    deliveryBoysListAdapter = new DeliveryBoysListAdapter(delivery_boys_list, getActivity(), "0");
 
                     LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
@@ -180,18 +183,17 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btAddDelBoy:
-                Intent i = new Intent(getActivity(),AddNewDeliveryBoy.class);
-                startActivityForResult(i,DEL_BOY);
+                Intent i = new Intent(getActivity(), AddNewDeliveryBoy.class);
+                startActivityForResult(i, DEL_BOY);
                 break;
 
 
             case R.id.btSubmit:
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                     ApiCallSubmit();
-                }
-                else{
+                } else {
                     Constants.ShowNoInternet(mcontext);
                 }
                 break;
@@ -206,42 +208,39 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
 
-        Call<DelBoysNextResponse> call = ApiClient.getClient().create(ApiInterface.class).completeDelBoy("Bearer "+sessionManager.getToken(),params);
+        Call<DelBoysNextResponse> call = ApiClient.getClient().create(ApiInterface.class).completeDelBoy("Bearer " + sessionManager.getToken(), params);
         call.enqueue(new Callback<DelBoysNextResponse>() {
             @Override
             public void onResponse(Call<DelBoysNextResponse> call, Response<DelBoysNextResponse> response) {
                 mProgressDialog.dismiss();
 
-                try{
-                    if(response.isSuccessful()) {
+                try {
+                    if (response.isSuccessful()) {
                         DelBoysNextResponse delBoysNextResponse = response.body();
-                        if(delBoysNextResponse.getResponseCode() == 200){
+                        if (delBoysNextResponse.getResponseCode() == 200) {
                             showAlert(delBoysNextResponse.getResponse());
-                        }
-                        else if (delBoysNextResponse.getResponseCode()==411){
+                        } else if (delBoysNextResponse.getResponseCode() == 411) {
                             sessionManager.logoutUser(getActivity());
-                        }
-                        else{
+                        } else {
                             Toast.makeText(getActivity(), delBoysNextResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    else{
+                    } else {
                         Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
                     }
 
-                }
-                catch (Exception e){
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    //    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "#errorcode 2050 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<DelBoysNextResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "#errorcode 2050 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
     }
@@ -249,7 +248,7 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == DEL_BOY){
+        if (requestCode == DEL_BOY) {
             ApiCallGetLists();
             OTPActivity.settitle(Constants.TITLE_ADD_DEL_BOY);
 
@@ -282,7 +281,6 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
     }*/
 
     private void showAlert(String msg) {
-
 
 
         Button btSubmit;

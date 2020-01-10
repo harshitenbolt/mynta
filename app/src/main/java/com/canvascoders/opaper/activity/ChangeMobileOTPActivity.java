@@ -7,8 +7,11 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.appcompat.widget.Toolbar;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -179,22 +182,27 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
                         Toast.makeText(getApplicationContext(), getOTP.getResponse(), Toast.LENGTH_LONG).show();
                         otp = getOTP.getData().get(0).getOtp();
                     } else {
-                        showMSG(false, getOTP.getResponse());
+                       // showMSG(false, getOTP.getResponse());
                         if (getOTP.getResponseCode() == 405) {
                             sessionManager.logoutUser(ChangeMobileOTPActivity.this);
                         } else if (getOTP.getResponseCode() == 411) {
                             sessionManager.logoutUser(ChangeMobileOTPActivity.this);
                         }
+                        else{
+                            showMSG(false,getOTP.getResponse());
+                        }
                     }
                 } else {
-                    showMSG(false, getString(R.string.something_went_wrong));
+                    showMSG(false, "#errorcode :- 2012 " +getString(R.string.something_went_wrong));
                 }
             }
 
             @Override
             public void onFailure(Call<GetOTP> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(ChangeMobileOTPActivity.this,"#errorcode :- 2012 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+//                Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -294,12 +302,16 @@ public class ChangeMobileOTPActivity extends AppCompatActivity implements TextWa
                         } else {
                             Toast.makeText(ChangeMobileOTPActivity.this, changeMobileResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         }
+                    } else {
+                        Toast.makeText(ChangeMobileOTPActivity.this,"#errorcode 2052"+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ChangeMobileResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
+                    Toast.makeText(ChangeMobileOTPActivity.this,"#errorcode 2052"+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             });
         }

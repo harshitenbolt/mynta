@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.TaskListActivity;
 import com.canvascoders.opaper.adapters.MyAdapterforRecycler;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
@@ -430,7 +431,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
 
                     if (switch_shopact.isChecked()) {
                         if (shopActImage.size() > 0) {
-                           // shopActImage.clear();
+                            // shopActImage.clear();
                             myAdapter = new MyAdapter(mcontext, shopActImage);
                             mPager.setAdapter(myAdapter);
                             myAdapterforRecycler = new MyAdapterforRecycler(mcontext, shopActImage);
@@ -660,7 +661,9 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                         }
 
                     } else {
-                        Toast.makeText(mcontext, "Server Timeout", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "#errorcode 2042 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                        // Toast.makeText(mcontext, "Server Timeout", Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -668,7 +671,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     progressDialog.dismiss();
-
+                    Toast.makeText(getActivity(),  "#errorcode 2042 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             });
         } else {

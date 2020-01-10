@@ -212,11 +212,17 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
                         Toast.makeText(AddendumSignPendingActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 }
+                else{
+                    Toast.makeText(AddendumSignPendingActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
             }
 
             @Override
             public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                Toast.makeText(AddendumSignPendingActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
 
             }
         });
@@ -287,6 +293,7 @@ public class AddendumSignPendingActivity extends AppCompatActivity implements Vi
 
             @Override
             public void onFailure(Call<ResendOTPResponse> call, Throwable t) {
+                Toast.makeText(AddendumSignPendingActivity.this, "#errorcode 2063 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });

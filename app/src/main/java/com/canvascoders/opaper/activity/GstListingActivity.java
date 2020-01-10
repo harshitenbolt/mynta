@@ -93,6 +93,8 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
                     VendorDetailResponse vendorDetailResponse = response.body();
                     vendor = vendorDetailResponse.getData().get(0);
                     init();
+                } else {
+                    Toast.makeText(GstListingActivity.this, "#errorcode :- 2017 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -100,7 +102,7 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onFailure(Call<VendorDetailResponse> call, Throwable t) {
                 progressDialog.dismiss();
-
+                Toast.makeText(GstListingActivity.this, "#errorcode :- 2017 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -131,29 +133,29 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
                             tvNodate.setVisibility(View.GONE);
                         } else {
                             Intent i = new Intent(GstListingActivity.this, EditGSTActivity.class);
-                            i.putExtra("data",proccess_id);
+                            i.putExtra("data", proccess_id);
                             startActivity(i);
                             tvNodate.setVisibility(View.VISIBLE);
                         }
 
                     } else if (getGstListing.getResponseCode() == 403) {
                         Intent i = new Intent(GstListingActivity.this, EditGSTActivity.class);
-                        i.putExtra("data",proccess_id);
+                        i.putExtra("data", proccess_id);
                         startActivity(i);
                         finish();
                         tvNodate.setVisibility(View.VISIBLE);
                     } else {
-                        Toast.makeText(GstListingActivity.this, getGstListing.getResponse(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText (GstListingActivity.this, getGstListing.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(GstListingActivity.this, "#errorcode 2083 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetGstListing> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(GstListingActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-
-
+                Toast.makeText(GstListingActivity.this, "#errorcode 2083 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -164,7 +166,7 @@ public class GstListingActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.btnSubmit:
                 Intent i = new Intent(GstListingActivity.this, EditGSTActivity.class);
-                i.putExtra("data",proccess_id);
+                i.putExtra("data", proccess_id);
                 startActivity(i);
                 break;
         }

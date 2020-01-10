@@ -159,15 +159,24 @@ public class ProfileFragment extends Fragment {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                         } catch (IOException e) {
                             e.printStackTrace();
+                            Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                         }
+                    }
+                    else{
+                        Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     mProgressDialog.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
                 }
             });

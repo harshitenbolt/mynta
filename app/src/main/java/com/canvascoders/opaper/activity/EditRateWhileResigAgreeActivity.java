@@ -258,24 +258,29 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
                             }
 
                         } else {
-                            Toast.makeText(EditRateWhileResigAgreeActivity.this, "Server not responding", Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditRateWhileResigAgreeActivity.this, "#errorcode 2056 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (JSONException e) {
                         mProgressDialog.dismiss();
+                        Toast.makeText(EditRateWhileResigAgreeActivity.this, "#errorcode 2056 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     } catch (IOException e) {
                         mProgressDialog.dismiss();
                         e.printStackTrace();
+                        Toast.makeText(EditRateWhileResigAgreeActivity.this, "#errorcode 2056 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
 
+                } else {
+                    Toast.makeText(EditRateWhileResigAgreeActivity.this, "#errorcode 2056 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(EditRateWhileResigAgreeActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditRateWhileResigAgreeActivity.this, "#errorcode 2056 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(EditRateWhileResigAgreeActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -426,13 +431,17 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
                     }
 
                     /////
+                } else {
+                    mProgressDialog.dismiss();
+                    Toast.makeText(EditRateWhileResigAgreeActivity.this, "#errorcode :- 2031 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(EditRateWhileResigAgreeActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditRateWhileResigAgreeActivity.this, "#errorcode :- 2031 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                //   Toast.makeText(EditRateWhileResigAgreeActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
 

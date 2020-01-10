@@ -332,13 +332,19 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                             btSendLink.setVisibility(View.GONE);
                         }
                     }
+                    else{
+                        Toast.makeText(EditGSTActivity.this, checkGstStatus.getResponse(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(EditGSTActivity.this, "#errorcode 2081 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<CheckGstStatus> call, Throwable t) {
                 progressDialog.dismiss();
-
+                Toast.makeText(EditGSTActivity.this, "#errorcode 2081 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -978,14 +984,15 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                     }
 
                 }
+                else{
+                    Toast.makeText(EditGSTActivity.this, "#errorcode 2082 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
             public void onFailure(Call<CheckGstStatus> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-
-
+                Toast.makeText(EditGSTActivity.this, "#errorcode 2082 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -1050,8 +1057,9 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                         APiCallCheckGSTStatus();
                     } else {
                         Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
-
                     }
+                } else {
+                    Toast.makeText(EditGSTActivity.this, "#errorcode 2080 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -1059,9 +1067,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             @Override
             public void onFailure(Call<VerifyGst> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-
-
+                Toast.makeText(EditGSTActivity.this, "#errorcode 2080 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -1123,6 +1129,8 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                         Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
 
                     }
+                } else {
+                    Toast.makeText(EditGSTActivity.this, "#errorcode 2080 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -1130,7 +1138,8 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             @Override
             public void onFailure(Call<VerifyGst> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditGSTActivity.this, "#errorcode 2080 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                //   Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
 
 
             }
@@ -1206,6 +1215,8 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                         Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
 
                     }
+                } else {
+                    Toast.makeText(EditGSTActivity.this, "#errorcode 2080 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -1213,7 +1224,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             @Override
             public void onFailure(Call<VerifyGst> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditGSTActivity.this, "#errorcode 2080 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
 
             }
@@ -1297,16 +1308,15 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                         Toast.makeText(EditGSTActivity.this, verifyGst.getResponse(), Toast.LENGTH_LONG).show();
 
                     }
+                } else {
+                    Toast.makeText(EditGSTActivity.this, "#errorcode 2080 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
-
             }
 
             @Override
             public void onFailure(Call<VerifyGst> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-
-
+                Toast.makeText(EditGSTActivity.this, "#errorcode 2080 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -1505,6 +1515,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                     }
                 } else {
                     progressDialog.dismiss();
+                    Toast.makeText(EditGSTActivity.this, "#errorcode 2079 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -1512,8 +1523,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             @Override
             public void onFailure(Call<GetGSTVerify> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-
+                Toast.makeText(EditGSTActivity.this, "#errorcode 2079 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -1598,13 +1608,18 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                     } else {
                         Toast.makeText(EditGSTActivity.this, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(EditGSTActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<GetDC> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(EditGSTActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditGSTActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //      Toast.makeText(EditGSTActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -1734,12 +1749,16 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                     } else {
                         Toast.makeText(EditGSTActivity.this, updatePanDetailResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
+                } else {
+                    Toast.makeText(EditGSTActivity.this, "#errorcode :- 2047 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<UpdatePanDetailResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                Toast.makeText(EditGSTActivity.this, "#errorcode :- 2047 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -1750,6 +1769,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         MultipartBody.Part typedFile = null;
         HashMap<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         if (!TextUtils.isEmpty(panImagepath)) {
 
             progressDialog.setMessage("Extracting image..");
@@ -1917,14 +1937,17 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(EditGSTActivity.this, "NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditGSTActivity.this, "#errorcode :- 2020 NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<GetPanDetailsResponse> call, Throwable t) {
                     progressDialog.dismiss();
-                    Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(EditGSTActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditGSTActivity.this, "#errorcode :- 2020 NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
+
+                    // Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -1968,7 +1991,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                 }
                             }
                         } else {
-                            Toast.makeText(EditGSTActivity.this, "Server not responding", Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditGSTActivity.this, "#errorcode 2053" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (JSONException e) {
@@ -1976,11 +1999,15 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    Toast.makeText(EditGSTActivity.this, "#errorcode 2053" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(EditGSTActivity.this, "#errorcode 2053" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });

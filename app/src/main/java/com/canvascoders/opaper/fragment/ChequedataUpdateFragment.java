@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -40,6 +41,7 @@ import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.CropImage2Activity;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.activity.TaskListActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
@@ -219,6 +221,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                         }
                     } else {
                         progressDialog.dismiss();
+                        Toast.makeText(getActivity(), "#errorcode 2062 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -226,7 +229,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                 @Override
                 public void onFailure(Call<BankDetailsResponse> call, Throwable t) {
                     progressDialog.dismiss();
-                    Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_LONG);
+                    Toast.makeText(getActivity(), "#errorcode 2062 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     Mylogger.getInstance().Logit(TAG, t.toString());
                 }
             });
@@ -487,7 +490,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
 
         switch (v.getId()) {
             case R.id.btExtract:
-            //    Constants.hideKeyboardwithoutPopulate(getActivity());
+                //    Constants.hideKeyboardwithoutPopulate(getActivity());
                 //if (validation()) {
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                     if (validation()) {
@@ -827,7 +830,8 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                         }
 
                     } else {
-                        Toast.makeText(mcontext, "Server Timeout", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "#errorcode 2041 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                     }
 
                 }
@@ -835,6 +839,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode 2041 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });
@@ -942,11 +947,14 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode 2053" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getActivity(), "#errorcode 2053" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });

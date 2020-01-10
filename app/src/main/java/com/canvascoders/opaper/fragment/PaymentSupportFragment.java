@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.SupportListResponse.Datum;
 import com.canvascoders.opaper.Beans.SupportListResponse.SupportListResponse;
@@ -229,12 +230,15 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
                         }
                     } catch (Exception e) {
                         Log.e("DoneDOnaNon", "DoneDOnaNon2");
+                        Toast.makeText(getActivity(), "#errorcode 2069 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
 
 
                 } else {
                     mProgress.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode 2069 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
             }
 
@@ -242,6 +246,8 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
             public void onFailure(Call<SupportListResponse> call, Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 mProgress.dismiss();
+                Toast.makeText(getActivity(), "#errorcode 2069 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -291,11 +297,15 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
                     } catch (Exception e) {
                         Log.e("DoneDOnaNon", "DoneDOnaNon2");
                         e.printStackTrace();
+                        Toast.makeText(getActivity(), "#errorcode 2069 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                     }
 
 
                 } else {
                     mProgress.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode 2069 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
             }
 
@@ -303,7 +313,7 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
             public void onFailure(Call<SupportListResponse> call, Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
                 mProgress.dismiss();
-
+                Toast.makeText(getActivity(), "#errorcode 2069 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 

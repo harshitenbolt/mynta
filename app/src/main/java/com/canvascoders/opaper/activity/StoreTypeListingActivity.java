@@ -346,19 +346,28 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
 
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(StoreTypeListingActivity.this, "#errorcode 2057 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                     } catch (IOException e) {
                         e.printStackTrace();
+                        Toast.makeText(StoreTypeListingActivity.this, "#errorcode 2057 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                     }
 
 
                     /////
+                } else {
+                    Toast.makeText(StoreTypeListingActivity.this, "#errorcode 2057 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(StoreTypeListingActivity.this, "#errorcode 2057 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //    Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -492,7 +501,6 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
                                         Map<String, String> yourHashMap = new Gson().fromJson(result.toString(), HashMap.class);
 
 
-
                                         Log.e("Found_Stores", "" + yourHashMap.toString());
 
                                         for (int i = 0; i < storeJsonArray.length(); i++) {
@@ -562,24 +570,32 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
                             }
 
                         } else {
-                            Toast.makeText(StoreTypeListingActivity.this, "Server not responding", Toast.LENGTH_LONG).show();
+                            Toast.makeText(StoreTypeListingActivity.this, "#errorcode 2059 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(StoreTypeListingActivity.this, "#errorcode 2059 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                     } catch (IOException e) {
                         e.printStackTrace();
+                        Toast.makeText(StoreTypeListingActivity.this, "#errorcode 2059 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                     }
 
 
                     /////
+                } else {
+                    Toast.makeText(StoreTypeListingActivity.this, "#errorcode 2059 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(StoreTypeListingActivity.this, "#errorcode 2059 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+                //   Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
     }

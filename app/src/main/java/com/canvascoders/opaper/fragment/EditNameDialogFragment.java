@@ -205,19 +205,21 @@ public class EditNameDialogFragment extends DialogFragment {
 
                     } catch (Exception e) {
                         Log.e("DoneDOnaNon", "DoneDOnaNon2");
+                        Toast.makeText(getActivity(), "#errorcode 2077 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
 
 
                 } else {
                     Log.e("DoneDOnaNon", response.message());
+                    Toast.makeText(getActivity(), "#errorcode 2077 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<TransactionIdResponse> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG);
+                Toast.makeText(getActivity(), "#errorcode 2077 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
 
             }

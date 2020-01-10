@@ -944,12 +944,15 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                         Toast.makeText(TaskListActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 }
+                else{
+                    Toast.makeText(TaskListActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
             public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
                 progressDialog.dismiss();
-
+                Toast.makeText(TaskListActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 

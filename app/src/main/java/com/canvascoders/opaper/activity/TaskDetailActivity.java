@@ -369,6 +369,8 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     } else {
                         Toast.makeText(TaskDetailActivity.this, resumeTaskListResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
+                } else {
+                    Toast.makeText(TaskDetailActivity.this, "#errorcode 2088 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -376,6 +378,8 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onFailure(Call<ResumeTaskListResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                Toast.makeText(TaskDetailActivity.this, "#errorcode 2088 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
 
             }
         });
@@ -429,13 +433,16 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
                     }
 
+                } else {
+                    Toast.makeText(TaskDetailActivity.this, "#errorcode 2086 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
-
             }
 
             @Override
             public void onFailure(Call<StartTaskResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                Toast.makeText(TaskDetailActivity.this, "#errorcode 2086 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -463,6 +470,9 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     }
 
 
+                } else {
+                    Toast.makeText(TaskDetailActivity.this, "#errorcode 2086 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
 
             }
@@ -470,6 +480,8 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onFailure(Call<StartTaskResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                Toast.makeText(TaskDetailActivity.this, "#errorcode 2086 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -615,16 +627,17 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                         Toast.makeText(TaskDetailActivity.this, getTaskDetailsResponse.getResponse(), Toast.LENGTH_LONG).show();
 
                     }
+                } else {
+                    Toast.makeText(TaskDetailActivity.this, "#errorcode 2085 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
+
 
             }
 
             @Override
             public void onFailure(Call<GetTaskDetailsResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(TaskDetailActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-
-
+                Toast.makeText(TaskDetailActivity.this, "#errorcode 2085 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 

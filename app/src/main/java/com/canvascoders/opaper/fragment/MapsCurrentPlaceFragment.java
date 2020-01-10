@@ -539,14 +539,14 @@ public class MapsCurrentPlaceFragment extends Fragment
                         }
                     }
                 } else {
-                    showAlert(v, getString(R.string.something_went_wrong), false);
+                    showAlert(v, "#errorcode :- 2023 "+getString(R.string.something_went_wrong), false);
                 }
             }
 
             @Override
             public void onFailure(Call<GetLocationResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(mcontext, "#errorcode :- 2023 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 

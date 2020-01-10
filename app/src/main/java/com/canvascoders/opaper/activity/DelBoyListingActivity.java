@@ -5,14 +5,18 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -44,7 +48,7 @@ import retrofit2.Response;
 public class DelBoyListingActivity extends AppCompatActivity implements View.OnClickListener {
 
 
-    private Button btAddDelBoy,btSubmit;
+    private Button btAddDelBoy, btSubmit;
     View view;
     private ProgressDialog mProgressDialog;
     Context mcontext;
@@ -83,8 +87,8 @@ public class DelBoyListingActivity extends AppCompatActivity implements View.OnC
        /* btSubmit = findViewById(R.id.btSubmit);
 
         btSubmit.setOnClickListener(this);*/
-        rvDelBoysList =findViewById(R.id.rvDelBoyList);
-        llNoData =findViewById(R.id.llNoData);
+        rvDelBoysList = findViewById(R.id.rvDelBoyList);
+        llNoData = findViewById(R.id.llNoData);
 
         ApiCallGetLists();
     }
@@ -99,7 +103,7 @@ public class DelBoyListingActivity extends AppCompatActivity implements View.OnC
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
 
-        Call<DelBoyResponse> call = ApiClient.getClient().create(ApiInterface.class).getDelBoys("Bearer "+sessionManager.getToken(),params);
+        Call<DelBoyResponse> call = ApiClient.getClient().create(ApiInterface.class).getDelBoys("Bearer " + sessionManager.getToken(), params);
         call.enqueue(new Callback<DelBoyResponse>() {
             @Override
             public void onResponse(Call<DelBoyResponse> call, Response<DelBoyResponse> response) {
@@ -111,10 +115,9 @@ public class DelBoyListingActivity extends AppCompatActivity implements View.OnC
 //                        Toast.makeText(AddDeliveryBoysActivity.this,deliveryBoysList.getResponse(),Toast.LENGTH_SHORT).show();
                         delivery_boys_list.addAll(deliveryBoysList.getData());
                         //  deliveryBoysListAdapter.notifyDataSetChanged();
-                    }
-                    else if (deliveryBoysList.getResponseCode()==411){
+                    } else if (deliveryBoysList.getResponseCode() == 411) {
                         sessionManager.logoutUser(DelBoyListingActivity.this);
-                    }else {
+                    } else {
                         mProgressDialog.dismiss();
                         //  Toast.makeText(getActivity(), deliveryBoysList.getResponse(), Toast.LENGTH_SHORT).show();
                     }
@@ -129,7 +132,7 @@ public class DelBoyListingActivity extends AppCompatActivity implements View.OnC
                         llNoData.setVisibility(View.GONE);
 
                     }
-                    deliveryBoysListAdapter = new DeliveryBoysListAdapter(delivery_boys_list, DelBoyListingActivity.this,"1");
+                    deliveryBoysListAdapter = new DeliveryBoysListAdapter(delivery_boys_list, DelBoyListingActivity.this, "1");
 
                     LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(DelBoyListingActivity.this, LinearLayoutManager.VERTICAL, false);
 
@@ -141,13 +144,14 @@ public class DelBoyListingActivity extends AppCompatActivity implements View.OnC
                 } catch (Exception e) {
                     mProgressDialog.dismiss();
                     e.printStackTrace();
+                    Toast.makeText(DelBoyListingActivity.this, "#errorcode :- 2049 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<DelBoyResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(DelBoyListingActivity.this, "No data Found", Toast.LENGTH_LONG).show();
+                Toast.makeText(DelBoyListingActivity.this, "#errorcode :- 2049 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                /* if (delivery_boys_list.isEmpty()) {
                     tv_note.setVisibility(View.VISIBLE);
                     btnSubmit.setVisibility(View.GONE);
@@ -164,12 +168,12 @@ public class DelBoyListingActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btAddDelBoy:
-                Intent i = new Intent(DelBoyListingActivity.this,AddNewDeliveryBoy.class);
-                i.putExtra("Data","1");
-                i.putExtra("process",str_process_id);
-                startActivityForResult(i,DEL_BOY);
+                Intent i = new Intent(DelBoyListingActivity.this, AddNewDeliveryBoy.class);
+                i.putExtra("Data", "1");
+                i.putExtra("process", str_process_id);
+                startActivityForResult(i, DEL_BOY);
                 break;
 
 
@@ -192,42 +196,37 @@ public class DelBoyListingActivity extends AppCompatActivity implements View.OnC
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
 
-        Call<DelBoysNextResponse> call = ApiClient.getClient().create(ApiInterface.class).completeDelBoy("Bearer "+sessionManager.getToken(),params);
+        Call<DelBoysNextResponse> call = ApiClient.getClient().create(ApiInterface.class).completeDelBoy("Bearer " + sessionManager.getToken(), params);
         call.enqueue(new Callback<DelBoysNextResponse>() {
             @Override
             public void onResponse(Call<DelBoysNextResponse> call, Response<DelBoysNextResponse> response) {
                 mProgressDialog.dismiss();
 
-                try{
-                    if(response.isSuccessful()) {
+                try {
+                    if (response.isSuccessful()) {
                         DelBoysNextResponse delBoysNextResponse = response.body();
-                        if(delBoysNextResponse.getResponseCode() == 200){
+                        if (delBoysNextResponse.getResponseCode() == 200) {
                             showAlert(delBoysNextResponse.getResponse());
-                        }
-                        else if (delBoysNextResponse.getResponseCode()==411){
+                        } else if (delBoysNextResponse.getResponseCode() == 411) {
                             sessionManager.logoutUser(DelBoyListingActivity.this);
-                        }
-                        else{
+                        } else {
                             Toast.makeText(DelBoyListingActivity.this, delBoysNextResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    else{
+                    } else {
                         Toast.makeText(DelBoyListingActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                     }
 
-                }
-                catch (Exception e){
-                    Toast.makeText(DelBoyListingActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(DelBoyListingActivity.this, "#errorcode 2050 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<DelBoysNextResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(DelBoyListingActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(DelBoyListingActivity.this, "#errorcode 2050 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
     }
@@ -235,9 +234,9 @@ public class DelBoyListingActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == DEL_BOY){
+        if (requestCode == DEL_BOY) {
             ApiCallGetLists();
-        //    OTPActivity.settitle(Constants.TITLE_ADD_DEL_BOY);
+            //    OTPActivity.settitle(Constants.TITLE_ADD_DEL_BOY);
 
         }
     }
@@ -264,7 +263,6 @@ public class DelBoyListingActivity extends AppCompatActivity implements View.OnC
     }*/
 
     private void showAlert(String msg) {
-
 
 
         Button btSubmit;

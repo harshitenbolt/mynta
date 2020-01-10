@@ -180,12 +180,16 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
                     } else {
                         Toast.makeText(GeneralSupportSubmitActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
+                } else {
+                    Toast.makeText(GeneralSupportSubmitActivity.this, "#errorcode 2068 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GeneralSupportResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                Toast.makeText(GeneralSupportSubmitActivity.this, "#errorcode 2068 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -220,13 +224,15 @@ public class GeneralSupportSubmitActivity extends AppCompatActivity implements V
                         subject.setAdapter(spinnerArrayAdapter);
                         subject.setSelection(0);
                     }
+                } else {
+                    Toast.makeText(GeneralSupportSubmitActivity.this, "#errorcode 2033" + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<SupportSubjectResponse> call, Throwable t) {
-
-
+                Toast.makeText(GeneralSupportSubmitActivity.this, "#errorcode 2033" + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
     }

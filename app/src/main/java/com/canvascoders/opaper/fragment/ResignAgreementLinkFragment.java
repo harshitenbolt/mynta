@@ -87,11 +87,14 @@ public class ResignAgreementLinkFragment extends Fragment {
                     } else {
                         Toast.makeText(getActivity(), resendOTPResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode 2064 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResendOTPResponse> call, Throwable t) {
+                Toast.makeText(getActivity(), "#errorcode 2064 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });

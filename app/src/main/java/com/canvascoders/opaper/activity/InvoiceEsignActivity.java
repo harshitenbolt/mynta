@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -26,6 +27,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,30 +93,30 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
     private RelativeLayout relative_buttom;
     private SessionManager sessionManager;
     //    private Toolbar toolbar;
-    private AppCompatTextView btn_agree,btn_send_link;
+    private AppCompatTextView btn_agree, btn_send_link;
     private String TAG = "InvoiceEsign";
     private String directURL = "";
     //private String aggrementPDFUrl = "";
     private String uid = "";
     private String uname = "";
     private String invoice_pdf = "";
-    private String enbolt_id = "",invoice_num="";
+    private String enbolt_id = "", invoice_num = "";
     private String invoice_id = "";
     private String invoice_type = "";
-    private String mobile_no = "",storename="";
+    private String mobile_no = "", storename = "";
     private ProgressDialog progressDialog;
     private boolean isSigned = false;
     Toolbar toolbar;
     CardView cvMain;
     private String status = "";
-    int signed ;
+    int signed;
     Button ivSelect;
     FrameLayout flImage;
-    Bitmap b,converted;
+    Bitmap b, converted;
     RelativeLayout rvMain;
     private String status_value;
     String str_mobile_no;
-    ImageView ivSupport,imageView;
+    ImageView ivSupport, imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,22 +142,20 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
         progressDialog.setTitle("Please wait system is generating INVOICE...");
         progressDialog.setCancelable(false);
         sessionManager = new SessionManager(InvoiceEsignActivity.this);
-        btn_send_link = (AppCompatTextView)findViewById(R.id.btn_send_link);
+        btn_send_link = (AppCompatTextView) findViewById(R.id.btn_send_link);
         relative_buttom = findViewById(R.id.relative_buttom);
         str_mobile_no = sessionManager.getData(Constants.KEY_EMP_MOBILE);
         cvMain = findViewById(R.id.cvMain);
         invoice_id = getIntent().getStringExtra(Constants.KEY_INVOICE_ID);
         invoice_type = getIntent().getStringExtra(Constants.INVOICE_TYPE);
         status = getIntent().getStringExtra(Constants.INVOICE_NUMBER);
-        Log.e("invoice_num",status);
-        signed = getIntent().getIntExtra(Constants.SIGNED,0);
+        Log.e("invoice_num", status);
+        signed = getIntent().getIntExtra(Constants.SIGNED, 0);
         storename = getIntent().getStringExtra(Constants.KEY_NAME);
-        if(invoice_type.equalsIgnoreCase("1")){
+        if (invoice_type.equalsIgnoreCase("1")) {
             relative_buttom.setVisibility(View.VISIBLE);
             btn_send_link.setVisibility(View.VISIBLE);
         }
-
-
 
 
         ivSupport = findViewById(R.id.ivSupport);
@@ -177,7 +177,7 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
                 rvMain.setVisibility(View.GONE);
                 //ivSupport.setVisibility(View.GONE);
                 flImage.setForeground(drawable);
-              //  btn_next.setForeground(drawable);
+                //  btn_next.setForeground(drawable);
                /* findViewById(R.id.btn_next).setVisibility(View.GONE);
                 findViewById(R.id.scView).setVisibility(View.GONE);*/
             }
@@ -190,10 +190,10 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
               /*  final int color = 0xFFFFFF;
                 final Drawable drawable = new ColorDrawable(color);
                 imageView.setImageResource(android.R.color.transparent);*/
-              //  ivSupport.setVisibility(View.GONE);
+                //  ivSupport.setVisibility(View.GONE);
                 findViewById(R.id.rvCaptured).setVisibility(View.GONE);
                 findViewById(R.id.rvMain).setVisibility(View.VISIBLE);
-               // rvMain.setForeground(drawable);
+                // rvMain.setForeground(drawable);
              /* //  findViewById(R.id.btn_next).setVisibility(View.VISIBLE);
               //  rvMain.setForeground(drawable);
               //  btn_next.setForeground(drawable);*/
@@ -215,13 +215,13 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
                 findViewById(R.id.tverror).setVisibility(View.GONE);
                 Bitmap bitmap = viewToBitmap(rvMainWithRect);
                 converted = getResizedBitmap(bitmap, 400);
-                Intent i = new Intent(InvoiceEsignActivity.this,ReportIssueActivity.class);
+                Intent i = new Intent(InvoiceEsignActivity.this, ReportIssueActivity.class);
                 i.putExtra("BitmapImage", converted);
-                i.putExtra(Constants.PARAM_SCREEN_NAME,"Invoice");
-                i.putExtra(Constants.KEY_PROCESS_ID,enbolt_id);
-                i.putExtra(Constants.KEY_INVOICE_NUM,invoice_num);
-                i.putExtra(Constants.KEY_NAME,storename);
-                i.putExtra(Constants.KEY_INVOICE_ID,invoice_id);
+                i.putExtra(Constants.PARAM_SCREEN_NAME, "Invoice");
+                i.putExtra(Constants.KEY_PROCESS_ID, enbolt_id);
+                i.putExtra(Constants.KEY_INVOICE_NUM, invoice_num);
+                i.putExtra(Constants.KEY_NAME, storename);
+                i.putExtra(Constants.KEY_INVOICE_ID, invoice_id);
 
                 startActivity(i);
             }
@@ -232,7 +232,7 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
             view.setOnUpCallback(new DragRectView.OnUpCallback() {
                 @Override
                 public void onRectFinished(final Rect rect) {
-                   // view.setForeground(drawable);
+                    // view.setForeground(drawable);
 
                 }
             });
@@ -314,7 +314,7 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
     private void apicallSendLink() {
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
             Map<String, String> params = new HashMap<String, String>();
-           // params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+            // params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             params.put(Constants.PARAM_INVOICE_ID, invoice_id);
             params.put(Constants.PARAMS_INVOICE_TYPE, invoice_type);
 
@@ -331,33 +331,35 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
                         if (response.isSuccessful()) {
                             progressDialog.dismiss();
                             SendInvoiceLinkresponse sendInvoiceLinkresponse = response.body();
-                            if (sendInvoiceLinkresponse.getResponseCode()==200){
-                                Toast.makeText(InvoiceEsignActivity.this,sendInvoiceLinkresponse.getResponse(),Toast.LENGTH_LONG).show();
-                            }
-                            else if(sendInvoiceLinkresponse.getResponseCode() ==411){
+                            if (sendInvoiceLinkresponse.getResponseCode() == 200) {
+                                Toast.makeText(InvoiceEsignActivity.this, sendInvoiceLinkresponse.getResponse(), Toast.LENGTH_LONG).show();
+                            } else if (sendInvoiceLinkresponse.getResponseCode() == 411) {
                                 sessionManager.logoutUser(InvoiceEsignActivity.this);
-                            }
-                            else{
+                            } else {
                                 progressDialog.dismiss();
-                                Toast.makeText(InvoiceEsignActivity.this,sendInvoiceLinkresponse.getResponse(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(InvoiceEsignActivity.this, sendInvoiceLinkresponse.getResponse(), Toast.LENGTH_LONG).show();
                             }
 
+                        } else {
+                            Toast.makeText(InvoiceEsignActivity.this, "#errorcode 2066 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         }
-                    }
-                    else{
+                    } else {
                         progressDialog.dismiss();
+                        Toast.makeText(InvoiceEsignActivity.this, "#errorcode 2066 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                     }
                 }
 
                 @Override
                 public void onFailure(Call<SendInvoiceLinkresponse> call, Throwable t) {
                     progressDialog.dismiss();
+                    Toast.makeText(InvoiceEsignActivity.this, "#errorcode 2066 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
 
                 }
             });
 
-        }
-        else {
+        } else {
             Constants.ShowNoInternet(InvoiceEsignActivity.this);
         }
     }
@@ -406,7 +408,7 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
             public void onClick(View v) {
                 isOtp = true;
                 isBiometrix = false;
-               // img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_active));
+                // img_phone_otp.setBackground(getResources().getDrawable(R.drawable.phone_active));
                 img_bio.setBackground(getResources().getDrawable(R.drawable.bio_normal));
             }
         });
@@ -560,7 +562,7 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
             params.put(Constants.PARAM_ESIGN_URL, sss);
 
 
-            Call<JsonObject> callUpload = ApiClient.getClient().create(ApiInterface.class).Storeinvoice("Bearer "+sessionManager.getToken(),params);
+            Call<JsonObject> callUpload = ApiClient.getClient().create(ApiInterface.class).Storeinvoice("Bearer " + sessionManager.getToken(), params);
             callUpload.enqueue(new Callback<JsonObject>() {
                 @Override
                 public void onResponse(Call<JsonObject> call, retrofit2.Response<JsonObject> response) {
@@ -582,6 +584,9 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
                                 Toast.makeText(InvoiceEsignActivity.this, "INVOICE E-sign could not complete,retry again", Toast.LENGTH_LONG).show();
                             }
 
+                        } else {
+                            Toast.makeText(InvoiceEsignActivity.this, "#errorcode :- 2024 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                         }
 
                     }
@@ -590,6 +595,8 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
                     Mylogger.getInstance().Logit(TAG, t.toString());
+                    Toast.makeText(InvoiceEsignActivity.this, "#errorcode :- 2024 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             });
         } else {
@@ -830,18 +837,17 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
                 MediaType mediaType = MediaType.parse("application/json");
                 RequestBody body = RequestBody.create(mediaType, s);
                 Request requestLogin = null;
-                if(signed == 0){
-                   requestLogin = new Request.Builder()
+                if (signed == 0) {
+                    requestLogin = new Request.Builder()
                             .url(Constants.BaseURL + "get-single-invoice")
                             .post(body)
-                           .addHeader("Authorization","Bearer "+sessionManager.getToken())
+                            .addHeader("Authorization", "Bearer " + sessionManager.getToken())
                             .build();
-                }
-                else{
+                } else {
                     requestLogin = new Request.Builder()
                             .url(Constants.BaseURL + "get-single-signed-invoice")
                             .post(body)
-                            .addHeader("Authorization","Bearer "+sessionManager.getToken())
+                            .addHeader("Authorization", "Bearer " + sessionManager.getToken())
                             .build();
                 }
 
@@ -887,7 +893,7 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
 
                         mWebView.getSettings().setJavaScriptEnabled(true);
                         String pdf = invoice_pdf;
-                        mWebView.loadUrl( pdf);
+                        mWebView.loadUrl(pdf);
                         /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(pdf));
                         startActivity(browserIntent);*/
                         mWebView.loadData(result.getString("invoice_html"), "text/html; charset=utf-8", "UTF-8");
@@ -924,9 +930,10 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
 
             }
         }
+
         private String showPdf(String url) {
             String googleDocsUrl = "http://docs.google.com/viewer?embedded=true&url=";
-            return googleDocsUrl+Uri.encode(url);
+            return googleDocsUrl + Uri.encode(url);
         }
 
 
@@ -938,11 +945,12 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
         view.draw(canvas);
         return bitmap;
     }
+
     public Bitmap getResizedBitmap(Bitmap image, int maxSize) {
         int width = image.getWidth();
         int height = image.getHeight();
 
-        float bitmapRatio = (float)width / (float) height;
+        float bitmapRatio = (float) width / (float) height;
         if (bitmapRatio > 1) {
             width = maxSize;
             height = (int) (width / bitmapRatio);

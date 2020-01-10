@@ -101,7 +101,6 @@
                                 android:inputType="textEmailAddress"
                                 android:textColor="@color/colorBlack"
                                 android:gravity="start|center_vertical"
-                                android:imeOptions="actionNext"
                                 android:nextFocusDown="@+id/etPassword" />
                         </com.google.android.material.textfield.TextInputLayout>
 

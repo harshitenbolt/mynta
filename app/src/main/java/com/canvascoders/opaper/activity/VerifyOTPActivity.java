@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import androidx.core.content.res.ResourcesCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -83,7 +84,7 @@ public class VerifyOTPActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View view) {
                 finish();
-                startActivity(new Intent(VerifyOTPActivity.this,LoginActivity.class));
+                startActivity(new Intent(VerifyOTPActivity.this, LoginActivity.class));
             }
         });
         llback = findViewById(R.id.llBack);
@@ -260,13 +261,17 @@ public class VerifyOTPActivity extends AppCompatActivity implements View.OnClick
                     } else {
                         Toast.makeText(VerifyOTPActivity.this, generateResetPWResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(VerifyOTPActivity.this, "#errorcode :- 2013 " +getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<GenerateResetPWResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(VerifyOTPActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VerifyOTPActivity.this, "#errorcode :- 2013 " +getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -315,15 +320,19 @@ public class VerifyOTPActivity extends AppCompatActivity implements View.OnClick
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(VerifyOTPActivity.this, resetPassResponse.getStatus(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VerifyOTPActivity.this, resetPassResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                }
+                else{
+                    Toast.makeText(VerifyOTPActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<ResetPassResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(VerifyOTPActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(VerifyOTPActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -343,21 +352,21 @@ public class VerifyOTPActivity extends AppCompatActivity implements View.OnClick
         }
         if (etCnfPassword.getText().toString().isEmpty()) {
             //_editTextMobile.setError("Provide Valid email");
-            showAlert(v, "Provide Confirm Password", false);
+            showAlert(v, "Provide confirm Password", false);
 
             return false;
         }
         if (!etNewPassword.getText().toString().equalsIgnoreCase(etCnfPassword.getText().toString())) {
-            showAlert(v, "Both Password are not same", false);
+            showAlert(v, "Both password are not same", false);
 
             return false;
         }
 
-        if (!isValidPassword(etNewPassword.getText().toString())) {
+      /*  if (!isValidPassword(etNewPassword.getText().toString())) {
             showAlert(v, "Provide Password in proper format ", false);
             etNewPassword.requestFocus();
             return false;
-        }
+        }*/
         if (etNewPassword.getText().toString().length() < 8) {
             showAlert(v, "Password length should be eight or more", false);
             etNewPassword.requestFocus();

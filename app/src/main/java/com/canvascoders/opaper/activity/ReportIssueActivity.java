@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+
 import androidx.core.content.res.ResourcesCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -48,11 +50,11 @@ public class ReportIssueActivity extends AppCompatActivity {
     ImageView imageView, ivBack;
     private ArrayList<String> subjectList = new ArrayList<>();
     private List<String> priorityList = new ArrayList<>();
-    String ScreenName = "", enbolt_id = "",storename="",invoice_num="";
+    String ScreenName = "", enbolt_id = "", storename = "", invoice_num = "";
     Spinner subject, priority;
     String priority_id;
     private SessionManager sessionManager;
-    private TextView tvEnbolt, tvAgent,tvInvoiceNo;
+    private TextView tvEnbolt, tvAgent, tvInvoiceNo;
     private Button btSubmit;
     private String attachment = "", invoiceId = "";
     ProgressDialog progressDialog;
@@ -106,7 +108,7 @@ public class ReportIssueActivity extends AppCompatActivity {
         invoiceId = intent.getStringExtra(Constants.KEY_INVOICE_ID);
         storename = intent.getStringExtra(Constants.KEY_NAME);
         invoice_num = intent.getStringExtra(Constants.KEY_INVOICE_NUM);
-       // Log.e("invoice_num",invoice_num);
+        // Log.e("invoice_num",invoice_num);
         imageView.setImageBitmap(bitmap);
         tvEnbolt.setText(storename);
         tvInvoiceNo.setText(invoice_num);
@@ -156,7 +158,7 @@ public class ReportIssueActivity extends AppCompatActivity {
         param.put(Constants.PARAM_SUBJECT_NAME, ScreenName);
         param.put(Constants.PARAM_INVOICE_ID, invoiceId);
         param.put(Constants.PARAM_PRIORITY, "" + priority_id);
-        Log.e("Id_done", "" +priority_id);
+        Log.e("Id_done", "" + priority_id);
 
         attachment = ImagePicker.getBitmapPath(bitmap, this);
         File imagefile1 = new File(attachment);
@@ -175,12 +177,16 @@ public class ReportIssueActivity extends AppCompatActivity {
 
                     }
 
+                } else {
+                    Toast.makeText(ReportIssueActivity.this, "#errorcode 2067 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SubmitReportResponse> call, Throwable t) {
                 progressDialog.dismiss();
+                Toast.makeText(ReportIssueActivity.this, "#errorcode 2067 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
 
             }
         });
@@ -204,12 +210,16 @@ public class ReportIssueActivity extends AppCompatActivity {
                         subject.setAdapter(spinnerArrayAdapter);
                         subject.setSelection(0);
                     }
+                } else {
+                    Toast.makeText(ReportIssueActivity.this, "#errorcode 2033" + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<SupportSubjectResponse> call, Throwable t) {
 
+                Toast.makeText(ReportIssueActivity.this, "#errorcode 2033" + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });

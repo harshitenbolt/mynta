@@ -193,6 +193,7 @@ public class VendorDetailsFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResignAgreementResponse> call, Throwable t) {
+                Toast.makeText(getActivity(), getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });

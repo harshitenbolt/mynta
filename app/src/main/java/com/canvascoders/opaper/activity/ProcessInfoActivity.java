@@ -312,7 +312,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             ivAgreeStatus.setBackgroundDrawable(null);
                                             llAgreement.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llAgreement.setPadding(pL, pT, pR, pB);
-                                           // ivGstStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
+                                            // ivGstStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
                                             ivNocStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
                                             llNoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
                                             llNoc.setPadding(pL, pT, pR, pB);
@@ -631,7 +631,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                         sessionManager.logoutUser(ProcessInfoActivity.this);
                     } else {
                         progressDialog.dismiss();
-                        Constants.showAlert(tv_message.getRootView(), checkEsignResponse.getStatus(), false);
+                        Constants.showAlert(tv_message.getRootView(), checkEsignResponse.getResponse(), false);
                         // Toast.makeText(ProcessInfoActivity.this, object.getStatus(), Toast.LENGTH_LONG).show();
                     }
                 }
@@ -639,7 +639,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onFailure(Call<CheckEsignResponse> call, Throwable t) {
                     progressDialog.dismiss();
-                    Toast.makeText(ProcessInfoActivity.this, "Something went wrong", Toast.LENGTH_LONG);
+                    Toast.makeText(ProcessInfoActivity.this, "#errorcode 2061 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG);
                     Mylogger.getInstance().Logit(TAG, t.toString());
                 }
             });
@@ -677,20 +677,26 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
             call.enqueue(new Callback<ResendOTPResponse>() {
                 @Override
                 public void onResponse(Call<ResendOTPResponse> call, Response<ResendOTPResponse> response) {
-                    ResendOTPResponse resendOTPResponse = response.body();
-                    Mylogger.getInstance().Logit(TAG, String.valueOf(response));
-                    if (resendOTPResponse.getResponseCode() == 200) {
-                        Toast.makeText(ProcessInfoActivity.this, resendOTPResponse.getResponse(), Toast.LENGTH_LONG).show();
-                    } else if (resendOTPResponse.getResponseCode() == 411) {
-                        sessionManager.logoutUser(ProcessInfoActivity.this);
+                    if (response.isSuccessful()) {
+                        ResendOTPResponse resendOTPResponse = response.body();
+                        Mylogger.getInstance().Logit(TAG, String.valueOf(response));
+                        if (resendOTPResponse.getResponseCode() == 200) {
+                            Toast.makeText(ProcessInfoActivity.this, resendOTPResponse.getResponse(), Toast.LENGTH_LONG).show();
+                        } else if (resendOTPResponse.getResponseCode() == 411) {
+                            sessionManager.logoutUser(ProcessInfoActivity.this);
+                        } else {
+                            Toast.makeText(ProcessInfoActivity.this, resendOTPResponse.getResponse(), Toast.LENGTH_LONG).show();
+                        }
                     } else {
-                        Toast.makeText(ProcessInfoActivity.this, resendOTPResponse.getResponse(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProcessInfoActivity.this, "#errorcode 2063 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResendOTPResponse> call, Throwable t) {
                     Mylogger.getInstance().Logit(TAG, t.toString());
+                    Toast.makeText(ProcessInfoActivity.this, "#errorcode 2063 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                 }
             });
         }

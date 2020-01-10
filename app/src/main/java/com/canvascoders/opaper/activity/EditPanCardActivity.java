@@ -237,11 +237,17 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                         etpanNumber.setEnabled(true);
                     }
                 }
+                else{
+                    Toast.makeText(EditPanCardActivity.this, "#errorcode :- 2047 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+                }
             }
 
             @Override
             public void onFailure(Call<UpdatePanDetailResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
+                Toast.makeText(EditPanCardActivity.this, "#errorcode :- 2047 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -380,12 +386,18 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                     }
                 }
+                else{
+                    Toast.makeText(EditPanCardActivity.this,"#errorcode 2039 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
             }
 
             @Override
             public void onFailure(Call<UpdatePancardResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(EditPanCardActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditPanCardActivity.this, "#errorcode 2039 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+              //  Toast.makeText(EditPanCardActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -456,6 +468,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         MultipartBody.Part typedFile = null;
         HashMap<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID,str_process_id);
         if (!TextUtils.isEmpty(panImagepath)) {
 
             mProgressDialog.setMessage("Extracting image..");
@@ -621,14 +634,16 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(EditPanCardActivity.this, "NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditPanCardActivity.this, "#errorcode :- 2020 NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<GetPanDetailsResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(EditPanCardActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditPanCardActivity.this, "#errorcode :- 2020 NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
+
+                  //  Toast.makeText(EditPanCardActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 

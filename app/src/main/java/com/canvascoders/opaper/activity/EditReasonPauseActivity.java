@@ -230,13 +230,15 @@ public class EditReasonPauseActivity extends AppCompatActivity implements View.O
                     } else {
                         Toast.makeText(EditReasonPauseActivity.this, pauseTaskResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(EditReasonPauseActivity.this, "#errorcode 2087 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<PauseTaskResponse> call, Throwable t) {
                 progressDialog.dismiss();
-
+                Toast.makeText(EditReasonPauseActivity.this, "#errorcode 2087 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 

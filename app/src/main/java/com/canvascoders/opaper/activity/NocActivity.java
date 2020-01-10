@@ -364,6 +364,11 @@ public class NocActivity extends AppCompatActivity implements NavigationView.OnN
                                 getActivity().finish();*/
                             }
                         }
+                        else{
+                           // Toast.makeText(No.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                            Toast.makeText(NocActivity.this,"#errorcode :- 2025 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                        }
 
                     } else {
                         Toast.makeText(NocActivity.this, "Could not store your agreement to our server", Toast.LENGTH_LONG).show();

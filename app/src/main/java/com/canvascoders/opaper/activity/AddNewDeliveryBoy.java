@@ -287,15 +287,25 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                                 btGetOtp.setError(sendOtpDelBoyresponse.getValidation().getPhoneNumber());
                                 Toast.makeText(AddNewDeliveryBoy.this, sendOtpDelBoyresponse.getValidation().getPhoneNumber(), Toast.LENGTH_LONG).show();
                                 btGetOtp.requestFocus();
+                            } else {
+                                Toast.makeText(AddNewDeliveryBoy.this, sendOtpDelBoyresponse.getResponse(), Toast.LENGTH_LONG).show();
+
                             }
+                        } else {
+                            Toast.makeText(AddNewDeliveryBoy.this, sendOtpDelBoyresponse.getResponse(), Toast.LENGTH_LONG).show();
+
                         }
                     }
+                } else {
+                    Toast.makeText(AddNewDeliveryBoy.this, "#errorcode 2076 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SendOtpDelBoyresponse> call, Throwable t) {
                 mProgressDialog.dismiss();
+                Toast.makeText(AddNewDeliveryBoy.this, "#errorcode 2076 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
             }
         });
 
@@ -368,13 +378,18 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                     } else {
                         Toast.makeText(AddNewDeliveryBoy.this, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(AddNewDeliveryBoy.this, "#errorcode :- 2032 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<GetDC> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(AddNewDeliveryBoy.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(AddNewDeliveryBoy.this, "#errorcode :- 2032 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //  Toast.makeText(AddNewDeliveryBoy.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -755,6 +770,8 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                             }
                         }
                     }
+                } else {
+                    Toast.makeText(AddNewDeliveryBoy.this, "#errorcode :- 2044 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -764,6 +781,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
 
                 mProgressDialog.dismiss();
+                Toast.makeText(AddNewDeliveryBoy.this, "#errorcode :- 2044 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -945,13 +963,15 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                         }
                     }
                 } catch (Exception e) {
-                    Toast.makeText(AddNewDeliveryBoy.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddNewDeliveryBoy.this, "#errorcode :- 2043 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AddDelBoyResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
+                Toast.makeText(AddNewDeliveryBoy.this, "#errorcode :- 2043 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
             }
         });
 

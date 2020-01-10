@@ -251,6 +251,12 @@ public interface ApiInterface {
 //    }
 
 
+
+
+
+
+    ///startstart
+
     @POST("get-pancard-ocr-url")
     @Multipart
     Call<PanImageResponse> getPancardOcrUrl(@Header("Authorization") String auth, @Part("token") String token,
@@ -445,6 +451,10 @@ public interface ApiInterface {
     Call<ResponseBody> submitSigningLog(@Header("Authorization") String token, @Body JsonObject data);
 
 
+
+
+    // check from here ....
+
     //@Headers("Content-Type: application/json")
     @POST("store-type")
     Call<ResponseBody> getStoreTypeListing(@Header("Authorization") String token, @Body JsonObject data);
@@ -471,6 +481,19 @@ public interface ApiInterface {
     @Headers("Content-Type: application/json")
     @POST("bank-details-log")
     Call<BankDetailResp> getBankDetails(@Header("Authorization") String token, @Body JsonObject data);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //@FormUrlEncoded
     @POST("check-esign")

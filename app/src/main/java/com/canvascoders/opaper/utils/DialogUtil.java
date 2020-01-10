@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.EditGSTActivity;
 import com.canvascoders.opaper.api.ApiClient;
@@ -1137,12 +1138,18 @@ public class DialogUtil {
                         Toast.makeText(context, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
                     }
                 }
+                else{
+                    Toast.makeText(context, "#errorcode :- 2032 "+ context.getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
             }
 
             @Override
             public void onFailure(Call<GetDC> call, Throwable t) {
 //                progressDialog.dismiss();
-                Toast.makeText(context, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(context,"#errorcode :- 2032 "+ context.getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //Toast.makeText(context, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -1234,10 +1241,15 @@ public class DialogUtil {
                         e.printStackTrace();
                     }
                 }
+                else{
+                    Toast.makeText(context, "#errorcode 2053" + context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+                }
             }
 
             @Override
             public void onFailure(retrofit2.Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(context, "#errorcode 2053" + context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });

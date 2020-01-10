@@ -2,7 +2,9 @@ package com.canvascoders.opaper.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +27,7 @@ import static com.canvascoders.opaper.utils.Constants.showAlert;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText etEmail,etMobile;
+    private EditText etEmail, etMobile;
     private Button btSubmit;
     private LinearLayout llBack;
     private ProgressDialog mProgressDialog;
@@ -55,14 +57,13 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btSendOTP:
-                if(isValid(view)){
+                if (isValid(view)) {
                     Constants.hideKeyboardwithoutPopulate(ForgotPasswordActivity.this);
                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                         ApiCallSendOtp();
-                    }
-                    else{
+                    } else {
                         Constants.ShowNoInternet(ForgotPasswordActivity.this);
 
                     }
@@ -77,25 +78,27 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             @Override
             public void onResponse(Call<GenerateResetPWResponse> call, Response<GenerateResetPWResponse> response) {
                 mProgressDialog.dismiss();
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     GenerateResetPWResponse generateResetPWResponse = response.body();
-                    if(generateResetPWResponse.getResponseCode()==200){
+                    if (generateResetPWResponse.getResponseCode() == 200) {
                         Toast.makeText(ForgotPasswordActivity.this, generateResetPWResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                        Datum datum  = generateResetPWResponse.getData().get(0);
-                        Intent i = new Intent(ForgotPasswordActivity.this,VerifyOTPActivity.class);
-                        i.putExtra(Constants.DATA,datum);
+                        Datum datum = generateResetPWResponse.getData().get(0);
+                        Intent i = new Intent(ForgotPasswordActivity.this, VerifyOTPActivity.class);
+                        i.putExtra(Constants.DATA, datum);
                         startActivity(i);
-                    }
-                    else{
+                    } else {
                         Toast.makeText(ForgotPasswordActivity.this, generateResetPWResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
-               }
+                }
+                else{
+                    Toast.makeText(ForgotPasswordActivity.this, "#errorcode :- 2013 " +getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<GenerateResetPWResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(ForgotPasswordActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ForgotPasswordActivity.this, "#errorcode :- 2013 " +getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -467,15 +467,18 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
                         });
 
                     } else {
+                        Toast.makeText(getActivity(), supportListResponse.getResponse(), Toast.LENGTH_LONG).show();
+
                         Log.e("harshit", supportListResponse.getResponse());
                     }
                 } else {
-
+                    Toast.makeText(getActivity(), "#errorcode 2074 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SearchResponseAssessment> call, Throwable t) {
+                Toast.makeText(getActivity(), "#errorcode 2074 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
 
                 mSwipeRefreshLayout.setRefreshing(false);

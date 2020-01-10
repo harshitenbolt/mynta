@@ -197,7 +197,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
 
             @Override
             public void onFailure(Call<ResendOTPResponse> call, Throwable t) {
-
+                Toast.makeText(AddendumEsignActivity.this, "#errorcode 2063 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -578,6 +578,8 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
                                 Toast.makeText(AddendumEsignActivity.this, "Addendum E-sign could not complete,retry again", Toast.LENGTH_LONG).show();
                             }
 
+                        } else {
+                            Toast.makeText(AddendumEsignActivity.this, "#errorcode 2058 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -586,6 +588,7 @@ public class AddendumEsignActivity extends AppCompatActivity implements Navigati
                 @Override
                 public void onFailure(Call<JsonObject> call, Throwable t) {
                     Mylogger.getInstance().Logit(TAG, t.toString());
+                    Toast.makeText(AddendumEsignActivity.this, "#errorcode 2058 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             });
         } else {

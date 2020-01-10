@@ -167,11 +167,15 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
 
                     }
                 }
+                else{
+                    Toast.makeText(NotificationActivity.this, "#errorcode 2084 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<ViewNotificationResponse> call, Throwable t) {
                 //   progressDialog.dismiss();
+                Toast.makeText(NotificationActivity.this, "#errorcode 2084 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });

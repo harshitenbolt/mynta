@@ -262,12 +262,15 @@ public class AddGstImageActivity extends AppCompatActivity implements View.OnCli
                         Toast.makeText(AddGstImageActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
 
+                } else {
+                    Toast.makeText(AddGstImageActivity.this, "#errorcode :- 2021 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AddDelBoyResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
+                Toast.makeText(AddGstImageActivity.this, "#errorcode :- 2021 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -348,7 +351,7 @@ public class AddGstImageActivity extends AppCompatActivity implements View.OnCli
                         Intent i = new Intent(AddGstImageActivity.this, GeneralSupportSubmitActivity.class);
                         i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
                         i.putExtra(Constants.PARAM_SCREEN_NAME, "Add GST Image");
-                        i.putExtra(Constants.PARAM_ATTACHMENT,submitReportResponse.getData().get(0).getAttachment_name());
+                        i.putExtra(Constants.PARAM_ATTACHMENT, submitReportResponse.getData().get(0).getAttachment_name());
                         i.putExtra(Constants.KEY_PROCESS_ID, str_process_id);
                         //i.putExtra(Constants.KEY_INVOICE_NUM, invoice_num);
                         i.putExtra(Constants.KEY_NAME, "");
@@ -359,11 +362,17 @@ public class AddGstImageActivity extends AppCompatActivity implements View.OnCli
                         Toast.makeText(AddGstImageActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 }
+                else{
+                    Toast.makeText(AddGstImageActivity.this, "#errorcode :- 2038 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
             }
 
             @Override
             public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
+                Toast.makeText(AddGstImageActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
 
             }
         });

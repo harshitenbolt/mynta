@@ -444,15 +444,22 @@ public class InvoiceWebViewActivity extends AppCompatActivity {
                                 Toast.makeText(InvoiceWebViewActivity.this, sendInvoiceLinkresponse.getResponse(), Toast.LENGTH_LONG).show();
                             }
 
+                        } else {
+                            Toast.makeText(InvoiceWebViewActivity.this, "#errorcode 2066 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                         }
                     } else {
                         progressDialog.dismiss();
+                        Toast.makeText(InvoiceWebViewActivity.this, "#errorcode 2066 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
                     }
                 }
 
                 @Override
                 public void onFailure(Call<SendInvoiceLinkresponse> call, Throwable t) {
                     progressDialog.dismiss();
+                    Toast.makeText(InvoiceWebViewActivity.this, "#errorcode 2066 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
 
                 }
             });

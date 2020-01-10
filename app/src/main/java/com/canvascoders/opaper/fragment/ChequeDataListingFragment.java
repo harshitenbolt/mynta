@@ -2,6 +2,7 @@ package com.canvascoders.opaper.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -162,13 +163,15 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
                         e.printStackTrace();
                     }
                     /////
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode 2060 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<BankDetailResp> call, Throwable t) {
                 mSwipeRefreshLayout.setRefreshing(false);
-                Toast.makeText(getContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode 2060 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -203,7 +206,7 @@ public class ChequeDataListingFragment extends Fragment implements SwipeRefreshL
         } else {
             Constants.ShowNoInternet(getActivity());
         }
-       // getBankDetails();
+        // getBankDetails();
     }
 
 

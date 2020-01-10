@@ -685,7 +685,9 @@ public class GstActivity extends AppCompatActivity implements NavigationView.OnN
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"#errorcode 2054 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+//                Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -709,7 +711,9 @@ public class GstActivity extends AppCompatActivity implements NavigationView.OnN
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"#errorcode 2054 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+           //     Toast.makeText(getApplicationContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
     }

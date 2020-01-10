@@ -289,16 +289,22 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
 
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(getActivity(), "#errorcode 2055 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     } catch (IOException e) {
                         e.printStackTrace();
+                        Toast.makeText(getActivity(), "#errorcode 2055 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
 
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode 2055 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+              //  Toast.makeText(getContext(), t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode 2055 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -456,24 +462,33 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
 
                         } else {
                             mProgressDialog.dismiss();
-                            Toast.makeText(mcontext, "Server not responding", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "#errorcode 2057 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                  //          Toast.makeText(mcontext, "Server not responding", Toast.LENGTH_LONG).show();
                         }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Toast.makeText(getActivity(), "#errorcode 2057 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     } catch (IOException e) {
                         e.printStackTrace();
+                        Toast.makeText(getActivity(), "#errorcode 2057 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     }
 
 
                     /////
+                }
+                else{
+                    Toast.makeText(getActivity(), "#errorcode 2057 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+              //  Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode 2057 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
             }
         });
 

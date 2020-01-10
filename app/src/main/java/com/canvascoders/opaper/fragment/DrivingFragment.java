@@ -25,6 +25,7 @@ import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicence
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.CropImage2Activity;
+import com.canvascoders.opaper.activity.EditGSTActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.helper.DialogListner;
@@ -125,7 +126,7 @@ public class DrivingFragment extends Fragment implements View.OnClickListener {
 
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
-
+        //params.put(Constants.PARAM_PROCESS_ID,);
 
         File imagefile1 = new File(drivingLicencePath);
         driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
@@ -230,18 +231,26 @@ public class DrivingFragment extends Fragment implements View.OnClickListener {
 
                         }
                     }
+                    else{
+                        Toast.makeText(getActivity(),"#errorcode :- 2036 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     mProgressDialog.dismiss();
-                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "#errorcode :- 2036 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                  //  Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<DrivingLicenceDetailResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode :- 2036 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+               // Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
