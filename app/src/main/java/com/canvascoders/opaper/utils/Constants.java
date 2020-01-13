@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 public class Constants {
 
     //-------------------------------------------------------------------------
-    public final static int APP_VERSION = 27; // need to set +1 here befor apk sent on last update before 942018 @ 12 version
+    public final static int APP_VERSION = 28; // need to set +1 here befor apk sent on last update before 942018 @ 12 version
     //-------------------------------------------------------------------------
 
 
@@ -43,13 +43,13 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
 
- //public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+   // public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
     public static String BaseURL = "https://mystaging.opaper.in/api3/";
     // test server 2
 
-   public final static String APP_NAME = "my_stage"; //stage
-   //  public final static String APP_NAME = "my_live"; //live
-   // public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+    public final static String APP_NAME = "my_stage"; //stage
+   //   public final static String APP_NAME = "my_live"; //live
+    // public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
     public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
@@ -169,7 +169,6 @@ public class Constants {
 
     public static String PARAM_PRIORITY = "priority";
     public static String PARAM_ATTACHMENT_NAME = "attachment_name";
-
 
 
     public static String PARAM_EMAIL_ID = "email_id";
