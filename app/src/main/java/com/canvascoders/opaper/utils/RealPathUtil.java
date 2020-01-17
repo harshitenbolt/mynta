@@ -83,10 +83,13 @@ public class RealPathUtil {
     public static String getPath(Context ctx, Uri uri) {
         String ret;
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT<=28) {
                 // Android OS above sdk version 19.
                 ret = getUriRealPathAboveKitkat(ctx, uri);
-            } else {
+            }
+            else if(Build.VERSION.SDK_INT>=29){
+                ret =getRealPathFromURI(ctx,uri);
+            }else {
                 // Android OS below sdk version 19
                 ret = getRealPath(ctx.getContentResolver(), uri, null);
             }
@@ -237,6 +240,21 @@ public class RealPathUtil {
         return ret;
     }
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    public static String getRealPathFromURI(Context context, Uri contentUri) {
+        String[] proj = {MediaStore.Images.Media.RELATIVE_PATH};
+        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null,
+                null);
+        if (cursor != null) {
+            int column_index =
+                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        return null;
+    }
 
     /* Check whether this document is provided by ExternalStorageProvider. */
     private static boolean isExternalStoreDoc(String uriAuthority) {

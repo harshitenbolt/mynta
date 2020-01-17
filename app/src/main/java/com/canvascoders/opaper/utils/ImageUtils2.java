@@ -1,36 +1,31 @@
 package com.canvascoders.opaper.utils;
 
-/**
- * Created by narendra on 10/3/2016.
- */
-
 import android.app.Activity;
-import android.content.ContentResolver;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ImageDecoder;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -38,25 +33,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.text.SimpleDateFormat;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
-/**
- * Author: Mario Velasco Casquero
- * Date: 08/09/2015
- * Email: m3ario@gmail.com
- */
-public class ImagePicker {
+import static android.content.Context.MODE_PRIVATE;
 
+
+public class ImageUtils2 {
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 50;        // min pixels
     private static final String TAG = "ImagePicker";
     private static final String TEMP_IMAGE_NAME = "tempImage";
+//    ProgressDialog mProgress= new ProgressDialog(getApplicationContext());
+
 
     public static int minWidthQuality = DEFAULT_MIN_WIDTH_QUALITY;
-    public static String filePath = "";
+    public static String saveImgPath;
 
     public static Intent getGalleryIntenr(Context context) {
         Intent pickIntent = new Intent(Intent.ACTION_PICK,
@@ -64,47 +57,16 @@ public class ImagePicker {
         return pickIntent;
     }
 
-    // Old Code
-//    public static Intent getCameraIntent(Context context) {
-//        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        takePhotoIntent.putExtra("return-data", true);
-//        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile()));
-//        return takePhotoIntent;
-//    }
     public static Intent getCameraIntent(Context context) {
         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         takePhotoIntent.putExtra("return-data", true);
-
-        if (Build.VERSION.SDK_INT > 21 && Build.VERSION.SDK_INT <= 28) {
+        if (Build.VERSION.SDK_INT > 21) {
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile()));
-            Log.e("datadtaa", String.valueOf(FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile())));
-        } else if (Build.VERSION.SDK_INT >= 29) {
-            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile()));
-            Log.e("datadtaa", String.valueOf(FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile())));
-
         } else {
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile()));
-            Log.e("datadtaa", String.valueOf(Uri.fromFile(getTempFile())));
 
         }
         return takePhotoIntent;
-
-    }
-
-    private static File createImageFile(Context context) throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        String currentPhotoPath = image.getAbsolutePath();
-        return image;
     }
 
     public static Intent getPickImageIntent(Context context) {
@@ -120,7 +82,6 @@ public class ImagePicker {
             Uri bmpUri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile());
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, bmpUri);
         } else {
-
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile()));
         }
 
@@ -134,34 +95,6 @@ public class ImagePicker {
         }
         return chooserIntent;
     }
-
-//    public static Intent getPickImageIntent(Context context) {
-//        Intent chooserIntent = null;
-//
-//        List<Intent> intentList = new ArrayList<>();
-//
-//        Intent pickIntent = new Intent(Intent.ACTION_PICK,
-//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        takePhotoIntent.putExtra("return-data", true);
-//        if (Build.VERSION.SDK_INT > 21) { //use this if Lollipop_Mr1 (API 22) or above
-//            Uri bmpUri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile());
-//            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, bmpUri);
-//        } else {
-//
-//            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile()));
-//        }
-//
-//        intentList = addIntentsToList(context, intentList, pickIntent);
-//        intentList = addIntentsToList(context, intentList, takePhotoIntent);
-//
-//        if (intentList.size() > 0) {
-//            chooserIntent = Intent.createChooser(intentList.remove(intentList.size() - 1),
-//                    "Select Image");
-//            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentList.toArray(new Parcelable[]{}));
-//        }
-//        return chooserIntent;
-//    }
 
     private static List<Intent> addIntentsToList(Context context, List<Intent> list, Intent intent) {
         List<ResolveInfo> resInfo = context.getPackageManager().queryIntentActivities(intent, 0);
@@ -186,56 +119,28 @@ public class ImagePicker {
             boolean isCamera = (imageReturnedIntent == null ||
                     imageReturnedIntent.getData() == null ||
                     imageReturnedIntent.getData().toString().contains(imageFile.toString()));
-            if (isCamera) {
-                Log.e("build_versionn", String.valueOf(Build.VERSION.SDK_INT));/** CAMERA **/
-                if (Build.VERSION.SDK_INT > 21) { //use this if Lollipop_Mr1 (API 22) or above
-                    selectedImage = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", imageFile);
-                    Constants.KEY_PHOTO = selectedImage;
-                    Log.e("datadata", String.valueOf(Constants.KEY_PHOTO));
-                } else {
-                    selectedImage = Uri.fromFile(imageFile);
-
-                }
+            if (isCamera) {     /** CAMERA **/
+                selectedImage = Uri.fromFile(imageFile);
             } else {            /** ALBUM **/
                 selectedImage = imageReturnedIntent.getData();
             }
             filePath = selectedImage.getPath();
-            Log.d("selectedImage:", selectedImage.toString());
+            Log.d(TAG, "selectedImage: " + selectedImage);
 
             bm = getImageResized(context, selectedImage);
-            // int rotation = getRotation(context, selectedImage, isCamera);
-            //bm = rotate(bm, rotation);
+            int rotation = getRotation(context, selectedImage, isCamera);
+            bm = rotate(bm, rotation);
         }
         return bm;
     }
 
+    public static String filePath = "";
 
-    private static final String IMAGE_DIRECTORY_NAME = ".oppr";
 
     private static File getTempFile() {
-        Log.e("TEMP ", "File Called");
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), IMAGE_DIRECTORY_NAME);
-        if (!mediaStorageDir.exists()) {
-            Log.e("Directory", "Not Exists");
-            if (!mediaStorageDir.mkdirs()) {
-                Log.e("Directory", "Not Made");
-                Mylogger.getInstance().Logit(IMAGE_DIRECTORY_NAME, "Oops! Failed create "
-                        + IMAGE_DIRECTORY_NAME + " directory");
-                return null;
-            } else {
-                Log.e("Directory", "Made");
-            }
-        }
-
-        File mediaFile;
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                + "O_" + TEMP_IMAGE_NAME + ".jpeg");
-
-        Log.e("Media File", "Launched:" + mediaFile.getPath());
-        return mediaFile;
-//        File imageFile = new File(Environment.getExternalStorageDirectory(), TEMP_IMAGE_NAME);
-//        imageFile.getParentFile().mkdirs();
-//        return imageFile;
+        File imageFile = new File(Environment.getExternalStorageDirectory(), TEMP_IMAGE_NAME);
+        imageFile.getParentFile().mkdirs();
+        return imageFile;
     }
 
     private static Bitmap decodeBitmap(Context context, Uri theUri, int sampleSize) {
@@ -284,11 +189,8 @@ public class ImagePicker {
     private static int getRotationFromCamera(Context context, Uri imageFile) {
         int rotate = 0;
         try {
-
-            ContentResolver content = context.getContentResolver();
-
-            content.notifyChange(imageFile, null);
-            ExifInterface exif = new ExifInterface(Objects.requireNonNull(imageFile.getPath()));
+            context.getContentResolver().notifyChange(imageFile, null);
+            ExifInterface exif = new ExifInterface(imageFile.getPath());
             int orientation = exif.getAttributeInt(
                     ExifInterface.TAG_ORIENTATION,
                     ExifInterface.ORIENTATION_NORMAL);
@@ -309,7 +211,6 @@ public class ImagePicker {
         }
         return rotate;
     }
-
 
     public static int getRotationFromGallery(Context context, Uri imageUri) {
         int result = 0;
@@ -409,145 +310,183 @@ public class ImagePicker {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
     }
 
-
-    //// start from here...
     public static String getBitmapPath(Bitmap bmp, Context mContext) {
         try {
-
-            Cursor cursor;
-            int idx;
-            //
-            if (Build.VERSION.SDK_INT <= 28) {
-               /* ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.TITLE, "Title");
-                values.put(MediaStore.Images.Media.DESCRIPTION, "From Camera");*/
-
-                //Uri path = mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-                try {
-
-
-                    //String path = MediaStore.Images.Media.insertImage(contentResolver, inImage, "Title",null);
-                    String path = MediaStore.Images.Media.insertImage(mContext.getContentResolver(), bmp, "Title", null);
-
-                    Uri tempUri = Uri.parse(path);
-                    cursor = mContext.getContentResolver().query(tempUri, null, null, null, null);
-                    cursor.moveToFirst();
-                    idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-
-                    return cursor.getString(idx);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return "";
-                }
-
-            } else {
-                OutputStream stream = null;
-                final ContentResolver resolver = mContext.getContentResolver();
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.TITLE, "Title");
-                //values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
-                values.put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/" + File.separator + "opaper");
-                Uri uri = null;
-                // Uri path = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                final Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                // String path = MediaStore.Images.Media.insertImage(mContext.getContentResolver(), bmp, "Title", null);
-
-                // Uri tempUri = Uri.parse(path);
-
-
-                uri = resolver.insert(contentUri, values);
-
-                if (uri == null) {
-                    throw new IOException("Failed to create new MediaStore record.");
-                }
-
-                stream = resolver.openOutputStream(uri);
-
-                if (stream == null) {
-                    throw new IOException("Failed to get output stream.");
-                }
-
-                if (bmp.compress(Bitmap.CompressFormat.JPEG, 95, stream) == false) {
-                    throw new IOException("Failed to save bitmap.");
-                }
-
-
-                String[] projection = {
-                        MediaStore.Files.FileColumns._ID,
-                        MediaStore.Images.Media.DATE_TAKEN,
-                        MediaStore.Images.Media.WIDTH,
-                        MediaStore.Images.Media.HEIGHT,
-                        MediaStore.MediaColumns.TITLE,
-                        MediaStore.Images.Media.MIME_TYPE,
-
-                };
-
-                cursor = mContext.getContentResolver().query(uri, null, null, null, null);
-                cursor.moveToFirst();
-                //  ImageDecoder.Source source = ImageDecoder.createSource(mContext.getContentResolver(), uri);
-                idx = cursor.getColumnIndex(MediaStore.VO);
-                return cursor.getString(idx);
-            }
-
-
+            String path = MediaStore.Images.Media.insertImage(mContext.getContentResolver(), bmp, "Title", null);
+            Uri tempUri = Uri.parse(path);
+            Cursor cursor = mContext.getContentResolver().query(tempUri, null, null, null, null);
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(idx);
         } catch (Exception e) {
             e.printStackTrace();
             return "";
         }
     }
 
+    public static Bitmap DownloadImageFromPath(String path) {
+        InputStream in = null;
+        Bitmap bmp = null;
 
-    private void saveImage(Bitmap bitmap, @NonNull String name, Context mContext) throws IOException {
-        OutputStream fos;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ContentResolver resolver = mContext.getContentResolver();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, name + ".jpg");
-            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg");
-            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
-            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-            fos = resolver.openOutputStream(Objects.requireNonNull(imageUri));
-        } else {
-            String imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString();
-            File image = new File(imagesDir, name + ".jpg");
-            fos = new FileOutputStream(image);
-        }
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-        Objects.requireNonNull(fos).close();
-    }
-
-
-    public static Bitmap getBitmapFromURL(String src) {
+        int responseCode = -1;
         try {
-            java.net.URL url = new java.net.URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+
+            URL url = new URL(path);//"http://192.xx.xx.xx/mypath/img1.jpg
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setDoInput(true);
+            con.connect();
+            responseCode = con.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                //download
+                in = con.getInputStream();
+                bmp = BitmapFactory.decodeStream(in);
+                in.close();
+                return bmp;
+            }
+
+        } catch (Exception ex) {
+            Log.e("Exception", ex.toString());
         }
+        return bmp;
     }
 
-    public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-        // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
-        // RESIZE THE BIT MAP
-        matrix.postScale(scaleWidth, scaleHeight);
 
-        // "RECREATE" THE NEW BITMAP
-        Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
-                matrix, false);
+//    public static class DownloadTask extends AsyncTask<URL,Void,Bitmap> {
+//        // Before the tasks execution
+//        protected void onPreExecute(){
+//            // Display the progress dialog on async task start
+//
+//        }
+//
+//        // Do the task in background/non UI thread
+//        protected Bitmap doInBackground(URL...urls){
+//            URL url = urls[0];
+//            HttpURLConnection connection = null;
+//
+//            try{
+//                // Initialize a new http url connection
+//                connection = (HttpURLConnection) url.openConnection();
+//
+//                // Connect the http url connection
+//                connection.connect();
+//
+//                // Get the input stream from http url connection
+//                InputStream inputStream = connection.getInputStream();
+//
+//                /*
+//                    BufferedInputStream
+//                        A BufferedInputStream adds functionality to another input stream-namely,
+//                        the ability to buffer the input and to support the mark and reset methods.
+//                */
+//                /*
+//                    BufferedInputStream(InputStream in)
+//                        Creates a BufferedInputStream and saves its argument,
+//                        the input stream in, for later use.
+//                */
+//                // Initialize a new BufferedInputStream from InputStream
+//                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+//
+//                /*
+//                    decodeStream
+//                        Bitmap decodeStream (InputStream is)
+//                            Decode an input stream into a bitmap. If the input stream is null, or
+//                            cannot be used to decode a bitmap, the function returns null. The stream's
+//                            position will be where ever it was after the encoded data was read.
+//
+//                        Parameters
+//                            is InputStream : The input stream that holds the raw data
+//                                              to be decoded into a bitmap.
+//                        Returns
+//                            Bitmap : The decoded bitmap, or null if the image data could not be decoded.
+//                */
+//                // Convert BufferedInputStream to Bitmap object
+//                Bitmap bmp = BitmapFactory.decodeStream(bufferedInputStream);
+//
+//                // Return the downloaded bitmap
+//                return bmp;
+//
+//            }catch(IOException e){
+//                e.printStackTrace();
+//            }finally{
+//                // Disconnect the http url connection
+//                connection.disconnect();
+//            }
+//            return null;
+//        }
+//
+//        // When all async task done
+//        protected void onPostExecute(Bitmap result){
+//            // Hide the progress dialog
+//
+//            if(result!=null){
+//                // Display the downloaded image into ImageView
+//
+//
+//                // Save bitmap to internal storage
+//                Uri imageInternalUri = saveImageToInternalStorage(result);
+//                // Set the ImageView image from internal storage
+//              //  mImageViewInternal.setImageURI(imageInternalUri);
+//            }else {
+//                // Notify user that an error occurred while downloading image
+//               // Snackbar.make(mCLayout,"Error",Snackbar.LENGTH_LONG).show();
+//            }
+//        }
+//    }
+//
+//    // Custom method to convert string to url
+//    public static URL stringToURL(String urlString){
+//        try{
+//            URL url = new URL(urlString);
+//            return url;
+//        }catch(MalformedURLException e){
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
-        return resizedBitmap;
-    }
+    // Custom method to save a bitmap into internal storage
+//    protected static Uri saveImageToInternalStorage(Bitmap bitmap){
+//        // Initialize ContextWrapper
+//        ContextWrapper wrapper = new ContextWrapper(getApplicationContext());
+//
+//        // Initializing a new file
+//        // The bellow line return a directory in internal storage
+//        File file = wrapper.getDir("Images",MODE_PRIVATE);
+//
+//        // Create a file to save the image
+//        file = new File(file, "UniqueFileName"+".jpg");
+//
+//        try{
+//            // Initialize a new OutputStream
+//            OutputStream stream = null;
+//
+//            // If the output file exists, it can be replaced or appended to it
+//            stream = new FileOutputStream(file);
+//
+//            // Compress the bitmap
+//            bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
+//
+//            // Flushes the stream
+//            stream.flush();
+//
+//            // Closes the stream
+//            stream.close();
+//
+//        }catch (IOException e) // Catch the exception
+//        {
+//            e.printStackTrace();
+//        }
+//
+//        // Parse the gallery image url to uri
+//        Uri savedImageURI = Uri.parse(file.getAbsolutePath());
+//        Log.e("Uri_img",savedImageURI.toString());
+//
+//        saveImgPath =savedImageURI.toString();
+//        // Return the saved image Uri
+//        return savedImageURI;
+//    }
 }
+
+
+
+

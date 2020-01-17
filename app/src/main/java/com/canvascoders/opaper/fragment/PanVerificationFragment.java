@@ -17,7 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.appcompat.app.AlertDialog;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -333,8 +332,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                             }
                         });
                     }
-                }
-                else {
+                } else {
                     Toast.makeText(getActivity(), "#errorcode :- 2047 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
 
@@ -511,17 +509,16 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                     } else {
                         Toast.makeText(getActivity(), panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }
-                else{
-                    Toast.makeText(getActivity(),"#errorcode :- 2027 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             }
 
             @Override
             public void onFailure(Call<PanCardSubmitResponse> call, Throwable t) {
-            //    Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(),"#errorcode :- 2027 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                //    Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -604,13 +601,12 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
                                     Validation validation = panVerificationDetail.getValidation();
                                     if (validation.getPanName() != null && validation.getPanName().length() > 0) {
-
                                         DialogUtil.etPanName.setError(validation.getPanName());
-
+                                        DialogUtil.etPanName.requestFocus();
                                     }
                                     if (validation.getFatherName() != null && validation.getFatherName().length() > 0) {
-
                                         DialogUtil.etPanFatherName.setError(validation.getFatherName());
+                                        DialogUtil.etPanFatherName.requestFocus();
                                     }
                                     if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
                                         Toast.makeText(getActivity(), validation.getAgentId(), Toast.LENGTH_LONG).show();
@@ -620,6 +616,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                                     }
                                     if (validation.getPanNo() != null && validation.getPanNo().length() > 0) {
                                         DialogUtil.etPanNumber.setError(validation.getPanNo());
+                                        DialogUtil.etPanNumber.requestFocus();
                                     }
                                     if (validation.getPanCardFront() != null && validation.getPanCardFront().length() > 0) {
                                         Toast.makeText(getActivity(), validation.getPanCardFront(), Toast.LENGTH_LONG).show();
@@ -633,26 +630,21 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                             // ErrorResponsePanCard errorResponsePanCard = response.body();
                         } else {
                             Toast.makeText(mcontext, panVerificationDetail.getResponse(), Toast.LENGTH_SHORT).show();
-
                         }
-
-
                         if (panVerificationDetail.getResponseCode() == 405) {
                             deleteImages();
                             sessionManager.logoutUser(mcontext);
                         }
 
-
                     } else {
-                        Toast.makeText(mcontext,"#errorcode :- 2037 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(mcontext, "#errorcode :- 2037 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     }
-
                 }
 
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(mcontext,"#errorcode :- 2037 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(mcontext, "#errorcode :- 2037 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
 
                 }
@@ -851,7 +843,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                     mProgressDialog.dismiss();
                     Toast.makeText(getActivity(), "#errorcode :- 2020 NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
 
-                 //   Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                    //   Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 

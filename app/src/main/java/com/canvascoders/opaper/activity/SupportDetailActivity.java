@@ -4,8 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +29,7 @@ import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.ImagePicker;
+
 import com.canvascoders.opaper.utils.ImageUtils;
 import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;

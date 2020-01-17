@@ -79,6 +79,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -800,8 +801,10 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             if (requestCode == IMAGE_AADHAR_FRONT) {
 
                 Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+
                 imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
+                Log.e("datadata", imagecamera);
                 intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
 
@@ -857,10 +860,9 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
             if (requestCode == REQUEST_SCANNER && (data != null)) {
-                if(AppApplication.networkConnectivity.isNetworkAvailable()){
+                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                     processScannedData(data.getStringExtra(Constants.CONTENT));
-                }
-                else{
+                } else {
                     Constants.ShowNoInternet(getActivity());
                 }
 
@@ -1298,10 +1300,9 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         if (kyc_type.equalsIgnoreCase("1")) {
             if (!aadharImagepathFront.equals("") && !aadharImagepathBack.equalsIgnoreCase("")) {
                 //api OCR
-                if(AppApplication.networkConnectivity.isNetworkAvailable()) {
+                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                     ApiCallOCRAdhar();
-                }
-                else{
+                } else {
                     Constants.ShowNoInternet(getActivity());
                 }
                 //showEditDialog();
