@@ -447,7 +447,7 @@ public class ImagePicker {
                 ContentValues values = new ContentValues();
                 values.put(MediaStore.Images.Media.TITLE, "Title");
                 //values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
-                values.put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/" + File.separator + "opaper");
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures" + File.separator + "opaper");
                 Uri uri = null;
                 // Uri path = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
                 final Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
@@ -486,7 +486,7 @@ public class ImagePicker {
                 cursor = mContext.getContentResolver().query(uri, null, null, null, null);
                 cursor.moveToFirst();
                 //  ImageDecoder.Source source = ImageDecoder.createSource(mContext.getContentResolver(), uri);
-                idx = cursor.getColumnIndex(MediaStore.VO);
+                idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
                 return cursor.getString(idx);
             }
 

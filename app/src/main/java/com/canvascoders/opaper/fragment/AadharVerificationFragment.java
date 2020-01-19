@@ -246,6 +246,10 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                     cdDriving.setVisibility(View.GONE);
                     cdVoter.setVisibility(View.GONE);
 
+                    tvAdharFront.setVisibility(View.VISIBLE);
+                    ivAdharFrontSelected.setVisibility(View.GONE);
+                    tvAdharBack.setVisibility(View.VISIBLE);
+
                     dlImagePathBack = "";
                     ivDlBackSelected.setVisibility(View.GONE);
                     tvDlBack.setVisibility(View.VISIBLE);
@@ -275,6 +279,8 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                     cdDriving.setVisibility(View.VISIBLE);
                     cdVoter.setVisibility(View.GONE);
                     Log.e("Done", "Driving");
+                    tvDlFront.setVisibility(View.VISIBLE);
+                    tvDlBack.setVisibility(View.VISIBLE);
 
                     voterImagePathBack = "";
                     ivVoterBackSelected.setVisibility(View.GONE);
@@ -305,6 +311,8 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                     cdAdhar.setVisibility(View.GONE);
                     cdDriving.setVisibility(View.GONE);
                     cdVoter.setVisibility(View.VISIBLE);
+                    tvVoterFront.setVisibility(View.VISIBLE);
+                    tvVoterBack.setVisibility(View.VISIBLE);
 
                     dlImagePathBack = "";
                     ivDlBackSelected.setVisibility(View.GONE);

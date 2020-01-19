@@ -77,8 +77,6 @@ public class CropImage2Activity extends AppCompatActivity {
     };
 
 
-
-
     private Bitmap.CompressFormat mCompressFormat = Bitmap.CompressFormat.JPEG;
     private RectF mFrameRect = null;
     private Uri mSourceUri = null;
@@ -190,7 +188,12 @@ public class CropImage2Activity extends AppCompatActivity {
         File imageDir = null;
         File extStorageDir = Environment.getExternalStorageDirectory();
         if (extStorageDir.canWrite()) {
-            imageDir = new File(extStorageDir.getPath() + "/.simplecropview");
+            if(Build.VERSION.SDK_INT<=28) {
+                imageDir = new File(extStorageDir.getPath() + "/.simplecropview");
+            }
+            else{
+                imageDir = new File("Pictures" + File.separator + "opaper");
+            }
         }
         if (imageDir != null) {
             if (!imageDir.exists()) {
@@ -242,6 +245,52 @@ public class CropImage2Activity extends AppCompatActivity {
         Logger.i("SaveUri = " + uri);
         return uri;
     }
+
+    public static Uri createNewUri1(Context context, Bitmap.CompressFormat format) {
+        long currentTimeMillis = System.currentTimeMillis();
+        Date today = new Date(currentTimeMillis);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH);
+        String title = dateFormat.format(today);
+        String dirPath = getDirPath();
+        String fileName = "scv" + title + "." + getMimeType(format);
+        String path = dirPath + "/" + fileName;
+        File file = new File(path);
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "Title");
+        //values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+        //values.put(MediaStore.MediaColumns.MIME_TYPE, "image/" + getMimeType(format));
+        values.put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures" + File.separator + "opaper");
+        long time = currentTimeMillis / 1000;
+        values.put(MediaStore.MediaColumns.DATE_ADDED, time);
+        values.put(MediaStore.MediaColumns.DATE_MODIFIED, time);
+        if (file.exists()) {
+            values.put(MediaStore.Images.Media.SIZE, file.length());
+        }
+
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Logger.i("SaveUri = " + uri);
+        return uri;
+
+
+       /* final ContentResolver resolver = mContext.getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "Title");
+        //values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures" + File.separator + "opaper");
+        Uri uri = null;
+        // Uri path = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        final Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        // String path = MediaStore.Images.Media.insertImage(mContext.getContentResolver(), bmp, "Title", null);
+
+        // Uri tempUri = Uri.parse(path);
+
+
+        uri = resolver.insert(contentUri, values);
+
+*/
+    }
+
 
     public static String getMimeType(Bitmap.CompressFormat format) {
         Logger.i("getMimeType CompressFormat = " + format);
@@ -304,10 +353,10 @@ public class CropImage2Activity extends AppCompatActivity {
     }
 
     @SuppressLint("NewApi")
-    public static String getRealPathFromUri(Context context, Uri uri){
+    public static String getRealPathFromUri(Context context, Uri uri) {
 
         int currentAPIVersion = Build.VERSION.SDK_INT;
-        if (currentAPIVersion>=19) {
+        if (currentAPIVersion >= 19) {
 
 
             String filePath = "";
@@ -330,7 +379,7 @@ public class CropImage2Activity extends AppCompatActivity {
             }
             cursor.close();
             return filePath;
-        }else if (currentAPIVersion>=11 && currentAPIVersion<=18) {
+        } else if (currentAPIVersion >= 11 && currentAPIVersion <= 18) {
             String[] proj = {MediaStore.Images.Media.DATA};
             String result = null;
 
@@ -346,8 +395,8 @@ public class CropImage2Activity extends AppCompatActivity {
                 result = cursor.getString(column_index);
             }
             return result;
-        }else if (currentAPIVersion<=10){
-            String[] proj = { MediaStore.Images.Media.DATA };
+        } else if (currentAPIVersion <= 10) {
+            String[] proj = {MediaStore.Images.Media.DATA};
             Cursor cursor = context.getContentResolver().query(uri, proj, null, null, null);
             int column_index
                     = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -489,7 +538,9 @@ public class CropImage2Activity extends AppCompatActivity {
      }
  */
     public Uri createSaveUri() {
-        return createNewUri(CropImage2Activity.this, mCompressFormat);
+        if (Build.VERSION.SDK_INT <= 28) {
+            return createNewUri(CropImage2Activity.this, mCompressFormat);
+        } else return createNewUri1(CropImage2Activity.this, mCompressFormat);
     }
 
     public void dismissProgress() {

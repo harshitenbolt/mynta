@@ -3,15 +3,20 @@ package com.canvascoders.opaper.utils;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+
 import androidx.annotation.RequiresApi;
+
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -19,6 +24,7 @@ import com.google.api.client.util.IOUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -49,9 +55,10 @@ public class RealPathUtil {
     @SuppressLint("Recycle")
     private static String getRealPath(ContentResolver contentResolver, Uri uri, String whereClause) {
         String ret = "";
-
+        Cursor cursor;
         // Query the uri with condition.
-        Cursor cursor = contentResolver.query(uri, null, whereClause, null, null);
+
+        cursor = contentResolver.query(uri, null, whereClause, null, null);
 
         if (cursor != null) {
             boolean moveToFirst = cursor.moveToFirst();
@@ -83,13 +90,12 @@ public class RealPathUtil {
     public static String getPath(Context ctx, Uri uri) {
         String ret;
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT<=28) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT /*&& Build.VERSION.SDK_INT <= 28*/) {
                 // Android OS above sdk version 19.
                 ret = getUriRealPathAboveKitkat(ctx, uri);
-            }
-            else if(Build.VERSION.SDK_INT>=29){
-                ret =getRealPathFromURI(ctx,uri);
-            }else {
+            } /*else if (Build.VERSION.SDK_INT >= 29) {
+                ret = getRealPathFromURI(ctx, uri);
+            }*/ else {
                 // Android OS below sdk version 19
                 ret = getRealPath(ctx.getContentResolver(), uri, null);
             }
@@ -100,7 +106,6 @@ public class RealPathUtil {
         }
         return ret;
     }
-
 
 
     private static String getFilePathFromURI(Context context, Uri contentUri) {
@@ -115,7 +120,6 @@ public class RealPathUtil {
         }
         return null;
     }
-
 
 
     public static String getFileName(Uri uri) {
@@ -141,8 +145,6 @@ public class RealPathUtil {
             e.printStackTrace();
         }
     }
-
-
 
 
     private static boolean isContentUri(Uri uri) {
@@ -241,19 +243,77 @@ public class RealPathUtil {
     }
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    public static String getRealPathFromURI(Context context, Uri contentUri) {
-        String[] proj = {MediaStore.Images.Media.RELATIVE_PATH};
-        Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null,
-                null);
-        if (cursor != null) {
-            int column_index =
-                    cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
+    public static String getRealPathFromURI(Context ctx, Uri uri) throws IOException {
+        String ret = "";
+
+        if (ctx != null && uri != null) {
+
+            if (isContentUri(uri)) {
+                if (isGooglePhotoDoc(uri.getAuthority())) {
+                    ret = uri.getLastPathSegment();
+                } else {
+                    ret = getRealPath1(ctx, ctx.getContentResolver(), uri, null);
+                }
+            } else if (isFileUri(uri)) {
+                ret = uri.getPath();
+            } else if (isDocumentUri(ctx, uri)) {
+
+                // Get uri related document id.
+                String documentId = DocumentsContract.getDocumentId(uri);
+
+                // Get uri authority.
+                String uriAuthority = uri.getAuthority();
+
+                if (isMediaDoc(uriAuthority)) {
+                    String idArr[] = documentId.split(":");
+                    if (idArr.length == 2) {
+                        // First item is document type.
+                        String docType = idArr[0];
+
+                        // Second item is document real id.
+                        String realDocId = idArr[1];
+
+                        // Get content uri by document type.
+                        Uri mediaContentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                        if ("image".equals(docType)) {
+                            mediaContentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                        } else if ("video".equals(docType)) {
+                            mediaContentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                        } else if ("audio".equals(docType)) {
+                            mediaContentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                        }
+
+                        // Get where clause with real document id.
+                        String whereClause = MediaStore.Images.Media._ID + " = " + realDocId;
+
+                        ret = getRealPath1(ctx, ctx.getContentResolver(), mediaContentUri, whereClause);
+                    }
+
+                } else if (isDownloadDoc(uriAuthority)) {
+                    // Build download uri.
+                    Uri downloadUri = Uri.parse("content://downloads/public_downloads");
+
+                    // Append download document id at uri end.
+                    Uri downloadUriAppendId = ContentUris.withAppendedId(downloadUri, Long.valueOf(documentId));
+
+                    ret = getRealPath1(ctx, ctx.getContentResolver(), downloadUriAppendId, null);
+
+                } else if (isExternalStoreDoc(uriAuthority)) {
+                    String idArr[] = documentId.split(":");
+                    if (idArr.length == 2) {
+                        String type = idArr[0];
+                        String realDocId = idArr[1];
+
+                        if ("primary".equalsIgnoreCase(type)) {
+                            ret = Environment.getExternalStorageDirectory() + "/" + realDocId;
+                        }
+                    }
+                }
+            }
         }
-        return null;
+
+        return ret;
     }
 
     /* Check whether this document is provided by ExternalStorageProvider. */
@@ -277,6 +337,7 @@ public class RealPathUtil {
 
         return ret;
     }
+
     /* Check whether this document is provided by MediaProvider. */
     private static boolean isMediaDoc(String uriAuthority) {
         boolean ret = false;
@@ -300,7 +361,6 @@ public class RealPathUtil {
     }
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private static boolean isDocumentUri(Context ctx, Uri uri) {
         boolean ret = false;
@@ -309,6 +369,7 @@ public class RealPathUtil {
         }
         return ret;
     }
+
     @SuppressLint("NewApi")
     public static String getRealPathFromURI_API11to18(Context context, Uri contentUri) {
         String[] proj = {MediaStore.Images.Media.DATA};
@@ -483,5 +544,76 @@ public class RealPathUtil {
     public static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    @SuppressLint("Recycle")
+    private static String getRealPath1(Context context, ContentResolver contentResolver, Uri uri, String whereClause) throws IOException {
+        String ret = "";
+        Cursor cursor;
+        // Query the uri with condition.
+
+        // cursor = contentResolver.query(uri, null, whereClause, null, null);
+
+
+        OutputStream stream = null;
+        final ContentResolver resolver = context.getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "Title");
+        //values.put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.MediaColumns.RELATIVE_PATH, ".Pictures" + File.separator + "opaper");
+        Uri uri1 = null;
+        // Uri path = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        final Uri contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        uri1 = resolver.insert(contentUri, values);
+
+        if (uri1 == null) {
+            throw new IOException("Failed to create new MediaStore record.");
+        }
+
+        stream = resolver.openOutputStream(uri1);
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+        if (stream == null) {
+            throw new IOException("Failed to get output stream.");
+        }
+        if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
+            throw new IOException("Failed to save bitmap.");
+        }
+
+
+        cursor = contentResolver.query(uri1, null, null, null, null);
+
+
+        if (cursor != null) {
+            boolean moveToFirst = cursor.moveToFirst();
+            if (moveToFirst) {
+
+                // Get columns name by uri type.
+                String columnName = MediaStore.Images.Media.DATA;
+
+                if (uri1 == MediaStore.Images.Media.EXTERNAL_CONTENT_URI) {
+                    columnName = MediaStore.Images.Media.DATA;
+                } else if (uri1 == MediaStore.Audio.Media.EXTERNAL_CONTENT_URI) {
+                    columnName = MediaStore.Audio.Media.DATA;
+                } else if (uri1 == MediaStore.Video.Media.EXTERNAL_CONTENT_URI) {
+                    columnName = MediaStore.Video.Media.DATA;
+                }
+
+                // Get column index.
+                int columnIndex = cursor.getColumnIndex(columnName);
+
+                // Get column value which is the uri related file local path.
+                ret = cursor.getString(columnIndex);
+            }
+        }
+
+        return ret;
+    }
+
+
+
+
+    /*
+     */
 
 }

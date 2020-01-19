@@ -3,6 +3,7 @@ package com.canvascoders.opaper.utils;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -312,9 +313,16 @@ public class ImageUtils2 {
 
     public static String getBitmapPath(Bitmap bmp, Context mContext) {
         try {
-            String path = MediaStore.Images.Media.insertImage(mContext.getContentResolver(), bmp, "Title", null);
+           /* String path = MediaStore.Images.Media.insertImage(mContext.getContentResolver(), bmp, "Title", null);
             Uri tempUri = Uri.parse(path);
-            Cursor cursor = mContext.getContentResolver().query(tempUri, null, null, null, null);
+            */ContentValues values=new ContentValues();
+            values.put(MediaStore.Images.Media.TITLE,"Title");
+            values.put(MediaStore.Images.Media.DESCRIPTION,"From Camera");
+            Uri path=mContext.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);
+
+
+
+            Cursor cursor = mContext.getContentResolver().query(path, null, null, null, null);
             cursor.moveToFirst();
             int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
             return cursor.getString(idx);
