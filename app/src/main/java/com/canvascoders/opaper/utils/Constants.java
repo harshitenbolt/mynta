@@ -44,14 +44,14 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
 
-    // public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
-    public static String BaseURL = "https://mystaging.opaper.in/api3/";
+    public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+    // public static String BaseURL = "https://mystaging.opaper.in/api3/";
     // test server 2
 
-    public final static String APP_NAME = "my_stage"; //stage
-    //   public final static String APP_NAME = "my_live"; //live
-    // public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
-    public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
+    // public final static String APP_NAME = "my_stage"; //stage
+    public final static String APP_NAME = "my_live"; //live
+    public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+    // public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
 
@@ -137,7 +137,7 @@ public class Constants {
     public static String KEY_PROCESS_ID = "proccess_id";
     public static String KEY_ID = "id";
     public static String KEY_UID = "uid";
-    public static Uri KEY_PHOTO ;
+    public static Uri KEY_PHOTO;
     public static String KEY_PINCODE = "pincode";
     public static String KEY_YEAR = "year";
     public static String KEY_INVOICE_ID = "invoice_id";

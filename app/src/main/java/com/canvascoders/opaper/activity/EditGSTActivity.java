@@ -331,8 +331,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                         } else {
                             btSendLink.setVisibility(View.GONE);
                         }
-                    }
-                    else{
+                    } else {
                         Toast.makeText(EditGSTActivity.this, checkGstStatus.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 } else {
@@ -983,16 +982,15 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
                     }
 
-                }
-                else{
-                    Toast.makeText(EditGSTActivity.this, "#errorcode 2082 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(EditGSTActivity.this, "#errorcode 2082 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<CheckGstStatus> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(EditGSTActivity.this, "#errorcode 2082 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditGSTActivity.this, "#errorcode 2082 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -1911,12 +1909,9 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                             panName = name;
                                             panFatherName = fathername;
                                             panNumber = id;
-
                                             rvPanDetails.setVisibility(View.GONE);
                                             rvChequeDetails.setVisibility(View.VISIBLE);
                                             view4.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
-
                                             DialogUtil.dismiss();
 
                                         }

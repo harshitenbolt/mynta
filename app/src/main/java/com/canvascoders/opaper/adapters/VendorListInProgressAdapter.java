@@ -2,12 +2,14 @@ package com.canvascoders.opaper.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,12 +62,19 @@ public class VendorListInProgressAdapter extends RecyclerView.Adapter<VendorList
         Glide.with(context).load(Constants.BaseImageURL + vendorLists.get(position).getShopImage()).placeholder(R.drawable.image_placeholder).into(holder.ivStoreImage);
 
         //holder.tvStatuswhileOnBoarding.setText(vendorLists.get(position).getStatus());
-        holder.llMain.setOnClickListener(new View.OnClickListener() {
+        holder.tvStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 commanFragmentCallWithBackStack(new MobileFragment(), vendorLists.get(position).getMobileNo());
 
+            }
+        });
+
+        holder.tvTrack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            //    recyclerViewClickListener.onClick(v, position);
             }
         });
 
@@ -129,13 +138,11 @@ public class VendorListInProgressAdapter extends RecyclerView.Adapter<VendorList
             holder.tvStatuswhileOnBoarding.setText(" " + vendorLists.get(position).getRate());
             holder.tvStatuswhileOnBoarding.setTextColor(context.getResources().getColor(R.color.color11));
             tintViewDrawable(holder.tvStatuswhileOnBoarding, context.getResources().getColor(R.color.color11));
-        }
-        else if (!TextUtils.isEmpty(vendorLists.get(position).getEcomAgreeement()) && !vendorLists.get(position).getEcomAgreeement().equalsIgnoreCase("0")) {
+        } else if (!TextUtils.isEmpty(vendorLists.get(position).getEcomAgreeement()) && !vendorLists.get(position).getEcomAgreeement().equalsIgnoreCase("0")) {
             holder.tvStatuswhileOnBoarding.setText(" " + vendorLists.get(position).getEcomAgreeement());
             holder.tvStatuswhileOnBoarding.setTextColor(context.getResources().getColor(R.color.color10));
             tintViewDrawable(holder.tvStatuswhileOnBoarding, context.getResources().getColor(R.color.color10));
         }
-
 
 
     }
@@ -151,7 +158,7 @@ public class VendorListInProgressAdapter extends RecyclerView.Adapter<VendorList
 
     public class RecordHolder extends RecyclerView.ViewHolder {
         ImageView ivStoreImage;
-        TextView tvStoreName, tvName, tvMobile, tvRoute, tvLiveFrom, tvStatus, tvStatuswhileOnBoarding;
+        TextView tvStoreName, tvName, tvMobile, tvRoute, tvLiveFrom, tvStatus, tvStatuswhileOnBoarding, tvTrack;
         LinearLayout llMain;
 
         public RecordHolder(View view) {
@@ -163,6 +170,7 @@ public class VendorListInProgressAdapter extends RecyclerView.Adapter<VendorList
             tvLiveFrom = view.findViewById(R.id.tvLiveFrom);
             tvMobile = view.findViewById(R.id.tvMobile);
             tvRoute = view.findViewById(R.id.tvRoute);
+            tvTrack = view.findViewById(R.id.tvTrack);
             tvStatus = view.findViewById(R.id.tvStatus);
             tvStatuswhileOnBoarding = view.findViewById(R.id.tvStatuswhileBoarding);
             //     tvVehicle = view.findViewById(R.id.tvVehicle);

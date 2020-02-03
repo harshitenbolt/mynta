@@ -104,6 +104,26 @@
                         android:clickable="false"
                         android:fontFamily="@font/montesemibold"
                         android:text=""
+                        android:layout_weight="1"
+                        android:singleLine="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/_8sdp" />
+                    <TextView
+                        android:id="@+id/tvTrack"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_17sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_weight="1.5"
+                        android:background="@drawable/rounded_corner_more_view_yellow"
+                        android:fontFamily="@font/montesemibold"
+                        android:gravity="center"
+                        android:text="TRACK"
+                        android:visibility="gone"
+                        android:textColor="#ffffff"
                         android:textSize="@dimen/_8sdp" />
                 </LinearLayout>
 

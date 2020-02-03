@@ -41,6 +41,7 @@ import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.DashboardActivity;
+import com.canvascoders.opaper.activity.TaskProccessDetailActivity;
 import com.canvascoders.opaper.activity.VendorDetailActivity;
 import com.canvascoders.opaper.adapters.VendorListInProgressAdapter;
 import com.canvascoders.opaper.api.ApiClient;
@@ -107,6 +108,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
     SwipeRefreshLayout swMain;
     AutoCompleteTextView actv;
     private ImageView ivSearch;
+
 
     //
     Context mcontext;
@@ -387,6 +389,9 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
 
     @Override
     public void onClick(View view, int position) {
+        /*Intent i = new Intent(getActivity(), TaskProccessDetailActivity.class);
+        i.putExtra(Constants.KEY_PROCESS_ID, vendorLists.get(position).getProccessId());
+        startActivity(i);*/
 
     }
 
@@ -899,7 +904,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
                         Log.e("harshit", supportListResponse.getResponse());
                     }
                 } else {
-                    Toast.makeText(getActivity(), "#errorcode 2073 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "#errorcode 2073 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -907,7 +912,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
             @Override
             public void onFailure(Call<SearchListResponse> call, Throwable t) {
 
-                Toast.makeText(getActivity(), "#errorcode 2073 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode 2073 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 mSwipeRefreshLayout.setRefreshing(false);
             }
