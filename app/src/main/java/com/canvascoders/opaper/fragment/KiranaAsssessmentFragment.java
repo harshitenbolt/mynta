@@ -106,7 +106,6 @@ public class KiranaAsssessmentFragment extends Fragment implements SwipeRefreshL
     String TAG = "VendorLis";
 
 
-
     public KiranaAsssessmentFragment() {
         // Required empty public constructor
     }
@@ -116,7 +115,7 @@ public class KiranaAsssessmentFragment extends Fragment implements SwipeRefreshL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view= inflater.inflate(R.layout.fragment_kirana_asssessment, container, false);
+        view = inflater.inflate(R.layout.fragment_kirana_asssessment, container, false);
         sessionManager = new SessionManager(getActivity());
         init();
         return view;
@@ -349,12 +348,12 @@ public class KiranaAsssessmentFragment extends Fragment implements SwipeRefreshL
     @Override
     public void SingleClick(String popup, int position) {
         for (int i = 0; i < DeliveryBoyLists.size(); i++) {
-            if (DeliveryBoyLists.get(i).getProccessId() == position) {
+            if (DeliveryBoyLists.get(i).getId() == position) {
                 //edit_search_vendor.setText("");
                 Intent i1 = new Intent(getActivity(), AssessmentDetaildeliveryBoyActivity.class);
                 //  commanFragmentCallWithBackStack(new VendorDetailsFragment(), DeliveryBoyLists.get(i));
                 i1.putExtra("data", DeliveryBoyLists.get(i).getId());
-                i1.putExtra("flag","2");
+                i1.putExtra("flag", "2");
                 startActivity(i1);
                 break;
             }
@@ -463,10 +462,10 @@ public class KiranaAsssessmentFragment extends Fragment implements SwipeRefreshL
                     } else {
                         Toast.makeText(getActivity(), supportListResponse.getResponse(), Toast.LENGTH_LONG).show();
 
-                        Log.e("harshit", supportListResponse.getResponse());
+                        //  Log.e("harshit", supportListResponse.getResponse());
                     }
                 } else {
-                    Toast.makeText(getActivity(), "#errorcode 2074 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "#errorcode 2074 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -474,7 +473,7 @@ public class KiranaAsssessmentFragment extends Fragment implements SwipeRefreshL
             @Override
             public void onFailure(Call<SearchResponseAssessment> call, Throwable t) {
 
-                Toast.makeText(getActivity(), "#errorcode 2074 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode 2074 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 mSwipeRefreshLayout.setRefreshing(false);
             }

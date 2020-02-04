@@ -355,7 +355,7 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
     @Override
     public void SingleClick(String popup, int position) {
         for (int i = 0; i < DeliveryBoyLists.size(); i++) {
-            if (DeliveryBoyLists.get(i).getProccessId() == position) {
+            if (DeliveryBoyLists.get(i).getId() == position) {
                 //edit_search_vendor.setText("");
                 Intent i1 = new Intent(getActivity(), AssessmentDetaildeliveryBoyActivity.class);
                 //  commanFragmentCallWithBackStack(new VendorDetailsFragment(), DeliveryBoyLists.get(i));
@@ -576,7 +576,6 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
                             DeliveryBoyList DeliveryBoyList = gson.fromJson(o.toString(), DeliveryBoyList.class);
 
                             Log.e("VENDOR", "" + DeliveryBoyList.getId());
-
                             DeliveryBoyList vList = new DeliveryBoyList();
                             vList.setId(DeliveryBoyList.getId());
                             vList.setProccessId(DeliveryBoyList.getProccessId());

@@ -78,7 +78,7 @@ public class DeliveryBoysAssessmentListAdapter extends RecyclerView.Adapter<Deli
             @Override
             public void onClick(View view) {
 
-                recyclerViewClickListener.SingleClick("", vendorLists.get(position).getProccessId());
+                recyclerViewClickListener.SingleClick("", vendorLists.get(position).getId());
 
             }
         });
