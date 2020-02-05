@@ -1063,7 +1063,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             user.addProperty(Constants.PARAM_STATE, "" + etStoreState.getText());
             user.addProperty(Constants.PARAM_PINCODE, "" + etStorePincode.getText());
             user.addProperty(Constants.PARAM_DC, "" + dc.getSelectedItem());
-            user.addProperty(Constants.PARAM_ROUTE, "" + etRoute.getText());
+            user.addProperty(Constants.PARAM_ROUTE, "R-" + etRoute.getText());
 
         }
         if (i1 == 2) {
@@ -1708,7 +1708,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         //new Update
         user.put(Constants.PARAM_OWNER_NAME, "" + etOwnerName.getText());
         user.put(Constants.PARAM_DOB, "" + tvDOB.getText());
-        user.put(Constants.PARAM_ROUTE, "" + etRoute.getText());
+        user.put(Constants.PARAM_ROUTE, "R-" + etRoute.getText());
         user.put(Constants.PARAM_RESIDENTIAL_ADDRESS, "" + etCurrentShopNo.getText());
         user.put(Constants.PARAM_RESIDENTIAL_ADDRESS1, "" + etCurrentStreet.getText());
         user.put(Constants.PARAM_RESIDENTIAL_LANDMARK, "" + etCurrentLandmark.getText());

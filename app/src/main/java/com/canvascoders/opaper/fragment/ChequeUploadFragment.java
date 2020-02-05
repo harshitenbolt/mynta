@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -33,6 +34,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
+import com.canvascoders.opaper.Beans.getMerakApiResponse.GetMerakResponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.CropImage2Activity;
 import com.canvascoders.opaper.activity.AppApplication;
@@ -48,6 +50,7 @@ import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.ImageUploadTask;
 import com.canvascoders.opaper.utils.Mylogger;
+import com.canvascoders.opaper.utils.NetworkConnectivity;
 import com.canvascoders.opaper.utils.OnTaskCompleted;
 import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
@@ -70,6 +73,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE;
@@ -106,6 +110,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     private CheckBox cd_aggre_terms_condition;
     private String str_process_id;
     int request_id = 0;
+    NetworkConnectivity networkConnectivity;
 
 //    public static final String OCRMEREK = "https://api.merak.ai/v1/text-recognition/cheque/recognize/?key=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImJpa2FzaC5taXNocmFAbXludHJhLmNvbSIsIm9yZ2FuaXphdGlvbl9pZCI6OSwiaWF0IjoxNTMxOTkwOTUzfQ.5EpThmiqO_iN9Bg6RBR-kKQch0QjvEmI-lNg2SQxi8k";
 
@@ -138,6 +143,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
         view = inflater.inflate(R.layout.fragment_cheque, container, false);
 
         mcontext = this.getActivity();
+        networkConnectivity = new NetworkConnectivity(getActivity());
 
         sessionManager = new SessionManager(mcontext);
         str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
@@ -398,6 +404,12 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                                 // edit_ac_name.setText(payeeName);
                             }
 
+                            if (networkConnectivity.isNetworkAvailable()) {
+                                ApiCallGetMerakCount();
+                            } else {
+                                Constants.ShowNoInternet(getActivity());
+                            }
+
                             DialogUtil.chequeDetail(getActivity(), accountNumber, payeeName, ifsccode, str_process_id, bank_name, bank_branch, branch_address, new DialogListner() {
                                 @Override
                                 public void onClickPositive() {
@@ -480,6 +492,33 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
         Glide.with(getActivity()).load(cancelChequeImagepath).placeholder(R.drawable.placeholder)
                 .into(ivChequeImage);
         isPanSelected = true;
+
+    }
+
+    private void ApiCallGetMerakCount() {
+        Map<String, String> params = new HashMap<String, String>();
+
+        // params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.DATA, "");
+        Call<GetMerakResponse> callUpload = ApiClient.getClient2().create(ApiInterface.class).getMerakList(params);
+        callUpload.enqueue(new Callback<GetMerakResponse>() {
+            @Override
+            public void onResponse(Call<GetMerakResponse> call, Response<GetMerakResponse> response) {
+                if (response.isSuccessful()) {
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetMerakResponse> call, Throwable t) {
+
+            }
+        });
+
 
     }
 
@@ -589,14 +628,14 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                             }
 
                         } else {
-                            Toast.makeText(mcontext, "#errorcode :- 2040 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                            Toast.makeText(mcontext, "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
-                           // Toast.makeText(mcontext, response.message(), Toast.LENGTH_LONG).show();
+                            // Toast.makeText(mcontext, response.message(), Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         progressDialog.dismiss();
                         e.printStackTrace();
-                        Toast.makeText(getActivity(), "#errorcode :- 2040 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                     }
 
@@ -699,8 +738,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                else{
+                } else {
                     Toast.makeText(getActivity(), "#errorcode 2053" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }

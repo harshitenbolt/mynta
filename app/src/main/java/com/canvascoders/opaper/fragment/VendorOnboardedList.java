@@ -664,13 +664,13 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
 
                             VendorList vList = new VendorList();
                             vList.setId(vendorList.getId());
-                           // vList.setAgentId(vendorList.getAgentId());
+                            // vList.setAgentId(vendorList.getAgentId());
                             vList.setMobileNo(vendorList.getMobileNo());
-                           // vList.setAadhaarName(vendorList.getAadhaarName());
+                            // vList.setAadhaarName(vendorList.getAadhaarName());
                             //vList.setAadhaarNo(vendorList.getAadhaarNo());
                             //vList.setAadhaarPincode(vendorList.getAadhaarPincode());
-                           // vList.setLatitude(vendorList.getLatitude());
-                           // vList.setLongitude(vendorList.getLongitude());
+                            // vList.setLatitude(vendorList.getLatitude());
+                            // vList.setLongitude(vendorList.getLongitude());
                             //vList.setPanName(vendorList.getPanName());
                             //vList.setStoreAddress1(vendorList.getStoreAddress1());
                             //vList.setStoreAddressLandmark(vendorList.getStoreAddressLandmark());
@@ -681,26 +681,26 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
                             //vList.setPincode(vendorList.getPincode());
 
                             vList.setStatus(vendorList.getStatus());
-                           // vList.setPanNo(vendorList.getPanNo());
+                            // vList.setPanNo(vendorList.getPanNo());
                             vList.setShopImage(vendorList.getShopImage());
                             vList.setStoreName(vendorList.getStoreName());
-                           // vList.setMobileVerify(vendorList.getMobileVerify());
-                           // vList.setLocationVerify(vendorList.getLocationVerify());
-                           // vList.setAadhaarVerify(vendorList.getAadhaarVerify());
+                            // vList.setMobileVerify(vendorList.getMobileVerify());
+                            // vList.setLocationVerify(vendorList.getLocationVerify());
+                            // vList.setAadhaarVerify(vendorList.getAadhaarVerify());
                             //vList.setPanVerify(vendorList.getPanVerify());
                             //vList.setChequeVerify(vendorList.getChequeVerify());
-                           // vList.setExpirationDate(vendorList.getExpirationDate());
+                            // vList.setExpirationDate(vendorList.getExpirationDate());
                             //vList.setGstn(vendorList.getGstn());
                             //vList.setFillDetails(vendorList.getFillDetails());
                             //vList.setUploadFiles(vendorList.getUploadFiles());
-                           // vList.setRateSendForApproval(vendorList.getRateSendForApproval());
-                           // vList.setGstdeclaration(vendorList.getGstdeclaration());
-                           // vList.setVendorSendForApproval(vendorList.getVendorSendForApproval());
-                           // vList.setBankDetailUpdationRequired(vendorList.getBankDetailUpdationRequired());
+                            // vList.setRateSendForApproval(vendorList.getRateSendForApproval());
+                            // vList.setGstdeclaration(vendorList.getGstdeclaration());
+                            // vList.setVendorSendForApproval(vendorList.getVendorSendForApproval());
+                            // vList.setBankDetailUpdationRequired(vendorList.getBankDetailUpdationRequired());
                             vList.setProccessId(vendorList.getProccessId());
                             vList.setName(vendorList.getName());
                             //vList.setRate(vendorList.getRate());
-                           // vList.setAssessmentverify(vendorList.getAssessmentverify());
+                            // vList.setAssessmentverify(vendorList.getAssessmentverify());
                             // vList.setIsUpdateGst(vendorList.getIsUpdateGst());
                             //vList.setStoreType(vendorList.getStoreType());
                             //vList.setNoc(vendorList.getNoc());
@@ -876,14 +876,14 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
 
                     }
                 } else {
-                    Toast.makeText(getActivity(), "#errorcode 2073 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "#errorcode 2073 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             }
 
             @Override
             public void onFailure(Call<SearchListResponse> call, Throwable t) {
-                Toast.makeText(getActivity(), "#errorcode 2073 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode 2073 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
 
                 mSwipeRefreshLayout.setRefreshing(false);

@@ -310,15 +310,31 @@
                             android:text="Route"
                             android:textColor="@color/colorBlue" />
 
-                        <EditText
-                            android:id="@+id/etRouteNo"
-                            style="@style/App_EditTextStyle"
+                        <RelativeLayout
                             android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:layout_marginBottom="@dimen/_20sdp"
-                            android:imeOptions="actionDone"
-                            android:inputType="text"
-                            android:textSize="@dimen/_10sdp" />
+                            android:orientation="horizontal">
+
+
+                            <EditText
+                                android:id="@+id/etRouteNo"
+                                style="@style/App_EditTextStyle"
+                                android:layout_width="match_parent"
+                                android:imeOptions="actionDone"
+                                android:inputType="number"
+                                android:paddingLeft="@dimen/_30sdp"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <TextView
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/_15sdp"
+                                android:text="R-" />
+
+                        </RelativeLayout>
 
 
                     </LinearLayout>

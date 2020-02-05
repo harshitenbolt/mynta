@@ -844,7 +844,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_STATE, etPerState.getText().toString());
 
         params.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
-        params.put(Constants.ROUTE_NUMBER, etRoute.getText().toString().trim());
+        params.put(Constants.ROUTE_NUMBER, "R-" + etRoute.getText().toString().trim());
         /*if(isUpdate.equalsIgnoreCase("1")){
             params.put(Constants.PARAM_IS_EDIT,"1");
         }*/

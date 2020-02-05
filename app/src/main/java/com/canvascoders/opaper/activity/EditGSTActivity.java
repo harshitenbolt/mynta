@@ -51,6 +51,7 @@ import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.Beans.VerifyGstResponse.VerifyGst;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
+import com.canvascoders.opaper.Beans.getMerakApiResponse.GetMerakResponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
@@ -838,6 +839,9 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                 // edit_ac_name.setText(payeeName);
                             }
 
+
+                            ApiCallGetMerakCount();
+
                             DialogUtil.chequeDetail(EditGSTActivity.this, accountNumber, payeeName, ifsccode, str_process_id, bank_name, bank_branch, branch_address, new DialogListner() {
                                 @Override
                                 public void onClickPositive() {
@@ -961,6 +965,35 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         }
         return true;
     }
+
+
+    private void ApiCallGetMerakCount() {
+        Map<String, String> params = new HashMap<String, String>();
+
+        // params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.DATA, "");
+        Call<GetMerakResponse> callUpload = ApiClient.getClient2().create(ApiInterface.class).getMerakList(params);
+        callUpload.enqueue(new Callback<GetMerakResponse>() {
+            @Override
+            public void onResponse(Call<GetMerakResponse> call, Response<GetMerakResponse> response) {
+                if (response.isSuccessful()) {
+
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetMerakResponse> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
 
     private void ApiCallSendLink() {
         progressDialog.setMessage("Sending link...");

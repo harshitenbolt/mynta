@@ -61,6 +61,7 @@ import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVot
 import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
 import com.canvascoders.opaper.Beans.dc.GetDC;
+import com.canvascoders.opaper.Beans.getMerakApiResponse.GetMerakResponse;
 import com.canvascoders.opaper.Beans.otp.GetOTP;
 import com.canvascoders.opaper.Beans.verifylocation.GetLocationResponse;
 import com.canvascoders.opaper.Beans.verifymobile.GetMobileResponse;
@@ -388,6 +389,14 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("send-msg-for-pan-agreement-link")
     Call<com.canvascoders.opaper.Beans.CommonResponse> sendmsgForAgreementLink(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
+
+
+
+    @FormUrlEncoded
+    @POST("marak-detail")
+    Call<GetMerakResponse> getMerakList( @FieldMap Map<String, String> apiVersionMap);
+
+
 
 
     //@FormUrlEncodedz
