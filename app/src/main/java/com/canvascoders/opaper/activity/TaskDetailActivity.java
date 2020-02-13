@@ -47,6 +47,7 @@ import com.canvascoders.opaper.fragment.InfoFragment;
 import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.DialogUtil;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -91,6 +92,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     ProgressDialog progressDialog;
     SessionManager sessionManager;
     int taskid;
+    GPSTracker gps;
     CountDownTimer newtimer;
     TextView tvTitleName, tvDescription, tvStoreName;
     SupportMapFragment mapFragment;
@@ -109,6 +111,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     Button btStartTask, btPauseTask;
     LinearLayout llComplete, llCall, llBottom;
     NestedScrollView nvMain;
+    String lattitude = "", longitude = "";
     List<SubTaskList> subTaskLists = new ArrayList<>();
     ImageView ivClose, ivIssueImage;
     List<SubTaskReason> subtaskReasonList = new ArrayList<>();
@@ -351,11 +354,31 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     private void ApiCallResumeTask() {
+
+        gps = new GPSTracker(TaskDetailActivity.this);
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+
+
         progressDialog.show();
         Map<String, String> params = new HashMap<>();
 
         params.put(Constants.PARAM_SUB_TASK_ID, String.valueOf(subTaskLists.get(0).getId()));
-
+        params.put(Constants.PARAM_LATITUDE, lattitude);
+        params.put(Constants.PARAM_LONGITUDE, longitude);
 
         ApiClient.getClient().create(ApiInterface.class).resumeTask("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<ResumeTaskListResponse>() {
             @Override
@@ -411,10 +434,30 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
     private void startApiCall() {
 
+        gps = new GPSTracker(TaskDetailActivity.this);
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+
+
         progressDialog.show();
         Map<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_TASK_ID, String.valueOf(taskid));
         params.put(PARAM_TYPE, "start");
+        params.put(Constants.PARAM_LATITUDE, lattitude);
+        params.put(Constants.PARAM_LONGITUDE, longitude);
         ApiClient.getClient().create(ApiInterface.class).startTask("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<StartTaskResponse>() {
             @Override
             public void onResponse(Call<StartTaskResponse> call, Response<StartTaskResponse> response) {
@@ -451,10 +494,30 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
     private void EndApiCall() {
 
+        gps = new GPSTracker(TaskDetailActivity.this);
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+
+
         progressDialog.show();
         Map<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_TASK_ID, String.valueOf(taskid));
         params.put(PARAM_TYPE, "end");
+        params.put(Constants.PARAM_LATITUDE, lattitude);
+        params.put(Constants.PARAM_LONGITUDE, longitude);
         ApiClient.getClient().create(ApiInterface.class).startTask("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<StartTaskResponse>() {
             @Override
             public void onResponse(Call<StartTaskResponse> call, Response<StartTaskResponse> response) {

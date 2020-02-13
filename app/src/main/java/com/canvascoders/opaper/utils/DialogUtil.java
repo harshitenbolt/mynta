@@ -1127,6 +1127,7 @@ public class DialogUtil {
                         }
 
 
+
                         CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(context, android.R.layout.simple_spinner_item, dcLists);
                         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         dc.setAdapter(spinnerArrayAdapter);

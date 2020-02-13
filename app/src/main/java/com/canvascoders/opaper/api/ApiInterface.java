@@ -55,6 +55,7 @@ import com.canvascoders.opaper.Beans.UpdatePanResponse.UpdatePancardResponse;
 import com.canvascoders.opaper.Beans.UserDetailTResponse.GetUserDetails;
 import com.canvascoders.opaper.Beans.VendorDetailResponse.VendorDetailResponse;
 import com.canvascoders.opaper.Beans.VendorListResponse.VendorListResponse;
+import com.canvascoders.opaper.Beans.VerifyGstImageResponse.VerifyGSTImageRespone;
 import com.canvascoders.opaper.Beans.VerifyGstResponse.VerifyGst;
 import com.canvascoders.opaper.Beans.ViewNotificationResponse.ViewNotificationResponse;
 import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
@@ -115,7 +116,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST
-    Call<DetailAssessmentDelBoyResponse> detailAssesmentDelBoyResponse(@Url String url,@Header("Authorization") String token, @FieldMap Map<String, String> param);
+    Call<DetailAssessmentDelBoyResponse> detailAssesmentDelBoyResponse(@Url String url, @Header("Authorization") String token, @FieldMap Map<String, String> param);
 
 
     @FormUrlEncoded
@@ -140,7 +141,7 @@ public interface ApiInterface {
 
     @Multipart
     @POST("gst-certificate-image")
-    Call<AddDelBoyResponse> addGSTCertiImage(@Header("Authorization") String token,@PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
+    Call<AddDelBoyResponse> addGSTCertiImage(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
 
     @FormUrlEncoded
     @POST
@@ -252,10 +253,6 @@ public interface ApiInterface {
 //    }
 
 
-
-
-
-
     ///startstart
 
     @POST("get-pancard-ocr-url")
@@ -280,6 +277,12 @@ public interface ApiInterface {
 
 
     @Multipart
+    @POST("verify-gst-with-gst")
+    Call<VerifyGSTImageRespone> getGstImageOCRVerify(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                                     @Part MultipartBody.Part gstImage);
+
+
+    @Multipart
     @POST("voter-id-detail")
     Call<VoterOCRGetDetaisResponse> getVoterIdOCR(@PartMap() Map<String, String> data,
                                                   @Part MultipartBody.Part voter_front,
@@ -295,7 +298,6 @@ public interface ApiInterface {
     @POST("verify-pan-card")
     Call<CommonResponse> getstorePancard(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                          @Part MultipartBody.Part pancard);
-
 
 
     @Multipart
@@ -391,12 +393,9 @@ public interface ApiInterface {
     Call<com.canvascoders.opaper.Beans.CommonResponse> sendmsgForAgreementLink(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
 
 
-
     @FormUrlEncoded
     @POST("marak-detail")
-    Call<GetMerakResponse> getMerakList( @FieldMap Map<String, String> apiVersionMap);
-
-
+    Call<GetMerakResponse> getMerakList(@FieldMap Map<String, String> apiVersionMap);
 
 
     //@FormUrlEncodedz
@@ -460,8 +459,6 @@ public interface ApiInterface {
     Call<ResponseBody> submitSigningLog(@Header("Authorization") String token, @Body JsonObject data);
 
 
-
-
     // check from here ....
 
     //@Headers("Content-Type: application/json")
@@ -492,18 +489,6 @@ public interface ApiInterface {
     Call<BankDetailResp> getBankDetails(@Header("Authorization") String token, @Body JsonObject data);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     //@FormUrlEncoded
     @POST("check-esign")
     Call<CheckEsignResponse> checkEsign(@Header("Authorization") String token, @QueryMap Map<String, String> data);
@@ -516,15 +501,13 @@ public interface ApiInterface {
     Call<ResendOTPResponse> resendOTP(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 
 
-
     @FormUrlEncoded
     @POST("resend-resign-link")
     Call<ResendOTPResponse> sendOTPResign(@Header("Authorization") String token, @FieldMap Map<String, String> data);
 
     @FormUrlEncoded
     @POST
-    Call<ResendOTPResponse> sendDeliveryLink(@Url String url,@Header("Authorization") String token, @FieldMap Map<String, String> data);
-
+    Call<ResendOTPResponse> sendDeliveryLink(@Url String url, @Header("Authorization") String token, @FieldMap Map<String, String> data);
 
 
     @POST("send-invoice-esign-link")
@@ -585,7 +568,6 @@ public interface ApiInterface {
     Call<SearchResponseAssessment> getSearchListDeliveryBoy(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
 
-
     @FormUrlEncoded
     @POST("resign-agreement-detail")
     Call<ResignAgreeDetailResponse> getDetailsResignAgreement(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
@@ -594,8 +576,6 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("delivery-boys-verify")
     Call<SendOtpDelBoyresponse> deliveryBoysSendOTP(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
-
-
 
 
     @FormUrlEncoded
@@ -664,8 +644,6 @@ public interface ApiInterface {
     @Multipart
     @POST("task-pause")
     Call<PauseTaskResponse> pauseTaskwithImage(@Header("Authorization") String token, @PartMap Map<String, String> apiVersionMap, @Part MultipartBody.Part attachment);
-
-
 
 
     @Multipart

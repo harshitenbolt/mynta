@@ -369,16 +369,15 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     } else {
                         Toast.makeText(DashboardActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
-                }
-                else{
-                    Toast.makeText(DashboardActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(DashboardActivity.this, "#errorcode :- 2038 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(DashboardActivity.this, "#errorcode :- 2038 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(DashboardActivity.this, "#errorcode :- 2038 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -773,14 +772,14 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                             }
                         }
                     } else {
-                        Toast.makeText(DashboardActivity.this,"#errorcode :- 2045 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(DashboardActivity.this, "#errorcode :- 2045 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<NotificattionResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(DashboardActivity.this, "#errorcode :- 2045 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(DashboardActivity.this, "#errorcode :- 2045 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });

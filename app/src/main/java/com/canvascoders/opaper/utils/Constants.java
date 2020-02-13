@@ -46,7 +46,7 @@ public class Constants {
 
     //public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
      public static String BaseURL = "https://mystaging.opaper.in/api3/";
-    // test server 2
+    // test server 20
 
     public final static String APP_NAME = "my_stage"; //stage
    // public final static String APP_NAME = "my_live"; //live
