@@ -770,6 +770,245 @@
 
 
                         <LinearLayout
+                            android:id="@+id/llBankDetails"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_15sdp">
+
+                            <LinearLayout
+                                android:id="@+id/llBankEnable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_17sdp"
+                                        android:layout_height="@dimen/_17sdp"
+                                        android:src="@drawable/cheque" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="Bank verification"
+                                        android:textColor="@color/colorBlack"
+                                        android:textSize="@dimen/_12sdp" />
+
+                                    <ImageView
+
+                                        android:layout_width="@dimen/_15sdp"
+                                        android:layout_height="@dimen/_15sdp"
+                                        android:layout_gravity="end|center"
+                                        android:src="@drawable/editnote" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:background="@drawable/rounded_corner_bordercolor_green"
+                                        android:fontFamily="@font/montserratbold"
+                                        android:gravity="center"
+                                        android:paddingLeft="@dimen/_10sdp"
+                                        android:paddingTop="@dimen/_5sdp"
+                                        android:paddingRight="@dimen/_10sdp"
+                                        android:paddingBottom="@dimen/_5sdp"
+                                        android:src="@drawable/location_green"
+                                        android:text="Done"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_7sdp" />
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:orientation="horizontal">
+
+
+                                    <ImageView
+                                        android:id="@+id/cvChequeImage"
+                                        android:layout_width="@dimen/_45sdp"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_marginLeft="@dimen/_25sdp"
+                                        android:background="@drawable/roundedcornergrey_small"
+                                        android:clipToPadding="true"
+                                        android:elevation="@dimen/_10sdp"
+                                        android:src="@drawable/checkimage">
+
+                                    </ImageView>
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_12sdp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratsemibold"
+                                            android:singleLine="true"
+                                            android:text="Acc Number"
+                                            android:textColor="@color/text_color_dark_grey"
+                                            android:textSize="@dimen/_8sdp" />
+
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:singleLine="true"
+                                            android:text="AXMPJ0437H"
+                                            android:textSize="@dimen/_7sdp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratsemibold"
+                                            android:text="Acc Name"
+                                            android:textColor="@color/text_color_dark_grey"
+                                            android:textSize="@dimen/_8sdp" />
+
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:singleLine="true"
+                                            android:text="Harshit Kumar Jain"
+                                            android:textSize="@dimen/_7sdp" />
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:orientation="horizontal">
+
+
+                                    <LinearLayout
+                                        android:layout_width="@dimen/_45sdp"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_marginLeft="@dimen/_25sdp"></LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_12sdp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratsemibold"
+                                            android:text="Branch name"
+                                            android:textColor="@color/text_color_dark_grey"
+                                            android:textSize="@dimen/_8sdp" />
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:lines="1"
+                                            android:singleLine="true"
+                                            android:text="13/08/1996"
+                                            android:textSize="@dimen/_7sdp" />
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/llChequeDisable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserratsemibold"
+                                    android:text="You are in this step"
+                                    android:textColor="@color/colorBlue" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_20sdp"
+                                        android:layout_height="@dimen/_20sdp"
+                                        android:src="@drawable/cheque" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="Bank verification"
+                                        android:textColor="@color/text_color_dark_grey"
+                                        android:textSize="@dimen/_15sdp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@color/text_color_dark_grey" />
+
+
+                        <LinearLayout
                             android:id="@+id/llVendorDetails"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -792,7 +1031,7 @@
                                     <ImageView
                                         android:layout_width="@dimen/_17sdp"
                                         android:layout_height="@dimen/_17sdp"
-                                        android:src="@drawable/manuser" />
+                                        android:src="@drawable/shop" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -999,6 +1238,456 @@
                             android:layout_height="@dimen/_1sdp"
                             android:layout_marginTop="@dimen/_3sdp"
                             android:background="@color/text_color_dark_grey" />
+
+
+                        <LinearLayout
+                            android:id="@+id/llOwnerInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_15sdp">
+
+                            <LinearLayout
+                                android:id="@+id/llOnwerEnable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_17sdp"
+                                        android:layout_height="@dimen/_17sdp"
+                                        android:src="@drawable/manuser" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="Owner details"
+                                        android:textColor="@color/colorBlack"
+                                        android:textSize="@dimen/_12sdp" />
+
+                                    <ImageView
+
+                                        android:layout_width="@dimen/_15sdp"
+                                        android:layout_height="@dimen/_15sdp"
+                                        android:layout_gravity="end|center"
+                                        android:src="@drawable/editnote" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:background="@drawable/rounded_corner_bordercolor_green"
+                                        android:fontFamily="@font/montserratbold"
+                                        android:gravity="center"
+                                        android:paddingLeft="@dimen/_10sdp"
+                                        android:paddingTop="@dimen/_5sdp"
+                                        android:paddingRight="@dimen/_10sdp"
+                                        android:paddingBottom="@dimen/_5sdp"
+                                        android:src="@drawable/location_green"
+                                        android:text="Done"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_7sdp" />
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:orientation="horizontal">
+
+
+                                    <LinearLayout
+                                        android:layout_width="@dimen/_45sdp"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_marginLeft="@dimen/_25sdp"></LinearLayout>
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_12sdp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratsemibold"
+                                            android:singleLine="true"
+                                            android:text="Owner Name"
+                                            android:textColor="@color/text_color_dark_grey"
+                                            android:textSize="@dimen/_8sdp" />
+
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:singleLine="true"
+                                            android:text="Jain Enterprice"
+                                            android:textSize="@dimen/_7sdp" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratsemibold"
+                                            android:text="Email ID"
+                                            android:textColor="@color/text_color_dark_grey"
+                                            android:textSize="@dimen/_8sdp" />
+
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:singleLine="true"
+                                            android:text="Harshit Kumar Jain"
+                                            android:textSize="@dimen/_7sdp" />
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:orientation="horizontal">
+
+
+                                    <LinearLayout
+                                        android:layout_width="@dimen/_45sdp"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_marginLeft="@dimen/_25sdp"></LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_12sdp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratsemibold"
+                                            android:text="Owner address"
+                                            android:textColor="@color/text_color_dark_grey"
+                                            android:textSize="@dimen/_8sdp" />
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:lines="2"
+                                            android:singleLine="true"
+                                            android:text=""
+                                            android:textSize="@dimen/_7sdp" />
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/llOwnerDisable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserratsemibold"
+                                    android:text="You are in this step"
+                                    android:textColor="@color/colorBlue" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_20sdp"
+                                        android:layout_height="@dimen/_20sdp"
+                                        android:src="@drawable/location_grey" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="Owner Information"
+                                        android:textColor="@color/text_color_dark_grey"
+                                        android:textSize="@dimen/_15sdp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@color/text_color_dark_grey" />
+
+
+
+
+
+                        <LinearLayout
+                            android:id="@+id/llGST"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_15sdp">
+
+                            <LinearLayout
+                                android:id="@+id/llGStEnable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_17sdp"
+                                        android:layout_height="@dimen/_17sdp"
+                                        android:src="@drawable/gst" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="GST information"
+                                        android:textColor="@color/colorBlack"
+                                        android:textSize="@dimen/_12sdp" />
+
+                                    <ImageView
+
+                                        android:layout_width="@dimen/_15sdp"
+                                        android:layout_height="@dimen/_15sdp"
+                                        android:layout_gravity="end|center"
+                                        android:src="@drawable/editnote" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:background="@drawable/rounded_corner_bordercolor_green"
+                                        android:fontFamily="@font/montserratbold"
+                                        android:gravity="center"
+                                        android:paddingLeft="@dimen/_10sdp"
+                                        android:paddingTop="@dimen/_5sdp"
+                                        android:paddingRight="@dimen/_10sdp"
+                                        android:paddingBottom="@dimen/_5sdp"
+                                        android:src="@drawable/location_green"
+                                        android:text="Done"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_7sdp" />
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:orientation="horizontal">
+
+
+                                    <ImageView
+                                        android:id="@+id/cvGstFront"
+                                        android:layout_width="@dimen/_45sdp"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_marginLeft="@dimen/_25sdp"
+                                        android:background="@drawable/roundedcornergrey_small"
+                                        android:clipToPadding="true"
+                                        android:elevation="@dimen/_10sdp"
+                                        android:src="@drawable/gst">
+
+                                    </ImageView>
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_12sdp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratsemibold"
+                                            android:singleLine="true"
+                                            android:text="GST Number"
+                                            android:textColor="@color/text_color_dark_grey"
+                                            android:textSize="@dimen/_8sdp" />
+
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:singleLine="true"
+                                            android:text="AXMPJ0437H"
+                                            android:textSize="@dimen/_7sdp" />
+                                    </LinearLayout>
+
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:orientation="horizontal">
+
+
+                                    <LinearLayout
+                                        android:layout_width="@dimen/_45sdp"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_marginLeft="@dimen/_25sdp"></LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_12sdp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratsemibold"
+                                            android:text="Pan Number"
+                                            android:textColor="@color/text_color_dark_grey"
+                                            android:textSize="@dimen/_8sdp" />
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:lines="1"
+                                            android:singleLine="true"
+                                            android:text="13/08/1996"
+                                            android:textSize="@dimen/_7sdp" />
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/llGstDisable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserratsemibold"
+                                    android:text="You are in this step"
+                                    android:textColor="@color/colorBlue" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_20sdp"
+                                        android:layout_height="@dimen/_20sdp"
+                                        android:src="@drawable/location_grey" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="Location verification"
+                                        android:textColor="@color/text_color_dark_grey"
+                                        android:textSize="@dimen/_15sdp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@color/text_color_dark_grey" />
+
+
+
+
 
 
                         <LinearLayout

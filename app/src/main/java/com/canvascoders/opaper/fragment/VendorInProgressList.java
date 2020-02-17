@@ -389,9 +389,9 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
 
     @Override
     public void onClick(View view, int position) {
-        /*Intent i = new Intent(getActivity(), TaskProccessDetailActivity.class);
+        Intent i = new Intent(getActivity(), TaskProccessDetailActivity.class);
         i.putExtra(Constants.KEY_PROCESS_ID, vendorLists.get(position).getProccessId());
-        startActivity(i);*/
+        startActivity(i);
 
     }
 
