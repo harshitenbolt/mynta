@@ -566,7 +566,7 @@
                                         android:textSize="@dimen/_12sdp" />
 
                                     <ImageView
-
+                                        android:id="@+id/ivEditPan"
                                         android:layout_width="@dimen/_15sdp"
                                         android:layout_height="@dimen/_15sdp"
                                         android:layout_gravity="end|center"
@@ -805,7 +805,7 @@
                                         android:textSize="@dimen/_12sdp" />
 
                                     <ImageView
-
+                                        android:id="@+id/ivEditCheque"
                                         android:layout_width="@dimen/_15sdp"
                                         android:layout_height="@dimen/_15sdp"
                                         android:layout_gravity="end|center"
@@ -1044,7 +1044,7 @@
                                         android:textSize="@dimen/_12sdp" />
 
                                     <ImageView
-
+                                        android:id="@+id/ivEditStoreDetails"
                                         android:layout_width="@dimen/_15sdp"
                                         android:layout_height="@dimen/_15sdp"
                                         android:layout_gravity="end|center"
@@ -1248,7 +1248,7 @@
                             android:padding="@dimen/_15sdp">
 
                             <LinearLayout
-                                android:id="@+id/llOnwerEnable"
+                                android:id="@+id/llOwnerEnable"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
@@ -1276,7 +1276,7 @@
                                         android:textSize="@dimen/_12sdp" />
 
                                     <ImageView
-
+                                        android:id="@+id/ivEditOwnerDetails"
                                         android:layout_width="@dimen/_15sdp"
                                         android:layout_height="@dimen/_15sdp"
                                         android:layout_gravity="end|center"
@@ -1508,7 +1508,7 @@
                                         android:textSize="@dimen/_12sdp" />
 
                                     <ImageView
-
+                                        android:id="@+id/ivEditGSTDetails"
                                         android:layout_width="@dimen/_15sdp"
                                         android:layout_height="@dimen/_15sdp"
                                         android:layout_gravity="end|center"
@@ -1718,6 +1718,7 @@
                                         android:textSize="@dimen/_12sdp" />
 
                                     <ImageView
+                                        android:id="@+id/ivDeliveryDetails"
                                         android:layout_width="@dimen/_15sdp"
                                         android:layout_height="@dimen/_15sdp"
                                         android:layout_gravity="end|center"
