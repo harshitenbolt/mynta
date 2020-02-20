@@ -40,7 +40,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".activity.OTPSendEditActivity"></activity>
+        <activity android:name=".activity.EditWhileOnBoarding.EditLocationActivity"></activity>
+        <activity android:name=".activity.EditFunctionalityKiranaActivity" />
+        <activity android:name=".activity.OTPSendEditActivity" />
         <activity
             android:name=".activity.TaskProccessDetailActivity"
             android:screenOrientation="portrait"

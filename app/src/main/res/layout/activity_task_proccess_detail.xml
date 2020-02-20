@@ -134,8 +134,8 @@
 
                                     <ImageView
                                         android:id="@+id/ivEditLocation"
-                                        android:layout_width="@dimen/_15sdp"
-                                        android:layout_height="@dimen/_15sdp"
+                                        android:layout_width="22dp"
+                                        android:layout_height="26dp"
                                         android:layout_gravity="end|center"
                                         android:src="@drawable/editnote" />
 

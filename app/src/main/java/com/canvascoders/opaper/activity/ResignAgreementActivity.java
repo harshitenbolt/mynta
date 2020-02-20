@@ -459,7 +459,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
 
                 } catch (Exception e) {
                     progressDialog.dismiss();
-                    Toast.makeText(ResignAgreementActivity.this, "#errorcode 2075 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResignAgreementActivity.this, "#errorcode 2075 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             }
@@ -467,7 +467,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
             @Override
             public void onFailure(Call<ResignAgreeDetailResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(ResignAgreementActivity.this, "#errorcode 2075 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResignAgreementActivity.this, "#errorcode 2075 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                    /* if (delivery_boys_list.isEmpty()) {
                     tv_note.setVisibility(View.VISIBLE);
                     btnSubmit.setVisibility(View.GONE);
@@ -752,7 +752,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
                         Toast.makeText(ResignAgreementActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(ResignAgreementActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ResignAgreementActivity.this, "#errorcode :- 2038 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -760,7 +760,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
             @Override
             public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(ResignAgreementActivity.this, "#errorcode :- 2038 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ResignAgreementActivity.this, "#errorcode :- 2038 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });
