@@ -24,6 +24,7 @@ import com.canvascoders.opaper.Beans.GetAgentDetailResponse.GetAgentDetailRespon
 import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGstListing.GetGstListing;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
+import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
 import com.canvascoders.opaper.Beans.GetVendorInvoiceList.GetVendorInvoiceDetails;
 import com.canvascoders.opaper.Beans.GetVendorTypeDetails;
 import com.canvascoders.opaper.Beans.NotificationResponse.NotificattionResponse;
@@ -639,6 +640,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("task-resume")
     Call<ResumeTaskListResponse> resumeTask(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
+
+
+    @FormUrlEncoded
+    @POST("vendor-process-track-detail")
+    Call<GetTrackDetailsResponse> geTrackingDetails(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
 
 
     @Multipart

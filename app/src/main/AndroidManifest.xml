@@ -40,7 +40,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".activity.EditWhileOnBoarding.EditLocationActivity"></activity>
+        <activity android:name=".activity.EditWhileOnBoarding.EditKycActivity"></activity>
+        <activity android:name=".activity.EditWhileOnBoarding.EditLocationActivity" />
         <activity android:name=".activity.EditFunctionalityKiranaActivity" />
         <activity android:name=".activity.OTPSendEditActivity" />
         <activity
