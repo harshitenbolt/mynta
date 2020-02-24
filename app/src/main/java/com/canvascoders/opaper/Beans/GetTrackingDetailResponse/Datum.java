@@ -16,6 +16,21 @@ public class Datum {
     @SerializedName("basicDetails")
     @Expose
     private BasicDetails basicDetails;
+
+
+    @SerializedName("bankDetails")
+    @Expose
+    private List<BankDetails> bankDetails;
+
+
+    public List<BankDetails> getBankDetails() {
+        return bankDetails;
+    }
+
+    public void setBankDetails(List<BankDetails> bankDetails) {
+        this.bankDetails = bankDetails;
+    }
+
     @SerializedName("basicDetailRate")
     @Expose
     private List<Object> basicDetailRate = null;

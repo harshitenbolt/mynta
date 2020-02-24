@@ -203,6 +203,7 @@
                                             android:textSize="@dimen/_8sdp" />
 
                                         <TextView
+                                            android:id="@+id/tvLattitude"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
@@ -230,6 +231,7 @@
                                             android:textSize="@dimen/_8sdp" />
 
                                         <TextView
+                                            android:id="@+id/tvLongitude"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
@@ -251,11 +253,13 @@
 
 
                                 <TextView
+                                    android:id="@+id/tvTextStepLocation"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/montserratsemibold"
                                     android:text="You are in this step"
-                                    android:textColor="@color/colorBlue" />
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -276,7 +280,7 @@
                                         android:fontFamily="@font/montserratsemibold"
                                         android:text="Location verification"
                                         android:textColor="@color/text_color_dark_grey"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_13sdp" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -360,7 +364,7 @@
 
 
                                     <ImageView
-                                        android:id="@+id/cvKyCfront"
+                                        android:id="@+id/ivKyCfront"
                                         android:layout_width="@dimen/_45sdp"
                                         android:layout_height="@dimen/_35sdp"
                                         android:layout_marginLeft="@dimen/_25sdp"
@@ -392,6 +396,7 @@
                                             android:textSize="@dimen/_8sdp" />
 
                                         <TextView
+                                            android:id="@+id/tvDocKYCNumber"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
@@ -420,6 +425,7 @@
                                             android:textSize="@dimen/_8sdp" />
 
                                         <TextView
+                                            android:id="@+id/tvDocKYCName"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
@@ -438,7 +444,7 @@
 
 
                                     <ImageView
-                                        android:id="@+id/cvKYCback"
+                                        android:id="@+id/ivKYCback"
                                         android:layout_width="@dimen/_45sdp"
                                         android:layout_height="@dimen/_35sdp"
                                         android:layout_marginLeft="@dimen/_25sdp"
@@ -463,11 +469,12 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratsemibold"
-                                            android:text="Doc Address"
+                                            android:text="Doc DOB"
                                             android:textColor="@color/text_color_dark_grey"
                                             android:textSize="@dimen/_8sdp" />
 
                                         <TextView
+                                            android:id="@+id/tvDocKYCAddress"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
@@ -491,11 +498,13 @@
 
 
                                 <TextView
+                                    android:id="@+id/tvTextStepKYC"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/montserratsemibold"
                                     android:text="You are in this step"
-                                    android:textColor="@color/colorBlue" />
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -516,7 +525,7 @@
                                         android:fontFamily="@font/montserratsemibold"
                                         android:text="Location verification"
                                         android:textColor="@color/text_color_dark_grey"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_13sdp" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -542,7 +551,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:visibility="gone">
+                                android:visibility="visible">
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -601,7 +610,7 @@
 
 
                                     <ImageView
-                                        android:id="@+id/cvPanFront"
+                                        android:id="@+id/ivPanFront"
                                         android:layout_width="@dimen/_45sdp"
                                         android:layout_height="@dimen/_35sdp"
                                         android:layout_marginLeft="@dimen/_25sdp"
@@ -635,6 +644,7 @@
 
 
                                         <TextView
+                                            android:id="@+id/tvPanNumber"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
@@ -664,6 +674,7 @@
 
 
                                         <TextView
+                                            android:id="@+id/tvPanName"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
@@ -707,6 +718,7 @@
                                             android:textSize="@dimen/_8sdp" />
 
                                         <TextView
+                                            android:id="@+id/tvPanDOB"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
@@ -731,11 +743,13 @@
 
 
                                 <TextView
+                                    android:id="@+id/tvTextStepPan"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/montserratsemibold"
                                     android:text="You are in this step"
-                                    android:textColor="@color/colorBlue" />
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -756,7 +770,7 @@
                                         android:fontFamily="@font/montserratsemibold"
                                         android:text="Location verification"
                                         android:textColor="@color/text_color_dark_grey"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_13sdp" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -874,11 +888,12 @@
 
 
                                         <TextView
+                                            android:id="@+id/tvBankAccNumber"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
                                             android:singleLine="true"
-                                            android:text="AXMPJ0437H"
+                                            android:text=""
                                             android:textSize="@dimen/_7sdp" />
                                     </LinearLayout>
 
@@ -903,11 +918,12 @@
 
 
                                         <TextView
+                                            android:id="@+id/tvAccNameBank"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
                                             android:singleLine="true"
-                                            android:text="Harshit Kumar Jain"
+                                            android:text=""
                                             android:textSize="@dimen/_7sdp" />
                                     </LinearLayout>
 
@@ -937,7 +953,6 @@
 
 
                                         <TextView
-
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratsemibold"
@@ -946,6 +961,7 @@
                                             android:textSize="@dimen/_8sdp" />
 
                                         <TextView
+                                            android:id="@+id/tvBranchName"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
@@ -970,11 +986,13 @@
 
 
                                 <TextView
+                                    android:id="@+id/tvTextStepCheque"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/montserratsemibold"
                                     android:text="You are in this step"
-                                    android:textColor="@color/colorBlue" />
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -986,7 +1004,7 @@
                                     <ImageView
                                         android:layout_width="@dimen/_20sdp"
                                         android:layout_height="@dimen/_20sdp"
-                                        android:src="@drawable/cheque" />
+                                        android:src="@drawable/cheque_grey" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -995,7 +1013,7 @@
                                         android:fontFamily="@font/montserratsemibold"
                                         android:text="Bank verification"
                                         android:textColor="@color/text_color_dark_grey"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_13sdp" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -1106,6 +1124,7 @@
 
 
                                         <TextView
+                                            android:id="@+id/tvStoreName"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
@@ -1129,17 +1148,18 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratsemibold"
-                                            android:text="Owner Name"
+                                            android:text="Store DC"
                                             android:textColor="@color/text_color_dark_grey"
                                             android:textSize="@dimen/_8sdp" />
 
 
                                         <TextView
+                                            android:id="@+id/tvDCStore"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
                                             android:singleLine="true"
-                                            android:text="Harshit Kumar Jain"
+                                            android:text=""
                                             android:textSize="@dimen/_7sdp" />
                                     </LinearLayout>
 
@@ -1178,11 +1198,11 @@
                                             android:textSize="@dimen/_8sdp" />
 
                                         <TextView
+                                            android:id="@+id/tvStoreAddress"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
                                             android:lines="2"
-                                            android:singleLine="true"
                                             android:text=""
                                             android:textSize="@dimen/_7sdp" />
                                     </LinearLayout>
@@ -1202,11 +1222,13 @@
 
 
                                 <TextView
+                                    android:id="@+id/tvTextStepStoreAddress"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/montserratsemibold"
                                     android:text="You are in this step"
-                                    android:textColor="@color/colorBlue" />
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -1227,7 +1249,7 @@
                                         android:fontFamily="@font/montserratsemibold"
                                         android:text="Vendor verification"
                                         android:textColor="@color/text_color_dark_grey"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_13sdp" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -1434,11 +1456,13 @@
 
 
                                 <TextView
+                                    android:id="@+id/tvTextStepOwnerInfo"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/montserratsemibold"
                                     android:text="You are in this step"
-                                    android:textColor="@color/colorBlue" />
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -1450,7 +1474,7 @@
                                     <ImageView
                                         android:layout_width="@dimen/_20sdp"
                                         android:layout_height="@dimen/_20sdp"
-                                        android:src="@drawable/location_grey" />
+                                        android:src="@drawable/agreement_grey" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
@@ -1459,7 +1483,7 @@
                                         android:fontFamily="@font/montserratsemibold"
                                         android:text="Owner Information"
                                         android:textColor="@color/text_color_dark_grey"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_13sdp" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -1543,7 +1567,7 @@
 
 
                                     <ImageView
-                                        android:id="@+id/cvGstFront"
+                                        android:id="@+id/ivGstFront"
                                         android:layout_width="@dimen/_45sdp"
                                         android:layout_height="@dimen/_35sdp"
                                         android:layout_marginLeft="@dimen/_25sdp"
@@ -1577,11 +1601,12 @@
 
 
                                         <TextView
+                                            android:id="@+id/tvGstNo"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
                                             android:singleLine="true"
-                                            android:text="AXMPJ0437H"
+                                            android:text=""
                                             android:textSize="@dimen/_7sdp" />
                                     </LinearLayout>
 
@@ -1611,7 +1636,7 @@
 
 
                                         <TextView
-
+                                            android:id="@+id/tvGstPanNumber"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratsemibold"
@@ -1644,11 +1669,13 @@
 
 
                                 <TextView
+                                    android:id="@+id/tvTextStepGST"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/montserratsemibold"
                                     android:text="You are in this step"
-                                    android:textColor="@color/colorBlue" />
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -1660,16 +1687,16 @@
                                     <ImageView
                                         android:layout_width="@dimen/_20sdp"
                                         android:layout_height="@dimen/_20sdp"
-                                        android:src="@drawable/location_grey" />
+                                        android:src="@drawable/gst_grey" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         android:fontFamily="@font/montserratsemibold"
-                                        android:text="Location verification"
+                                        android:text="GST verification"
                                         android:textColor="@color/text_color_dark_grey"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_13sdp" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -1812,11 +1839,13 @@
 
 
                                 <TextView
+                                    android:id="@+id/tvTextStepDeliveryBoys"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/montserratsemibold"
                                     android:text="You are in this step"
-                                    android:textColor="@color/colorBlue" />
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -1837,7 +1866,7 @@
                                         android:fontFamily="@font/montserratsemibold"
                                         android:text="Delivery boys verification"
                                         android:textColor="@color/text_color_dark_grey"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_13sdp" />
                                 </LinearLayout>
 
                             </LinearLayout>
@@ -1978,11 +2007,13 @@
 
 
                                 <TextView
+                                    android:id="@+id/tvRateDetailsText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/montserratsemibold"
                                     android:text="You are in this step"
-                                    android:textColor="@color/colorBlue" />
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -1994,16 +2025,183 @@
                                     <ImageView
                                         android:layout_width="@dimen/_20sdp"
                                         android:layout_height="@dimen/_20sdp"
-                                        android:src="@drawable/location_grey" />
+                                        android:src="@drawable/shop_big_grey" />
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         android:fontFamily="@font/montserratsemibold"
-                                        android:text="Delivery boys verification"
+                                        android:text="Rate insertion details"
                                         android:textColor="@color/text_color_dark_grey"
-                                        android:textSize="@dimen/_15sdp" />
+                                        android:textSize="@dimen/_13sdp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@color/text_color_dark_grey" />
+
+                        <LinearLayout
+                            android:id="@+id/llRateSendforApproval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_15sdp">
+
+                            <LinearLayout
+                                android:id="@+id/llRateApprovalEnable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_17sdp"
+                                        android:layout_height="@dimen/_17sdp"
+                                        android:src="@drawable/rateshop" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="Rate details"
+                                        android:textColor="@color/colorBlack"
+                                        android:textSize="@dimen/_12sdp" />
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_15sdp"
+                                        android:layout_height="@dimen/_15sdp"
+                                        android:layout_gravity="end|center"
+                                        android:src="@drawable/editnote" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:background="@drawable/rounded_corner_bordercolor_green"
+                                        android:fontFamily="@font/montserratbold"
+                                        android:gravity="center"
+                                        android:paddingLeft="@dimen/_10sdp"
+                                        android:paddingTop="@dimen/_5sdp"
+                                        android:paddingRight="@dimen/_10sdp"
+                                        android:paddingBottom="@dimen/_5sdp"
+                                        android:src="@drawable/rateshop"
+                                        android:text="Done"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_7sdp" />
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:orientation="horizontal">
+
+
+                                    <LinearLayout
+                                        android:layout_width="@dimen/_45sdp"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_marginLeft="@dimen/_25sdp"></LinearLayout>
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_12sdp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratsemibold"
+                                            android:singleLine="true"
+                                            android:text="No.of delivery boys added"
+                                            android:textColor="@color/text_color_dark_grey"
+                                            android:textSize="@dimen/_8sdp" />
+
+
+                                        <TextView
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:text="Jain Enterprice"
+                                            android:textSize="@dimen/_7sdp" />
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:orientation="horizontal">
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/llRateApprovalDisable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+
+                                <TextView
+                                    android:id="@+id/tvTextStepRateApproval"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserratsemibold"
+                                    android:text="You are in this step"
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_20sdp"
+                                        android:layout_height="@dimen/_20sdp"
+                                        android:src="@drawable/shop_big_grey" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="Rate Approval"
+                                        android:textColor="@color/text_color_dark_grey"
+                                        android:textSize="@dimen/_13sdp" />
                                 </LinearLayout>
 
                             </LinearLayout>
