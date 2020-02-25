@@ -117,7 +117,7 @@ public class EditLocationActivity extends AppCompatActivity implements OnMapRead
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("getting Location...");
         progressDialog.setCancelable(false);
-        mProgressDialog = new ProgressDialog(mcontext);
+        mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Verifying Location...");
         sessionManager = new SessionManager(this);
         // etSearch =view.findViewById(R.id.etSearchPlace);
@@ -125,7 +125,7 @@ public class EditLocationActivity extends AppCompatActivity implements OnMapRead
 
         str_process_id = getIntent().getStringExtra(Constants.KEY_PROCESS_ID);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(mcontext)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(EditLocationActivity.this /* FragmentActivity */,
                         this /* OnConnectionFailedListener */)
                 .addConnectionCallbacks(this)
@@ -161,7 +161,7 @@ public class EditLocationActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onResume() {
         super.onResume();
-        LocationManager service = (LocationManager) mcontext.getSystemService(LOCATION_SERVICE);
+        LocationManager service = (LocationManager) getSystemService(LOCATION_SERVICE);
         enabled = service.isProviderEnabled(LocationManager.GPS_PROVIDER);
         if (!enabled)
             enabled = service.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
@@ -211,7 +211,7 @@ public class EditLocationActivity extends AppCompatActivity implements OnMapRead
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-            View locationButton = ((View) view.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+            View locationButton = ((View) findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
             RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
             // position on right bottom
             rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
@@ -234,7 +234,7 @@ public class EditLocationActivity extends AppCompatActivity implements OnMapRead
     @Override
     public void onLocationChanged(Location location) {
         if (location != null) {
-            Toast.makeText(mcontext, "location changed", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "location changed", Toast.LENGTH_LONG).show();
             Mylogger.getInstance().Logit(TAG, "Current location is null. Using defaults.");
             mLastKnownLocation = location;
             mDefaultLocation = new LatLng(location.getLatitude(), location.getLongitude());

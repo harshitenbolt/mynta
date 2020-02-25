@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +42,7 @@ public class EditFunctionalityKiranaActivity extends AppCompatActivity implement
     private SessionManager sessionManager;
     private String TAG = "MobileFragment";
     private ProgressDialog mProgressDialog;
-
+    ImageView iv_back_process;
     Context mcontext;
     View view;
 
@@ -52,6 +52,13 @@ public class EditFunctionalityKiranaActivity extends AppCompatActivity implement
         setContentView(R.layout.activity_edit_functionality_kirana);
         titlename = getIntent().getStringExtra(Constants.DATA);
         sessionManager = new SessionManager(this);
+        iv_back_process = findViewById(R.id.iv_back_process);
+        iv_back_process.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         init();
     }
 
@@ -68,7 +75,6 @@ public class EditFunctionalityKiranaActivity extends AppCompatActivity implement
         edit_mobile_no.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override

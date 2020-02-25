@@ -234,10 +234,10 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llChequeEnable.setVisibility(View.VISIBLE);
                             llChequeDisable.setVisibility(View.GONE);
 
-                            tvBankAcccountNumber.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankAc());
+                        /*    tvBankAcccountNumber.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankAc());
                             tvBankAccName.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankName());
                             tvBankBranchName.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankBranchName());
-
+*/
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getChequeVerify() == 0) {
                             llChequeEnable.setVisibility(View.GONE);
                             llChequeDisable.setVisibility(View.VISIBLE);
