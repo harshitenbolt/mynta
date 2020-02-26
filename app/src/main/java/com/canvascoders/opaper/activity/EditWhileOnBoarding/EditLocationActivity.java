@@ -29,8 +29,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
+import com.canvascoders.opaper.Beans.verifylocation.GetLocationResponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.api.ApiClient;
+import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.fragment.AadharVerificationFragment;
 import com.canvascoders.opaper.fragment.MapsCurrentPlaceFragment;
 import com.canvascoders.opaper.fragment.MobileFragment;
 import com.canvascoders.opaper.utils.Constants;
@@ -54,6 +59,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.JsonObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+
+import static com.canvascoders.opaper.utils.Constants.showAlert;
 
 public class EditLocationActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -146,7 +157,7 @@ public class EditLocationActivity extends AppCompatActivity implements OnMapRead
             @Override
             public void onClick(View v) {
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                    // locatioUpdate(v);
+                    locatioUpdate(v);
                 } else {
                     Constants.ShowNoInternet(EditLocationActivity.this);
                 }
@@ -154,6 +165,78 @@ public class EditLocationActivity extends AppCompatActivity implements OnMapRead
             }
         });
 
+
+    }
+
+
+    private void locatioUpdate(final View v) {
+        mProgressDialog.show();
+        JsonObject user = new JsonObject();
+        user.addProperty(Constants.PARAM_PROCESS_ID, str_process_id);
+        user.addProperty(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        user.addProperty(Constants.PARAM_LONGITUDE, String.valueOf(mDefaultLocation.longitude));
+        user.addProperty(Constants.PARAM_LATITUDE, String.valueOf(mDefaultLocation.latitude));
+        user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
+
+        ApiClient.getClient().create(ApiInterface.class).EditverifyLocation("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetLocationResponse>() {
+            @Override
+            public void onResponse(Call<GetLocationResponse> call, retrofit2.Response<GetLocationResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetLocationResponse getLocationResponse = response.body();
+                    Mylogger.getInstance().Logit(TAG, getLocationResponse.getResponse());
+                    if (getLocationResponse.getResponseCode() == 200) {
+                        finish();
+                        // commanFragmentCallWithoutBackStack(new AadharVerificationFragment());
+
+                        /*Intent i = new Intent(mcontext, AadharVerificationFragment.class);
+                        startActivity(i);
+                        EditLocationActivity.this.finish();*/
+
+                    } else if (getLocationResponse.getResponseCode() == 411) {
+                        sessionManager.logoutUser(EditLocationActivity.this);
+                    } else if (getLocationResponse.getResponseCode() == 400) {
+
+                        if (getLocationResponse.getValidation() != null) {
+                            Validation validation = getLocationResponse.getValidation();
+                            if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
+                                Toast.makeText(EditLocationActivity.this, validation.getProccessId(), Toast.LENGTH_LONG).show();
+                            }
+                            if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                Toast.makeText(EditLocationActivity.this, validation.getAgentId(), Toast.LENGTH_LONG).show();
+                            }
+                            if (validation.getLongitude() != null && validation.getLongitude().length() > 0) {
+                                Toast.makeText(EditLocationActivity.this, validation.getLongitude(), Toast.LENGTH_LONG).show();
+                            }
+                            if (validation.getLatitude() != null && validation.getLatitude().length() > 0) {
+                                Toast.makeText(EditLocationActivity.this, validation.getLatitude(), Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(EditLocationActivity.this, getLocationResponse.getResponse(), Toast.LENGTH_LONG).show();
+                            }
+
+                        } else {
+                            Toast.makeText(EditLocationActivity.this, getLocationResponse.getResponse(), Toast.LENGTH_LONG).show();
+
+                        }
+
+
+                    } else {
+                        showAlert(v, getLocationResponse.getResponse(), false);
+                        if (getLocationResponse.getResponseCode() == 405) {
+                            sessionManager.logoutUser(mcontext);
+                        }
+                    }
+                } else {
+                    showAlert(v, "#errorcode :- 2023 " + getString(R.string.something_went_wrong), false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetLocationResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(mcontext, "#errorcode :- 2023 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 

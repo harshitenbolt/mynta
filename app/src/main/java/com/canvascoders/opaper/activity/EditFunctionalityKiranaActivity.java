@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +46,7 @@ public class EditFunctionalityKiranaActivity extends AppCompatActivity implement
     ImageView iv_back_process;
     Context mcontext;
     View view;
+    String processid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,7 @@ public class EditFunctionalityKiranaActivity extends AppCompatActivity implement
                 finish();
             }
         });
+        processid = getIntent().getStringExtra(Constants.KEY_PROCESS_ID);
         init();
     }
 
@@ -167,11 +170,13 @@ public class EditFunctionalityKiranaActivity extends AppCompatActivity implement
                     Mylogger.getInstance().Logit(TAG, getOTP.getResponse());
                     if (getOTP.getResponseCode() == 200) {
                         Mylogger.getInstance().Logit(TAG, "OTP is =>" + getOTP.getData().get(0).getOtp().toString());
+
                         // Toast.makeText(mcontext, getOTP.getResponse(), Toast.LENGTH_LONG).show();
                         /*Intent i = new Intent(mcontext, OTPActivity.class);
                         i.putExtra("otp", getOTP.getData().get(0).getOtp().toString());
                         i.putExtra(Constants.KEY_EMP_MOBILE, edit_mobile_no.getText().toString());
                         startActivity(i);*/
+
 
                         commanFragmentCallWithBackStackwithData(new VerifyOtpEditScreen(), getOTP.getData().get(0).getOtp().toString(), edit_mobile_no.getText().toString());
                     } else if (getOTP.getResponseCode() == 405) {
@@ -203,7 +208,10 @@ public class EditFunctionalityKiranaActivity extends AppCompatActivity implement
 
         bundle.putString(Constants.KEY_EMP_MOBILE, mobile);
         bundle.putString(Constants.OTP_TEMPLATE, otp);
+
         bundle.putString(Constants.PARAM_SCREEN_NAME, titlename);
+        bundle.putString(Constants.KEY_PROCESS_ID, processid);
+
 
 
         if (cFragment != null) {

@@ -61,6 +61,7 @@ public class VerifyOtpEditScreen extends Fragment implements View.OnClickListene
     private Boolean resend = false;
     SessionManager sessionManager;
     String screenname = "";
+    String proccess_id = "";
 
     public VerifyOtpEditScreen() {
         // Required empty public constructor
@@ -75,6 +76,7 @@ public class VerifyOtpEditScreen extends Fragment implements View.OnClickListene
         mobilenumber = getArguments().getString(Constants.KEY_EMP_MOBILE);
         otp = getArguments().getString(OTP_TEMPLATE);
         screenname = getArguments().getString(Constants.PARAM_SCREEN_NAME);
+        proccess_id = getArguments().getString(Constants.KEY_PROCESS_ID);
         init();
         sessionManager = new SessionManager(getActivity());
         return v;
@@ -184,48 +186,59 @@ public class VerifyOtpEditScreen extends Fragment implements View.OnClickListene
         Intent i;
         if (screenname.equalsIgnoreCase("Location")) {
             i = new Intent(getActivity(), EditLocationActivity.class);
-            i.putExtra(Constants.KEY_PROCESS_ID, "");
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
+            getActivity().finish();
         }
         if (screenname.equalsIgnoreCase("KYC")) {
             i = new Intent(getActivity(), EditKycActivity.class);
-            i.putExtra(Constants.KEY_PROCESS_ID, "");
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
+            getActivity().finish();
         }
         if (screenname.equalsIgnoreCase("PAN")) {
             i = new Intent(getActivity(), EditPanCardActivity.class);
-            i.putExtra(Constants.KEY_PROCESS_ID, "");
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
+            getActivity().finish();
         }
         if (screenname.equalsIgnoreCase("CHEQUE")) {
             i = new Intent(getActivity(), EditBankDetailsActivity.class);
-            i.putExtra(Constants.KEY_PROCESS_ID, "");
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
+            getActivity().finish();
         }
         if (screenname.equalsIgnoreCase("STORE")) {
             i = new Intent(getActivity(), EditStoreInformationActivity.class);
-            i.putExtra(Constants.KEY_PROCESS_ID, "");
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
+            getActivity().finish();
         }
         if (screenname.equalsIgnoreCase("OWNER")) {
             i = new Intent(getActivity(), EditOwnerInfoActivity.class);
-            i.putExtra(Constants.KEY_PROCESS_ID, "");
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
+            getActivity().finish();
         }
         if (screenname.equalsIgnoreCase("GSTN")) {
             i = new Intent(getActivity(), EditGstDetailsActivity.class);
-            i.putExtra(Constants.KEY_PROCESS_ID, "");
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
+            getActivity().finish();
         }
         if (screenname.equalsIgnoreCase("DELIVERY")) {
             i = new Intent(getActivity(), EditGstDetailsActivity.class);
-            i.putExtra(Constants.KEY_PROCESS_ID, "");
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
+            getActivity().finish();
+
         }
         if (screenname.equalsIgnoreCase("RATEUPDATE")) {
             i = new Intent(getActivity(), EditGstDetailsActivity.class);
-            i.putExtra(Constants.KEY_PROCESS_ID, "");
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
+            getActivity().finish();
+
         }
 
 

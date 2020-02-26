@@ -37,9 +37,10 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
     LinearLayout llLocationEnable, llLocatonDisable, llKyCEnable, llKYCDisable, llPanEnable, llPanDisable, llChequeEnable, llChequeDisable, llInformationEnable, llVendorDetailsEnable, llVendorsDetailsDisable, llOwnerDisable, llOwnerEnable, llDocumentsDisable, llDocumentsEnable, llDeliveryBoysEnable, llDeliveryBoysDisable, llRateDetailsEnable, llRateDetailsDisable, llRateApprovalEnable, llRateApprovalDisable, llAgreementEnable, llAgreementDisable, llGstEnable, llGstDisable;
     SessionManager sessionManager;
     TextView tvLocationText, tvKYCText, tvPanText, tvBankText, tvStoreText, tvOwnerText, tvGstText, tvDeliveryText, tvRateText, tvRateApprovalText;
-    TextView tvLattitude, tvLongitude, tvDocNumber, tvDocAddress, tvDocName, tvPanName, tvPanNumber, tvPanDOB, tvBankAccName, tvBankAcccountNumber, tvBankBranchName, tvStoreName, tvStoreAddress, tvStoreDCName, tvOwnerNAme, tvOwnerAddress, tvOwnerEmailID, tvGSTNumber, tvGStPanNumber, tvNoDeliveryBoysAdded;
+    TextView tvLattitude, tvLongitude, tvDocNumber, tvDocAddress, tvDocName, tvPanName, tvPanNumber, tvPanDOB, tvBankAccName, tvBankAcccountNumber, tvBankBranchName, tvStoreName, tvStoreAddress, tvStoreDCName, tvOwnerNAme, tvOwnerAddress, tvOwnerEmailID, tvGSTNumber, tvGStPanNumber, tvNoDeliveryBoysAdded, tvNoofRates;
     ProgressDialog progressDialog;
     ImageView ivAdharFront, ivAdharBack, ivPanFront, ivGstFront;
+    String mobile = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,14 +127,18 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         tvBankAccName = findViewById(R.id.tvAccNameBank);
         tvBankAcccountNumber = findViewById(R.id.tvBankAccNumber);
         tvBankBranchName = findViewById(R.id.tvBranchName);
-
-
+        tvOwnerNAme = findViewById(R.id.tvOwnerName);
+        tvOwnerAddress = findViewById(R.id.tvOwnerAddress);
+        tvOwnerEmailID = findViewById(R.id.tvownerEmail);
         tvStoreName = findViewById(R.id.tvStoreName);
         tvStoreAddress = findViewById(R.id.tvStoreAddress);
         tvStoreDCName = findViewById(R.id.tvDCStore);
         ivAdharFront = findViewById(R.id.ivKyCfront);
         ivAdharBack = findViewById(R.id.ivKYCback);
         ivPanFront = findViewById(R.id.ivPanFront);
+
+        tvNoDeliveryBoysAdded = findViewById(R.id.tvNoOfDeliveryBoys);
+        tvNoofRates = findViewById(R.id.tvnoOfRates);
         if (networkConnectivity.isNetworkAvailable()) {
             APiCallGetTrackDetails();
         } else {
@@ -155,6 +160,8 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                     if (getTrackDetailsResponse.getResponseCode() == 200) {
                         //  Toast.makeText(TaskProccessDetailActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         //locatioon data
+                        mobile = getTrackDetailsResponse.getData().get(0).getProccessDetail().getMobileNo();
+
                         if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getLocationVerify() == 1) {
                             llLocationEnable.setVisibility(View.VISIBLE);
                             llLocatonDisable.setVisibility(View.GONE);
@@ -234,10 +241,11 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llChequeEnable.setVisibility(View.VISIBLE);
                             llChequeDisable.setVisibility(View.GONE);
 
-                        /*    tvBankAcccountNumber.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankAc());
+                            tvBankAcccountNumber.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankAc());
                             tvBankAccName.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankName());
                             tvBankBranchName.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankBranchName());
-*/
+                            Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getCancelledCheque());
+
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getChequeVerify() == 0) {
                             llChequeEnable.setVisibility(View.GONE);
                             llChequeDisable.setVisibility(View.VISIBLE);
@@ -344,6 +352,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                         if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getDeliveryBoy() == 1) {
                             llDeliveryBoysDisable.setVisibility(View.GONE);
                             llDeliveryBoysEnable.setVisibility(View.VISIBLE);
+                            tvNoDeliveryBoysAdded.setText(getTrackDetailsResponse.getData().get(0).getDeliveryBoysDetailCount() + "");
 
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getDeliveryBoy() == 0) {
                             llDeliveryBoysDisable.setVisibility(View.VISIBLE);
@@ -360,6 +369,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                         if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getRate() == 1) {
                             llRateDetailsEnable.setVisibility(View.VISIBLE);
                             llRateDetailsDisable.setVisibility(View.GONE);
+                            tvRateText.setText(getTrackDetailsResponse.getData().get(0).getBasicDetailRate().size() + "");
 
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getRate() == 0) {
                             llRateDetailsEnable.setVisibility(View.GONE);
@@ -427,49 +437,57 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
             case R.id.ivEditLocation:
                 Intent i = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
                 i.putExtra(Constants.DATA, "Location");
-                i.putExtra(Constants.KEY_EMP_MOBILE, "");
+                i.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i);
                 break;
             case R.id.ivEditKYC:
                 Intent i1 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
                 i1.putExtra(Constants.DATA, "KYC");
-                i1.putExtra(Constants.KEY_EMP_MOBILE, "");
+                i1.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i1.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i1);
                 break;
             case R.id.ivEditPan:
                 Intent i2 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
                 i2.putExtra(Constants.DATA, "PAN");
-                i2.putExtra(Constants.KEY_EMP_MOBILE, "");
+                i2.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i2.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i2);
                 break;
             case R.id.ivEditCheque:
                 Intent i3 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
                 i3.putExtra(Constants.DATA, "CHEQUE");
-                i3.putExtra(Constants.KEY_EMP_MOBILE, "");
+                i3.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i3.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i3);
                 break;
             case R.id.ivEditStoreDetails:
                 Intent i4 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
                 i4.putExtra(Constants.DATA, "STORE");
-                i4.putExtra(Constants.KEY_EMP_MOBILE, "");
+                i4.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i4.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i4);
                 break;
             case R.id.ivEditOwnerDetails:
                 Intent i5 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
                 i5.putExtra(Constants.DATA, "OWNER");
-                i5.putExtra(Constants.KEY_EMP_MOBILE, "");
+                i5.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i5.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i5);
                 break;
             case R.id.ivEditGSTDetails:
                 Intent i6 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
                 i6.putExtra(Constants.DATA, "GST");
-                i6.putExtra(Constants.KEY_EMP_MOBILE, "");
+                i6.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i6.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i6);
                 break;
             case R.id.ivDeliveryDetails:
                 Intent i7 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
                 i7.putExtra(Constants.DATA, "DELIVERY");
-                i7.putExtra(Constants.KEY_EMP_MOBILE, "");
+                i7.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i7.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i7);
                 break;
 

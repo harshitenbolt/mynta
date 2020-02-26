@@ -792,7 +792,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, str_process_id);
+                editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, str_process_id,false);
                 editNameDialogFragment.setCancelable(false);
                 editNameDialogFragment.show(getChildFragmentManager(), "fragment_edit_name");
             }

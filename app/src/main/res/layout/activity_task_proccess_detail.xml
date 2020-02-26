@@ -1360,11 +1360,12 @@
 
 
                                         <TextView
+                                            android:id="@+id/tvOwnerName"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
                                             android:singleLine="true"
-                                            android:text="Jain Enterprice"
+                                            android:text=""
                                             android:textSize="@dimen/_7sdp" />
                                     </LinearLayout>
 
@@ -1389,11 +1390,12 @@
 
 
                                         <TextView
+                                            android:id="@+id/tvownerEmail"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
                                             android:singleLine="true"
-                                            android:text="Harshit Kumar Jain"
+                                            android:text=""
                                             android:textSize="@dimen/_7sdp" />
                                     </LinearLayout>
 
@@ -1432,6 +1434,7 @@
                                             android:textSize="@dimen/_8sdp" />
 
                                         <TextView
+                                            android:id="@+id/tvOwnerAddress"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
@@ -1808,10 +1811,11 @@
 
 
                                         <TextView
+                                            android:id="@+id/tvNoOfDeliveryBoys"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
-                                            android:text="Jain Enterprice"
+                                            android:text=""
                                             android:textSize="@dimen/_7sdp" />
                                     </LinearLayout>
 
@@ -1970,16 +1974,17 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratsemibold"
                                             android:singleLine="true"
-                                            android:text="No.of delivery boys added"
+                                            android:text="No.of rates added"
                                             android:textColor="@color/text_color_dark_grey"
                                             android:textSize="@dimen/_8sdp" />
 
 
                                         <TextView
+                                            android:id="@+id/tvnoOfRates"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
-                                            android:text="Jain Enterprice"
+                                            android:text=""
                                             android:textSize="@dimen/_7sdp" />
                                     </LinearLayout>
 
@@ -2137,7 +2142,7 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratsemibold"
                                             android:singleLine="true"
-                                            android:text="No.of delivery boys added"
+                                            android:text="No.of rates added"
                                             android:textColor="@color/text_color_dark_grey"
                                             android:textSize="@dimen/_8sdp" />
 
@@ -2146,7 +2151,7 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
-                                            android:text="Jain Enterprice"
+                                            android:text=""
                                             android:textSize="@dimen/_7sdp" />
                                     </LinearLayout>
 

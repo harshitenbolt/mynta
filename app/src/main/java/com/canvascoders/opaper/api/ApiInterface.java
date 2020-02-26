@@ -158,6 +158,11 @@ public interface ApiInterface {
     @POST("verify-location")
     Call<GetLocationResponse> verifyLocation(@Header("Authorization") String token, @Body JsonObject data);
 
+    @Headers({"Content-type: application/json", "Accept: */*"})
+    @POST("edit-verify-location")
+    Call<GetLocationResponse> EditverifyLocation(@Header("Authorization") String token, @Body JsonObject data);
+
+
     //-----------------------------------------------------------------------------
 
     @POST("esign-single-invoice")
@@ -207,6 +212,20 @@ public interface ApiInterface {
     Call<GetUserDetailResponse> submitBizDetailsGST(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
 
     //-----------------------------------------------------------------------------
+
+    @Multipart
+    @POST("edit-owner-info")
+    Call<GetUserDetailResponse> submitDetailsOnwer(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
+
+
+
+
+
+
+    @Multipart
+    @POST("edit-store-info")
+    Call<GetUserDetailResponse> submitStoreInfo(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
+
 
     @POST("submit-details-validation-{NUMERIC}")
     Call<GetUserDetailResponse> submitBizDetailsValid1(@Header("Authorization") String token, @Path("NUMERIC") String URL, @Body JsonObject data);
@@ -276,6 +295,13 @@ public interface ApiInterface {
                                         @Part MultipartBody.Part aadharcard_front,
                                         @Part MultipartBody.Part aadharcard_back);
 
+    @Multipart
+    @POST("edit-verify-kyc")
+    Call<CommonResponse> getstoreAadharEdit(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                        @Part MultipartBody.Part aadharcard_front,
+                                        @Part MultipartBody.Part aadharcard_back);
+
+
 
     @Multipart
     @POST("verify-gst-with-gst")
@@ -309,12 +335,24 @@ public interface ApiInterface {
     @POST("update-pan-details")
     Call<UpdatePancardResponse> updatePanDetails(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                                  @Part MultipartBody.Part pancard);
+
+    @Multipart
+    @POST("edit-pan-card")
+    Call<UpdatePancardResponse> editPanCard(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                                 @Part MultipartBody.Part pancard);
+
     //-----------------------------------------------------------------------------
 
     @Multipart
     @POST("verify-cheque")
     Call<CommonResponse> getstoreCheque(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                         @Part MultipartBody.Part cheque);
+
+    @Multipart
+    @POST("edit-verify-cheque")
+    Call<CommonResponse> editgetstoreCheque(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                        @Part MultipartBody.Part cheque);
+
 
 
     @Multipart

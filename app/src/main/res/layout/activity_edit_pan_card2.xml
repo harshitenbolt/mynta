@@ -351,6 +351,7 @@
 
                     <androidx.cardview.widget.CardView
                         style="@style/CustomCardView"
+                        android:visibility="gone"
                         android:id="@+id/cvGstDetails"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_10sdp"
