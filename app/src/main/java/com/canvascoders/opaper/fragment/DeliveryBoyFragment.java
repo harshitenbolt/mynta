@@ -151,7 +151,7 @@ public class DeliveryBoyFragment extends Fragment implements View.OnClickListene
                     }
                     deliveryBoysListAdapter = new DeliveryBoysListAdapter(delivery_boys_list, getActivity(), "0");
 
-                    LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                    LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
 
                     rvDelBoysList.setLayoutManager(horizontalLayoutManager);
                     rvDelBoysList.setAdapter(deliveryBoysListAdapter);

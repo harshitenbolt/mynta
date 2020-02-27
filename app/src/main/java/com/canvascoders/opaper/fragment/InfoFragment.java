@@ -778,7 +778,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 CustomPopupStoreTypeAdapter customPopupStoreTypeAdapter;
                 customPopupStoreTypeAdapter = new CustomPopupStoreTypeAdapter(ListStore_type, getActivity(), this, "StoreType");
 
-                LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
 
                 rvItems1.setLayoutManager(horizontalLayoutManager1);
 
