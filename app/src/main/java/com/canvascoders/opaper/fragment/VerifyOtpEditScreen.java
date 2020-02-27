@@ -21,13 +21,17 @@ import android.widget.Toast;
 import com.canvascoders.opaper.Beans.otp.GetOTP;
 import com.canvascoders.opaper.OtpView.PinView;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.activity.EditRateWhileResigAgreeActivity;
+import com.canvascoders.opaper.activity.EditWhileOnBoarding.EdirRateOnBoardingActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditBankDetailsActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditGstDetailsActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditKycActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditLocationActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditOwnerInfoActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditPanCardActivity;
+import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditShopActImagesActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditStoreInformationActivity;
 import com.canvascoders.opaper.activity.OTPActivity;
 import com.canvascoders.opaper.api.ApiClient;
@@ -227,20 +231,27 @@ public class VerifyOtpEditScreen extends Fragment implements View.OnClickListene
             getActivity().finish();
         }
         if (screenname.equalsIgnoreCase("DELIVERY")) {
-            i = new Intent(getActivity(), EditGstDetailsActivity.class);
-            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+            i = new Intent(getActivity(), AddDeliveryBoysActivity.class);
+            i.putExtra(Constants.DATA, proccess_id);
+            i.putExtra(Constants.KEY_EDIT_DETAIL, "1");
             startActivity(i);
             getActivity().finish();
 
         }
         if (screenname.equalsIgnoreCase("RATEUPDATE")) {
-            i = new Intent(getActivity(), EditGstDetailsActivity.class);
+            i = new Intent(getActivity(), EdirRateOnBoardingActivity.class);
             i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
             getActivity().finish();
 
         }
 
+        if (screenname.equalsIgnoreCase("DOCUPLOAD")) {
+            i = new Intent(getActivity(), EditShopActImagesActivity.class);
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+            startActivity(i);
+            getActivity().finish();
+        }
 
     }
 

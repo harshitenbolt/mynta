@@ -628,7 +628,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                             }
 
                         } else {
-                            Toast.makeText(mcontext, "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                             // Toast.makeText(mcontext, response.message(), Toast.LENGTH_LONG).show();
                         }
@@ -645,7 +645,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     progressDialog.dismiss();
-
+                    Toast.makeText(getActivity(), "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             });
         } else {

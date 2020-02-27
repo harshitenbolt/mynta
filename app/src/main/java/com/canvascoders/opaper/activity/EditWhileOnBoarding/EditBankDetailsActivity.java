@@ -93,7 +93,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
     private boolean isPanSelected = false;
     private EditText edit_ac_no, edit_ac_name, edit_ifsc, edit_bank_name, edit_bank_branch_name, edit_bank_address;
     private TextRecognizer detector;
-    Context mcontext;
+
     View view;
     String bank_name = "";
     String bank_branch = "";
@@ -109,7 +109,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_bank_details);
-
+        sessionManager = new SessionManager(this);
         requestPermissionHandler = new RequestPermissionHandler();
 
         initView();
@@ -118,11 +118,11 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
 
     private void initView() {
 
-        btExtract = view.findViewById(R.id.btExtract);
-        btn_cheque_card = (TextView) view.findViewById(R.id.tvClickCheque);
-        btn_cheque_card_select = (ImageView) view.findViewById(R.id.tvClickChequeSelected);
+        btExtract = findViewById(R.id.btExtract);
+        btn_cheque_card = (TextView) findViewById(R.id.tvClickCheque);
+        btn_cheque_card_select = (ImageView) findViewById(R.id.tvClickChequeSelected);
         btn_cheque_card_select.setOnClickListener(this);
-        ivChequeImage = view.findViewById(R.id.ivChequeImage);
+        ivChequeImage = findViewById(R.id.ivChequeImage);
         ivBack = findViewById(R.id.ivBack);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,8 +148,8 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
 
         btExtract.setOnClickListener(this);
         btn_cheque_card.setOnClickListener(this);
-        detector = new TextRecognizer.Builder(mcontext).build();
-        progressDialog = new ProgressDialog(mcontext);
+        detector = new TextRecognizer.Builder(EditBankDetailsActivity.this).build();
+        progressDialog = new ProgressDialog(EditBankDetailsActivity.this);
         progressDialog.setCancelable(false);
 
 
@@ -165,9 +165,11 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
             Constants.hideKeyboardwithoutPopulate(EditBankDetailsActivity.this);
             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
 
-                if (validation())
-                    CallMerekApi();
+                if (validation()) {
 
+
+                    CallMerekApi();
+                }
                 /*storeCheque()*/
                 ;/*{
                     DialogueUtils.failedPayment(EditBankDetailsActivity.this, new DialogListner() {
@@ -231,7 +233,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
 
             @Override
             public void onFailed() {
-                Toast.makeText(mcontext, "request permission failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditBankDetailsActivity.this, "request permission failed", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -241,7 +243,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
     private boolean validation() {
 
         if (!isPanSelected) {
-            Toast.makeText(mcontext, "Please select Cheque Image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(EditBankDetailsActivity.this, "Please select Cheque Image", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -498,7 +500,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
                                 showAlert(response.body().getResponse());
                             }
                             if (chequeDetail.getResponseCode() == 411) {
-                                sessionManager.logoutUser(mcontext);
+                                sessionManager.logoutUser(EditBankDetailsActivity.this);
                             }
                             if (chequeDetail.getResponseCode() == 400) {
                                 progressDialog.dismiss();
@@ -546,9 +548,9 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
                             }
 
                         } else {
-                            Toast.makeText(mcontext, "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditBankDetailsActivity.this, "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
-                            // Toast.makeText(mcontext, response.message(), Toast.LENGTH_LONG).show();
+                            // Toast.makeText(EditBankDetailsActivity.this, response.message(), Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         progressDialog.dismiss();
@@ -567,7 +569,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
                 }
             });
         } else {
-            Constants.ShowNoInternet(mcontext);
+            Constants.ShowNoInternet(EditBankDetailsActivity.this);
         }
 
     }
@@ -589,7 +591,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
             dialog = null;
         }
 
-        dialog = new Dialog(mcontext);
+        dialog = new Dialog(EditBankDetailsActivity.this);
         dialog = new Dialog(EditBankDetailsActivity.this, R.style.DialogLSideBelow);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialogue_success);
@@ -642,9 +644,9 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
                                     bank_branch = result.getString("bank_branch_name").toString();
                                     branch_address = result.getString("bank_address").toString();
                                 } else if (jsonObject.getInt("responseCode") == 405) {
-                                    sessionManager.logoutUser(mcontext);
+                                    sessionManager.logoutUser(EditBankDetailsActivity.this);
                                 } else if (jsonObject.getInt("responseCode") == 411) {
-                                    sessionManager.logoutUser(mcontext);
+                                    sessionManager.logoutUser(EditBankDetailsActivity.this);
                                 } else {
                                 }
                             }
@@ -714,7 +716,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
     @Override
     public void onResume() {
         if (!AppApplication.networkConnectivity.isNetworkAvailable()) {
-            Constants.ShowNoInternet(mcontext);
+            Constants.ShowNoInternet(EditBankDetailsActivity.this);
         }
         super.onResume();
     }

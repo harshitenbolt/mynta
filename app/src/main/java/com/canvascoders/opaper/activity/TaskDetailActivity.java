@@ -306,6 +306,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     }
                     Intent i = new Intent(TaskDetailActivity.this, AddDeliveryBoysActivity.class);
                     i.putExtra("data", proccess_id);
+                    i.putExtra(Constants.KEY_EDIT_DETAIL,"0");
                     startActivity(i);
 
                 } else if (screenNumber.equalsIgnoreCase("7")) {

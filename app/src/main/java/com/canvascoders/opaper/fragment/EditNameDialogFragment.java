@@ -67,6 +67,7 @@ public class EditNameDialogFragment extends DialogFragment {
     private String lattitude = "", longitude = "";
     SessionManager sessionManager;
     boolean fromedit = false;
+    int withoutimagee = 0;
 
     public EditNameDialogFragment() {
 
@@ -80,11 +81,12 @@ public class EditNameDialogFragment extends DialogFragment {
         return frag;
     }
 
-    public static EditNameDialogFragment newInstance2(EditKycActivity aadharVerificationFragment, String ProcessId, boolean fromEdit) {
+    public static EditNameDialogFragment newInstance2(EditKycActivity aadharVerificationFragment, String ProcessId, boolean fromEdit, int withoutimage) {
         EditNameDialogFragment frag = new EditNameDialogFragment();
         frag.editKycActivity = aadharVerificationFragment;
         frag.proccessId = ProcessId;
         frag.fromedit = fromEdit;
+        frag.withoutimagee = withoutimage;
         return frag;
     }
 
@@ -149,7 +151,11 @@ public class EditNameDialogFragment extends DialogFragment {
                         } else {
 
                             if (fromedit) {
-                                editKycActivity.storeAadhar();
+                                if (withoutimagee == 0) {
+                                    editKycActivity.storeAadhar();
+                                } else {
+                                    editKycActivity.storeAadharwithoutImage();
+                                }
                             } else {
                                 aadharVerificationFragment.storeAadhar();
                             }

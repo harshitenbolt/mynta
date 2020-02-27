@@ -2,6 +2,8 @@
 package com.canvascoders.opaper.Beans.VerifyGstResponse;
 
 import java.util.List;
+
+import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -51,5 +53,18 @@ public class VerifyGst {
     public void setData(List<Datum> data) {
         this.data = data;
     }
+
+
+    public Validation getValidation() {
+        return validation;
+    }
+
+    public void setValidation(Validation validation) {
+        this.validation = validation;
+    }
+
+    @SerializedName("validation")
+    @Expose
+    private Validation validation;
 
 }

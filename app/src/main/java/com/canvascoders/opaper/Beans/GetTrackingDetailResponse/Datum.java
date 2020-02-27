@@ -2,6 +2,7 @@
 package com.canvascoders.opaper.Beans.GetTrackingDetailResponse;
 
 import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -21,6 +22,30 @@ public class Datum {
     @SerializedName("bankDetails")
     @Expose
     private List<BankDetails> bankDetails;
+
+    public List<VendorRejection> getVendorRejection() {
+        return vendorRejection;
+    }
+
+    public void setVendorRejection(List<VendorRejection> vendorRejection) {
+        this.vendorRejection = vendorRejection;
+    }
+
+    @SerializedName("vendorRejection")
+    @Expose
+    private List<VendorRejection> vendorRejection;
+
+    public List<CancelledCheque> getCancelledCheques() {
+        return cancelledCheques;
+    }
+
+    public void setCancelledCheques(List<CancelledCheque> cancelledCheques) {
+        this.cancelledCheques = cancelledCheques;
+    }
+
+    @SerializedName("cancelledCheque")
+    @Expose
+    private List<CancelledCheque> cancelledCheques;
 
 
     public List<BankDetails> getBankDetails() {

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.EditWhileOnBoarding.EdirRateOnBoardingActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
@@ -31,16 +32,19 @@ import retrofit2.Response;
 public class TaskProccessDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView ivBack;
-    ImageView ivEditLocation, ivEditKyc, ivEditPan, ivEditBank, ivEditStoreDetails, ivOwnerDetails, ivGstInformation, ivDeliveryDetails;
+    ImageView ivEditLocation, ivEditKyc, ivEditPan, ivEditBank, ivEditStoreDetails, ivOwnerDetails, ivGstInformation, ivShopActEdit, ivDeliveryDetails, ivRateDetails;
     String proccess_id = "";
     NetworkConnectivity networkConnectivity;
-    LinearLayout llLocationEnable, llLocatonDisable, llKyCEnable, llKYCDisable, llPanEnable, llPanDisable, llChequeEnable, llChequeDisable, llInformationEnable, llVendorDetailsEnable, llVendorsDetailsDisable, llOwnerDisable, llOwnerEnable, llDocumentsDisable, llDocumentsEnable, llDeliveryBoysEnable, llDeliveryBoysDisable, llRateDetailsEnable, llRateDetailsDisable, llRateApprovalEnable, llRateApprovalDisable, llAgreementEnable, llAgreementDisable, llGstEnable, llGstDisable;
+    LinearLayout llShopActDisable, llShopActEnable, llLocationEnable, llLocatonDisable, llKyCEnable, llKYCDisable, llPanEnable, llPanDisable, llChequeEnable, llChequeDisable, llInformationEnable, llVendorDetailsEnable, llVendorsDetailsDisable, llOwnerDisable, llOwnerEnable, llDocumentsDisable, llDocumentsEnable, llDeliveryBoysEnable, llDeliveryBoysDisable, llRateDetailsEnable, llRateDetailsDisable, llRateApprovalEnable, llRateApprovalDisable, llAgreementEnable, llAgreementDisable, llGstEnable, llGstDisable;
     SessionManager sessionManager;
-    TextView tvLocationText, tvKYCText, tvPanText, tvBankText, tvStoreText, tvOwnerText, tvGstText, tvDeliveryText, tvRateText, tvRateApprovalText;
+    TextView tvSHopActText, tvLocationText, tvKYCText, tvPanText, tvBankText, tvStoreText, tvOwnerText, tvGstText, tvDeliveryText, tvRateText, tvRateApprovalText;
     TextView tvLattitude, tvLongitude, tvDocNumber, tvDocAddress, tvDocName, tvPanName, tvPanNumber, tvPanDOB, tvBankAccName, tvBankAcccountNumber, tvBankBranchName, tvStoreName, tvStoreAddress, tvStoreDCName, tvOwnerNAme, tvOwnerAddress, tvOwnerEmailID, tvGSTNumber, tvGStPanNumber, tvNoDeliveryBoysAdded, tvNoofRates;
     ProgressDialog progressDialog;
     ImageView ivAdharFront, ivAdharBack, ivPanFront, ivGstFront;
     String mobile = "";
+
+    TextView tvRemarkLocation, tvRemarkKYC, tvRemarkPan, tvRemarkBank, tvRemarkStore, tvRemarkOwner, tvRemarkGST, tvRemarkShopAct, tvRemarkDelivery, tvRemarkRateDetails, tvRemarkRateApproval;
+    ImageView ivChequeImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +75,13 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         ivEditStoreDetails = findViewById(R.id.ivEditStoreDetails);
         ivOwnerDetails = findViewById(R.id.ivEditOwnerDetails);
         ivGstInformation = findViewById(R.id.ivEditGSTDetails);
+        ivShopActEdit = findViewById(R.id.ivEditShopAct);
+        ivShopActEdit.setOnClickListener(this);
         ivGstFront = findViewById(R.id.ivGstFront);
         ivDeliveryDetails = findViewById(R.id.ivDeliveryDetails);
+        ivRateDetails = findViewById(R.id.ivRateDetails);
+        ivChequeImage = findViewById(R.id.ivChequeImage);
+        ivRateDetails.setOnClickListener(this);
         ivEditLocation.setOnClickListener(this);
         ivEditKyc.setOnClickListener(this);
         ivEditPan.setOnClickListener(this);
@@ -81,6 +90,11 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         ivOwnerDetails.setOnClickListener(this);
         ivGstInformation.setOnClickListener(this);
         ivDeliveryDetails.setOnClickListener(this);
+        llShopActDisable = findViewById(R.id.llShopActDisable);
+        llShopActEnable = findViewById(R.id.llShopActEnable);
+
+        llShopActEnable.setOnClickListener(this);
+        llShopActDisable.setOnClickListener(this);
         llLocationEnable = findViewById(R.id.llLocationEnable);
         llLocatonDisable = findViewById(R.id.llLocationDisable);
         llKyCEnable = findViewById(R.id.llKYCENable);
@@ -106,6 +120,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         tvGSTNumber = findViewById(R.id.tvGstNo);
         tvGStPanNumber = findViewById(R.id.tvGstPanNumber);
         tvLocationText = findViewById(R.id.tvTextStepLocation);
+        tvSHopActText = findViewById(R.id.tvTextStepShopAct);
         tvKYCText = findViewById(R.id.tvTextStepKYC);
         tvPanText = findViewById(R.id.tvTextStepPan);
         tvBankText = findViewById(R.id.tvTextStepCheque);
@@ -136,6 +151,20 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         ivAdharFront = findViewById(R.id.ivKyCfront);
         ivAdharBack = findViewById(R.id.ivKYCback);
         ivPanFront = findViewById(R.id.ivPanFront);
+
+
+        tvRemarkLocation = findViewById(R.id.tvTextNotLocation);
+        tvRemarkKYC = findViewById(R.id.tvTextNotKYC);
+        tvRemarkPan = findViewById(R.id.tvTextNotPan);
+        tvRemarkBank = findViewById(R.id.tvTextNotBank);
+        tvRemarkStore = findViewById(R.id.tvTextNotVendor);
+        tvRemarkOwner = findViewById(R.id.tvTextOwner);
+        tvRemarkGST = findViewById(R.id.tvTextNotGST);
+        tvRemarkShopAct = findViewById(R.id.tvTextNotShopAct);
+        tvRemarkDelivery = findViewById(R.id.tvTextNotDelivery);
+        tvRemarkRateDetails = findViewById(R.id.tvTextNotRate);
+        tvRemarkRateApproval = findViewById(R.id.tvTextNotRateApproval);
+
 
         tvNoDeliveryBoysAdded = findViewById(R.id.tvNoOfDeliveryBoys);
         tvNoofRates = findViewById(R.id.tvnoOfRates);
@@ -193,7 +222,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             } else if (!getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlName().equalsIgnoreCase("")) {
                                 tvDocNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlNumber());
                                 tvDocAddress.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlDob());
-                                tvDocName.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterName());
+                                tvDocName.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlName());
                                 Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getDlCardFront()).into(ivAdharFront);
                                 Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getDlCardBack()).into(ivAdharBack);
 
@@ -244,7 +273,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             tvBankAcccountNumber.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankAc());
                             tvBankAccName.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankName());
                             tvBankBranchName.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankBranchName());
-                            Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getCancelledCheque());
+                            Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getCancelledCheques().get(0).getCancelledCheque()).into(ivChequeImage);
 
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getChequeVerify() == 0) {
                             llChequeEnable.setVisibility(View.GONE);
@@ -279,7 +308,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llGstDisable.setVisibility(View.GONE);
                             tvGstText.setVisibility(View.GONE);
                             tvGSTNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn());
-                            Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage());
+                            Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage()).into(ivGstFront);
                             tvGStPanNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanNo());
                         }
 
@@ -330,23 +359,21 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
 
 
                         // Upload Files
-                  /*      if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getUploadFiles() == 1) {
-                            llOwnerEnable.setVisibility(View.VISIBLE);
-                            llOwnerDisable.setVisibility(View.GONE);
+                        if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getUploadFiles() == 1) {
+                            llShopActEnable.setVisibility(View.VISIBLE);
+                            llShopActDisable.setVisibility(View.GONE);
 
-                            llVendorDetailsEnable.setVisibility(View.VISIBLE);
-                            llVendorsDetailsDisable.setVisibility(View.GONE);
 
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getUploadFiles() == 0) {
-                            llOwnerEnable.setVisibility(View.GONE);
-                            llOwnerDisable.setVisibility(View.VISIBLE);
+                            llShopActEnable.setVisibility(View.GONE);
+                            llShopActDisable.setVisibility(View.VISIBLE);
+                            tvSHopActText.setVisibility(View.GONE);
 
-                            llVendorDetailsEnable.setVisibility(View.GONE);
-                            llVendorsDetailsDisable.setVisibility(View.VISIBLE);
                         } else {
-
+                            tvSHopActText.setVisibility(View.VISIBLE);
+                            llShopActEnable.setVisibility(View.GONE);
+                            llShopActDisable.setVisibility(View.VISIBLE);
                         }
-*/
 
                         // Delivery Boys Details
                         if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getDeliveryBoy() == 1) {
@@ -478,7 +505,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                 break;
             case R.id.ivEditGSTDetails:
                 Intent i6 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
-                i6.putExtra(Constants.DATA, "GST");
+                i6.putExtra(Constants.DATA, "GSTN");
                 i6.putExtra(Constants.KEY_EMP_MOBILE, mobile);
                 i6.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i6);
@@ -489,6 +516,22 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                 i7.putExtra(Constants.KEY_EMP_MOBILE, mobile);
                 i7.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i7);
+                break;
+
+
+            case R.id.ivRateDetails:
+                Intent i8 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
+                i8.putExtra(Constants.DATA, "RATEUPDATE");
+                i8.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i8.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+                startActivity(i8);
+                break;
+            case R.id.ivEditShopAct:
+                Intent i9 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
+                i9.putExtra(Constants.DATA, "DOCUPLOAD");
+                i9.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i9.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+                startActivity(i9);
                 break;
 
 

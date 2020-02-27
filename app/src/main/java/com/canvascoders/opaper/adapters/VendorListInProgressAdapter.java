@@ -1,6 +1,7 @@
 package com.canvascoders.opaper.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.TaskProccessDetailActivity;
 import com.canvascoders.opaper.fragment.MobileFragment;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
@@ -72,7 +74,10 @@ public class VendorListInProgressAdapter extends RecyclerView.Adapter<VendorList
         holder.tvTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               recyclerViewClickListener.onClick(v, position);
+                Intent i = new Intent(context, TaskProccessDetailActivity.class);
+                i.putExtra(Constants.KEY_PROCESS_ID, vendorLists.get(position).getId() + "");
+                context.startActivity(i);
+                //recyclerViewClickListener.onClick(v, position);
             }
         });
 

@@ -218,10 +218,6 @@ public interface ApiInterface {
     Call<GetUserDetailResponse> submitDetailsOnwer(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
 
 
-
-
-
-
     @Multipart
     @POST("edit-store-info")
     Call<GetUserDetailResponse> submitStoreInfo(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
@@ -240,6 +236,12 @@ public interface ApiInterface {
 
     @POST("resign-rate-update")
     Call<ResponseBody> submitRateUpdate(@Header("Authorization") String token, @Body JsonObject data);
+
+
+    @POST("edit-rate-update")
+    Call<ResponseBody> submitRateUpdateEdit(@Header("Authorization") String token, @Body JsonObject data);
+
+
     //-----------------------------------------------------------------------------
 
 
@@ -298,9 +300,12 @@ public interface ApiInterface {
     @Multipart
     @POST("edit-verify-kyc")
     Call<CommonResponse> getstoreAadharEdit(@Header("Authorization") String token, @PartMap() Map<String, String> data,
-                                        @Part MultipartBody.Part aadharcard_front,
-                                        @Part MultipartBody.Part aadharcard_back);
+                                            @Part MultipartBody.Part aadharcard_front,
+                                            @Part MultipartBody.Part aadharcard_back);
 
+    @FormUrlEncoded
+    @POST("edit-verify-kyc")
+    Call<CommonResponse> getstoreAadharEditwithoutImage(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
 
     @Multipart
@@ -331,6 +336,12 @@ public interface ApiInterface {
     @POST("support-attachment-save")
     Call<SubmitImageResponse> submitSupportImage(@Header("Authorization") String token, @Part MultipartBody.Part pancard);
 
+
+    @Multipart
+    @POST("support-attachment-save")
+    Call<SubmitImageResponse> addGst(@Header("Authorization") String token, @Part MultipartBody.Part pancard);
+
+
     @Multipart
     @POST("update-pan-details")
     Call<UpdatePancardResponse> updatePanDetails(@Header("Authorization") String token, @PartMap() Map<String, String> data,
@@ -339,7 +350,7 @@ public interface ApiInterface {
     @Multipart
     @POST("edit-pan-card")
     Call<UpdatePancardResponse> editPanCard(@Header("Authorization") String token, @PartMap() Map<String, String> data,
-                                                 @Part MultipartBody.Part pancard);
+                                            @Part MultipartBody.Part pancard);
 
     //-----------------------------------------------------------------------------
 
@@ -351,8 +362,7 @@ public interface ApiInterface {
     @Multipart
     @POST("edit-verify-cheque")
     Call<CommonResponse> editgetstoreCheque(@Header("Authorization") String token, @PartMap() Map<String, String> data,
-                                        @Part MultipartBody.Part cheque);
-
+                                            @Part MultipartBody.Part cheque);
 
 
     @Multipart
@@ -366,6 +376,11 @@ public interface ApiInterface {
     Call<CommonResponse> getstoreDocument(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                           @Part MultipartBody.Part store_image,
                                           @Part MultipartBody.Part[] store_image_act, @Part MultipartBody.Part owner_img_act);
+
+    @Multipart
+    @POST("edit-shop-act-upload")
+    Call<CommonResponse> getstoreDocumentEdit(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                              @Part MultipartBody.Part[] store_image_act);
 
 
     // api call for add dilvery boys
@@ -456,6 +471,11 @@ public interface ApiInterface {
     @POST("complete-deliery-boys-details")
     Call<DelBoysNextResponse> completeDelBoy(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
 
+    @FormUrlEncoded
+    @POST("edit-complete-delivery-boys-details")
+    Call<DelBoysNextResponse> completeDelBoyEdit(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
+
+
     // @FormUrlEncoded
     @POST("get-details")
     Call<ResponseBody> getDetails(@Header("Authorization") String token, @QueryMap Map<String, String> apiVersionMap);
@@ -507,6 +527,9 @@ public interface ApiInterface {
 
     @POST("store-type-resign")
     Call<ResponseBody> getStoreTypeListing2(@Header("Authorization") String token, @Body JsonObject data);
+
+    @POST("edit-store-type")
+    Call<ResponseBody> getStoreTypeListing3(@Header("Authorization") String token, @Body JsonObject data);
 
 
     @POST("rate-update")
@@ -640,6 +663,11 @@ public interface ApiInterface {
     @Multipart
     @POST("verify-gst-number")
     Call<VerifyGst> updateGst(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part List<MultipartBody.Part> attachment);
+
+
+    @Multipart
+    @POST("edit-gstn-info")
+    Call<VerifyGst> editGST(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
 
 
     @FormUrlEncoded

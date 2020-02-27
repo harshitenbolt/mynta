@@ -63,22 +63,46 @@
             android:textSize="@dimen/_11sdp" />
 
         <RelativeLayout
-            style="@style/App_EditTextStyle"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:background="@drawable/etfieldbackgroundgrey"
+            android:orientation="vertical">
 
             <EditText
-                android:id="@+id/edit_gstn"
+                android:id="@+id/etGstNumber"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:background="@null"
-                android:enabled="false"
-                android:fontFamily="@font/monteregular"
-                android:gravity="center_vertical"
-                android:hint="GSTN"
+                android:layout_height="match_parent"
+                android:background="@drawable/etfieldbackgroundgrey"
+                android:imeOptions="actionNext"
                 android:inputType="textCapCharacters"
-                android:paddingLeft="@dimen/_10sdp" />
+                android:nextFocusDown="@+id/etShopHouseNo"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textAllCaps="true"
+                android:hint="GST Number"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_10sdp" />
 
+
+            <ImageView
+                android:id="@+id/ivEdit"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/rounded_corner_view_blue"
+                android:padding="@dimen/_5sdp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/pencil" />
+
+            <ImageView
+                android:id="@+id/ivSearch"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/rounded_corner_view_blue"
+                android:padding="@dimen/_5sdp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/search" />
         </RelativeLayout>
 
     </RelativeLayout>
@@ -140,6 +164,56 @@
                 android:scaleType="centerCrop" />
 
         </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            style="@style/App_TextViewSmall"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/montesemibold"
+            android:text="Store Name"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_10sdp" />
+
+
+        <EditText
+            android:id="@+id/etStoreName"
+            style="@style/App_EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/dotted_bg"
+            android:editable="false"
+            android:enabled="false"
+            android:inputType="text"
+            android:nextFocusDown="@+id/etOwnerName"
+            android:padding="@dimen/_10sdp"
+            android:textColor="@color/colorGrey"
+            android:textSize="@dimen/_10sdp" />
+
+
+        <TextView
+            style="@style/App_TextViewSmall"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/montesemibold"
+            android:text="Store Address"
+            android:textColor="@color/colorBlack" />
+
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_gravity="top"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_35sdp"
+            android:background="@drawable/dotted_bg"
+            android:editable="false"
+            android:enabled="false"
+            android:gravity="top"
+            android:inputType="text|textMultiLine"
+            android:maxLines="4"
+            android:padding="@dimen/_10sdp"
+            android:singleLine="false"
+            android:textColor="@color/colorGrey"
+            android:textSize="@dimen/_10sdp" />
 
 
     </LinearLayout>
