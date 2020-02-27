@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -28,6 +29,7 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.SessionManager;
 
@@ -56,6 +58,8 @@ public class EditReasonPauseActivity extends AppCompatActivity implements View.O
     String taskImage = "";
     ProgressDialog progressDialog;
     SessionManager sessionManager;
+    GPSTracker gps;
+    String lattitude="",longitude="";
     int taskid;
 
     @Override
@@ -193,6 +197,24 @@ public class EditReasonPauseActivity extends AppCompatActivity implements View.O
 
     private void APiCallPauseList() {
 
+        gps = new GPSTracker(EditReasonPauseActivity.this);
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+
+
+        } else {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+
+
         SubTaskReason subTaskReason = (SubTaskReason) spReasons.getSelectedItem();
         Call<PauseTaskResponse> call;
         MultipartBody.Part attachment_part = null;
@@ -202,7 +224,8 @@ public class EditReasonPauseActivity extends AppCompatActivity implements View.O
         params.put(Constants.PARAM_SUB_TASK_REASON_ID, String.valueOf(subTaskReason.getId()));
         params.put(Constants.PARAM_SUB_TASK_REASON_TEXT, subTaskReason.getName());
         params.put(Constants.PARAM_DESCRIPTION, etDescription.getText().toString());
-
+        params.put(Constants.PARAM_LATITUDE, lattitude);
+        params.put(Constants.PARAM_LONGITUDE, longitude);
 
         if (taskImage.equalsIgnoreCase("")) {
             call = ApiClient.getClient().create(ApiInterface.class).pauseTask("Bearer " + sessionManager.getToken(), params);

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.aadhaarapi.sdk.gateway_lib.qtActivity.AadhaarAPIActivity;
 import com.canvascoders.opaper.Beans.TransactionIDResponse.TransactionIdResponse;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditKycActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.GPSTracker;
@@ -50,25 +51,42 @@ import static com.aadhaarapi.sdk.gateway_lib.qtUtils.QtRequestType.ESIGN;
 
 public class EditNameDialogFragment extends DialogFragment {
 
-    EditText edit_aname, edit_anumber, edit_ayear, edit_apincode;
+    public EditText edit_aname;
+    public EditText edit_anumber;
+    public EditText edit_ayear;
+    public EditText edit_apincode;
     ImageView btn_close_dialog;
     private Button btnNext;
     private AadharVerificationFragment aadharVerificationFragment;
+
+    private EditKycActivity editKycActivity;
     String str_name, str_uid, str_year, str_pincode;
     GPSTracker gps;
     String proccessId = "";
     ProgressDialog progressDialog;
     private String lattitude = "", longitude = "";
     SessionManager sessionManager;
+    boolean fromedit = false;
+    int withoutimagee = 0;
 
     public EditNameDialogFragment() {
 
     }
 
-    public static EditNameDialogFragment newInstance(AadharVerificationFragment aadharVerificationFragment, String ProcessId) {
+    public static EditNameDialogFragment newInstance(AadharVerificationFragment aadharVerificationFragment, String ProcessId, boolean fromEdit) {
         EditNameDialogFragment frag = new EditNameDialogFragment();
         frag.aadharVerificationFragment = aadharVerificationFragment;
         frag.proccessId = ProcessId;
+        frag.fromedit = fromEdit;
+        return frag;
+    }
+
+    public static EditNameDialogFragment newInstance2(EditKycActivity aadharVerificationFragment, String ProcessId, boolean fromEdit, int withoutimage) {
+        EditNameDialogFragment frag = new EditNameDialogFragment();
+        frag.editKycActivity = aadharVerificationFragment;
+        frag.proccessId = ProcessId;
+        frag.fromedit = fromEdit;
+        frag.withoutimagee = withoutimage;
         return frag;
     }
 
@@ -131,8 +149,17 @@ public class EditNameDialogFragment extends DialogFragment {
                         if (Constants.showAdhar.equalsIgnoreCase("1")) {
                             apiCallGetTrasactionId();
                         } else {
-                            aadharVerificationFragment.storeAadhar();
-                           // dismiss();
+
+                            if (fromedit) {
+                                if (withoutimagee == 0) {
+                                    editKycActivity.storeAadhar();
+                                } else {
+                                    editKycActivity.storeAadharwithoutImage();
+                                }
+                            } else {
+                                aadharVerificationFragment.storeAadhar();
+                            }
+                            // dismiss();
                         }
 
                         //
@@ -205,21 +232,21 @@ public class EditNameDialogFragment extends DialogFragment {
 
                     } catch (Exception e) {
                         Log.e("DoneDOnaNon", "DoneDOnaNon2");
-                        Toast.makeText(getActivity(), "#errorcode 2077 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "#errorcode 2077 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
 
 
                 } else {
                     Log.e("DoneDOnaNon", response.message());
-                    Toast.makeText(getActivity(), "#errorcode 2077 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "#errorcode 2077 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<TransactionIdResponse> call, Throwable t) {
-                Toast.makeText(getActivity(), "#errorcode 2077 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "#errorcode 2077 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
 
             }

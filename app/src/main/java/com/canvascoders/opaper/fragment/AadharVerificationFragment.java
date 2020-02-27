@@ -792,7 +792,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, str_process_id);
+                editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, str_process_id,false);
                 editNameDialogFragment.setCancelable(false);
                 editNameDialogFragment.show(getChildFragmentManager(), "fragment_edit_name");
             }
@@ -1769,13 +1769,16 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                     if (validation.getVoterDob() != null && validation.getVoterDob().length() > 0) {
                                         //  showAlertValidation(validation.getVoterDob());
                                         DialogUtil.etVoterDateofBirth.setError(validation.getVoterDob());
+                                        DialogUtil.etVoterDateofBirth.requestFocus();
                                     }
                                     if (validation.getVoterName() != null && validation.getVoterName().length() > 0) {
                                         DialogUtil.etVotername.setError(validation.getVoterName());
+                                        DialogUtil.etVotername.requestFocus();
                                     }
                                     if (validation.getVoterFatherName() != null && validation.getVoterFatherName().length() > 0) {
                                         // showAlertValidation(validation.getVoterFatherName());
                                         DialogUtil.etVoterFatherName.setError(validation.getFatherName());
+                                        DialogUtil.etVoterFatherName.requestFocus();
 
                                     }
                                     if (validation.getVoterIdNum() != null && validation.getVoterIdNum().length() > 0) {
@@ -1783,6 +1786,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
                                         // showAlertValidation(validation.getVoterIdNum());
                                         DialogUtil.etVoterIdNumber.setError(validation.getVoterIdNum());
+                                        DialogUtil.etVoterIdNumber.requestFocus();
                                     }
                                     if (validation.getDlCardFront() != null && validation.getDlCardFront().length() > 0) {
                                         /*DialogUtil.etDlNumber.setError(validation.getVoterIdNum());
@@ -1797,17 +1801,22 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                     }
                                     if (validation.getDlDob() != null && validation.getDlDob().length() > 0) {
                                         DialogUtil.etDlDob.setError(validation.getDlDob());
+                                        DialogUtil.etDlDob.requestFocus();
                                     }
                                     if (validation.getDlFatherName() != null && validation.getDlFatherName().length() > 0) {
                                         //  Toast.makeText(mcontext, validation.getDlFatherName(), Toast.LENGTH_SHORT).show();
                                         DialogUtil.etFathername.setError(validation.getDlFatherName());
+                                        DialogUtil.etFathername.requestFocus();
                                     }
                                     if (validation.getDlNumber() != null && validation.getDlNumber().length() > 0) {
                                         DialogUtil.etDlNumber.setError(validation.getDlNumber());
+                                        DialogUtil.etDlNumber.requestFocus();
+
 
                                     }
                                     if (validation.getDlName() != null && validation.getDlName().length() > 0) {
                                         DialogUtil.etDlName.setError(validation.getDlName());
+                                        DialogUtil.etDlName.requestFocus();
 
                                     }
                                 } else {

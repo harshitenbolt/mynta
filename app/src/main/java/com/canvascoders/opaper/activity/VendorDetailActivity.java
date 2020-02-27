@@ -651,6 +651,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             public void onClick(View v) {
                 Intent myIntent = new Intent(VendorDetailActivity.this, com.canvascoders.opaper.activity.AddDeliveryBoysActivity.class);
                 myIntent.putExtra("data", String.valueOf(vendor.getProccessId()));
+                myIntent.putExtra(Constants.KEY_EDIT_DETAIL,"0");
                 startActivity(myIntent);
             }
         });

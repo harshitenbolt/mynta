@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/_10sdp"
+    tools:context=".activity.EditWhileOnBoarding.EditGstDetailsActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_title_Process"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montesemibold"
+            android:gravity="center"
+            android:paddingRight="@dimen/_45sdp"
+            android:text="Update GST Details"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
+
+        <!-- **** Place Your Content Here **** -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_3sdp"
+            android:background="@drawable/toolbarshadow" />
+
+    </FrameLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20sdp">
+
+        <TextView
+            style="@style/App_TextViewSmall"
+            android:layout_alignParentStart="true"
+            android:fontFamily="@font/montesemibold"
+            android:gravity="start"
+            android:text="GSTN"
+            android:textSize="@dimen/_11sdp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:background="@drawable/etfieldbackgroundgrey"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/etGstNumber"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/etfieldbackgroundgrey"
+                android:imeOptions="actionNext"
+                android:inputType="textCapCharacters"
+                android:nextFocusDown="@+id/etShopHouseNo"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textAllCaps="true"
+                android:hint="GST Number"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_10sdp" />
+
+
+            <ImageView
+                android:id="@+id/ivEdit"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/rounded_corner_view_blue"
+                android:padding="@dimen/_5sdp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/pencil" />
+
+            <ImageView
+                android:id="@+id/ivSearch"
+                android:layout_width="@dimen/_35sdp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/rounded_corner_view_blue"
+                android:padding="@dimen/_5sdp"
+                android:visibility="visible"
+                app:srcCompat="@drawable/search" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llGST"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:fontFamily="@font/montesemibold"
+                android:text="GST Certificate"
+                android:textColor="@color/colorBlue"
+                android:textSize="@dimen/_11sdp" />
+
+            <ImageView
+                android:id="@+id/ivGSTImageSelected"
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="end"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:src="@drawable/bluecheck"
+                android:visibility="gone" />
+        </LinearLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@dimen/_110sdp"
+            android:layout_height="@dimen/_110sdp"
+            android:layout_marginLeft="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_2sdp"
+            android:background="@drawable/roundedcornergreythick"
+            android:elevation="@dimen/_5sdp"
+            app:cardCornerRadius="@dimen/_5sdp">
+
+
+            <ImageView
+                android:id="@+id/ivGSTImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ic_add_img"
+                android:scaleType="centerCrop" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <TextView
+            style="@style/App_TextViewSmall"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/montesemibold"
+            android:text="Store Name"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_10sdp" />
+
+
+        <EditText
+            android:id="@+id/etStoreName"
+            style="@style/App_EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/dotted_bg"
+            android:editable="false"
+            android:enabled="false"
+            android:inputType="text"
+            android:nextFocusDown="@+id/etOwnerName"
+            android:padding="@dimen/_10sdp"
+            android:textColor="@color/colorGrey"
+            android:textSize="@dimen/_10sdp" />
+
+
+        <TextView
+            style="@style/App_TextViewSmall"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/montesemibold"
+            android:text="Store Address"
+            android:textColor="@color/colorBlack" />
+
+        <EditText
+            android:id="@+id/etAddress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_90sdp"
+            android:layout_gravity="top"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_35sdp"
+            android:background="@drawable/dotted_bg"
+            android:editable="false"
+            android:enabled="false"
+            android:gravity="top"
+            android:inputType="text|textMultiLine"
+            android:maxLines="4"
+            android:padding="@dimen/_10sdp"
+            android:singleLine="false"
+            android:textColor="@color/colorGrey"
+            android:textSize="@dimen/_10sdp" />
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/colorYellow"
+        android:fontFamily="@font/montesemibold"
+        android:text="Update"
+        android:textAllCaps="true"
+        android:textColor="@color/whitePrimary"
+        android:textSize="@dimen/_12sdp" />
+
+
+</LinearLayout>

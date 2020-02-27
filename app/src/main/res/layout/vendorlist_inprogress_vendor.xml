@@ -122,7 +122,6 @@
                         android:fontFamily="@font/montesemibold"
                         android:gravity="center"
                         android:text="TRACK"
-                        android:visibility="gone"
                         android:textColor="#ffffff"
                         android:textSize="@dimen/_8sdp" />
                 </LinearLayout>

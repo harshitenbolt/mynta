@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightGrey"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_title_Process"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montesemibold"
+            android:gravity="center"
+            android:paddingRight="@dimen/_45sdp"
+            android:text="Update Bank Details"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
+
+        <!-- **** Place Your Content Here **** -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_3sdp"
+            android:background="@drawable/toolbarshadow" />
+
+    </FrameLayout>
+
+
+    <androidx.cardview.widget.CardView
+        style="@style/CustomCardView"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/_15sdp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/TextviewwithoutSize"
+                        android:layout_width="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/montesemibold"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="CANCELLED CHEQUE"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/_8sdp" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">>
+
+                        <TextView
+                            android:id="@+id/tvClickCheque"
+                            style="@style/App_TextViewSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/rounded_corner_view_blue"
+                            android:focusable="false"
+                            android:fontFamily="@font/montebold"
+                            android:gravity="center"
+                            android:padding="@dimen/_4sdp"
+                            android:text="CLICK HERE"
+                            android:textColor="@color/whitePrimary"
+                            android:textSize="@dimen/_6sdp" />
+
+                        <ImageView
+                            android:id="@+id/tvClickChequeSelected"
+                            android:layout_width="@dimen/_15sdp"
+                            android:layout_height="@dimen/_15sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/bluecheck"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/roundedcornergrey">
+
+                    <ImageView
+                        android:id="@+id/ivChequeImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/checkimage" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_show_msg_sucess"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar"
+                android:background="#A5D6A7"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Sucessfully Done"
+                android:textColor="#1E6023"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/txt_show_msg_fail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar"
+                android:background="#FFCDD2"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="Sucessfully Done"
+                android:textColor="#F44336"
+                android:visibility="gone" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <Button
+        android:id="@+id/btExtract"
+        style="@style/Button_withGreen"
+        android:text="Extract" />
+
+</LinearLayout>

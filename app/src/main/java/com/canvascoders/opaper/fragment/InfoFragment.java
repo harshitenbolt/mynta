@@ -1093,7 +1093,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             llOwnerInfo.setVisibility(View.GONE);
                             view2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             llAddrssInfo.setVisibility(View.VISIBLE);
-                           // btChangePan.setVisibility(View.GONE);
+                            // btChangePan.setVisibility(View.GONE);
                             focusOnView("1");
                         } else if (i1 == 2) {
                             view3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));

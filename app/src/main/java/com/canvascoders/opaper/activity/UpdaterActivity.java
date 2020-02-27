@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +16,13 @@ import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.canvascoders.opaper.BuildConfig;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.RealPathUtil;
@@ -82,13 +85,17 @@ public class UpdaterActivity extends AppCompatActivity {
 
 
     private void appUpdate() {
-        String destination = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/";
+
+        //  String destination = Environment.getExternalStoragePublicDirectory()(Environment.DIRECTORY_PICTURES) + "/";
+
+        String destination = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + Environment.DIRECTORY_PICTURES + "/";
+        ;
         String fileName = "opaper.apk";
         destination += fileName;
         final Uri uri = Uri.parse("file://" + destination);
         File file = new File(RealPathUtil.getRealPath(UpdaterActivity.this, uri));
-        if (file.exists())
-            file.delete();
+        /*if (file.exists())
+            file.delete();*/
         String url = Constants.APKROOT + "apk/opaper.apk";
         /* String url = "http://139.59.94.135/apk/opaper.apk"; */ //Constants.BaseURL + "apk/opaper.apk";//
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
@@ -100,13 +107,24 @@ public class UpdaterActivity extends AppCompatActivity {
 
         BroadcastReceiver onComplete = new BroadcastReceiver() {
             public void onReceive(Context ctxt, Intent intent) {
-                Intent install = new Intent(Intent.ACTION_VIEW);
-                install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                //intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                install.setDataAndType(uri, manager.getMimeTypeForDownloadedFile(downloadId));
-                startActivity(install);
-                unregisterReceiver(this);
-                finish();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    Uri apkUri = FileProvider.getUriForFile(UpdaterActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", file);
+                    intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+                    intent.setData(apkUri);
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(intent);
+                } else {
+                    Intent install = new Intent(Intent.ACTION_VIEW);
+                    install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                    install.setDataAndType(uri, manager.getMimeTypeForDownloadedFile(downloadId));
+                    startActivity(install);
+                    unregisterReceiver(this);
+                    finish();
+                }
+
+
             }
         };
         //register receiver for when .apk download is compete

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightGrey"
+    android:clickable="true"
+    android:orientation="vertical"
+    tools:context=".activity.DashboardActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <ImageView
+            android:id="@+id/iv_back_process"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_title_Process"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montesemibold"
+            android:gravity="center"
+            android:paddingRight="@dimen/_45sdp"
+            android:text="Edit Change"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- **** Place Your Content Here **** -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_3sdp"
+            android:background="@drawable/toolbarshadow" />
+
+    </FrameLayout>
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:id="@+id/rvView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/rvContentMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lightGrey"
+            android:clickable="true"
+            tools:context=".activity.EditFunctionalityKiranaActivity">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_17sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_17sdp"
+                android:layout_marginBottom="@dimen/_35sdp"
+                android:clipToPadding="true"
+                app:cardCornerRadius="@dimen/_8sdp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_15sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_95sdp"
+                            android:src="@drawable/mobileauthentication" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_25sdp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:padding="@dimen/_2sdp"
+                                android:src="@drawable/caution" />
+
+                            <TextView
+                                style="@style/TextviewwithoutSize"
+                                android:layout_width="match_parent"
+                                android:layout_marginLeft="@dimen/_4sdp"
+                                android:fontFamily="@font/montelight"
+                                android:text="@string/o_paper_will_send_one_time_password"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/_11sdp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextviewwithoutSize"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/montesemibold"
+                            android:gravity="top"
+                            android:text="@string/please_enter_store_owner_mobile_number"
+                            android:textColor="@color/colorYellow"
+                            android:textSize="@dimen/_11sdp" />
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/etMobileNumber"
+                                style="@style/App_EditTextStyle"
+                                android:layout_width="match_parent"
+                                android:hint="Enter mobile"
+                                android:imeOptions="actionDone"
+                                android:inputType="phone"
+                                android:maxLength="10" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/btSendOTP"
+                                style="@style/Button_withGreen"
+                                android:layout_width="match_parent"
+                                android:text="SEND OTP" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/txt_show_msg_sucess"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#A5D6A7"
+                            android:gravity="center"
+                            android:padding="15dp"
+                            android:text="Sucessfully Done"
+                            android:textColor="#1E6023"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/txt_show_msg_fail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="#FFCDD2"
+                            android:gravity="center"
+                            android:padding="15dp"
+                            android:text="Sucessfully Done"
+                            android:textColor="#F44336"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

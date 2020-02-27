@@ -1047,7 +1047,7 @@ public class DialogUtil {
                                         public void onClick(View v) {
                                             if (validation(v)) {
                                                 //dialog.dismiss();
-                                                dialogInterface.onClickAddressDetails(etShopNo.getText().toString(), etStreetName.getText().toString(), etLandmark.getText().toString(), etPincode.getText().toString(), etCity.getText().toString(), etState.getText().toString(),""+dc.getSelectedItem());
+                                                dialogInterface.onClickAddressDetails(etShopNo.getText().toString(), etStreetName.getText().toString(), etLandmark.getText().toString(), etPincode.getText().toString(), etCity.getText().toString(), etState.getText().toString(), "" + dc.getSelectedItem());
                                                 dialog.dismiss();
                                             }
                                         }
@@ -1122,8 +1122,8 @@ public class DialogUtil {
                             for (DC dc : getUserDetails.getData().get(i).getDc()) {
                                 dcLists.add(dc.getDc());
                             }
-                            etCity.setText(getUserDetails.getData().get(i).getState());
-                            etState.setText(getUserDetails.getData().get(i).getCity());
+                            etCity.setText(getUserDetails.getData().get(i).getCity());
+                            etState.setText(getUserDetails.getData().get(i).getState());
                         }
 
 
@@ -1137,9 +1137,8 @@ public class DialogUtil {
                     } else {
                         Toast.makeText(context, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
                     }
-                }
-                else{
-                    Toast.makeText(context, "#errorcode :- 2032 "+ context.getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, "#errorcode :- 2032 " + context.getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -1147,7 +1146,7 @@ public class DialogUtil {
             @Override
             public void onFailure(Call<GetDC> call, Throwable t) {
 //                progressDialog.dismiss();
-                Toast.makeText(context,"#errorcode :- 2032 "+ context.getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "#errorcode :- 2032 " + context.getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 //Toast.makeText(context, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
@@ -1240,8 +1239,7 @@ public class DialogUtil {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                else{
+                } else {
                     Toast.makeText(context, "#errorcode 2053" + context.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
                 }

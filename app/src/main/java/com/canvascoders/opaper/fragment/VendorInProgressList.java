@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -389,9 +390,9 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
 
     @Override
     public void onClick(View view, int position) {
-        /*Intent i = new Intent(getActivity(), TaskProccessDetailActivity.class);
-        i.putExtra(Constants.KEY_PROCESS_ID, vendorLists.get(position).getProccessId());
-        startActivity(i);*/
+//        Intent i = new Intent(getActivity(), TaskProccessDetailActivity.class);
+//        i.putExtra(Constants.KEY_PROCESS_ID, vendorLists.get(position).getProccessId()+"");
+//        startActivity(i);
 
     }
 
@@ -506,17 +507,19 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
 
                             Log.e("VENDOR", "" + vendorList.getBankDetailUpdationRequired());
 
+
                             VendorList vList = new VendorList();
                             vList.setId(vendorList.getId());
-                            vList.setAgentId(vendorList.getAgentId());
+                            vList.setProccessId(vendorList.getProccessId());
+                            //vList.setAgentId(vendorList.getAgentId());
                             vList.setMobileNo(vendorList.getMobileNo());
-                            vList.setAadhaarName(vendorList.getAadhaarName());
-                            vList.setAadhaarNo(vendorList.getAadhaarNo());
-                            vList.setAadhaarPincode(vendorList.getAadhaarPincode());
-                            vList.setLatitude(vendorList.getLatitude());
-                            vList.setLongitude(vendorList.getLongitude());
-                            vList.setPanName(vendorList.getPanName());
-                            vList.setPanNo(vendorList.getPanNo());
+                            // vList.setAadhaarName(vendorList.getAadhaarName());
+                            // vList.setAadhaarNo(vendorList.getAadhaarNo());
+                            //vList.setAadhaarPincode(vendorList.getAadhaarPincode());
+                            //  vList.setLatitude(vendorList.getLatitude());
+                            //vList.setLongitude(vendorList.getLongitude());
+                            // vList.setPanName(vendorList.getPanName());
+                            // vList.setPanNo(vendorList.getPanNo());
                             vList.setShopImage(vendorList.getShopImage());
                             vList.setStoreName(vendorList.getStoreName());
                             vList.setMobileVerify(vendorList.getMobileVerify());
@@ -530,15 +533,15 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
                             vList.setGstdeclaration(vendorList.getGstdeclaration());
                             vList.setVendorSendForApproval(vendorList.getVendorSendForApproval());
                             vList.setBankDetailUpdationRequired(vendorList.getBankDetailUpdationRequired());
-                            vList.setProccessId(vendorList.getProccessId());
+
                             vList.setName(vendorList.getName());
-                            vList.setRate(vendorList.getRate());
+                            // vList.setRate(vendorList.getRate());
                             vList.setAssessmentverify(vendorList.getAssessmentverify());
                             vList.setDeliveryBoy(vendorList.getDeliveryBoy());
                             vList.setNoc(vendorList.getNoc());
                             vList.setIsAgreementUpdationRequire(vendorList.getIsAgreementUpdationRequire());
-                            vList.setAllowedit(vendorList.getAllowedit());
-                            vList.setIsAddDeliveryBoy(vendorList.getIsAddDeliveryBoy());
+                            // vList.setAllowedit(vendorList.getAllowedit());
+                            // vList.setIsAddDeliveryBoy(vendorList.getIsAddDeliveryBoy());
                             vList.setAgreement(vendorList.getAgreement());
                             vList.setEcomAgreeement(vendorList.getEcomAgreeement());
 
@@ -667,17 +670,19 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
 
                             Log.e("VENDOR", "" + vendorList.getBankDetailUpdationRequired());
 
+
                             VendorList vList = new VendorList();
                             vList.setId(vendorList.getId());
-                            vList.setAgentId(vendorList.getAgentId());
+                            vList.setProccessId(vendorList.getProccessId());
+                            //vList.setAgentId(vendorList.getAgentId());
                             vList.setMobileNo(vendorList.getMobileNo());
-                            vList.setAadhaarName(vendorList.getAadhaarName());
-                            vList.setAadhaarNo(vendorList.getAadhaarNo());
-                            vList.setAadhaarPincode(vendorList.getAadhaarPincode());
-                            vList.setLatitude(vendorList.getLatitude());
-                            vList.setLongitude(vendorList.getLongitude());
-                            vList.setPanName(vendorList.getPanName());
-                            vList.setPanNo(vendorList.getPanNo());
+                            // vList.setAadhaarName(vendorList.getAadhaarName());
+                            // vList.setAadhaarNo(vendorList.getAadhaarNo());
+                            //vList.setAadhaarPincode(vendorList.getAadhaarPincode());
+                            //  vList.setLatitude(vendorList.getLatitude());
+                            //vList.setLongitude(vendorList.getLongitude());
+                            // vList.setPanName(vendorList.getPanName());
+                            // vList.setPanNo(vendorList.getPanNo());
                             vList.setShopImage(vendorList.getShopImage());
                             vList.setStoreName(vendorList.getStoreName());
                             vList.setMobileVerify(vendorList.getMobileVerify());
@@ -691,16 +696,15 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
                             vList.setGstdeclaration(vendorList.getGstdeclaration());
                             vList.setVendorSendForApproval(vendorList.getVendorSendForApproval());
                             vList.setBankDetailUpdationRequired(vendorList.getBankDetailUpdationRequired());
-                            vList.setProccessId(vendorList.getProccessId());
+
                             vList.setName(vendorList.getName());
-                            vList.setRate(vendorList.getRate());
-                            vList.setNoc(vendorList.getNoc());
+                            // vList.setRate(vendorList.getRate());
                             vList.setAssessmentverify(vendorList.getAssessmentverify());
                             vList.setDeliveryBoy(vendorList.getDeliveryBoy());
-                            vList.setStatus(vendorList.getStatus());
+                            vList.setNoc(vendorList.getNoc());
                             vList.setIsAgreementUpdationRequire(vendorList.getIsAgreementUpdationRequire());
-                            vList.setAllowedit(vendorList.getAllowedit());
-                            vList.setIsAddDeliveryBoy(vendorList.getIsAddDeliveryBoy());
+                            // vList.setAllowedit(vendorList.getAllowedit());
+                            // vList.setIsAddDeliveryBoy(vendorList.getIsAddDeliveryBoy());
                             vList.setAgreement(vendorList.getAgreement());
                             vList.setEcomAgreeement(vendorList.getEcomAgreeement());
                             page = 0;

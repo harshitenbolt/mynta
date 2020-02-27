@@ -48,6 +48,7 @@ import com.canvascoders.opaper.Beans.GetGSTVerify.StoreAddress;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.Beans.VendorList;
+import com.canvascoders.opaper.Beans.VerifyGstImageResponse.VerifyGSTImageRespone;
 import com.canvascoders.opaper.Beans.VerifyGstResponse.VerifyGst;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
@@ -61,6 +62,7 @@ import com.canvascoders.opaper.utils.DialogUtil;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.ImageUploadTask;
 import com.canvascoders.opaper.utils.Mylogger;
+import com.canvascoders.opaper.utils.NetworkConnectivity;
 import com.canvascoders.opaper.utils.OnTaskCompleted;
 import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
@@ -120,7 +122,8 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     private GoogleMap mMap;
     boolean isPanSelected = false;
     private Spinner dc;
-    public static final int CROPPED_IMAGE = 5333, CROPPED_IMAGE_2 = 5335;
+    NetworkConnectivity networkConnectivity;
+    public static final int CROPPED_IMAGE = 5333, CROPPED_IMAGE_2 = 5335, CROPPED_IMAGE_3 = 5336;
     private static final int IMAGE_SHOP_IMG = 105, IMAGE_OWNER_IMG = 106;
     private static final int IMAGE_PAN = 101;
     private static final int IMAGE_CHEQUE = 102;
@@ -174,7 +177,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_gst);
-
+        networkConnectivity = new NetworkConnectivity(this);
         // vendor = (VendorList) getIntent().getSerializableExtra("data");
         str_process_id = getIntent().getStringExtra("data");
         Log.e("process_id", str_process_id);
@@ -659,22 +662,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
             case R.id.btSubmitDCStoreImage:
                 if (validation()) {
-                    rvSecondScreen.setVisibility(View.GONE);
-                    if (isPanScreen == true) {
-                        rvPanDetails.setVisibility(View.VISIBLE);
-                        view3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                            // getBankDetails(mContext,s.toString(),processId);
-                            ApiCallGetPanDetails();
-                        } else {
-                            Constants.ShowNoInternet(EditGSTActivity.this);
-                        }
+                    if (networkConnectivity.isNetworkAvailable()) {
+                        ApiCallVerifyGstImage();
                     } else {
-                        rvChequeDetails.setVisibility(View.VISIBLE);
-                        view4.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-
+                        Constants.ShowNoInternet(EditGSTActivity.this);
                     }
-
                 }
 
                 break;
@@ -795,6 +787,60 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
 
         }
+
+    }
+
+    private void ApiCallVerifyGstImage() {
+        progressDialog.show();
+        MultipartBody.Part attachment_gst = null;
+        File imagefile = new File(gstCertificate);
+        attachment_gst = MultipartBody.Part.createFormData(Constants.PARAM_GST_CERTIFICATE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(gstCertificate)), imagefile));
+
+
+        Map<String, String> params = new HashMap<String, String>();
+
+        // params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+        params.put(Constants.PARAM_GSTN, etGST.getText().toString());
+       /* params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.DATA, "");*/
+        ApiClient.getClient().create(ApiInterface.class).getGstImageOCRVerify("Bearer " + sessionManager.getToken(), params, attachment_gst).enqueue(new Callback<VerifyGSTImageRespone>() {
+            @Override
+            public void onResponse(Call<VerifyGSTImageRespone> call, Response<VerifyGSTImageRespone> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    VerifyGSTImageRespone verifyGSTImageRespone = response.body();
+                    if (verifyGSTImageRespone.getResponseCode() == 200) {
+                        rvSecondScreen.setVisibility(View.GONE);
+                        if (isPanScreen == true) {
+                            rvPanDetails.setVisibility(View.VISIBLE);
+                            view3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                // getBankDetails(mContext,s.toString(),processId);
+                                ApiCallGetPanDetails();
+                            } else {
+                                Constants.ShowNoInternet(EditGSTActivity.this);
+                            }
+                        } else {
+                            rvChequeDetails.setVisibility(View.VISIBLE);
+                            view4.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
+                        }
+
+                    } else {
+                        Toast.makeText(EditGSTActivity.this, verifyGSTImageRespone.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(EditGSTActivity.this, "#errorcode :-2090" + EditGSTActivity.this.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VerifyGSTImageRespone> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(EditGSTActivity.this, "#errorcode :-2090" + EditGSTActivity.this.getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 
@@ -1454,7 +1500,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                     progressDialog.dismiss();
                     GetGSTVerify getGSTVerify = response.body();
                     if (getGSTVerify.getResponseCode() == 200) {
-                        Toast.makeText(EditGSTActivity.this, getGSTVerify.getResponse(), Toast.LENGTH_LONG).show();
+                     //   Toast.makeText(EditGSTActivity.this, getGSTVerify.getResponse(), Toast.LENGTH_LONG).show();
                      /*   ivSearch.setBackgroundResource(0);
                         ivSearch.setImageResource(R.drawable.checked);*/
                         etStoreNAme.setText(getGSTVerify.getData().get(0).getStoreName());
@@ -1507,14 +1553,14 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                             }
 
                             @Override
-                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String city, String state, String dc) {
                                 // etCity.getText().toString(), etState.getText().toString(),""+dc.getSelectedItem());
                                 store_address = accName;
                                 store_address1 = payeename;
                                 store_address_landmark = ifsc;
                                 store_pincode = bankname;
-                                store_city = BranchName;
-                                store_state = bankAdress;
+                                store_city = city;
+                                store_state = state;
                                 addDC(store_pincode);
                                 store_full_address = store_address + " " + store_address1 + " " + store_address_landmark + " " + store_pincode + " " + store_city + " " + store_state;
                                 etStoreAddress.setText(store_full_address);
@@ -1690,12 +1736,46 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             }
 
 
-            if (IMAGE_SELCTED_IMG == IMAGE_OWNER_IMG) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
+            if (requestCode == IMAGE_OWNER_IMG) {
+               /* Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
                 gstCertificate = ImagePicker.getBitmapPath(bitmap, EditGSTActivity.this); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
                 Glide.with(EditGSTActivity.this).load(gstCertificate).into(ivGstImage);
-                ivOwnerImageSelected.setVisibility(View.VISIBLE);
+                ivOwnerImageSelected.setVisibility(View.VISIBLE);*/
+
+
+               /* Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditGSTActivity.this);
+                Intent intent = new Intent(EditGSTActivity.this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                startActivityForResult(intent, CROPPED_IMAGE_3);*/
+
+
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditGSTActivity.this);
+
+                Intent intent = new Intent(EditGSTActivity.this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                startActivityForResult(intent, CROPPED_IMAGE_3);
             }
+
+
+            if (requestCode == CROPPED_IMAGE_3) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                gstCertificate = RealPathUtil.getPath(EditGSTActivity.this, imgURI);
+
+                try {
+                    Glide.with(EditGSTActivity.this).load(gstCertificate).into(ivGstImage);
+                    // isPanSelected = true;
+                    ivOwnerImageSelected.setVisibility(View.VISIBLE);
+
+                    // tvPanClick.setVisibility(View.GONE);
+                    // ExtractPanDetail();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
 
             if (requestCode == IMAGE_PAN) {
 
