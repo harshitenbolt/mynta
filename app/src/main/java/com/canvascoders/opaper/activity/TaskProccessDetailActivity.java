@@ -196,6 +196,12 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llLocatonDisable.setVisibility(View.GONE);
                             tvLattitude.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getLatitude());
                             tvLongitude.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getLongitude());
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getLocationVerifyRemark().equalsIgnoreCase("")){
+                                    tvRemarkLocation.setVisibility(View.VISIBLE);
+                                    tvRemarkLocation.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getLocationVerifyRemark());
+                                }
+                            }
 
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getLocationVerify() == 0) {
                             llLocatonDisable.setVisibility(View.VISIBLE);
@@ -234,6 +240,16 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                                 Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getAdharCardBack()).into(ivAdharBack);
 
                             }
+
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                               // tvRemarkKYC.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getAadhaarVerifyRemark());
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getAadhaarVerifyRemark().equalsIgnoreCase("")){
+                                    tvRemarkKYC.setVisibility(View.VISIBLE);
+                                    tvRemarkKYC.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getAadhaarVerifyRemark());
+                                }
+
+
+                            }
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getAadhaarVerify() == 0) {
                             llKyCEnable.setVisibility(View.GONE);
                             llKYCDisable.setVisibility(View.VISIBLE);
@@ -251,9 +267,21 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llPanEnable.setVisibility(View.VISIBLE);
                             tvPanNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanNo());
                             tvPanName.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanName());
-                            tvPanDOB.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getDob());
+                            tvPanDOB.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getNsdlPanName());
                             Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getPan()).into(ivPanFront);
                             // Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().get()).into(ivAdharBack);
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                              //  tvRemarkKYC.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getPanVerifyRemark());
+
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getPanVerifyRemark().equalsIgnoreCase("")){
+                                    tvRemarkPan.setVisibility(View.VISIBLE);
+                                    tvRemarkPan.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getPanVerifyRemark());
+                                }
+
+
+                            }
+
+
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getPanVerify() == 0) {
                             llPanDisable.setVisibility(View.VISIBLE);
                             llPanEnable.setVisibility(View.GONE);
@@ -274,6 +302,14 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             tvBankAccName.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankName());
                             tvBankBranchName.setText(getTrackDetailsResponse.getData().get(0).getBankDetails().get(0).getBankBranchName());
                             Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getCancelledCheques().get(0).getCancelledCheque()).into(ivChequeImage);
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                               // tvRemarkBank.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getChequeVerifyRemark());
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getChequeVerifyRemark().equalsIgnoreCase("")){
+                                    tvRemarkBank.setVisibility(View.VISIBLE);
+                                    tvRemarkBank.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getChequeVerifyRemark());
+                                }
+
+                            }
 
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getChequeVerify() == 0) {
                             llChequeEnable.setVisibility(View.GONE);
@@ -310,6 +346,15 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             tvGSTNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn());
                             Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage()).into(ivGstFront);
                             tvGStPanNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanNo());
+
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                               // tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
+
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark().equalsIgnoreCase("")){
+                                    tvRemarkGST.setVisibility(View.VISIBLE);
+                                    tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
+                                }
+                            }
                         }
 
 
@@ -339,6 +384,33 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             tvStoreDCName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getDc());
 
 
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                              //  tvRemarkOwner.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillOwnerDetailsRemark());
+                               // tvRemarkStore.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillStoreDetailsRemark());
+                              //  tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
+
+
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillOwnerDetailsRemark().equalsIgnoreCase("")){
+                                    tvRemarkOwner.setVisibility(View.VISIBLE);
+                                    tvRemarkOwner.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillOwnerDetailsRemark());
+                                }
+
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillStoreDetailsRemark().equalsIgnoreCase("")){
+                                    tvRemarkStore.setVisibility(View.VISIBLE);
+                                    tvRemarkStore.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillStoreDetailsRemark());
+                                }
+
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark().equalsIgnoreCase("")){
+                                    tvRemarkGST.setVisibility(View.VISIBLE);
+                                    tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
+                                }
+
+
+
+
+                            }
+
+
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillDetails() == 0) {
                             llOwnerEnable.setVisibility(View.GONE);
                             llOwnerDisable.setVisibility(View.VISIBLE);
@@ -363,6 +435,15 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llShopActEnable.setVisibility(View.VISIBLE);
                             llShopActDisable.setVisibility(View.GONE);
 
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                              //  tvRemarkShopAct.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getUploadFilesRemark());
+
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getUploadFilesRemark().equalsIgnoreCase("")){
+                                    tvRemarkShopAct.setVisibility(View.VISIBLE);
+                                    tvRemarkShopAct.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getUploadFilesRemark());
+                                }
+                            }
+
 
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getUploadFiles() == 0) {
                             llShopActEnable.setVisibility(View.GONE);
@@ -381,6 +462,14 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llDeliveryBoysEnable.setVisibility(View.VISIBLE);
                             tvNoDeliveryBoysAdded.setText(getTrackDetailsResponse.getData().get(0).getDeliveryBoysDetailCount() + "");
 
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                              //  tvRemarkDelivery.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getDeliveryBoyRemark());
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getDeliveryBoyRemark().equalsIgnoreCase("")){
+                                    tvRemarkDelivery.setVisibility(View.VISIBLE);
+                                    tvRemarkDelivery.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getDeliveryBoyRemark());
+                                }
+                            }
+
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getDeliveryBoy() == 0) {
                             llDeliveryBoysDisable.setVisibility(View.VISIBLE);
                             llDeliveryBoysEnable.setVisibility(View.GONE);
@@ -397,6 +486,15 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llRateDetailsEnable.setVisibility(View.VISIBLE);
                             llRateDetailsDisable.setVisibility(View.GONE);
                             tvRateText.setText(getTrackDetailsResponse.getData().get(0).getBasicDetailRate().size() + "");
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                               // tvRemarkRateDetails.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getRateRemark());
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getRateRemark().equalsIgnoreCase("")){
+                                    tvRemarkRateDetails.setVisibility(View.VISIBLE);
+                                    tvRemarkRateDetails.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getRateRemark());
+                                }
+
+                            }
+
 
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getRate() == 0) {
                             llRateDetailsEnable.setVisibility(View.GONE);
@@ -412,6 +510,13 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                         if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getRateSendForApproval() == 1) {
                             llRateApprovalEnable.setVisibility(View.VISIBLE);
                             llRateApprovalDisable.setVisibility(View.GONE);
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                             //   tvRemarkRateApproval.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getRateSendForApprovalRemark());
+                                if(!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getRateSendForApprovalRemark().equalsIgnoreCase("")){
+                                    tvRemarkRateApproval.setVisibility(View.VISIBLE);
+                                    tvRemarkRateApproval.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getRateSendForApprovalRemark());
+                                }
+                            }
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getRateSendForApproval() == 0) {
                             llRateApprovalEnable.setVisibility(View.GONE);
                             llRateApprovalDisable.setVisibility(View.VISIBLE);

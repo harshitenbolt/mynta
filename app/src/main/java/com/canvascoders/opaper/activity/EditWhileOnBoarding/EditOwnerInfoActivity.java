@@ -11,7 +11,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,16 +21,21 @@ import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
+import com.canvascoders.opaper.Beans.dc.DC;
+import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
 
+import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.fragment.InfoFragment;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
@@ -36,6 +43,7 @@ import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.NetworkConnectivity;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
+import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -80,6 +88,7 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
     ArrayList<String> listLanaguage = new ArrayList<>();
     private int mYear, mMonth, mDay, mHour, mMinute;
     private String lattitude = "", longitude = "";
+    RelativeLayout rvSelectLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +115,7 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
     }
 
     private void init() {
-        ivOwnerImage = findViewById(R.id.ivOwnerImageSelected);
+        ivOwnerImageSelected = findViewById(R.id.ivOwnerImageSelected);
         ivOwnerImage = findViewById(R.id.ivOwnerImage);
         ivOwnerImage.setOnClickListener(this);
         ivOwnerImageSelected.setOnClickListener(this);
@@ -128,6 +137,8 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
         etPerCity = findViewById(R.id.etPerCity);
         etPerState = findViewById(R.id.etPerState);
 
+        rvSelectLanguage = findViewById(R.id.rvSelectLanguage);
+        rvSelectLanguage.setOnClickListener(this);
 
         tvDOB = findViewById(R.id.etDateOfBirth);
         btSubmit = findViewById(R.id.btSubmit);
@@ -195,7 +206,133 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
             }
         });
 
+
+        etPerPincode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                pincode = "2";
+                if (s.length() == 6) {
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        // getBankDetails(EditOwnerInfoActivity.this,s.toString(),processId);
+                        addDC(s.toString(), pincode);
+                    } else {
+                        Constants.ShowNoInternet(EditOwnerInfoActivity.this);
+                    }
+                    //addDC(s.toString(), pincode);
+                }
+            }
+        });
+
+
+        etCurrentPincode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                pincode = "3";
+                if (s.length() == 6) {
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        // getBankDetails(EditOwnerInfoActivity.this,s.toString(),processId);
+                        addDC(s.toString(), pincode);
+                    } else {
+                        Constants.ShowNoInternet(EditOwnerInfoActivity.this);
+                    }
+                    //  addDC(s.toString(), pincode);
+                }
+            }
+        });
+
+
     }
+
+
+    private void addDC(String pcode, String pincodenumber) {
+        // state is DC and DC is state
+      /*  if (pincodenumber.equalsIgnoreCase("1")) {
+            dcLists.clear();
+        }*/
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.show();
+
+        JsonObject user = new JsonObject();
+        user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
+        user.addProperty(Constants.PARAM_PINCODE, pcode);
+        ApiClient.getClient().create(ApiInterface.class).getDC("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetDC>() {
+            @Override
+            public void onResponse(Call<GetDC> call, Response<GetDC> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetDC getUserDetails = response.body();
+                    String TAG = "sdffdg";
+                    Mylogger.getInstance().Logit(TAG, getUserDetails.getResponse());
+                    if (getUserDetails.getResponseCode() == 200) {
+                        if (pincodenumber.equalsIgnoreCase("1")) {
+                            for (int i = 0; i < getUserDetails.getData().size(); i++) {
+                                for (DC dc : getUserDetails.getData().get(i).getDc()) {
+                                    // dcLists.add(dc.getDc());
+                                }
+                             /*   etStoreState.setText(getUserDetails.getData().get(i).getState());
+                                etStoreCity.setText(getUserDetails.getData().get(i).getCity());
+                          */
+                            }
+
+                           /* InfoFragment.CustomAdapter<String> spinnerArrayAdapter = new InfoFragment.CustomAdapter<String>(EditOwnerInfoActivity.this, android.R.layout.simple_spinner_item, dcLists);
+                            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            dc.setAdapter(spinnerArrayAdapter);
+                            dc.setSelection(0);*/
+                        }
+                        if (pincodenumber.equalsIgnoreCase("2")) {
+                            for (int i = 0; i < getUserDetails.getData().size(); i++) {
+                                etPerState.setText(getUserDetails.getData().get(i).getState());
+                                etPerCity.setText(getUserDetails.getData().get(i).getCity());
+                            }
+                        }
+                        if (pincodenumber.equalsIgnoreCase("3")) {
+                            for (int i = 0; i < getUserDetails.getData().size(); i++) {
+                                etCurrentState.setText(getUserDetails.getData().get(i).getState());
+                                etCurrentCity.setText(getUserDetails.getData().get(i).getCity());
+                            }
+                        }
+
+                    } else if (getUserDetails.getResponseCode() == 405) {
+                        sessionManager.logoutUser(EditOwnerInfoActivity.this);
+                    } else {
+                        Toast.makeText(EditOwnerInfoActivity.this, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(EditOwnerInfoActivity.this, "#errorcode :-2032 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetDC> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditOwnerInfoActivity.this, "#errorcode :-2032 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                // Toast.makeText(EditOwnerInfoActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -680,14 +817,14 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
                         }
                     }
                 } else {
-                    Constants.showAlert(v, "#errorcode :- 2029 " + getString(R.string.something_went_wrong), false);
+                    Constants.showAlert(v, "#errorcode :- 2095 " + getString(R.string.something_went_wrong), false);
                 }
             }
 
             @Override
             public void onFailure(Call<GetUserDetailResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(EditOwnerInfoActivity.this, "#errorcode :- 2029 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditOwnerInfoActivity.this, "#errorcode :- 2095 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 //   Toast.makeText(EditOwnerInfoActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }

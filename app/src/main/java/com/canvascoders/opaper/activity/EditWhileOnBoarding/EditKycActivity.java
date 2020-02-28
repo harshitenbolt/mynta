@@ -191,7 +191,6 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
         ivAdharIamgeFront = findViewById(R.id.ivImageAdharFront);
         tvScan = findViewById(R.id.tvScan);
         tvScan.setOnClickListener(this);
-
         tvAdharBack.setOnClickListener(this);
         tvAdharFront.setOnClickListener(this);
 
@@ -361,8 +360,8 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
 
                         if (getTrackDetailsResponse.getData().get(0).getProccessDetail().getKycType().equalsIgnoreCase("1")) {
-                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getAdharCardFront()).into(ivAdharFront);
-                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getAdharCardBack()).into(ivAdharback);
+                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getAdharCardFront()).into(ivAdharIamgeFront);
+                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getAdharCardBack()).into(ivAdharImageBack);
 
                             gotName = getTrackDetailsResponse.getData().get(0).getProccessDetail().getAadhaarName();
                             gotDocId = getTrackDetailsResponse.getData().get(0).getProccessDetail().getAadhaarNo();
@@ -1043,7 +1042,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                         }
 
                     } else {
-                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                         //   Toast.makeText(EditKycActivity.this, "Contact administrator immediately", Toast.LENGTH_SHORT).show();
                     }
@@ -1053,7 +1052,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });
@@ -1236,7 +1235,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                         }
 
                     } else {
-                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                         //   Toast.makeText(EditKycActivity.this, "Contact administrator immediately", Toast.LENGTH_SHORT).show();
                     }
@@ -1246,7 +1245,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });
@@ -2146,7 +2145,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                         }
 
                     } else {
-                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                         //   Toast.makeText(EditKycActivity.this, "No response", Toast.LENGTH_SHORT).show();
                     }
@@ -2156,7 +2155,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });
@@ -2312,7 +2311,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                         }
 
                     } else {
-                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                         //   Toast.makeText(EditKycActivity.this, "No response", Toast.LENGTH_SHORT).show();
                     }
@@ -2322,7 +2321,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2034 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });

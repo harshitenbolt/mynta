@@ -550,6 +550,28 @@
                             android:text="Driving Information"
                             android:textSize="@dimen/_11sdp" />
 
+                        <TextView
+                            style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/montesemibold"
+                            android:text="Driving Licence"
+                            android:textColor="@color/colorBlack" />
+
+                        <LinearLayout
+                            android:layout_width="@dimen/_105sdp"
+                            android:layout_height="@dimen/_105sdp"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:background="@drawable/dotted_bg"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/ivDrivingLicence"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_105sdp"
+                                android:background="@drawable/blfront"
+                                android:padding="@dimen/_25sdp" />
+
+                        </LinearLayout>
 
                         <TextView
                             style="@style/App_TextViewSmall"
@@ -622,28 +644,7 @@
                             android:paddingLeft="@dimen/_10sdp"
                             android:text="Date of Birth" />
 
-                        <TextView
-                            style="@style/App_TextViewSmall"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/montesemibold"
-                            android:text="Driving Licence"
-                            android:textColor="@color/colorBlack" />
 
-                        <LinearLayout
-                            android:layout_width="@dimen/_105sdp"
-                            android:layout_height="@dimen/_105sdp"
-                            android:layout_marginTop="@dimen/_15sdp"
-                            android:background="@drawable/dotted_bg"
-                            android:gravity="center">
-
-                            <ImageView
-                                android:id="@+id/ivDrivingLicence"
-                                android:layout_width="@dimen/_105sdp"
-                                android:layout_height="@dimen/_105sdp"
-                                android:padding="@dimen/_25sdp"
-                                android:src="@drawable/photocamera" />
-
-                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>

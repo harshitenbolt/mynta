@@ -41,6 +41,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.Datum;
+import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
@@ -50,6 +51,7 @@ import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
+import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.JsonObject;
 
@@ -108,6 +110,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     String otp = "", mobile_number = "";
     Datum datum;
     Button btGetOtp;
+    private String TAG = "akfdsbksbhdf";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -350,25 +353,22 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                 btGetOtp.setError(sendOtpDelBoyresponse.getValidation().getPhoneNumber());
                                 Toast.makeText(EditDeliveryBoyActivity.this, sendOtpDelBoyresponse.getValidation().getPhoneNumber(), Toast.LENGTH_SHORT).show();
                                 //btGetOtp.requestFocus();
-                            }
-                            else{
+                            } else {
                                 Toast.makeText(EditDeliveryBoyActivity.this, sendOtpDelBoyresponse.getResponse(), Toast.LENGTH_LONG).show();
                             }
-                        }
-                        else{
+                        } else {
                             Toast.makeText(EditDeliveryBoyActivity.this, sendOtpDelBoyresponse.getResponse(), Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
-                else{
-                    Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode 2076 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode 2076 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SendOtpDelBoyresponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode 2076 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode 2076 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -986,7 +986,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                     //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     Toast.makeText(EditDeliveryBoyActivity.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
                                 } /*else {
-                                    Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(EditDeliveryBoyActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
                                 }
 */
                             } else {
@@ -996,9 +996,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                             }
                         }
                     }
-                }
-
-                else {
+                } else {
                     Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2044 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
 
@@ -1010,7 +1008,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
                 mProgressDialog.dismiss();
 
-                    Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2044 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2044 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -1307,6 +1305,74 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
     }
 
+
+    private void ApiCallGetDetailLicence(String drivingLicencePath) {
+        // MultipartBody.Part voter_front_part = null;
+        MultipartBody.Part driving_licence_part = null;
+
+        Mylogger.getInstance().Logit(TAG, "getUserInfo");
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+
+       /* File imagefile = new File(voterImagePathFront);
+        voter_front_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathFront)), imagefile));
+*/
+        File imagefile1 = new File(drivingLicencePath);
+        driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
+
+        Mylogger.getInstance().Logit(TAG, "getocUserInfo");
+        mProgressDialog.setMessage("Fetching details. Please wait......");
+        mProgressDialog.show();
+        // hideKeyboardwithoutPopulateFragment();
+        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);
+        call.enqueue(new Callback<DrivingLicenceDetailResponse>() {
+            @Override
+            public void onResponse(Call<DrivingLicenceDetailResponse> call, Response<DrivingLicenceDetailResponse> response) {
+                mProgressDialog.dismiss();
+                try {
+                    if (response.isSuccessful()) {
+                        DrivingLicenceDetailResponse voterOCRGetDetaisResponse = response.body();
+                        if (voterOCRGetDetaisResponse.getStatus().equalsIgnoreCase("success")) {
+                            Toast.makeText(EditDeliveryBoyActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            etDrivingNumber.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber());
+
+                            //fathername = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFatherName();
+                            dob.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
+                           /* dlnumber = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber();
+                            dlIdDetailId = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
+                            filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
+                            fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();*/
+
+
+                        } else {
+                            Toast.makeText(EditDeliveryBoyActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mProgressDialog.dismiss();
+                    Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                    //  Toast.makeText(EditPanCardActivity, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DrivingLicenceDetailResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //      Toast.makeText(EditPanCardActivity, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1318,7 +1384,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                 ivDriving_Licence.setPadding(0, 0, 0, 0);
                 // ImageUtils.getInstant().getImageUri(getActivity(), photo);
                 Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
-
+                ApiCallGetDetailLicence(licenceImagePath);
             }
             if (requestCode == PROFILEIMAGE) {
                 Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);

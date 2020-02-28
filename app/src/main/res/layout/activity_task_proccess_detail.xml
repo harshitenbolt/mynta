@@ -295,7 +295,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -553,7 +554,9 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -723,6 +726,7 @@
                                     <LinearLayout
                                         android:layout_width="@dimen/_45sdp"
                                         android:layout_height="@dimen/_35sdp"
+                                        android:visibility="gone"
                                         android:layout_marginLeft="@dimen/_25sdp"></LinearLayout>
 
                                     <LinearLayout
@@ -740,7 +744,8 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratsemibold"
-                                            android:text="Date of Birth"
+                                            android:text="NSDL Pan Name"
+                                            android:visibility="gone"
                                             android:textColor="@color/text_color_dark_grey"
                                             android:textSize="@dimen/_8sdp" />
 
@@ -752,6 +757,7 @@
                                             android:lines="1"
                                             android:singleLine="true"
                                             android:text=""
+                                            android:visibility="gone"
                                             android:textSize="@dimen/_7sdp" />
                                     </LinearLayout>
 
@@ -811,8 +817,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
-
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -1066,7 +1072,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -1314,7 +1321,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -1563,7 +1571,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -1788,7 +1797,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -1959,7 +1969,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -2142,7 +2153,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -2323,7 +2335,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -2503,7 +2516,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>

@@ -50,6 +50,7 @@ import com.canvascoders.opaper.Beans.DelBoysNextScreenResponse.DelBoysNextRespon
 import com.canvascoders.opaper.Beans.DeleteDeliveryResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.Datum;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.DeliveryboyListResponse;
+import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
@@ -60,6 +61,7 @@ import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.ImagePicker;
+import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.JsonObject;
@@ -114,6 +116,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     private String str_process_id;
     String fromEdit = "";
     private RequestPermissionHandler requestPermissionHandler;
+    private String TAG="jdfkjshk";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +161,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         switch (v.getId()) {
             case R.id.btn_add_boy:
 
-                Intent i = new Intent(this, AddNewDeliveryBoy.class);
+                Intent i = new Intent(this, AddDeliveryBoysActivity.class);
                 i.putExtra("Data", str_process_id);
                 startActivity(i);
                 // addBoyDialog();
@@ -974,7 +977,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
 
                 } catch (Exception e) {
                     //    Toast.makeText(AddDeliveryBoysActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(AddDeliveryBoysActivity.this, "#errorcode 2050 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddDeliveryBoysActivity.this, "#errorcode 2100 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -982,11 +985,91 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
             @Override
             public void onFailure(Call<DelBoysNextResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(AddDeliveryBoysActivity.this, "#errorcode 2050 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddDeliveryBoysActivity.this, "#errorcode 2100 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 
 
     }
+
+
+/*
+
+    private void ApiCallGetDetailLicence(String drivingLicencePath) {
+        // MultipartBody.Part voter_front_part = null;
+        MultipartBody.Part driving_licence_part = null;
+
+        Mylogger.getInstance().Logit(TAG, "getUserInfo");
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+
+       */
+/* File imagefile = new File(voterImagePathFront);
+        voter_front_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathFront)), imagefile));
+*//*
+
+        File imagefile1 = new File(drivingLicencePath);
+        driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
+
+        Mylogger.getInstance().Logit(TAG, "getocUserInfo");
+        mProgressDialog.setMessage("Fetching details. Please wait......");
+        mProgressDialog.show();
+        // hideKeyboardwithoutPopulateFragment();
+        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);
+        call.enqueue(new Callback<DrivingLicenceDetailResponse>() {
+            @Override
+            public void onResponse(Call<DrivingLicenceDetailResponse> call, Response<DrivingLicenceDetailResponse> response) {
+                mProgressDialog.dismiss();
+                try {
+                    if (response.isSuccessful()) {
+                        DrivingLicenceDetailResponse voterOCRGetDetaisResponse = response.body();
+                        if (voterOCRGetDetaisResponse.getStatus().equalsIgnoreCase("success")) {
+                            Toast.makeText(AddDeliveryBoysActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            .setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber());
+
+                            //fathername = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFatherName();
+                            dob.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
+                           */
+/* dlnumber = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber();
+                            dlIdDetailId = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
+                            filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
+                            fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();*//*
+
+
+
+                        } else {
+                            Toast.makeText(AddDeliveryBoysActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(AddDeliveryBoysActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mProgressDialog.dismiss();
+                    Toast.makeText(AddDeliveryBoysActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                    //  Toast.makeText(EditPanCardActivity, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DrivingLicenceDetailResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(AddDeliveryBoysActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //      Toast.makeText(EditPanCardActivity, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+*/
+
+
+
+
+
 
 }

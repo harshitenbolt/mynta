@@ -42,15 +42,19 @@ import com.bumptech.glide.Glide;
 
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
+import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.DialogUtil;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
+import com.canvascoders.opaper.utils.Mylogger;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.JsonObject;
 
@@ -104,6 +108,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     private String isUpdate = "";
     Button btGetOtp;
     String otp = "", mobile_number = "";
+    private String TAG = "sfdfdg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -629,87 +634,87 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                                     etCurrentHouseNo.requestFocus();
                                 }
                                 if (validation.getPermanent_address() != null && validation.getPermanent_address().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etPerHouseNo.setError(validation.getPermanent_address());
                                     etPerHouseNo.requestFocus();
 
                                 }
                                 if (validation.getCurrentAddress() != null && validation.getCurrentAddress().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etCurrentHouseNo.setError(validation.getCurrentAddress());
                                     etCurrentHouseNo.requestFocus();
 
                                 }
 
                                 if (validation.getCurrentaddress1() != null && validation.getCurrentaddress1().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etCurrentStreet.setError(validation.getCurrentaddress1());
                                     etCurrentStreet.requestFocus();
 
                                 }
                                 if (validation.getCurrentaddressLandmark() != null && validation.getCurrentaddressLandmark().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etCurrentLandmark.setError(validation.getCurrentaddressLandmark());
                                     etCurrentLandmark.requestFocus();
 
                                 }
 
                                 if (validation.getCurrentAddressPincode() != null && validation.getCurrentAddressPincode().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etCurrentPincode.setError(validation.getCurrentAddressPincode());
                                     etCurrentPincode.requestFocus();
 
                                 }
                                 if (validation.getCurrentAddressCity() != null && validation.getCurrentAddressCity().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etCurrentCity.setError(validation.getCurrentAddressCity());
                                     etCurrentCity.requestFocus();
 
                                 }
 
                                 if (validation.getCurrentAddressState() != null && validation.getCurrentAddressState().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etCurrentState.setError(validation.getCurrentAddressState());
                                     etCurrentState.requestFocus();
 
                                 }
 
                                 if (validation.getPermanentResidentialAddress() != null && validation.getPermanentResidentialAddress().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etPerHouseNo.setError(validation.getPermanentResidentialAddress());
                                     etPerHouseNo.requestFocus();
 
                                 }
 
                                 if (validation.getPermanentResidentialAddress1() != null && validation.getPermanentResidentialAddress1().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etPermStreet.setError(validation.getPermanentResidentialAddress1());
                                     etPermStreet.requestFocus();
 
                                 }
 
                                 if (validation.getPermanentResidentialAddressLandmark() != null && validation.getPermanentResidentialAddressLandmark().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etPerLandmark.setError(validation.getPermanentResidentialAddressLandmark());
                                     etPerLandmark.requestFocus();
 
                                 }
 
                                 if (validation.getPermanentResidentialAddressPincode() != null && validation.getPermanentResidentialAddressPincode().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etPerPincode.setError(validation.getPermanentResidentialAddressPincode());
                                     etPerPincode.requestFocus();
 
                                 }
 
                                 if (validation.getPermanentResidentialAddressCity() != null && validation.getPermanentResidentialAddressCity().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etPerCity.setError(validation.getPermanentResidentialAddressCity());
                                     etPerCity.requestFocus();
 
                                 }
                                 if (validation.getPermanentResidentialAddressState() != null && validation.getPermanentResidentialAddressState().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etPerState.setError(validation.getPermanentResidentialAddressState());
                                     etPerState.requestFocus();
 
@@ -717,47 +722,47 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
 
                                 if (validation.getDc() != null && validation.getDc().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     Toast.makeText(AddNewDeliveryBoy.this, validation.getDc(), Toast.LENGTH_LONG).show();
 
 
                                 }
                                 if (validation.getRoute_number() != null && validation.getRoute_number().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etRoute.setError(validation.getRoute_number());
                                     etRoute.requestFocus();
 
                                 }
                                 if (validation.getDriving_licence_num() != null && validation.getDriving_licence_num().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etDrivingNumber.setError(validation.getDriving_licence_num());
                                     etDrivingNumber.requestFocus();
                                 }
                                 if (validation.getDriving_licence_dob() != null && validation.getDriving_licence_dob().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     dob.setError(validation.getDriving_licence_dob());
                                     dob.requestFocus();
                                 }
                                 if (validation.getDriving_licence_image() != null && validation.getDriving_licence_image().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     Toast.makeText(AddNewDeliveryBoy.this, validation.getDriving_licence_image(), Toast.LENGTH_SHORT).show();
                                 }
                                 if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     etVehicle.setError(validation.getDriving_licence_dob());
                                     etVehicle.requestFocus();
                                 }
                                 if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     Toast.makeText(AddNewDeliveryBoy.this, validation.getLanguages(), Toast.LENGTH_SHORT).show();
                                 }
 
                                 if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     Toast.makeText(AddNewDeliveryBoy.this, validation.getProccessId(), Toast.LENGTH_SHORT).show();
                                 }
                                 if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
-                                    //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                     Toast.makeText(AddNewDeliveryBoy.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
                                 } /*else {
                                     Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
@@ -897,51 +902,51 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                                 etCurrentHouseNo.requestFocus();
                             }
                             if (validation.getPermanent_address() != null && validation.getPermanent_address().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 etPerHouseNo.setError(validation.getPermanent_address());
                                 etPerHouseNo.requestFocus();
 
                             }
                             if (validation.getDc() != null && validation.getDc().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 Toast.makeText(AddNewDeliveryBoy.this, validation.getDc(), Toast.LENGTH_LONG).show();
                             }
                             if (validation.getRoute_number() != null && validation.getRoute_number().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 etRoute.setError(validation.getRoute_number());
                                 etRoute.requestFocus();
 
                             }
                             if (validation.getDriving_licence_num() != null && validation.getDriving_licence_num().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 etDrivingNumber.setError(validation.getDriving_licence_num());
                                 etDrivingNumber.requestFocus();
                             }
                             if (validation.getDriving_licence_dob() != null && validation.getDriving_licence_dob().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 dob.setError(validation.getDriving_licence_dob());
                                 dob.requestFocus();
                             }
                             if (validation.getDriving_licence_image() != null && validation.getDriving_licence_image().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 Toast.makeText(AddNewDeliveryBoy.this, validation.getDriving_licence_image(), Toast.LENGTH_SHORT).show();
                             }
                             if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 etVehicle.setError(validation.getDriving_licence_dob());
                                 etVehicle.requestFocus();
                             }
                             if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 Toast.makeText(AddNewDeliveryBoy.this, validation.getLanguages(), Toast.LENGTH_SHORT).show();
                             }
 
                             if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 Toast.makeText(AddNewDeliveryBoy.this, validation.getProccessId(), Toast.LENGTH_SHORT).show();
                             }
                             if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
-                                //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 Toast.makeText(AddNewDeliveryBoy.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_LONG).show();
@@ -1180,15 +1185,16 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 licenceImagePath = ImagePicker.getBitmapPath(bitmap, AddNewDeliveryBoy.this);
                 ivDriving_Licence.setPadding(0, 0, 0, 0);
-                // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+                // ImageUtils.getInstant().getImageUri(EditPanCardActivity, photo);
                 Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
+                ApiCallGetDetailLicence(licenceImagePath);
 
             }
             if (requestCode == PROFILEIMAGE) {
                 Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 profileImagepath = ImagePicker.getBitmapPath(bitmap, this);
-                ivProfile.setPadding(0, 0, 0, 0);// ImageUtils.getInstant().getImageUri(getActivity(), photo);
+                ivProfile.setPadding(0, 0, 0, 0);// ImageUtils.getInstant().getImageUri(EditPanCardActivity, photo);
 
                 Glide.with(this).load(profileImagepath).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivProfile) {
                     @Override
@@ -1236,6 +1242,73 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             casted_image6.delete();
         }
 
+    }
+
+
+    private void ApiCallGetDetailLicence(String drivingLicencePath) {
+        // MultipartBody.Part voter_front_part = null;
+        MultipartBody.Part driving_licence_part = null;
+
+        Mylogger.getInstance().Logit(TAG, "getUserInfo");
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+
+       /* File imagefile = new File(voterImagePathFront);
+        voter_front_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathFront)), imagefile));
+*/
+        File imagefile1 = new File(drivingLicencePath);
+        driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
+
+        Mylogger.getInstance().Logit(TAG, "getocUserInfo");
+        mProgressDialog.setMessage("Fetching details. Please wait......");
+        mProgressDialog.show();
+        // hideKeyboardwithoutPopulateFragment();
+        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);
+        call.enqueue(new Callback<DrivingLicenceDetailResponse>() {
+            @Override
+            public void onResponse(Call<DrivingLicenceDetailResponse> call, Response<DrivingLicenceDetailResponse> response) {
+                mProgressDialog.dismiss();
+                try {
+                    if (response.isSuccessful()) {
+                        DrivingLicenceDetailResponse voterOCRGetDetaisResponse = response.body();
+                        if (voterOCRGetDetaisResponse.getStatus().equalsIgnoreCase("success")) {
+                            Toast.makeText(AddNewDeliveryBoy.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            etDrivingNumber.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber());
+
+                            //fathername = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFatherName();
+                            dob.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
+                           /* dlnumber = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber();
+                            dlIdDetailId = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
+                            filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
+                            fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();*/
+
+
+                        } else {
+                            Toast.makeText(AddNewDeliveryBoy.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(AddNewDeliveryBoy.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mProgressDialog.dismiss();
+                    Toast.makeText(AddNewDeliveryBoy.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                    //  Toast.makeText(EditPanCardActivity, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DrivingLicenceDetailResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(AddNewDeliveryBoy.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //      Toast.makeText(EditPanCardActivity, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
 
