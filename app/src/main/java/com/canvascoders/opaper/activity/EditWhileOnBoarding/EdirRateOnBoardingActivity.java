@@ -236,8 +236,8 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
-                Log.e("REsponse code", "" + response.code());
-                Log.e("REspomse msg", "" + response.body().toString());
+              //  Log.e("REsponse code", "" + response.code());
+               // Log.e("REspomse msg", "" + response.body().toString());
                 if (response.isSuccessful()) {
                     mProgressDialog.dismiss();
                     try {
