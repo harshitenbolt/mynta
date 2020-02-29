@@ -110,8 +110,9 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_bank_details);
         sessionManager = new SessionManager(this);
+        networkConnectivity = new NetworkConnectivity(this);
         requestPermissionHandler = new RequestPermissionHandler();
-
+        str_process_id = getIntent().getStringExtra(Constants.KEY_PROCESS_ID);
         initView();
     }
 
@@ -162,7 +163,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btExtract) {
-            Constants.hideKeyboardwithoutPopulate(EditBankDetailsActivity.this);
+//            Constants.hideKeyboardwithoutPopulate(EditBankDetailsActivity.this);
             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
 
                 if (validation()) {
@@ -565,6 +566,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     progressDialog.dismiss();
+                    Toast.makeText(EditBankDetailsActivity.this, "#errorcode :- 2093 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });

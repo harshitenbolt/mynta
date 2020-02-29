@@ -855,15 +855,14 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION
         }, 123, new RequestPermissionHandler.RequestPermissionListener() {
+
             @Override
             public void onSuccess() {
 
             }
-
             @Override
             public void onFailed() {
                 Toast.makeText(getApplicationContext(), "request permission failed", Toast.LENGTH_SHORT).show();
-
             }
         });
 
