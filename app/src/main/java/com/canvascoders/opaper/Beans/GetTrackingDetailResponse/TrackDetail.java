@@ -21,6 +21,44 @@ public class TrackDetail {
     @SerializedName("fill_details")
     @Expose
     private Integer fillDetails;
+
+    @SerializedName("fill_store_details")
+    @Expose
+    private Integer fillStoreDetails;
+    @SerializedName("fill_owner_details")
+    @Expose
+    private Integer fillOwnerDetails;
+
+    public Integer getFillStoreDetails() {
+        return fillStoreDetails;
+    }
+
+    public void setFillStoreDetails(Integer fillStoreDetails) {
+        this.fillStoreDetails = fillStoreDetails;
+    }
+
+    public Integer getFillOwnerDetails() {
+        return fillOwnerDetails;
+    }
+
+    public void setFillOwnerDetails(Integer fillOwnerDetails) {
+        this.fillOwnerDetails = fillOwnerDetails;
+    }
+
+    public Integer getFillGstDetails() {
+        return fillGstDetails;
+    }
+
+    public void setFillGstDetails(Integer fillGstDetails) {
+        this.fillGstDetails = fillGstDetails;
+    }
+
+    @SerializedName("fill_gst_details")
+    @Expose
+    private Integer fillGstDetails;
+
+
+
     @SerializedName("upload_files")
     @Expose
     private Integer uploadFiles;

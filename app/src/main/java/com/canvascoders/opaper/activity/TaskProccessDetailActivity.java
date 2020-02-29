@@ -396,11 +396,11 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
 
                         if (getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn().equalsIgnoreCase("")) {
 
-                            if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillDetails() == 2) {
+                            if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillGstDetails() == 2) {
                                 llGstDisable.setVisibility(View.VISIBLE);
                                 llGstEnable.setVisibility(View.GONE);
                                 tvGstText.setVisibility(View.VISIBLE);
-                            } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillDetails() == 1) {
+                            } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillGstDetails() == 1) {
                                 llGstDisable.setVisibility(View.GONE);
                                 llGstEnable.setVisibility(View.VISIBLE);
                                 tvGSTNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn());
@@ -428,11 +428,11 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
 
                             }
                         } else {
-                            if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillDetails() == 2) {
+                            if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillGstDetails() == 2) {
                                 llGstDisable.setVisibility(View.VISIBLE);
                                 llGstEnable.setVisibility(View.GONE);
                                 tvGstText.setVisibility(View.VISIBLE);
-                            } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillDetails() == 1) {
+                            } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillGstDetails() == 1) {
                                 llGstDisable.setVisibility(View.GONE);
                                 llGstEnable.setVisibility(View.VISIBLE);
                                 tvGstText.setVisibility(View.GONE);
@@ -465,8 +465,9 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                         }
 
 
-                        // Information
-                        if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillDetails() == 1) {
+                        // Store
+                        if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillStoreDetails() == 1) {
+/*
                             llOwnerEnable.setVisibility(View.VISIBLE);
                             llOwnerDisable.setVisibility(View.GONE);
                             tvOwnerNAme.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getOwnerName());
@@ -477,6 +478,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                                     getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressCity() + " " +
                                     getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressState() + " " +
                                     getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressPicode());
+*/
 
 
                             llVendorDetailsEnable.setVisibility(View.VISIBLE);
@@ -501,7 +503,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                                     // tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
 
                                     if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillOwnerDetailsRemark().equalsIgnoreCase("")) {
-                                        llOwnerEnable.setVisibility(View.VISIBLE);
+                                      /*  llOwnerEnable.setVisibility(View.VISIBLE);
                                         tvOwnerNAme.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getOwnerName());
                                         tvOwnerEmailID.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getEmail());
                                         tvOwnerAddress.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress() + " " +
@@ -510,12 +512,12 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                                                 getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressCity() + " " +
                                                 getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressState() + " " +
                                                 getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressPicode());
-
-                                        llOwnerDisable.setVisibility(View.GONE);
+*/
+                                 /*       llOwnerDisable.setVisibility(View.GONE);
                                         tvOwnerText.setVisibility(View.GONE);
                                         tvRemarkOwner.setVisibility(View.VISIBLE);
                                         tvRemarkOwner.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillOwnerDetailsRemark());
-                                    }
+                                 */   }
                                 }
 
 
@@ -548,25 +550,131 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             }
 
 
-                        } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillDetails() == 0) {
-                            llOwnerEnable.setVisibility(View.GONE);
+                        } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillStoreDetails() == 0) {
+                            /*llOwnerEnable.setVisibility(View.GONE);
                             llOwnerDisable.setVisibility(View.VISIBLE);
                             tvOwnerText.setVisibility(View.GONE);
-
+*/
                             llVendorDetailsEnable.setVisibility(View.GONE);
                             llVendorsDetailsDisable.setVisibility(View.VISIBLE);
                             tvStoreText.setVisibility(View.GONE);
 
 
                         } else {
-                            llOwnerEnable.setVisibility(View.GONE);
+                           /* llOwnerEnable.setVisibility(View.GONE);
                             llOwnerDisable.setVisibility(View.VISIBLE);
                             tvOwnerText.setVisibility(View.VISIBLE);
-
+*/
                             llVendorDetailsEnable.setVisibility(View.GONE);
                             llVendorsDetailsDisable.setVisibility(View.VISIBLE);
                             tvStoreText.setVisibility(View.VISIBLE);
                         }
+
+                        // Owner
+                        if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillOwnerDetails() == 1) {
+                            llOwnerEnable.setVisibility(View.VISIBLE);
+                            llOwnerDisable.setVisibility(View.GONE);
+                            tvOwnerNAme.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getOwnerName());
+                            tvOwnerEmailID.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getEmail());
+                            tvOwnerAddress.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress() + " " +
+                                    getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress1() + " " +
+                                    getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressLandmark() + " " +
+                                    getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressCity() + " " +
+                                    getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressState() + " " +
+                                    getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressPicode());
+
+/*
+
+                            llVendorDetailsEnable.setVisibility(View.VISIBLE);
+                            llVendorsDetailsDisable.setVisibility(View.GONE);
+                            tvStoreName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreName());
+                            tvStoreAddress.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddress() + " " +
+                                    getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddress1() + " " +
+                                    getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddressLandmark() + " " +
+                                    getTrackDetailsResponse.getData().get(0).getBasicDetails().getCity() + " " +
+                                    getTrackDetailsResponse.getData().get(0).getBasicDetails().getState() + " " +
+                                    getTrackDetailsResponse.getData().get(0).getBasicDetails().getPincode());
+                            tvStoreDCName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getDc());
+*/
+
+
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                                //  tvRemarkOwner.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillOwnerDetailsRemark());
+                                // tvRemarkStore.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillStoreDetailsRemark());
+                                //  tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
+
+
+                                if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                                    // tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
+
+                                    if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillOwnerDetailsRemark().equalsIgnoreCase("")) {
+                                        llOwnerEnable.setVisibility(View.VISIBLE);
+                                        tvOwnerNAme.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getOwnerName());
+                                        tvOwnerEmailID.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getEmail());
+                                        tvOwnerAddress.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress() + " " +
+                                                getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress1() + " " +
+                                                getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressLandmark() + " " +
+                                                getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressCity() + " " +
+                                                getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressState() + " " +
+                                                getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressPicode());
+                                        llOwnerDisable.setVisibility(View.GONE);
+                                        tvOwnerText.setVisibility(View.GONE);
+                                        tvRemarkOwner.setVisibility(View.VISIBLE);
+                                        tvRemarkOwner.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillOwnerDetailsRemark());
+                                    }
+                                }
+
+
+                             /*   if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                                    // tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
+
+                                    if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillStoreDetailsRemark().equalsIgnoreCase("")) {
+                                        llVendorDetailsEnable.setVisibility(View.VISIBLE);
+                                        tvStoreName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreName());
+                                        tvStoreAddress.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddress() + " " +
+                                                getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddress1() + " " +
+                                                getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddressLandmark() + " " +
+                                                getTrackDetailsResponse.getData().get(0).getBasicDetails().getCity() + " " +
+                                                getTrackDetailsResponse.getData().get(0).getBasicDetails().getState() + " " +
+                                                getTrackDetailsResponse.getData().get(0).getBasicDetails().getPincode());
+                                        tvStoreDCName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getDc());
+                                        llVendorsDetailsDisable.setVisibility(View.GONE);
+                                        tvStoreText.setVisibility(View.GONE);
+                                        tvRemarkStore.setVisibility(View.VISIBLE);
+                                        tvRemarkStore.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillStoreDetailsRemark());
+                                    }
+                                }*/
+
+                                if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark().equalsIgnoreCase("")) {
+                                    tvRemarkGST.setVisibility(View.VISIBLE);
+                                    tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
+                                }
+
+
+                            }
+
+
+                        } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillOwnerDetails() == 0) {
+                            llOwnerEnable.setVisibility(View.GONE);
+                            llOwnerDisable.setVisibility(View.VISIBLE);
+                            tvOwnerText.setVisibility(View.GONE);
+                        /*    llVendorDetailsEnable.setVisibility(View.GONE);
+                            llVendorsDetailsDisable.setVisibility(View.VISIBLE);
+                            tvStoreText.setVisibility(View.GONE);*/
+
+
+                        } else {
+                            llOwnerEnable.setVisibility(View.GONE);
+                            llOwnerDisable.setVisibility(View.VISIBLE);
+                            tvOwnerText.setVisibility(View.VISIBLE);
+                            /*llVendorDetailsEnable.setVisibility(View.GONE);
+                            llVendorsDetailsDisable.setVisibility(View.VISIBLE);
+                            tvStoreText.setVisibility(View.VISIBLE);*/
+                        }
+
+
+
+
 
 
                         // Upload Files
