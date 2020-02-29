@@ -1100,14 +1100,14 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
                         }
                     }
                 } else {
-                    Constants.showAlert(v, "#errorcode :- 2029 " + getString(R.string.something_went_wrong), false);
+                    Constants.showAlert(v, "#errorcode :- 2094 " + getString(R.string.something_went_wrong), false);
                 }
             }
 
             @Override
             public void onFailure(Call<GetUserDetailResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(EditStoreInformationActivity.this, "#errorcode :- 2029 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditStoreInformationActivity.this, "#errorcode :- 2094 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 //   Toast.makeText(EditStoreInformationActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }

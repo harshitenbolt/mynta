@@ -23,6 +23,7 @@ import com.canvascoders.opaper.Beans.GenerateResetPWResponse.GenerateResetPWResp
 import com.canvascoders.opaper.Beans.GetAgentDetailResponse.GetAgentDetailResponse;
 import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGstListing.GetGstListing;
+import com.canvascoders.opaper.Beans.GetGstPanEditResponse.GetGstPanEditResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
 import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
 import com.canvascoders.opaper.Beans.GetVendorInvoiceList.GetVendorInvoiceDetails;
@@ -668,6 +669,12 @@ public interface ApiInterface {
     @Multipart
     @POST("edit-gstn-info")
     Call<VerifyGst> editGST(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
+
+
+    @Multipart
+    @POST("edit-pan-gst-detail")
+    Call<GetGstPanEditResponse> editGSTPAN(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment,
+                                           @Part MultipartBody.Part panimage);
 
 
     @FormUrlEncoded

@@ -548,14 +548,14 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
                             }
 
                         } else {
-                            Toast.makeText(EditBankDetailsActivity.this, "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                            Toast.makeText(EditBankDetailsActivity.this, "#errorcode :- 2093 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                             // Toast.makeText(EditBankDetailsActivity.this, response.message(), Toast.LENGTH_LONG).show();
                         }
                     } catch (Exception e) {
                         progressDialog.dismiss();
                         e.printStackTrace();
-                        Toast.makeText(EditBankDetailsActivity.this, "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditBankDetailsActivity.this, "#errorcode :- 2093 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                     }
 

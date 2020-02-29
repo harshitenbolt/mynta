@@ -1,12 +1,15 @@
 package com.canvascoders.opaper.activity.EditWhileOnBoarding;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -18,11 +21,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
+import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
+import com.canvascoders.opaper.Beans.GetGSTVerify.StoreAddress;
+import com.canvascoders.opaper.Beans.GetGstPanEditResponse.GetGstPanEditResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.Beans.UpdatePanResponse.UpdatePancardResponse;
@@ -38,6 +45,7 @@ import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.DialogUtil;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
+import com.canvascoders.opaper.utils.NetworkConnectivity;
 import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
@@ -45,6 +53,7 @@ import com.canvascoders.opaper.utils.SessionManager;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -54,6 +63,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
+import static com.canvascoders.opaper.activity.EditGSTActivity.CROPPED_IMAGE_3;
 
 public class EditPanCardActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -72,10 +82,23 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
     public static final int CROPPED_IMAGE = 5333;
     private EditText etPanName, etFatherName, etpanNumber;
     private Button btSubmit;
+    String gstImg = "", imagecamera = "";
     boolean individual = true;
+    private ImageView ivSearch, ivEdit;
     String panno = "";
+    private EditText etGST, etStoreNAme, etStoreAddress;
+    ImageView ivSGstImage;
+    private static int IMAGE_SELCTION_CODE = 0;
+    private static final int IMAGE_GST = 102;
+    // CardView
+    CardView cvGSTDetails;
+    ScrollView scMain;
+    String final_dc = "";
+    TextView tvMessage;
+    String store_address, store_address1, store_address_landmark, store_city, store_state, store_pincode, store_full_address;
 
     GPSTracker gps;
+    NetworkConnectivity networkConnectivity;
     TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -106,8 +129,10 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
         sessionManager = new SessionManager(this);
         str_process_id = getIntent().getStringExtra(Constants.KEY_PROCESS_ID);
-
+        networkConnectivity = new NetworkConnectivity(this);
         init();
+        scMain = findViewById(R.id.scMain);
+        tvMessage = findViewById(R.id.tvTextMessage);
         requestPermissionHandler = new RequestPermissionHandler();
 
     }
@@ -122,7 +147,20 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         etPanName = findViewById(R.id.etPanName);
         etpanNumber = findViewById(R.id.etPanNumber);
         btSubmit = findViewById(R.id.btSubmit);
-        btSubmit.setOnClickListener(this);
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validation(0)) {
+//                    Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+
+                        ExtractPanDetail();
+                    } else {
+                        Constants.ShowNoInternet(EditPanCardActivity.this);
+                    }
+                }
+            }
+        });
         ivBack = findViewById(R.id.ivBack);
         ivBack.setOnClickListener(this);
         ivPanImage = findViewById(R.id.ivPanImage);
@@ -142,6 +180,29 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
             Constants.ShowNoInternet(EditPanCardActivity.this);
         }
         //  ApiCallGetDetails();
+
+
+        // gst details
+        cvGSTDetails = findViewById(R.id.cvGstDetails);
+        etGST = findViewById(R.id.etGstNumber);
+
+        ivSGstImage = findViewById(R.id.ivGSTImage);
+        ivSGstImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                capture_gst_image();
+            }
+        });
+
+        ivEdit = findViewById(R.id.ivEdit);
+        ivEdit.setOnClickListener(this);
+        ivSearch = findViewById(R.id.ivSearch);
+        ivSearch.setOnClickListener(this);
+
+        etStoreNAme = findViewById(R.id.etStoreName);
+
+        etStoreAddress = findViewById(R.id.etAddress);
+
     }
 
 
@@ -256,32 +317,149 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btSubmit:
-                if (validation()) {
-//                    Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
-                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-
-                        ExtractPanDetail();
-                    } else {
-                        Constants.ShowNoInternet(EditPanCardActivity.this);
-                    }
-                }
-                break;
 
 
             case R.id.ivPanCard:
-                capture_pan_card_image();
+                if (panImagepath.equalsIgnoreCase("")) {
+                    capture_pan_card_image();
+                } else {
+                    showAlert();
+
+                }
                 break;
 
             case R.id.tvClickPanSelected:
-                capture_pan_card_image();
+                if (panImagepath.equalsIgnoreCase("")) {
+                    capture_pan_card_image();
+                } else {
+                    showAlert();
+
+                }
                 break;
 
             case R.id.ivBack:
                 finish();
                 break;
+
+
+            case R.id.ivSearch:
+                if (isValid()) {
+                    APiCallVerifyGST();
+                }
+                break;
+            case R.id.ivEdit:
+                showAlert1();
+                break;
+
+
         }
     }
+
+
+    private boolean isValid() {
+        if (TextUtils.isEmpty(etGST.getText().toString())) {
+            etGST.setError("Provide GST");
+            etGST.requestFocus();
+            return false;
+        }
+        /*
+         */
+        return true;
+
+
+    }
+
+
+    private void showAlert() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(EditPanCardActivity.this);
+        alertDialog.setTitle("Alert !!!");
+        alertDialog.setMessage("Are you sure you want to Edit PAN Card ?");
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                capture_pan_card_image();
+
+                etStoreAddress.getText().clear();
+                etStoreNAme.getText().clear();
+                tvPanClick.setVisibility(View.VISIBLE);
+                ivPanImageSelected.setVisibility(View.GONE);
+                panImagepath = "";
+                Glide.with(EditPanCardActivity.this).load(panImagepath).into(ivPanImage);
+                // pan part will hold up ...
+
+                cvGSTDetails.setVisibility(View.GONE);
+
+                btSubmit.setText("UPDATE PAN ");
+                btSubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (validation(0)) {
+                            if (networkConnectivity.isNetworkAvailable()) {
+                                ExtractPanDetail();
+                            } else {
+                                Constants.ShowNoInternet(EditPanCardActivity.this);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+        alertDialog.show();
+    }
+
+    private void showAlert1() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(EditPanCardActivity.this);
+        alertDialog.setTitle("Alert !!!");
+        alertDialog.setMessage("Are you sure you want to Edit GST Number?");
+        alertDialog.setCancelable(false);
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                etGST.setEnabled(true);
+                etGST.getText().clear();
+                etStoreAddress.getText().clear();
+                etStoreNAme.getText().clear();
+                ivSearch.setVisibility(View.VISIBLE);
+                ivEdit.setVisibility(View.GONE);
+                gstImg = "";
+                Glide.with(EditPanCardActivity.this).load(gstImg).into(ivSGstImage);
+                // pan part will hold up ...
+
+                //   rvBottomPan.setVisibility(View.GONE);
+
+               /* btSubmit.setText("SUBMIT");
+                btSubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (validation(v, 0)) {
+                            if (networkConnectivity.isNetworkAvailable()) {
+                                APiCallSubmitGST();
+                            } else {
+                                Constants.ShowNoInternet(EditPanCardActivity.this);
+                            }
+                        }
+                    }
+                });*/
+            }
+        });
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+        alertDialog.show();
+    }
+
 
     private void UpadatePan(String name, String fathername, String panId, String storename) {
        /* gps = new GPSTracker(EditPanCardActivity.this);
@@ -341,6 +519,35 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                         finish();
                     }
                     if (updatePancardResponse.getResponseCode() == 203) {
+                        DialogUtil.dismiss();
+                        cvGSTDetails.setVisibility(View.VISIBLE);
+
+                        tvMessage.setText(updatePancardResponse.getResponse());
+                        scMain.smoothScrollTo(0, cvGSTDetails.getBottom());
+                        //rvBottomPan.setVisibility(View.VISIBLE);
+                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                            // getBankDetails(mContext,s.toString(),processId);
+                            ApiCallGetDetails();
+                        } else {
+                            Constants.ShowNoInternet(EditPanCardActivity.this);
+                        }
+                        btSubmit.setText("SUBMIT");
+
+
+                        btSubmit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (validation(1)) {
+                                    if (networkConnectivity.isNetworkAvailable()) {
+                                        ApiCallSubmitDataTogather(name, fathername, panId, storename);
+                                    } else {
+                                        Constants.ShowNoInternet(EditPanCardActivity.this);
+                                    }
+                                }
+                            }
+                        });
+
+
                         Toast.makeText(EditPanCardActivity.this, updatePancardResponse.getResponse(), Toast.LENGTH_SHORT).show();
 
                     }
@@ -405,7 +612,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    private boolean validation() {
+    private boolean validation(int i) {
 
         if (!isPanSelected) {
             Toast.makeText(EditPanCardActivity.this, "Please select PAN Image", Toast.LENGTH_SHORT).show();
@@ -415,6 +622,30 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         if (panImagepath.equalsIgnoreCase("")) {
             Toast.makeText(EditPanCardActivity.this, "Please select PAN Image", Toast.LENGTH_SHORT).show();
             return false;
+        }
+
+        if (i == 1) {
+            if (etGST.getText().toString().equalsIgnoreCase("")) {
+                etGST.setError("Provide GST");
+                etGST.requestFocus();
+                return false;
+            }
+            if (etStoreAddress.getText().toString().equalsIgnoreCase("")) {
+                etStoreAddress.setError("Provide Store Address Search GST Number ");
+                etStoreAddress.requestFocus();
+                return false;
+            }
+            Matcher gstMatcher = Constants.GST_PATTERN.matcher(etGST.getText().toString());
+            if (!gstMatcher.matches()) {
+                etGST.setError("Provide valid GST no.");
+                //showMSG(false, "Provide Valid GST No.");
+                etGST.requestFocus();
+                return false;
+            }
+            if (gstImg.equalsIgnoreCase("")) {
+                Toast.makeText(EditPanCardActivity.this, "Please select GST Image first", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         }
 
 
@@ -458,6 +689,26 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                 }
 
             }
+
+            if (requestCode == IMAGE_GST) {
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditPanCardActivity.this, resultCode, data);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditPanCardActivity.this);
+                Intent intent = new Intent(EditPanCardActivity.this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                startActivityForResult(intent, CROPPED_IMAGE_3);
+            }
+
+
+            if (requestCode == CROPPED_IMAGE_3) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                gstImg = RealPathUtil.getPath(EditPanCardActivity.this, imgURI);
+                try {
+                    Glide.with(EditPanCardActivity.this).load(gstImg).into(ivSGstImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
 
     }
@@ -477,38 +728,6 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
             File imagefile = new File(panImagepath);
             typedFile = MultipartBody.Part.createFormData("image", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
-
-           /* Call<PanImageResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getPancardOcrUrl("Bearer "+sessionManager.getToken(),sessionManager.getToken(), str_process_id, typedFile);
-
-            callUpload.enqueue(new Callback<PanImageResponse>() {
-                @Override
-                public void onResponse(Call<PanImageResponse> call, retrofit2.Response<PanImageResponse> response) {
-                    mProgressDialog.dismiss();
-
-                    if (response.isSuccessful()) {
-                        PanImageResponse panImageResponse = response.body();
-                        if (panImageResponse.getResponseCode() == 200) {
-                            String imagePath = panImageResponse.getData().get(0).getPan_url();
-                            if (!TextUtils.isEmpty(imagePath)) {
-                                ExtractPanDetail extractPanDetail = new ExtractPanDetail();
-                                extractPanDetail.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imagePath);
-                            } else {
-
-                            }
-                        } else if (panImageResponse.getResponseCode() == 405) {
-                            sessionManager.logoutUser(mcontext);
-                        } else {
-                            Toast.makeText(mcontext, panImageResponse.getResponse(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<PanImageResponse> call, Throwable t) {
-                    mProgressDialog.dismiss();
-                    Toast.makeText(mcontext, t.getMessage().toString(), Toast.LENGTH_LONG).show();
-                }
-            });*/
 
 
             Call<GetPanDetailsResponse> call = ApiClient.getClient2().create(ApiInterface.class).getPanDetails(params, typedFile);
@@ -542,6 +761,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 //                                            Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                                 UpadatePan(name, fathername, id, "");
+                                               // DialogUtil.dismiss();
                                             } else {
                                                 Constants.ShowNoInternet(EditPanCardActivity.this);
                                             }
@@ -551,6 +771,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                             //  Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                                 UpadatePan(name, fathername, id, storename);
+                                             //   DialogUtil.dismiss();
                                             } else {
                                                 Constants.ShowNoInternet(EditPanCardActivity.this);
                                             }
@@ -601,6 +822,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                                 Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                                                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                                     UpadatePan(name, fathername, id, "");
+                                                  //  DialogUtil.dismiss();
                                                 } else {
                                                     Constants.ShowNoInternet(EditPanCardActivity.this);
                                                 }
@@ -610,6 +832,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                                 Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                                                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                                     UpadatePan(name, fathername, id, storename);
+                                                  //  DialogUtil.dismiss();
                                                 } else {
                                                     Constants.ShowNoInternet(EditPanCardActivity.this);
                                                 }
@@ -677,6 +900,261 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
             fragmentTransaction.commit();
 
         }
+    }
+
+
+    // capture GST Image
+    private void capture_gst_image() {
+        requestPermissionHandler.requestPermission(EditPanCardActivity.this, new String[]{
+                Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION
+        }, 123, new RequestPermissionHandler.RequestPermissionListener() {
+            @Override
+            public void onSuccess() {
+
+                IMAGE_SELCTION_CODE = IMAGE_GST;
+                Intent chooseImageIntent = ImagePicker.getCameraIntent(EditPanCardActivity.this);
+                startActivityForResult(chooseImageIntent, IMAGE_GST);
+
+            }
+
+            @Override
+            public void onFailed() {
+                Toast.makeText(EditPanCardActivity.this, "request permission failed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+
+    private void APiCallVerifyGST() {
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.show();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_PROCESS_ID, String.valueOf(str_process_id));
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        params.put(Constants.PARAM_GSTN, etGST.getText().toString());
+
+        Call<GetGSTVerify> call = ApiClient.getClient().create(ApiInterface.class).getGSTVerify("Bearer " + sessionManager.getToken(), params);
+        call.enqueue(new Callback<GetGSTVerify>() {
+            @Override
+            public void onResponse(Call<GetGSTVerify> call, Response<GetGSTVerify> response) {
+                if (response.isSuccessful()) {
+                    mProgressDialog.dismiss();
+                    GetGSTVerify getGSTVerify = response.body();
+                    if (getGSTVerify.getResponseCode() == 200) {
+                        //   Toast.makeText(EditPanCardActivity.this, getGSTVerify.getResponse(), Toast.LENGTH_LONG).show();
+                     /*   ivSearch.setBackgroundResource(0);
+                        ivSearch.setImageResource(R.drawable.checked);*/
+                        etStoreNAme.setText(getGSTVerify.getData().get(0).getStoreName());
+                        StoreAddress storeAddress = getGSTVerify.getData().get(0).getStoreAddress();
+                        etStoreAddress.setText(storeAddress.getBnm() + " " + storeAddress.getBno() + " " + storeAddress.getSt() + " " + storeAddress.getLoc() + " " + storeAddress.getCity() + " " + storeAddress.getDst() + " " + storeAddress.getStcd() + " " + storeAddress.getPncd());
+
+                        store_address = storeAddress.getBnm() + " " + storeAddress.getBno();
+                        store_address1 = storeAddress.getSt();
+                        store_address_landmark = storeAddress.getLoc();
+                        if (storeAddress.getCity().equalsIgnoreCase("")) {
+                            store_city = storeAddress.getDst();
+                        } else {
+                            store_city = storeAddress.getCity();
+                        }
+                        store_state = storeAddress.getStcd();
+                        store_pincode = storeAddress.getPncd();
+                        store_full_address = etStoreAddress.getText().toString();
+                        ivEdit.setVisibility(View.VISIBLE);
+                        ivSearch.setVisibility(View.GONE);
+                        etGST.setEnabled(false);
+                        //addDC(storeAddress.getPncd());
+
+
+                        DialogUtil.addressDetails(EditPanCardActivity.this, store_address, store_address1, store_address_landmark, store_pincode, store_city, store_state, new DialogListner() {
+                            @Override
+                            public void onClickPositive() {
+
+                            }
+
+                            @Override
+                            public void onClickNegative() {
+
+                            }
+
+                            @Override
+                            public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String city, String state, String dc) {
+                                // etCity.getText().toString(), etState.getText().toString(),""+dc.getSelectedItem());
+                                store_address = accName;
+                                store_address1 = payeename;
+                                store_address_landmark = ifsc;
+                                store_pincode = bankname;
+                                store_city = city;
+                                store_state = state;
+                                //addDC(store_pincode);
+                                store_full_address = store_address + " " + store_address1 + " " + store_address_landmark + " " + store_pincode + " " + store_city + " " + store_state;
+                                etStoreAddress.setText(store_full_address);
+                                final_dc = dc;
+
+                            }
+                        });
+
+
+                    } else if (getGSTVerify.getResponseCode() == 400) {
+                        if (getGSTVerify.getValidation() != null) {
+                            Validation validation = getGSTVerify.getValidation();
+                            if (validation.getGstn() != null && validation.getGstn().length() > 0) {
+                                etGST.setError(validation.getGstn());
+                                etGST.requestFocus();
+                                // return false;
+                            } else {
+                                Toast.makeText(EditPanCardActivity.this, getGSTVerify.getResponse(), Toast.LENGTH_LONG).show();
+
+                            }
+                        } else {
+
+                            Toast.makeText(EditPanCardActivity.this, getGSTVerify.getResponse(), Toast.LENGTH_LONG).show();
+                        }
+                    } else if (getGSTVerify.getResponseCode() == 202) {
+                        sessionManager.logoutUser(EditPanCardActivity.this);
+                    } else {
+                        Toast.makeText(EditPanCardActivity.this, getGSTVerify.getResponse(), Toast.LENGTH_LONG).show();
+
+                    }
+                } else {
+                    mProgressDialog.dismiss();
+                    Toast.makeText(EditPanCardActivity.this, "#errorcode 2079 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetGSTVerify> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditPanCardActivity.this, "#errorcode 2079 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+    }
+
+
+    private void ApiCallSubmitDataTogather(String name, String fathername, String panId, String storename) {
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.show();
+        ;
+        MultipartBody.Part typedFile = null;
+        MultipartBody.Part typedFilepan = null;
+        HashMap<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+
+
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        params.put(Constants.PARAM_GSTN, etGST.getText().toString());
+        params.put(Constants.PARAM_STORE_NAME, etStoreNAme.getText().toString());
+        params.put(Constants.PARAM_STORE_ADDRESS, store_address);
+        params.put(Constants.PARAM_STORE_ADDRESS1, store_address1);
+        params.put(Constants.PARAM_STORE_ADDRESS_LANDMARK, store_address_landmark);
+        params.put(Constants.PARAM_CITY, store_city);
+        params.put(Constants.PARAM_STATE, store_state);
+        params.put(Constants.PARAM_PINCODE, store_pincode);
+        params.put(Constants.PARAM_STORE_FULL_ADDRESS, store_full_address);
+        params.put(Constants.PARAM_IF_GST, "yes");
+        params.put(Constants.PARAM_DC, final_dc);
+        File imagefile = new File(gstImg);
+        typedFile = MultipartBody.Part.createFormData(Constants.PARAM_GST_CERTIFICATE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(gstImg)), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
+
+        //pan card department
+
+        params.put(Constants.PARAM_PAN_NO, "" + panId);
+        params.put(Constants.PARAM_PAN_NAME, "" + name);
+        params.put(Constants.PARAM_FATHER_NAME, "" + fathername);
+
+       /* params.put(Constants.PARAM_LATITUDE, lattitude);
+        params.put(Constants.PARAM_LONGITUDE, longitude);*/
+        File imagefile1 = new File(panImagepath);
+        typedFilepan = MultipartBody.Part.createFormData(Constants.PARAM_PAN_CARD_FRONT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile1));
+
+
+        Call<GetGstPanEditResponse> call = ApiClient.getClient().create(ApiInterface.class).editGSTPAN("Bearer " + sessionManager.getToken(), params, typedFile, typedFilepan);
+        call.enqueue(new Callback<GetGstPanEditResponse>() {
+            @Override
+            public void onResponse(Call<GetGstPanEditResponse> call, Response<GetGstPanEditResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetGstPanEditResponse getGstPanEditResponse = response.body();
+                    if (getGstPanEditResponse.getResponseCode() == 200) {
+                        Toast.makeText(EditPanCardActivity.this, getGstPanEditResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        mProgressDialog.dismiss();
+                        try {
+                            if (getGstPanEditResponse.getValidation() != null) {
+
+                                Validation validation = getGstPanEditResponse.getValidation();
+                                if (validation.getPanName() != null && validation.getPanName().length() > 0) {
+
+                                   // DialogUtil.etPanName.setError(validation.getPanName());
+                                    Toast.makeText(EditPanCardActivity.this, validation.getPanName(), Toast.LENGTH_LONG).show();
+
+                                }
+                                if (validation.getFatherName() != null && validation.getFatherName().length() > 0) {
+
+                                   // DialogUtil.etPanFatherName.setError(validation.getFatherName());
+                                    Toast.makeText(EditPanCardActivity.this, validation.getFatherName(), Toast.LENGTH_LONG).show();
+
+                                }
+
+                                if (validation.getStoreName() != null && validation.getStoreName().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getStoreName(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getAgentId(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getProccessId(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getPanNo() != null && validation.getPanNo().length() > 0) {
+                                  //  DialogUtil.etPanNumber.setError(validation.getPanNo());
+                                    Toast.makeText(EditPanCardActivity.this, validation.getPanNo(), Toast.LENGTH_LONG).show();
+
+                                }
+                                if (validation.getPanCardFront() != null && validation.getPanCardFront().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getPanCardFront(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getGstCertificateImage() != null && validation.getGstCertificateImage().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getGstCertificateImage(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getGstCertificateImage() != null && validation.getGstn().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getGstn(), Toast.LENGTH_LONG).show();
+                                }
+
+                                //    Toast.makeText(EditPanCardActivity.this, getGstPanEditResponse.getResponse(), Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(EditPanCardActivity.this, getGstPanEditResponse.getResponse(), Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            Toast.makeText(EditPanCardActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        // ErrorResponsePanCard errorResponsePanCard = response.body();
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<GetGstPanEditResponse> call, Throwable t) {
+
+            }
+        });
     }
 
 

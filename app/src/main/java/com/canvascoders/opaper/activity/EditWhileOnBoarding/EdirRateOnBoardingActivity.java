@@ -236,8 +236,8 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
-                Log.e("REsponse code", "" + response.code());
-                Log.e("REspomse msg", "" + response.body().toString());
+              //  Log.e("REsponse code", "" + response.code());
+               // Log.e("REspomse msg", "" + response.body().toString());
                 if (response.isSuccessful()) {
                     mProgressDialog.dismiss();
                     try {
@@ -286,14 +286,14 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
                     /////
                 } else {
                     mProgressDialog.dismiss();
-                    Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode :- 2031 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode :- 2101 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode :- 2031 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode :- 2101 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 //   Toast.makeText(EdirRateOnBoardingActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
@@ -518,28 +518,28 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
                             }
 
                         } else {
-                            Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode 2056 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode 2097 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         }
 
                     } catch (JSONException e) {
                         mProgressDialog.dismiss();
-                        Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode 2056 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode 2097 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     } catch (IOException e) {
                         mProgressDialog.dismiss();
                         e.printStackTrace();
-                        Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode 2056 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode 2097 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
-                    Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode 2056 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode 2097 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode 2056 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EdirRateOnBoardingActivity.this, "#errorcode 2097 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 // Toast.makeText(EdirRateOnBoardingActivity.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });

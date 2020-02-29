@@ -141,6 +141,7 @@
                                         android:src="@drawable/editnote" />
 
                                     <TextView
+                                        android:visibility="gone"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
@@ -295,7 +296,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -352,6 +354,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
+                                        android:visibility="gone"
                                         android:layout_marginLeft="@dimen/_5sdp"
                                         android:background="@drawable/rounded_corner_bordercolor_green"
                                         android:fontFamily="@font/montserratbold"
@@ -553,7 +556,9 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -609,6 +614,7 @@
                                         android:src="@drawable/editnote" />
 
                                     <TextView
+                                        android:visibility="gone"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
@@ -723,7 +729,8 @@
                                     <LinearLayout
                                         android:layout_width="@dimen/_45sdp"
                                         android:layout_height="@dimen/_35sdp"
-                                        android:layout_marginLeft="@dimen/_25sdp"></LinearLayout>
+                                        android:layout_marginLeft="@dimen/_25sdp"
+                                        android:visibility="gone"></LinearLayout>
 
                                     <LinearLayout
                                         android:layout_width="match_parent"
@@ -740,9 +747,10 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratsemibold"
-                                            android:text="Date of Birth"
+                                            android:text="NSDL Pan Name"
                                             android:textColor="@color/text_color_dark_grey"
-                                            android:textSize="@dimen/_8sdp" />
+                                            android:textSize="@dimen/_8sdp"
+                                            android:visibility="gone" />
 
                                         <TextView
                                             android:id="@+id/tvPanDOB"
@@ -752,7 +760,8 @@
                                             android:lines="1"
                                             android:singleLine="true"
                                             android:text=""
-                                            android:textSize="@dimen/_7sdp" />
+                                            android:textSize="@dimen/_7sdp"
+                                            android:visibility="gone" />
                                     </LinearLayout>
 
 
@@ -811,8 +820,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
-
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -866,6 +875,7 @@
                                         android:src="@drawable/editnote" />
 
                                     <TextView
+                                        android:visibility="gone"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
@@ -1066,7 +1076,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -1121,6 +1132,7 @@
                                         android:src="@drawable/editnote" />
 
                                     <TextView
+                                        android:visibility="gone"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
@@ -1314,7 +1326,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -1369,6 +1382,7 @@
                                         android:src="@drawable/editnote" />
 
                                     <TextView
+                                        android:visibility="gone"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
@@ -1563,7 +1577,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -1617,6 +1632,7 @@
                                         android:src="@drawable/editnote" />
 
                                     <TextView
+                                        android:visibility="gone"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
@@ -1788,7 +1804,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -1844,6 +1861,7 @@
                                         android:src="@drawable/editnote" />
 
                                     <TextView
+                                        android:visibility="gone"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
@@ -1959,7 +1977,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -2015,6 +2034,7 @@
                                         android:src="@drawable/editnote" />
 
                                     <TextView
+                                        android:visibility="gone"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
@@ -2142,7 +2162,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -2196,6 +2217,7 @@
                                         android:src="@drawable/editnote" />
 
                                     <TextView
+                                        android:visibility="gone"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
@@ -2323,7 +2345,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>
@@ -2370,13 +2393,14 @@
                                         android:textSize="@dimen/_12sdp" />
 
                                     <ImageView
-
                                         android:layout_width="@dimen/_15sdp"
                                         android:layout_height="@dimen/_15sdp"
                                         android:layout_gravity="end|center"
-                                        android:src="@drawable/editnote" />
+                                        android:src="@drawable/editnote"
+                                        android:visibility="gone" />
 
                                     <TextView
+                                        android:visibility="gone"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="end"
@@ -2406,7 +2430,8 @@
                                     <LinearLayout
                                         android:layout_width="@dimen/_45sdp"
                                         android:layout_height="@dimen/_35sdp"
-                                        android:layout_marginLeft="@dimen/_25sdp"></LinearLayout>
+                                        android:layout_marginLeft="@dimen/_25sdp">
+                                    </LinearLayout>
 
 
                                     <LinearLayout
@@ -2425,7 +2450,7 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratsemibold"
                                             android:singleLine="true"
-                                            android:text="No.of rates added"
+                                            android:text="Rates have been approved..."
                                             android:textColor="@color/text_color_dark_grey"
                                             android:textSize="@dimen/_8sdp" />
 
@@ -2503,7 +2528,8 @@
                                 android:lines="2"
                                 android:text=""
                                 android:textColor="@color/colorRed"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
 
 
                         </LinearLayout>

@@ -271,7 +271,7 @@ public class EditShopActImagesActivity extends AppCompatActivity implements View
                         }
 
                     } else {
-                        Toast.makeText(EditShopActImagesActivity.this, "#errorcode 2042 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditShopActImagesActivity.this, "#errorcode 2098 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                         // Toast.makeText(EditShopActImagesActivity.this, "Server Timeout", Toast.LENGTH_LONG).show();
                     }
@@ -281,7 +281,7 @@ public class EditShopActImagesActivity extends AppCompatActivity implements View
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     progressDialog.dismiss();
-                    Toast.makeText(EditShopActImagesActivity.this, "#errorcode 2042 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditShopActImagesActivity.this, "#errorcode 2098 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             });
         } else {

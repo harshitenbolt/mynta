@@ -1773,6 +1773,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             if (validation.getOwnerName() != null && validation.getOwnerName().length() > 0) {
                                 etOwnerName.setError(validation.getOwnerName());
                                 etOwnerName.requestFocus();
+                                Toast.makeText(getActivity(), validation.getOwnerName(), Toast.LENGTH_SHORT).show();
                                 // return false;
                             }
                             if (validation.getDob() != null && validation.getDob().length() > 0) {
@@ -1797,6 +1798,12 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
 
                             }
+                            if (validation.getGstn() != null && validation.getGstn().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getGstn(), Toast.LENGTH_LONG).show();
+                                edit_gstn.setError(validation.getGstn());
+                                edit_gstn.requestFocus();
+                            }
+
                             if (validation.getStoreAddress() != null && validation.getStoreAddress().length() > 0) {
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                             /*    edit_storeaddress.setError(validation.getStoreAddress());
@@ -1807,8 +1814,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                               /*  //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 etStreet.setError(validation.getStoreAddress1());
                                 etStreet.requestFocus();
-
 */
+                                Toast.makeText(getActivity(), validation.getStoreAddress1(), Toast.LENGTH_SHORT).show();
                             }
                             if (validation.getStoreAddressLandmark() != null && validation.getStoreAddressLandmark().length() > 0) {
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
@@ -1924,6 +1931,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             if (validation.getIfGst() != null && validation.getIfGst().length() > 0) {
                                 edit_gstn.setError(validation.getIfGst());
                                 edit_gstn.requestFocus();
+                                Toast.makeText(getActivity(), validation.getIfGst(), Toast.LENGTH_SHORT).show();
                             }
                             if (validation.getDc() != null && validation.getDc().length() > 0) {
                                 Toast.makeText(getActivity(), validation.getDc(), Toast.LENGTH_LONG).show();
@@ -1950,15 +1958,19 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                                 Toast.makeText(getActivity(), validation.getAgentId(), Toast.LENGTH_LONG).show();
 
                                 // return false;
-                            } else {
+                            }/* else {
+                                Toast.makeText(getActivity(), getUserDetailResponse.getResponse(), Toast.LENGTH_SHORT).show();
                                 Constants.showAlert(v, getUserDetailResponse.getResponse(), false);
-                            }
+                            }*/
 
                         } else {
+                            Toast.makeText(getActivity(), getUserDetailResponse.getResponse(), Toast.LENGTH_SHORT).show();
+
                             Constants.showAlert(v, getUserDetailResponse.getResponse(), false);
                         }
 
                     } else {
+                        Toast.makeText(getActivity(), getUserDetailResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         Constants.showAlert(v, getUserDetailResponse.getResponse(), true);
                         if (getUserDetailResponse.getResponseCode() == 405) {
                             sessionManager.logoutUser(mcontext);
