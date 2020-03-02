@@ -872,10 +872,10 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                         deleteImages();
                         finish();
                     }
-                    if (addDelBoyResponse.getResponseCode() == 411) {
+                    else if (addDelBoyResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(AddNewDeliveryBoy.this);
                     }
-                    if (addDelBoyResponse.getResponseCode() == 400) {
+                    else if (addDelBoyResponse.getResponseCode() == 400) {
 
                         mProgressDialog.dismiss();
                         if (addDelBoyResponse.getValidation() != null) {
@@ -1287,6 +1287,12 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
 
                         } else {
+
+                            licenceImagePath = "";
+                            ivDriving_Licence.setPadding(0, 0, 0, 0);
+                            // ImageUtils.getInstant().getImageUri(EditPanCardActivity, photo);
+                            Glide.with(AddNewDeliveryBoy.this).load(licenceImagePath).into(ivDriving_Licence);
+
                             Toast.makeText(AddNewDeliveryBoy.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } else {

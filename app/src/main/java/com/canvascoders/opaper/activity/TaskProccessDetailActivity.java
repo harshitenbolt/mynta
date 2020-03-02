@@ -32,6 +32,7 @@ import retrofit2.Response;
 public class TaskProccessDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView ivBack;
+    TextView tvAddNewGST;
     ImageView ivEditLocation, ivEditKyc, ivEditPan, ivEditBank, ivEditStoreDetails, ivOwnerDetails, ivGstInformation, ivShopActEdit, ivDeliveryDetails, ivRateDetails;
     String proccess_id = "";
     NetworkConnectivity networkConnectivity;
@@ -61,6 +62,8 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
 
     private void init() {
         ivBack = findViewById(R.id.iv_back_process);
+        tvAddNewGST = findViewById(R.id.tvAddGST);
+        tvAddNewGST.setOnClickListener(this);
         networkConnectivity = new NetworkConnectivity(this);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -400,9 +403,12 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                                 llGstDisable.setVisibility(View.VISIBLE);
                                 llGstEnable.setVisibility(View.GONE);
                                 tvGstText.setVisibility(View.VISIBLE);
+
                             } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillGstDetails() == 1) {
                                 llGstDisable.setVisibility(View.GONE);
                                 llGstEnable.setVisibility(View.VISIBLE);
+                                ivGstInformation.setVisibility(View.GONE);
+                                tvAddNewGST.setVisibility(View.VISIBLE);
                                 tvGSTNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn());
                                 Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage()).into(ivGstFront);
                                 tvGStPanNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanNo());
@@ -517,7 +523,8 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                                         tvOwnerText.setVisibility(View.GONE);
                                         tvRemarkOwner.setVisibility(View.VISIBLE);
                                         tvRemarkOwner.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillOwnerDetailsRemark());
-                                 */   }
+                                 */
+                                    }
                                 }
 
 
@@ -671,10 +678,6 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llVendorsDetailsDisable.setVisibility(View.VISIBLE);
                             tvStoreText.setVisibility(View.VISIBLE);*/
                         }
-
-
-
-
 
 
                         // Upload Files
@@ -880,6 +883,8 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                 i6.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i6);
                 break;
+
+
             case R.id.ivDeliveryDetails:
                 Intent i7 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
                 i7.putExtra(Constants.DATA, "DELIVERY");
@@ -902,6 +907,13 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                 i9.putExtra(Constants.KEY_EMP_MOBILE, mobile);
                 i9.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i9);
+                break;
+            case R.id.tvAddGST:
+                Intent i10 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
+                i10.putExtra(Constants.DATA, "GSTN");
+                i10.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i10.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+                startActivity(i10);
                 break;
 
 

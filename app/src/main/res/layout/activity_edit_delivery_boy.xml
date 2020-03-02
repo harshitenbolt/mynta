@@ -550,8 +550,7 @@
                                 android:id="@+id/ivDrivingLicence"
                                 android:layout_width="@dimen/_105sdp"
                                 android:layout_height="@dimen/_105sdp"
-                                android:padding="@dimen/_25sdp"
-                                android:src="@drawable/photocamera" />
+                                android:src="@drawable/blfront" />
 
                         </LinearLayout>
 

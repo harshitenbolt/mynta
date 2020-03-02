@@ -68,12 +68,13 @@ public class EditNameDialogFragment extends DialogFragment {
     SessionManager sessionManager;
     boolean fromedit = false;
     int withoutimagee = 0;
+    String adharNumber="",name="",year="";
 
     public EditNameDialogFragment() {
 
     }
 
-    public static EditNameDialogFragment newInstance(AadharVerificationFragment aadharVerificationFragment, String ProcessId, boolean fromEdit) {
+    public static EditNameDialogFragment newInstance(AadharVerificationFragment aadharVerificationFragment,String adharNumber,String name,String Year, String ProcessId, boolean fromEdit) {
         EditNameDialogFragment frag = new EditNameDialogFragment();
         frag.aadharVerificationFragment = aadharVerificationFragment;
         frag.proccessId = ProcessId;
@@ -111,6 +112,9 @@ public class EditNameDialogFragment extends DialogFragment {
         edit_ayear = (EditText) view.findViewById(R.id.edit_ayear);
         edit_apincode = (EditText) view.findViewById(R.id.edit_apincode);
         btn_close_dialog = (ImageView) view.findViewById(R.id.btn_close_dialog);
+        edit_aname.setText(name);
+        edit_anumber.setText(adharNumber);
+
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Please wait...");

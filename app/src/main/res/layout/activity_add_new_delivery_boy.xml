@@ -569,8 +569,8 @@
                                 android:id="@+id/ivDrivingLicence"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/_105sdp"
-                                android:background="@drawable/blfront"
-                                android:padding="@dimen/_25sdp" />
+                                android:src="@drawable/blfront"
+                                />
 
                         </LinearLayout>
 

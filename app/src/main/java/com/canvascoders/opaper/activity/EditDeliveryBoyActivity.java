@@ -1096,10 +1096,10 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                         deleteImages();
                         finish();
                     }
-                    if (addDelBoyResponse.getResponseCode() == 411) {
+                    else if (addDelBoyResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(EditDeliveryBoyActivity.this);
                     }
-                    if (addDelBoyResponse.getResponseCode() == 400) {
+                    else if (addDelBoyResponse.getResponseCode() == 400) {
 
                         mProgressDialog.dismiss();
                         if (addDelBoyResponse.getValidation() != null) {
@@ -1258,9 +1258,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                         Toast.makeText(EditDeliveryBoyActivity.this, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
                     }
                 } else {
-
                     Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2032 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-
                 }
             }
 
@@ -1348,6 +1346,10 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
 
                         } else {
+                            licenceImagePath = "";
+                            ivDriving_Licence.setPadding(0, 0, 0, 0);
+                            // ImageUtils.getInstant().getImageUri(EditPanCardActivity, photo);
+                            Glide.with(EditDeliveryBoyActivity.this).load(licenceImagePath).into(ivDriving_Licence);
                             Toast.makeText(EditDeliveryBoyActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } else {

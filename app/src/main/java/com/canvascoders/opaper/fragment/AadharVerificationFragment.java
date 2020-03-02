@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.AadhaarCard;
+import com.canvascoders.opaper.Beans.AdharocrResponse.AadharCardDetail;
 import com.canvascoders.opaper.Beans.AdharocrResponse.AdharOCRResponse;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
@@ -622,7 +623,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                         Glide.with(getActivity()).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
                         Toast.makeText(getActivity(), adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
                     } else if (adharOCRResponse.getIsFrontOk() && adharOCRResponse.getIsBackOk()) {
-                        showEditDialog();
+                        showEditDialog(adharOCRResponse.getAadharCardDetail());
                     } else if (!adharOCRResponse.getIsFrontOk() && !adharOCRResponse.getIsBackOk()) {
                         aadharImagepathFront = "";
                         ivAdharFrontSelected.setVisibility(View.GONE);
@@ -788,11 +789,12 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
     }
 
 
-    private void showEditDialog() {
+    private void showEditDialog(AadharCardDetail aadharCardDetail) {
+
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, str_process_id,false);
+                editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, aadharCardDetail.getAadharCardNumber(), aadharCardDetail.getName(), aadharCardDetail.getBirthDate(), str_process_id, false);
                 editNameDialogFragment.setCancelable(false);
                 editNameDialogFragment.show(getChildFragmentManager(), "fragment_edit_name");
             }

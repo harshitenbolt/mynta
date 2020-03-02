@@ -116,7 +116,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     private String str_process_id;
     String fromEdit = "";
     private RequestPermissionHandler requestPermissionHandler;
-    private String TAG="jdfkjshk";
+    private String TAG = "jdfkjshk";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,7 +161,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         switch (v.getId()) {
             case R.id.btn_add_boy:
 
-                Intent i = new Intent(this, AddDeliveryBoysActivity.class);
+                Intent i = new Intent(this, AddNewDeliveryBoy.class);
                 i.putExtra("Data", str_process_id);
                 startActivity(i);
                 // addBoyDialog();
@@ -1066,10 +1066,6 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     }
 
 */
-
-
-
-
 
 
 }

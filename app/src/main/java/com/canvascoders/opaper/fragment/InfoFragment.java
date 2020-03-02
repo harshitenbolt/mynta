@@ -897,6 +897,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
 
                         mDialogAproach.dismiss();
+                        selectedString = "";
                     }
                 });
                 ivCloseAproach = dialogViewAproach.findViewById(R.id.ivClose);
@@ -945,6 +946,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
 
                         mDialogShipment.dismiss();
+                        selectedString="";
+
                     }
                 });
                 ivCloseShipment = dialogViewShipment.findViewById(R.id.ivClose);
