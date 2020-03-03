@@ -747,6 +747,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
                         mDialog.dismiss();
 
+                        selectedString="";
+
                     }
                 });
                 ivClose = dialogView.findViewById(R.id.ivClose);

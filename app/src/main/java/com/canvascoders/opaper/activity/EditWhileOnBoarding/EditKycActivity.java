@@ -404,8 +404,8 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
 
                         } else if (getTrackDetailsResponse.getData().get(0).getProccessDetail().getKycType().equalsIgnoreCase("2")) {
-                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getVoterCardFront()).into(ivvoterFront);
-                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getVoterCardBack()).into(ivVoterBack);
+                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getVoterCardFront()).into(ivVoterImageFront);
+                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getVoterCardBack()).into(ivVoterImageBack);
 
                             gotName = getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterName();
                             gotDocId = getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterIdNum();

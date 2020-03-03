@@ -910,6 +910,7 @@
                                         android:background="@drawable/roundedcornergrey_small"
                                         android:clipToPadding="true"
                                         android:elevation="@dimen/_10sdp"
+                                        android:padding="@dimen/_5sdp"
                                         android:src="@drawable/checkimage">
 
                                     </ImageView>

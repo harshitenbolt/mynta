@@ -190,6 +190,9 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
         onboard = true;
         progressDialog.setMessage("Loading in progress. Please wait...");
 
+        vendorLists.clear();
+        vendorLists1.clear();
+
         new GetVendorList(object.toString(), apiName).execute();
 
 

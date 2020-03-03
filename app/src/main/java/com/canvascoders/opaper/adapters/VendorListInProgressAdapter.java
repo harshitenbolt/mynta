@@ -71,6 +71,13 @@ public class VendorListInProgressAdapter extends RecyclerView.Adapter<VendorList
             }
         });
 
+
+        holder.llMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commanFragmentCallWithBackStack(new MobileFragment(), vendorLists.get(position).getMobileNo());
+            }
+        });
         holder.tvTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

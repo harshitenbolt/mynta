@@ -427,9 +427,9 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
                 rvItems1 = dialogView1.findViewById(R.id.rvListPopup);
                 btSubmit1 = dialogView1.findViewById(R.id.btSubmitDetail);
                 CustomPopupStoreTypeAdapter customPopupStoreTypeAdapter;
-                customPopupStoreTypeAdapter = new CustomPopupStoreTypeAdapter(ListStore_type, EditStoreInformationActivity.this, this, "StoreType");
+                customPopupStoreTypeAdapter = new CustomPopupStoreTypeAdapter(ListStore_type, EditStoreInformationActivity.this, EditStoreInformationActivity.this, "StoreType");
 
-                LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(EditStoreInformationActivity.this, LinearLayoutManager.VERTICAL, false);
+                LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(EditStoreInformationActivity.this, RecyclerView.VERTICAL, false);
 
                 rvItems1.setLayoutManager(horizontalLayoutManager1);
 

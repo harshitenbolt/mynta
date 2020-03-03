@@ -478,7 +478,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
             // Ask user to enable GPS/network in settings
             gps.showSettingsAlert();
         }*/
-
+        mProgressDialog.setMessage("Please wait...");
         mProgressDialog.show();
 
         MultipartBody.Part pan_card_part = null;

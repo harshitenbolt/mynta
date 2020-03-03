@@ -810,6 +810,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             // Ask user to enable GPS/network in settings
             gps.showSettingsAlert();
         }
+        mProgressDialog.setMessage("Please wait... We are adding your delivery boy");
         mProgressDialog.show();
         MultipartBody.Part prof_image = null;
         MultipartBody.Part license_image = null;

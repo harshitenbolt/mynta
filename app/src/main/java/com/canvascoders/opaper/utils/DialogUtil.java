@@ -861,7 +861,7 @@ public class DialogUtil {
         CheckBox cbMain;
         Button btSubmit;
         if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
+          //  dialog.dismiss();
             dialog = null;
         }
 

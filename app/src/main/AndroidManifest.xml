@@ -40,7 +40,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".activity.EditWhileOnBoarding.EditShopActImagesActivity"></activity>
+        <activity android:name=".activity.EditWhileOnBoarding.EditShopActImagesActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity
             android:name=".activity.EditWhileOnBoarding.EdirRateOnBoardingActivity"
             android:screenOrientation="portrait"
