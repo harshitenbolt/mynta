@@ -82,7 +82,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
         } else {
 
             holder.tvStartName.setText("Due date :- " + vendorLists.get(position).getDueDate());
-
+            holder.tvAssignedBy.setText("Assigned By:- " + vendorLists.get(position).getAssigneByName());
 
             if (!vendorLists.get(position).getDueTime().equalsIgnoreCase("")) {
                 holder.tvDuration.setText(vendorLists.get(position).getDueTime());
@@ -158,7 +158,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
 
     public class RecordHolder extends RecyclerView.ViewHolder {
         ImageView ivStoreImage, ivStatusImage;
-        TextView tvStoreName, tvTitle, tvMobile, tvStatus, tvStartName, tvTaskID, tvDuration, tvTimer;
+        TextView tvStoreName, tvTitle, tvMobile, tvStatus, tvStartName, tvAssignedBy, tvTaskID, tvDuration, tvTimer;
         LinearLayout llMain;
         CardView cvMain;
 
@@ -174,6 +174,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
             cvMain = view.findViewById(R.id.cvMain);
             tvDuration = view.findViewById(R.id.tvDuration);
             tvTimer = view.findViewById(R.id.tvTimer);
+            tvAssignedBy = view.findViewById(R.id.tvAssignedBy);
+
             //     tvVehicle = view.findViewById(R.id.tvVehicle);
         }
     }

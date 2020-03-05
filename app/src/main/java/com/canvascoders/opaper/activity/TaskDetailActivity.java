@@ -306,7 +306,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     }
                     Intent i = new Intent(TaskDetailActivity.this, AddDeliveryBoysActivity.class);
                     i.putExtra("data", proccess_id);
-                    i.putExtra(Constants.KEY_EDIT_DETAIL,"0");
+                    i.putExtra(Constants.KEY_EDIT_DETAIL, "0");
                     startActivity(i);
 
                 } else if (screenNumber.equalsIgnoreCase("7")) {
@@ -343,6 +343,18 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     }
                     Intent i = new Intent(TaskDetailActivity.this, AddGstImageActivity.class);
                     i.putExtra("data", proccess_id);
+                    startActivity(i);
+
+                } else if (screenNumber.equalsIgnoreCase("10")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+
+                    }
+                    Intent i = new Intent(TaskDetailActivity.this, TaskProccessDetailActivity.class);
+                    i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                     startActivity(i);
 
                 }

@@ -100,7 +100,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
     private EditText etEmail, etStorename, etOwnerName, etStoreShopNo, etStoreStreet, etStoreLandmark, etStorePincode, etStoreCity, etStoreState, etRoute;
     private EditText etCurrentShopNo, etCurrentStreet, etCurrentLandmark, etCurrentPincode, etCurrentCity, etCurrentState, etPerShopNo, etPerStreet, etPerLandmark, etPerPincode, etPerCity, etPerState, edit_gstn;
-
     private EditText etLicenceNumeber;
     private TextView tvDOB;
     private Toolbar toolbar;

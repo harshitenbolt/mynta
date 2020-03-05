@@ -79,6 +79,10 @@ public class EditNameDialogFragment extends DialogFragment {
         frag.aadharVerificationFragment = aadharVerificationFragment;
         frag.proccessId = ProcessId;
         frag.fromedit = fromEdit;
+        frag.adharNumber = adharNumber;
+        frag.name = name;
+
+
         return frag;
     }
 
@@ -112,8 +116,8 @@ public class EditNameDialogFragment extends DialogFragment {
         edit_ayear = (EditText) view.findViewById(R.id.edit_ayear);
         edit_apincode = (EditText) view.findViewById(R.id.edit_apincode);
         btn_close_dialog = (ImageView) view.findViewById(R.id.btn_close_dialog);
-        edit_aname.setText(name);
-        edit_anumber.setText(adharNumber);
+       /* edit_aname.setText(name);
+        edit_anumber.setText(adharNumber);*/
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false);
@@ -270,6 +274,10 @@ public class EditNameDialogFragment extends DialogFragment {
         edit_anumber.setText(str_uid);
         edit_ayear.setText(str_year);
         edit_apincode.setText(str_pincode);
+
+
+
+
     }
 
     private boolean valication() {

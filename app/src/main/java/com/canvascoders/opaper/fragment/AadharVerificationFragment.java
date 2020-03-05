@@ -790,11 +790,13 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
     private void showEditDialog(AadharCardDetail aadharCardDetail) {
-
+        AadharCardDetail adharcardDetails1= aadharCardDetail;
+        sessionManager.saveData(Constants.KEY_UID, adharcardDetails1.getAadharCardNumber());
+        sessionManager.saveData(Constants.KEY_AADHAR_NAME, adharcardDetails1.getName());
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, aadharCardDetail.getAadharCardNumber(), aadharCardDetail.getName(), aadharCardDetail.getBirthDate(), str_process_id, false);
+                editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, adharcardDetails1.getAadharCardNumber(), adharcardDetails1.getName(), adharcardDetails1.getBirthDate(), str_process_id, false);
                 editNameDialogFragment.setCancelable(false);
                 editNameDialogFragment.show(getChildFragmentManager(), "fragment_edit_name");
             }

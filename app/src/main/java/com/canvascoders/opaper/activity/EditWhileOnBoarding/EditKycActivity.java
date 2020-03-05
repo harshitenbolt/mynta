@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.canvascoders.opaper.Beans.AdharocrResponse.AadharCardDetail;
 import com.canvascoders.opaper.Beans.AdharocrResponse.AdharOCRResponse;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
@@ -1306,7 +1307,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                         Glide.with(EditKycActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
                         Toast.makeText(EditKycActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
                     } else if (adharOCRResponse.getIsFrontOk() && adharOCRResponse.getIsBackOk()) {
-                        showEditDialog(0);
+                        showEditDialog(adharOCRResponse.getAadharCardDetail(), 0);
                     } else if (!adharOCRResponse.getIsFrontOk() && !adharOCRResponse.getIsBackOk()) {
                         aadharImagepathFront = "";
                         ivAdharFrontSelected.setVisibility(View.GONE);
@@ -1642,7 +1643,10 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
-    private void showEditDialog(int withoutimage) {
+    private void showEditDialog(AadharCardDetail adharOCRResponse, int withoutimage) {
+        sessionManager.saveData(Constants.KEY_UID, adharOCRResponse.getAadharCardNumber());
+        sessionManager.saveData(Constants.KEY_AADHAR_NAME, adharOCRResponse.getName());
+
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {

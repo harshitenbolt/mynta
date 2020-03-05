@@ -62,6 +62,18 @@ public class TaskList implements Serializable {
     @Expose
     private String assignBy;
 
+    public String getAssigneByName() {
+        return assigneByName;
+    }
+
+    public void setAssigneByName(String assigneByName) {
+        this.assigneByName = assigneByName;
+    }
+
+    @SerializedName("assign_by_name")
+    @Expose
+    private String assigneByName;
+
 
 
     @SerializedName("store_name")

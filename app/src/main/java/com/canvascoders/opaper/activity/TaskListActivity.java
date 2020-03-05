@@ -1,6 +1,7 @@
 package com.canvascoders.opaper.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -91,6 +92,8 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     TextView tvComplted, tvPending, tvPaused;
     Drawable background, background1, backgroundpause;
     String attachment = "";
+    FloatingActionButton fbAddTask;
+    CardView cvFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -310,6 +313,24 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                 }
             });
         }
+
+
+        fbAddTask = findViewById(R.id.fbAddTask);
+        fbAddTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(TaskListActivity.this,AddNewTaskActivity.class);
+                startActivity(i);
+            }
+        });
+        cvFilter = findViewById(R.id.cvFilter);
+        cvFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(TaskListActivity.this,FilterActivity.class);
+                startActivity(i);
+            }
+        });
 
     }
 
@@ -683,6 +704,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                             vList.setCompleteDatetime(vendorList.getCompleteDatetime());
                             vList.setStatus(vendorList.getStatus());
                             vList.setDueDate(vendorList.getDueDate());
+                            vList.setAssigneByName(vendorList.getAssigneByName());
                             vList.setDueTime(vendorList.getDueTime());
                             vList.setTaskStart(vendorList.getTaskStart());
                             vList.setStartTimer(vendorList.getStartTimer());
@@ -816,6 +838,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                             vList.setType(vendorList.getType());
                             vList.setStatus(vendorList.getStatus());
                             vList.setDueDate(vendorList.getDueDate());
+                            vList.setAssigneByName(vendorList.getAssigneByName());
                             vList.setDueTime(vendorList.getDueTime());
 
                             page = 0;
@@ -935,7 +958,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
                         Intent i = new Intent(TaskListActivity.this, GeneralSupportSubmitActivity.class);
                         i.putExtra("BitmapImage", submitReportResponse.getData().get(0).getAttachment());
-                        i.putExtra(Constants.PARAM_ATTACHMENT,submitReportResponse.getData().get(0).getAttachment_name());
+                        i.putExtra(Constants.PARAM_ATTACHMENT, submitReportResponse.getData().get(0).getAttachment_name());
                         i.putExtra(Constants.PARAM_SCREEN_NAME, "tasklist");
                         startActivity(i);
 
@@ -943,16 +966,15 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                     } else {
                         Toast.makeText(TaskListActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
-                }
-                else{
-                    Toast.makeText(TaskListActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(TaskListActivity.this, "#errorcode :- 2038 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(TaskListActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(TaskListActivity.this, "#errorcode :- 2038 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
 

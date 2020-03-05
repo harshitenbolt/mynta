@@ -151,12 +151,12 @@
                                     android:layout_marginLeft="@dimen/_10sdp"
                                     android:clickable="false"
                                     android:drawablePadding="@dimen/_5sdp"
+                                    android:fontFamily="@font/montesemibold"
                                     android:gravity="center"
                                     android:text=""
-                                    android:visibility="gone"
                                     android:textColor="@color/colorPrimary"
-                                    android:fontFamily="@font/montesemibold"
-                                    android:textSize="@dimen/_10sdp" />
+                                    android:textSize="@dimen/_10sdp"
+                                    android:visibility="gone" />
                             </LinearLayout>
 
 
@@ -264,6 +264,48 @@
                                         android:drawablePadding="@dimen/_5sdp"
                                         android:text=""
                                         android:textSize="@dimen/_8sdp" />
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:layout_weight="1"
+                                        android:orientation="horizontal">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:layout_weight="1.2"
+                                            android:gravity="top"
+                                            android:orientation="horizontal">
+
+                                            <ImageView
+                                                android:layout_width="@dimen/_15sdp"
+                                                android:layout_height="@dimen/_15sdp"
+                                                android:src="@drawable/manuser" />
+
+                                            <TextView
+                                                android:id="@+id/tvAssignedBy"
+                                                style="@style/TextviewwithoutSize"
+                                                android:layout_width="match_parent"
+                                                android:layout_marginLeft="@dimen/_3sdp"
+                                                android:layout_marginTop="@dimen/_2sdp"
+                                                android:clickable="false"
+                                                android:drawablePadding="@dimen/_5sdp"
+                                                android:text="Assigned By :-"
+                                                android:textSize="@dimen/_8sdp" />
+                                        </LinearLayout>
+
+
+                                    </LinearLayout>
+
                                 </LinearLayout>
 
 

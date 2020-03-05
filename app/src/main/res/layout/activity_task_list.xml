@@ -212,6 +212,54 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvFilter"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:elevation="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_38sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:src="@drawable/controls" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Filter"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/montserratsemibold"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+
+                    android:textColor="@color/colorBlack" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fbAddTask"
+            android:layout_width="@dimen/_45sdp"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_alignParentEnd="true"
+            android:backgroundTint="@color/colorPrimary"
+            android:tint="@color/whitePrimary"
+            android:src="@drawable/ic_add_img"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/_35sdp"
+            android:layout_marginRight="@dimen/_30sdp"/>
+
     </RelativeLayout>
 
 
