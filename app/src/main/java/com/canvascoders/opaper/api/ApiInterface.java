@@ -3,6 +3,7 @@ package com.canvascoders.opaper.api;
 
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 
+import com.canvascoders.opaper.Beans.AddNewTaskResponse.AddSelfTaskResponse;
 import com.canvascoders.opaper.Beans.AdharocrResponse.AdharOCRResponse;
 import com.canvascoders.opaper.Beans.BankDetailResp;
 import com.canvascoders.opaper.Beans.BankDetailsResponse.BankDetailsResponse;
@@ -25,6 +26,7 @@ import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGstListing.GetGstListing;
 import com.canvascoders.opaper.Beans.GetGstPanEditResponse.GetGstPanEditResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
+import com.canvascoders.opaper.Beans.GetTasksTypeListing;
 import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
 import com.canvascoders.opaper.Beans.GetVendorInvoiceList.GetVendorInvoiceDetails;
 import com.canvascoders.opaper.Beans.GetVendorTypeDetails;
@@ -254,6 +256,10 @@ public interface ApiInterface {
     @POST("support-subject")
     Call<SupportSubjectResponse> getSubject(@Header("Authorization") String token, @FieldMap Map<String, String> param);
 
+    @POST("task-type-list")
+    Call<GetTasksTypeListing> getTaskTypeListing(@Header("Authorization") String token);
+
+
 
     //-----------------------------------------------------------------------------
 
@@ -320,6 +326,19 @@ public interface ApiInterface {
     Call<VoterOCRGetDetaisResponse> getVoterIdOCR(@PartMap() Map<String, String> data,
                                                   @Part MultipartBody.Part voter_front,
                                                   @Part MultipartBody.Part voter_back);
+
+
+
+    @FormUrlEncoded
+    @POST("self-task-create")
+    Call<AddSelfTaskResponse> addTaskWithoutImage(@Header("Authorization") String token,@FieldMap() Map<String, String> data);
+
+    @Multipart
+    @POST("self-task-create")
+    Call<AddSelfTaskResponse> addTaskWithImage(@Header("Authorization") String token,@PartMap() Map<String, String> data,
+                                                  @Part MultipartBody.Part voter_front);
+
+
 
     @Multipart
     @POST("driving-licence-detail")

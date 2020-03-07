@@ -204,6 +204,7 @@
 
     <string name="qt_fp_access">n</string>
     <string name="qt_iris_access">n</string>
+    <string name="you_can_find_b_eid_from_kirana_s_profile_screen">*You can find <b>EID</b> from Kirana\'s profile screen.></string>
 
 
 </resources>
