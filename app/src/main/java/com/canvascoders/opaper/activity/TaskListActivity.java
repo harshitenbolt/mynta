@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -54,6 +55,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -94,6 +96,9 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     String attachment = "";
     FloatingActionButton fbAddTask;
     CardView cvFilter;
+
+
+    String status = "Pending";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -319,7 +324,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         fbAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(TaskListActivity.this,AddNewTaskActivity.class);
+                Intent i = new Intent(TaskListActivity.this, AddNewTaskActivity.class);
                 startActivity(i);
             }
         });
@@ -327,8 +332,8 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         cvFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(TaskListActivity.this,FilterActivity.class);
-                startActivity(i);
+                Intent i = new Intent(TaskListActivity.this, FilterActivity.class);
+                startActivityForResult(i, 0);
             }
         });
 
@@ -353,6 +358,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
 
             case R.id.tvComplted:
+                status = "Completed";
                 object = new JSONObject();
                 try {
                     object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
@@ -364,6 +370,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                 }
 
 
+                cvFilter.setVisibility(View.GONE);
                 page1 = 1;
                 apiName = "task-list";
                 new GetVendorList(object.toString(), apiName).execute();
@@ -409,7 +416,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.tvPending:
 
-
+                status = "Pending";
                 object = new JSONObject();
                 try {
                     object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
@@ -422,6 +429,8 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                 page1 = 1;
                 apiName = "task-list";
                 new GetVendorList(object.toString(), apiName).execute();
+
+                cvFilter.setVisibility(View.VISIBLE);
 
                 mSwipeRefreshLayoutPending.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -465,7 +474,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
             // fpr pause list
             case R.id.tvPaused:
 
-
+                status = "Paused";
                 object = new JSONObject();
                 try {
                     object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
@@ -475,6 +484,8 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
                         JSONException e) {
 
                 }
+
+                cvFilter.setVisibility(View.GONE);
                 taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
                 linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -552,7 +563,7 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 
@@ -563,6 +574,41 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onRefresh() {
+
+
+        if (status.equalsIgnoreCase("Pending")) {
+            object = new JSONObject();
+            try {
+                object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                //   object.put(Constants.PARAM_STATUS, "0");
+            } catch (
+                    JSONException e) {
+
+            }
+
+        } else if (status.equalsIgnoreCase("Completed")) {
+            object = new JSONObject();
+            try {
+                object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                object.put(Constants.PARAM_STATUS, "1");
+            } catch (JSONException e) {
+
+            }
+        } else {
+            object = new JSONObject();
+            try {
+                object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                object.put(Constants.PARAM_IS_PAUSE, "1");
+            } catch (
+                    JSONException e) {
+
+            }
+
+        }
+
         page1 = 1;
         //actv.getText().clear();
         taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
@@ -979,4 +1025,139 @@ public class TaskListActivity extends AppCompatActivity implements View.OnClickL
         });
 
     }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 0) {
+            if (resultCode == Activity.RESULT_OK) {
+                String result = data.getStringExtra("result");
+
+              /*  JSONArray array = new JSONArray();
+                try {
+                    array = new JSONArray(result);
+                    Log.e("datagot", array.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ArrayList<String> stringArray = new ArrayList<String>();
+             //   JSONArray jsonArray = new JSONArray();
+                for (int i = 0, count = array.length(); i < count; i++) {
+                    try {
+                        JSONObject jsonObject = array.getJSONObject(i);
+                        stringArray.add(jsonObject.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }*/
+                JSONArray array = null;
+                try {
+                    array = new JSONArray(result);
+                    // System.out.println(array.toString(2));
+
+                    if (array.length() > 0) {
+                        object = new JSONObject();
+                        try {
+                            object.accumulate(Constants.PARAM_TOKEN, sessionManager.getToken());
+                            object.accumulate(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                            //   object.put(Constants.PARAM_STATUS, "0");
+                        } catch (
+                                JSONException e) {
+
+                        }
+                        for (int n = 0; n < array.length(); n++) {
+                            JSONObject object1 = array.getJSONObject(n);
+
+                            Iterator<String> keys = object1.keys();
+                            while (keys.hasNext()) {
+                                String key = keys.next();
+                                String value = object1.getString(key);
+                                Log.e("keys", key);
+                                object.accumulate(key, value);
+                            }
+                        }
+
+
+                        // with new parameters added
+
+
+                      /*  page1 = 1;
+                        //actv.getText().clear();
+                        taskListAdapter = new TaskListAdapter(taskLists, TaskListActivity.this, this);
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                        rvTaskList.setLayoutManager(linearLayoutManager);
+
+                        rvTaskList.setAdapter(taskListAdapter);
+                        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+                            @Override
+                            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+
+                                // this condition  is for pagination in both with Search and without search
+
+                                if (search == true) {
+                                    // this condition is for not getting Next URL from API
+                                    if (!apiNameSearch.equalsIgnoreCase("")) ;
+                                    new GetVendorListSearch(objectSearch.toString(), apiNameSearch).execute();
+                                } else {
+                                    if (!apiName.equalsIgnoreCase("")) {
+                                        new GetVendorList(object.toString(), apiName).execute();
+                                    }
+                                }
+
+                            }
+                        };
+                        // rvTaskList.addOnScrollListener(scrollListener);
+                        rvTaskList.addOnScrollListener(scrollListener);
+                        //  rvTaskListPending.setAdapter(taskListAdapter);
+                        apiName = "task-list";
+                        new GetVendorList(object.toString(), apiName).execute();
+*/
+
+                    }
+                    else {
+                        // if nothing is selected from that side than
+
+
+
+                        if (status.equalsIgnoreCase("Pending")) {
+                            object = new JSONObject();
+                            try {
+                                object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                                object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                                //   object.put(Constants.PARAM_STATUS, "0");
+                            } catch (JSONException e) {
+                            }
+
+                        } else if (status.equalsIgnoreCase("Completed")) {
+                            object = new JSONObject();
+                            try {
+                                object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                                object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                                object.put(Constants.PARAM_STATUS, "1");
+                            } catch (JSONException e) {
+                            }
+                        } else {
+                            object = new JSONObject();
+                            try {
+                                object.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+                                object.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+                                object.put(Constants.PARAM_IS_PAUSE, "1");
+                            } catch (JSONException e) {
+                            }
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //  Log.e("datadone", array.toString());
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
 }

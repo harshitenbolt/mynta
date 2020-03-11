@@ -348,7 +348,7 @@ public class DeliveryBoyAssessmentFragment extends Fragment implements SwipeRefr
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 

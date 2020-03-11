@@ -171,7 +171,7 @@ public class DebitInvoiceMainFragment extends Fragment {
         recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
         recyclerview.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mcontext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerview.setLayoutManager(linearLayoutManager);
         linearAdapter = new BillsAdapter(billLists);
         recyclerview.setAdapter(linearAdapter);
@@ -220,7 +220,7 @@ public class DebitInvoiceMainFragment extends Fragment {
 
 
             @Override
-            public void onLongClick(View view, final int position) {
+            public void onLongClick(View view, final int position,String data) {
 
             }
 

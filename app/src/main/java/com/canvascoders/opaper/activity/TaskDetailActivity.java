@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.PauseTaskResponse.PauseTaskResponse;
 import com.canvascoders.opaper.Beans.ResumeTaskListResponse.ResumeTaskListResponse;
+import com.canvascoders.opaper.Beans.SendAgreementLinkResponse.GetAgreementLinkSend;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
 import com.canvascoders.opaper.Beans.StartTaskResponse.StartTaskResponse;
 import com.canvascoders.opaper.Beans.TaskDetailResponse.Datum;
@@ -357,12 +358,66 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                     startActivity(i);
 
+                } else if (screenNumber.equalsIgnoreCase("11")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+
+                    }
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        APiCallSendGenerateLink(proccess_id);
+                    } else {
+                        Constants.ShowNoInternet(TaskDetailActivity.this);
+                    }
+                 /*   Intent i = new Intent(TaskDetailActivity.this, TaskProccessDetailActivity.class);
+                    i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+                    startActivity(i);
+*/
                 }
 
 
             }
         });
 
+
+    }
+
+    private void APiCallSendGenerateLink(String proccessId) {
+        progressDialog.show();
+
+        Map<String, String> params = new HashMap<>();
+
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        params.put(Constants.PARAM_TASK_ID, String.valueOf(taskid));
+        params.put(Constants.PARAM_PROCESS_ID, proccessId);
+
+        ApiClient.getClient().create(ApiInterface.class).linkGenerate("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<GetAgreementLinkSend>() {
+            @Override
+            public void onResponse(Call<GetAgreementLinkSend> call, Response<GetAgreementLinkSend> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetAgreementLinkSend getAgreementLinkSend = response.body();
+                    if (getAgreementLinkSend.getResponseCode() == 200) {
+                        Toast.makeText(TaskDetailActivity.this, getAgreementLinkSend.getResponse(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(TaskDetailActivity.this, getAgreementLinkSend.getResponse(), Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    Toast.makeText(TaskDetailActivity.this, "#errorcode 2188 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetAgreementLinkSend> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(TaskDetailActivity.this, "#errorcode 2188 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+            }
+        });
 
     }
 

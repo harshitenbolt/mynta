@@ -586,7 +586,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 

@@ -877,7 +877,7 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 

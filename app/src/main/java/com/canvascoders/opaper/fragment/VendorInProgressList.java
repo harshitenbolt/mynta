@@ -400,7 +400,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 

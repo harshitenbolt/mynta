@@ -360,12 +360,12 @@ public class AddNewTaskActivity extends AppCompatActivity implements View.OnClic
             return false;
         }
         if (TextUtils.isEmpty(etEnboltId.getText().toString())) {
-            etTaskDetails.setError("Please provide Enbolt ID");
-            etTaskDetails.requestFocus();
+            etEnboltId.setError("Please provide Enbolt ID");
+            etEnboltId.requestFocus();
             return false;
         }
         if (TextUtils.isEmpty(etStoreName.getText().toString())) {
-            etStoreName.setError("Please provide correct Enbolt ID");
+            etStoreName.setError("Please provide correct Store Name");
             etStoreName.requestFocus();
             return false;
         }

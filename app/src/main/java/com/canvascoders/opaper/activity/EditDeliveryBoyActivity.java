@@ -42,6 +42,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.Datum;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
+import com.canvascoders.opaper.Beans.GetVehicleTypes;
 import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
@@ -60,6 +61,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -75,7 +77,7 @@ import retrofit2.Response;
 
 public class EditDeliveryBoyActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText etName, etFatherName, etPhoneNumber, etRoute, etDrivingNumber, etVehicle;
+    private EditText etName, etFatherName, etPhoneNumber, etRoute, etDrivingNumber;
     private ImageView ivProfile, ivDriving_Licence, ivBack;
     private String profileImagepath = "", licenceImagePath = "";
     private int PROFILEIMAGE = 200, LICENCEIMAGE = 300;
@@ -92,6 +94,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     private String lattitude = "", longitude = "", currentAdress = "", permAddress = "";
     GPSTracker gps;
     String deliveryBoy = "";
+    String[] selectVehicleType = {"Bike", "Cycle", "Truck"};
     LinearLayout llOwnerInfo, llAddressInfo, llDrivingDetails;
     Button btAddNext;
     String str_process_id;
@@ -106,11 +109,13 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     boolean[] checkedItems;
     private TextView tvLanguage, dob;
     private CheckBox cbSame;
+    String stringdob="";
     private String isUpdate = "";
     String otp = "", mobile_number = "";
     Datum datum;
     Button btGetOtp;
     private String TAG = "akfdsbksbhdf";
+    Spinner spVehicleForDelivery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,13 +158,12 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         etRoute.setText(datum.getRouteNumber());
         etDrivingNumber = findViewById(R.id.etLicenceNumber);
         etDrivingNumber.setText(datum.getDrivingLicenceNum());
-        etVehicle = findViewById(R.id.etVehicleForDelivery);
-        etVehicle.setText(datum.getVehicleForDelivery());
         etOtp = findViewById(R.id.etOtp);
         dob = findViewById(R.id.tvDateofBirth);
+        stringdob = datum.getDrivingLicenceDob();
         dob.setText(datum.getDrivingLicenceDob());
         dob.setOnClickListener(this);
-
+        spVehicleForDelivery = findViewById(R.id.spVehicleForDelivery);
 
         ivProfile = findViewById(R.id.ivProfileImage);
 
@@ -302,6 +306,13 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                 }
             }
         });
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            APiCallgetvehicleNames();
+        } else {
+            Constants.ShowNoInternet(EditDeliveryBoyActivity.this);
+        }
+
 
         //ApiCallGetDc();
     }
@@ -513,8 +524,8 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                 if (daysString.length() == 1) {
                                     daysString = "0" + daysString;
                                 }
-
-                                dob.setText(year + "-" + monthString + "-" + daysString);
+                                stringdob = year + "-" + monthString + "-" + daysString;
+                                dob.setText(daysString + "-" + monthString + "-" + year);
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.getDatePicker().setMaxDate(minDate);
@@ -716,18 +727,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         if (i == 3) {
 
 
-            if (TextUtils.isEmpty(etDrivingNumber.getText().toString())) {
-                etDrivingNumber.requestFocus();
-                etDrivingNumber.setError("Provide Driving Licence Number");
-                // showMSG(false, "Provide Pincode");
-                return false;
-            }
-            if (TextUtils.isEmpty(etVehicle.getText().toString())) {
-                etVehicle.requestFocus();
-                etVehicle.setError("Provide Vehicle Name");
-                // showMSG(false, "Provide Pincode");
-                return false;
-            }
+
             if (tvLanguage.getText().equals("Select Language")) {
                 Toast.makeText(this, "Please Select Language", Toast.LENGTH_SHORT).show();
                 // showMSG(false, "Provide Pincode");
@@ -735,9 +735,17 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
             }
 
 
-            if (licenceImagePath.equals("")) {
-                Toast.makeText(this, "Please Select Licence Image", Toast.LENGTH_SHORT).show();
-                return false;
+            if (!spVehicleForDelivery.getSelectedItem().toString().equalsIgnoreCase("Cycle")) {
+                if (licenceImagePath.equals("")) {
+                    Toast.makeText(this, "Please Select Licence Image", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                if (TextUtils.isEmpty(etDrivingNumber.getText().toString())) {
+                    etDrivingNumber.requestFocus();
+                    etDrivingNumber.setError("Provide Driving Licence Number");
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
             }
             if (dob.getText().equals("Date of Birth")) {
                 Toast.makeText(this, "Provide Date of Birth", Toast.LENGTH_SHORT).show();
@@ -748,6 +756,43 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
 
         return true;
+    }
+
+
+    private void APiCallgetvehicleNames() {
+        mProgressDialog.show();
+        Call<GetVehicleTypes> call = ApiClient.getClient().create(ApiInterface.class).getVehicleListing("Bearer " + sessionManager.getToken());
+        call.enqueue(new Callback<GetVehicleTypes>() {
+            @Override
+            public void onResponse(Call<GetVehicleTypes> call, Response<GetVehicleTypes> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetVehicleTypes getVehicleTypes = response.body();
+                    if (getVehicleTypes.getResponseCode() == 200) {
+                        List<String> items = Arrays.asList(getVehicleTypes.getData().split("\\s*,\\s*"));
+                        EditDeliveryBoyActivity.CustomAdapter<String> spinnerArrayAdapter = new EditDeliveryBoyActivity.CustomAdapter<String>(EditDeliveryBoyActivity.this, android.R.layout.simple_spinner_item, items);
+                        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spVehicleForDelivery.setAdapter(spinnerArrayAdapter);
+                        spVehicleForDelivery.setSelection(0);
+
+                    } else {
+                        Toast.makeText(EditDeliveryBoyActivity.this, getVehicleTypes.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode 2116" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetVehicleTypes> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode 2116" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
     }
 
 
@@ -970,8 +1015,8 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                 }
                                 if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
                                     //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    etVehicle.setError(validation.getDriving_licence_dob());
-                                    etVehicle.requestFocus();
+                                    Toast.makeText(EditDeliveryBoyActivity.this, validation.getVehicle_for_delivery(), Toast.LENGTH_SHORT).show();
+
                                 }
                                 if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
                                     //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
@@ -1016,6 +1061,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     }
 
     private void ApiCallSubmit() {
+        Call<AddDelBoyResponse> callUpload = null;
         gps = new GPSTracker(EditDeliveryBoyActivity.this);
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
@@ -1042,11 +1088,6 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         prof_image = MultipartBody.Part.createFormData(image, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(profileImagepath)), imagefile1));
         //   list.add(shop_act_part);
 
-
-        File imagefile2 = new File(licenceImagePath);
-        license_image = MultipartBody.Part.createFormData(driving_licence, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(licenceImagePath)), imagefile2));
-
-        // Log.e("image",list.toString());
 
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
@@ -1077,14 +1118,25 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
             params.put(Constants.PARAM_IS_EDIT,"1");
         }*/
         params.put(Constants.PARAM_DRIVING_LICENCE_NUM, etDrivingNumber.getText().toString().trim());
-        params.put(Constants.PARAM_DRIVING_LICENCE_DOB, dob.getText().toString().trim());
-        params.put(Constants.PARAM_DRIVING_LICENCE_VEHICLE, etVehicle.getText().toString().trim());
+        params.put(Constants.PARAM_DRIVING_LICENCE_DOB, stringdob);
+        params.put(Constants.PARAM_DRIVING_LICENCE_VEHICLE, spVehicleForDelivery.getSelectedItem().toString());
         params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
         params.put(Constants.PARAM_LATITUDE, lattitude);
         params.put(Constants.PARAM_LONGITUDE, longitude);
 
+        if (!spVehicleForDelivery.getSelectedItem().toString().equalsIgnoreCase("Cycle")) {
+            File imagefile2 = new File(licenceImagePath);
+            license_image = MultipartBody.Part.createFormData(driving_licence, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(licenceImagePath)), imagefile2));
+            callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image);
 
-        Call<AddDelBoyResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image);
+        } else {
+            callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image);
+
+        }
+
+
+        // Log.e("image",list.toString());
+
         callUpload.enqueue(new Callback<AddDelBoyResponse>() {
             @Override
             public void onResponse(Call<AddDelBoyResponse> call, Response<AddDelBoyResponse> response) {
@@ -1095,11 +1147,9 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                         Toast.makeText(EditDeliveryBoyActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         deleteImages();
                         finish();
-                    }
-                    else if (addDelBoyResponse.getResponseCode() == 411) {
+                    } else if (addDelBoyResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(EditDeliveryBoyActivity.this);
-                    }
-                    else if (addDelBoyResponse.getResponseCode() == 400) {
+                    } else if (addDelBoyResponse.getResponseCode() == 400) {
 
                         mProgressDialog.dismiss();
                         if (addDelBoyResponse.getValidation() != null) {
@@ -1159,8 +1209,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                             }
                             if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                etVehicle.setError(validation.getDriving_licence_dob());
-                                etVehicle.requestFocus();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getVehicle_for_delivery(), Toast.LENGTH_SHORT).show();
                             }
                             if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();

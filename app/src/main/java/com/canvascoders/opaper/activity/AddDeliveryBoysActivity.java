@@ -900,7 +900,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
         //Toast.makeText(this, "Done Edit", Toast.LENGTH_SHORT).show();
 
 

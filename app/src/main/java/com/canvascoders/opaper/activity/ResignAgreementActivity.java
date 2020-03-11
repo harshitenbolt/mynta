@@ -494,7 +494,7 @@ public class ResignAgreementActivity extends AppCompatActivity implements Recycl
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 

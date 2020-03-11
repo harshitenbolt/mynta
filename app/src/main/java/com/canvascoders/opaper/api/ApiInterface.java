@@ -28,6 +28,7 @@ import com.canvascoders.opaper.Beans.GetGstPanEditResponse.GetGstPanEditResponse
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
 import com.canvascoders.opaper.Beans.GetTasksTypeListing;
 import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
+import com.canvascoders.opaper.Beans.GetVehicleTypes;
 import com.canvascoders.opaper.Beans.GetVendorInvoiceList.GetVendorInvoiceDetails;
 import com.canvascoders.opaper.Beans.GetVendorTypeDetails;
 import com.canvascoders.opaper.Beans.NotificationResponse.NotificattionResponse;
@@ -42,6 +43,7 @@ import com.canvascoders.opaper.Beans.ResignAgreementResponse.ResignAgreementResp
 import com.canvascoders.opaper.Beans.ResumeTaskListResponse.ResumeTaskListResponse;
 import com.canvascoders.opaper.Beans.SearchAssessmentDeliveryBoy.SearchResponseAssessment;
 import com.canvascoders.opaper.Beans.SearchListResponse.SearchListResponse;
+import com.canvascoders.opaper.Beans.SendAgreementLinkResponse.GetAgreementLinkSend;
 import com.canvascoders.opaper.Beans.SendInvoiceEsignResponse.SendInvoiceLinkresponse;
 import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
 import com.canvascoders.opaper.Beans.SignedDocDetailResponse.SignedDocDetailResponse;
@@ -411,6 +413,12 @@ public interface ApiInterface {
 
 
     @Multipart
+    @POST("delivery-boys-store")
+    Call<AddDelBoyResponse> addDelBoys(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                       @Part MultipartBody.Part image);
+
+
+    @Multipart
     @POST("delivery-boys-details-stage-validation{NUMERIC}")
     Call<AddDelBoyResponse> DeliveryBoysDetailsValid1(@Header("Authorization") String token, @Path("NUMERIC") String URL, @PartMap() Map<String, String> data, @Part MultipartBody.Part image);
 
@@ -455,7 +463,20 @@ public interface ApiInterface {
     @POST("esign")
     Call<ResponseBody> Esign(@FieldMap Map<String, String> apiVersionMap);
 
-    //-----------------------------------------------------------------------------
+    //------------
+    //
+    //
+    // -----------------------------------------------------------------
+
+
+
+    @FormUrlEncoded
+    @POST("task-agreement-link-generate")
+    Call<GetAgreementLinkSend> linkGenerate(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
+
+
+
+
 
     @FormUrlEncoded
     @POST("get-pan-details")
@@ -484,6 +505,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("get-delivery-boys")
     Call<DelBoyResponse> getDelBoys(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
+
+    @FormUrlEncoded
+    @POST("task-filter-list")
+    Call<com.canvascoders.opaper.Beans.GetTaskCategoryListResponse.GetTasksTypeListing> getTaskCategoryList(@Header("Authorization") String token, @FieldMap Map<String, String> apiVersionMap);
+
 
     //-----------------------------------------------------------------------------
 
@@ -543,6 +569,13 @@ public interface ApiInterface {
     //@Headers("Content-Type: application/json")
     @POST("store-type")
     Call<ResponseBody> getStoreTypeListing(@Header("Authorization") String token, @Body JsonObject data);
+
+    @POST("vehicle-listing")
+    Call<GetVehicleTypes> getVehicleListing(@Header("Authorization") String token);
+
+
+
+
 
 
     @POST("store-type-resign")

@@ -1327,7 +1327,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 

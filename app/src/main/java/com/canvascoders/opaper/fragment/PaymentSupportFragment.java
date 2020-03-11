@@ -331,7 +331,7 @@ public class PaymentSupportFragment extends Fragment implements RecyclerViewClic
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 

@@ -353,7 +353,7 @@ public class OnboardingSupportFragment extends Fragment implements RecyclerViewC
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 

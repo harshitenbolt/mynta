@@ -36,6 +36,7 @@
             android:layout_marginRight="@dimen/_10sdp"
             android:fontFamily="@font/montserratbold"
             android:text="Clear All"
+            android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/_10sdp" />
 
@@ -63,35 +64,137 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/fltop"
         android:layout_alignParentBottom="true">
-
-
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:fillViewport="true"
+            android:layout_above="@+id/llBottom"
+            android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/llBottom"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvFilterMainCategory"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@color/colorWhite">
+                android:orientation="horizontal">
 
-            </androidx.recyclerview.widget.RecyclerView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvFilterMainCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorlightGrey">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/llSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_45sdp"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:layout_marginBottom="@dimen/_3sdp"
+                            android:background="@drawable/roundedcornergreythick"
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvFilterSubCategory"
+                            <AutoCompleteTextView
+                                android:id="@+id/etSearchPlace"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="@dimen/_40sdp"
+                                android:background="@null"
+                                android:dropDownHeight="wrap_content"
+                                android:hint="Search"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:singleLine="true"
+                                android:textAllCaps="false" />
+
+                            <ImageView
+                                android:id="@+id/ivSearch"
+                                android:layout_width="@dimen/_25sdp"
+                                android:layout_height="@dimen/_15sdp"
+                                android:layout_marginRight="@dimen/_45sdp"
+                                android:src="@drawable/magnifiertool" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <Spinner
+                                    android:id="@+id/spSearch"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                </Spinner>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvFilterSubCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:background="@color/whitePrimary">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:layout_weight=".5"
-                android:background="@color/whitePrimary">
+                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvFilterWith"
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/_15sdp"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_height="@dimen/_18sdp"
+                    android:text="Filter with :-"/>
 
-            </androidx.recyclerview.widget.RecyclerView>
+                <TextView
+                    android:id="@+id/tvDataName"
+                    android:gravity="start"
+                    android:layout_gravity="center_horizontal|top"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
+            </LinearLayout>
+            </ScrollView>
 
         </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
         <LinearLayout
             android:id="@+id/llBottom"

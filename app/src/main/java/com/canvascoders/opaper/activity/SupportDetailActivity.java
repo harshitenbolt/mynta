@@ -139,7 +139,7 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 

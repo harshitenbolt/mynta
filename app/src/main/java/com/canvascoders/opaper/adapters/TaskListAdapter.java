@@ -80,7 +80,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.Record
             holder.tvTimer.setVisibility(View.GONE);
 
         } else {
-
             holder.tvStartName.setText("Due date :- " + vendorLists.get(position).getDueDate());
             holder.tvAssignedBy.setText("Assigned By:- " + vendorLists.get(position).getAssigneByName());
 

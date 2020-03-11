@@ -292,7 +292,7 @@ public class InvoiceMainFragment extends Fragment implements SwipeRefreshLayout.
             }
         });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mcontext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerview.setLayoutManager(linearLayoutManager);
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -345,7 +345,7 @@ public class InvoiceMainFragment extends Fragment implements SwipeRefreshLayout.
 
 
             @Override
-            public void onLongClick(View view, final int position) {
+            public void onLongClick(View view, final int position,String data) {
 
             }
 

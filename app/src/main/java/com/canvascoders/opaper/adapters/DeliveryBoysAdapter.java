@@ -64,7 +64,7 @@ public class DeliveryBoysAdapter extends RecyclerView.Adapter<DeliveryBoysAdapte
         holder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recyclerViewClickListener.onLongClick(view, position);
+                recyclerViewClickListener.onLongClick(view, position,"");
             }
         });
         holder.tvStatus.setText(moreitemList.get(position).getBoystatus());

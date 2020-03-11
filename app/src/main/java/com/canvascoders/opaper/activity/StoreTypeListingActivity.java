@@ -694,7 +694,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 

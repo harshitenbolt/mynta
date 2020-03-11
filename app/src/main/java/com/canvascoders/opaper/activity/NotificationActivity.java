@@ -184,7 +184,7 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 

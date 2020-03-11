@@ -24,6 +24,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -43,7 +44,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
+import com.canvascoders.opaper.Beans.GetVehicleTypes;
 import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
+import com.canvascoders.opaper.Beans.TaskDetailResponse.SubTaskReason;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
@@ -60,6 +63,7 @@ import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -75,7 +79,7 @@ import retrofit2.Response;
 
 public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText etName, etFatherName, etPhoneNumber, etRoute, etDrivingNumber, etVehicle;
+    private EditText etName, etFatherName, etPhoneNumber, etRoute, etDrivingNumber;
     private ImageView ivProfile, ivDriving_Licence, ivBack;
     private String profileImagepath = "", licenceImagePath = "";
     private int PROFILEIMAGE = 200, LICENCEIMAGE = 300;
@@ -103,12 +107,17 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             "Kannada", "Kashmiri", "Konkani", "Malayalam", "Manipuri", "Marathi", "Nepali", "Oriya", "Punjabi", "Sanskrit", "Sindhi", "Tamil", "Telugu", "Urdu", "Bodo", "Santhali", "Maithili", "Dogri"};
     ArrayList<String> listLanaguage = new ArrayList<>();
     boolean[] checkedItems;
+
+
+    String[] selectVehicleType = {"Bike", "Cycle", "Truck"};
+    String stringDob="";
     private TextView tvLanguage, dob;
     private CheckBox cbSame;
     private String isUpdate = "";
     Button btGetOtp;
     String otp = "", mobile_number = "";
     private String TAG = "sfdfdg";
+    Spinner spVehicleForDelivery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,11 +156,12 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         // etPermanentAddress = findViewById(R.id.etPermAdd);
         etRoute = findViewById(R.id.etRouteNo);
         etDrivingNumber = findViewById(R.id.etLicenceNumber);
-        etVehicle = findViewById(R.id.etVehicleForDelivery);
+        //  etVehicle = findViewById(R.id.etVehicleForDelivery);
         dob = findViewById(R.id.tvDateofBirth);
         dob.setOnClickListener(this);
 
 
+        spVehicleForDelivery = findViewById(R.id.spVehicleForDelivery);
         ivProfile = findViewById(R.id.ivProfileImage);
         ivDriving_Licence = findViewById(R.id.ivDrivingLicence);
         ivDriving_Licence.setOnClickListener(this);
@@ -248,7 +258,49 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             }
         });
 
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            APiCallgetvehicleNames();
+        } else {
+            Constants.ShowNoInternet(AddNewDeliveryBoy.this);
+        }
         //ApiCallGetDc();
+    }
+
+    private void APiCallgetvehicleNames() {
+        mProgressDialog.show();
+        Call<GetVehicleTypes> call = ApiClient.getClient().create(ApiInterface.class).getVehicleListing("Bearer " + sessionManager.getToken());
+        call.enqueue(new Callback<GetVehicleTypes>() {
+            @Override
+            public void onResponse(Call<GetVehicleTypes> call, Response<GetVehicleTypes> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetVehicleTypes getVehicleTypes = response.body();
+                    if (getVehicleTypes.getResponseCode() == 200) {
+                        List<String> items = Arrays.asList(getVehicleTypes.getData().split("\\s*,\\s*"));
+                        CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(AddNewDeliveryBoy.this, android.R.layout.simple_spinner_item, items);
+                        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spVehicleForDelivery.setAdapter(spinnerArrayAdapter);
+                        spVehicleForDelivery.setSelection(0);
+
+                    } else {
+                        Toast.makeText(AddNewDeliveryBoy.this, getVehicleTypes.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(AddNewDeliveryBoy.this, "#errorcode 2116" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetVehicleTypes> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(AddNewDeliveryBoy.this, "#errorcode 2116" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
     }
 
     private boolean isValid() {
@@ -476,8 +528,9 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                                 if (daysString.length() == 1) {
                                     daysString = "0" + daysString;
                                 }
+                                stringDob = year + "-" + monthString + "-" + daysString;
+                                dob.setText(daysString + "-" + monthString + "-" + year);
 
-                                dob.setText(year + "-" + monthString + "-" + daysString);
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.getDatePicker().setMaxDate(minDate);
@@ -749,8 +802,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                                 }
                                 if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
                                     //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                    etVehicle.setError(validation.getDriving_licence_dob());
-                                    etVehicle.requestFocus();
+                                    Toast.makeText(AddNewDeliveryBoy.this, validation.getVehicle_for_delivery(), Toast.LENGTH_SHORT).show();
                                 }
                                 if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
                                     //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
@@ -794,6 +846,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     }
 
     private void ApiCallSubmit() {
+        Call<AddDelBoyResponse> callUpload = null;
         gps = new GPSTracker(AddNewDeliveryBoy.this);
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
@@ -817,15 +870,6 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         String image = "image";
         String driving_licence = "driving_licence_image";
 
-        File imagefile1 = new File(profileImagepath);
-        prof_image = MultipartBody.Part.createFormData(image, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(profileImagepath)), imagefile1));
-        //   list.add(shop_act_part);
-
-
-        File imagefile2 = new File(licenceImagePath);
-        license_image = MultipartBody.Part.createFormData(driving_licence, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(licenceImagePath)), imagefile2));
-
-        // Log.e("image",list.toString());
 
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
@@ -855,13 +899,26 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             params.put(Constants.PARAM_IS_EDIT,"1");
         }*/
         params.put(Constants.PARAM_DRIVING_LICENCE_NUM, etDrivingNumber.getText().toString().trim());
-        params.put(Constants.PARAM_DRIVING_LICENCE_DOB, dob.getText().toString().trim());
-        params.put(Constants.PARAM_DRIVING_LICENCE_VEHICLE, etVehicle.getText().toString().trim());
+        params.put(Constants.PARAM_DRIVING_LICENCE_DOB, stringDob);
+        params.put(Constants.PARAM_DRIVING_LICENCE_VEHICLE, spVehicleForDelivery.getSelectedItem().toString());
         params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
         params.put(Constants.PARAM_LATITUDE, lattitude);
         params.put(Constants.PARAM_LONGITUDE, longitude);
 
-        Call<AddDelBoyResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image);
+        File imagefile1 = new File(profileImagepath);
+        prof_image = MultipartBody.Part.createFormData(image, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(profileImagepath)), imagefile1));
+        //   list.add(shop_act_part);
+
+        if (!spVehicleForDelivery.getSelectedItem().toString().equalsIgnoreCase("Cycle")) {
+            File imagefile2 = new File(licenceImagePath);
+            license_image = MultipartBody.Part.createFormData(driving_licence, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(licenceImagePath)), imagefile2));
+            callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image);
+
+        } else {
+            callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image);
+
+        }
+        // Log.e("image",list.toString());
         callUpload.enqueue(new Callback<AddDelBoyResponse>() {
             @Override
             public void onResponse(Call<AddDelBoyResponse> call, Response<AddDelBoyResponse> response) {
@@ -872,11 +929,9 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                         Toast.makeText(AddNewDeliveryBoy.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         deleteImages();
                         finish();
-                    }
-                    else if (addDelBoyResponse.getResponseCode() == 411) {
+                    } else if (addDelBoyResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(AddNewDeliveryBoy.this);
-                    }
-                    else if (addDelBoyResponse.getResponseCode() == 400) {
+                    } else if (addDelBoyResponse.getResponseCode() == 400) {
 
                         mProgressDialog.dismiss();
                         if (addDelBoyResponse.getValidation() != null) {
@@ -934,8 +989,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                             }
                             if (validation.getVehicle_for_delivery() != null && validation.getVehicle_for_delivery().length() > 0) {
                                 //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
-                                etVehicle.setError(validation.getDriving_licence_dob());
-                                etVehicle.requestFocus();
+                                Toast.makeText(AddNewDeliveryBoy.this, validation.getVehicle_for_delivery(), Toast.LENGTH_LONG).show();
                             }
                             if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
                                 //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
@@ -1142,28 +1196,31 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         if (i == 3) {
 
 
-            if (TextUtils.isEmpty(etDrivingNumber.getText().toString())) {
-                etDrivingNumber.requestFocus();
-                etDrivingNumber.setError("Provide Driving Licence Number");
-                // showMSG(false, "Provide Pincode");
-                return false;
-            }
-            if (TextUtils.isEmpty(etVehicle.getText().toString())) {
+           /* if (TextUtils.isEmpty(etVehicle.getText().toString())) {
                 etVehicle.requestFocus();
                 etVehicle.setError("Provide Vehicle Name");
                 // showMSG(false, "Provide Pincode");
                 return false;
             }
+           */
             if (listLanaguage.size() == 0) {
                 Toast.makeText(this, "Please Select Language", Toast.LENGTH_SHORT).show();
                 // showMSG(false, "Provide Pincode");
                 return false;
             }
 
+            if (!spVehicleForDelivery.getSelectedItem().toString().equalsIgnoreCase("Cycle")) {
+                if (licenceImagePath.equals("")) {
+                    Toast.makeText(this, "Please Select Licence Image", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                if (TextUtils.isEmpty(etDrivingNumber.getText().toString())) {
+                    etDrivingNumber.requestFocus();
+                    etDrivingNumber.setError("Provide Driving Licence Number");
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
 
-            if (licenceImagePath.equals("")) {
-                Toast.makeText(this, "Please Select Licence Image", Toast.LENGTH_SHORT).show();
-                return false;
             }
             if (dob.getText().equals("Date of Birth")) {
                 Toast.makeText(this, "Provide Date of Birth", Toast.LENGTH_SHORT).show();

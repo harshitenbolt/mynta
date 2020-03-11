@@ -551,7 +551,7 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
     }
 
     @Override
-    public void onLongClick(View view, int position) {
+    public void onLongClick(View view, int position,String data) {
 
     }
 
