@@ -62,6 +62,8 @@ import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.JsonObject;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -110,7 +112,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
 
     String[] selectVehicleType = {"Bike", "Cycle", "Truck"};
-    String stringDob="";
+    String stringDob = "";
     private TextView tvLanguage, dob;
     private CheckBox cbSame;
     private String isUpdate = "";
@@ -1334,10 +1336,19 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                         if (voterOCRGetDetaisResponse.getStatus().equalsIgnoreCase("success")) {
                             Toast.makeText(AddNewDeliveryBoy.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
+                            String outputDateStr = "Date of Birth";
                             etDrivingNumber.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber());
 
                             //fathername = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFatherName();
-                            dob.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
+                            stringDob = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate();
+                            if (!stringDob.equalsIgnoreCase("")) {
+                                DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                                Date date = inputFormat.parse(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
+                                outputDateStr = outputFormat.format(date);
+                            }
+
+                            dob.setText(outputDateStr);
                            /* dlnumber = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber();
                             dlIdDetailId = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();

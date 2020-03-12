@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
+import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
 import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.Beans.getMerakApiResponse.GetMerakResponse;
 import com.canvascoders.opaper.R;
@@ -156,6 +157,45 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
 
 //        setButtonImage();
 
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            APiCallGetTrackDetails();
+        } else {
+            Constants.ShowNoInternet(this);
+        }
+
+
+    }
+
+
+    private void APiCallGetTrackDetails() {
+        progressDialog.show();
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        ApiClient.getClient().create(ApiInterface.class).geTrackingDetails("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<GetTrackDetailsResponse>() {
+            @Override
+            public void onResponse(Call<GetTrackDetailsResponse> call, Response<GetTrackDetailsResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetTrackDetailsResponse getTrackDetailsResponse = response.body();
+                    if (getTrackDetailsResponse.getResponseCode() == 200) {
+                        //  Toast.makeText(EditBankDetailsActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        Glide.with(EditBankDetailsActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getCancelledCheque()).into(ivChequeImage);
+                    } else {
+                        Toast.makeText(EditBankDetailsActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    Toast.makeText(EditBankDetailsActivity.this, "#errorcode 2091 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetTrackDetailsResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(EditBankDetailsActivity.this, "#errorcode 2091 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

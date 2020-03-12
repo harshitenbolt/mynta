@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
+import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
 import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
@@ -50,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 import okhttp3.MediaType;
@@ -260,6 +262,61 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
             }
         });
 
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            APiCallGetTrackDetails();
+        } else {
+            Constants.ShowNoInternet(this);
+        }
+
+
+    }
+
+
+    private void APiCallGetTrackDetails() {
+        mProgressDialog.show();
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        ApiClient.getClient().create(ApiInterface.class).geTrackingDetails("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<GetTrackDetailsResponse>() {
+            @Override
+            public void onResponse(Call<GetTrackDetailsResponse> call, Response<GetTrackDetailsResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetTrackDetailsResponse getTrackDetailsResponse = response.body();
+                    if (getTrackDetailsResponse.getResponseCode() == 200) {
+                        //  Toast.makeText(EditOwnerInfoActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        etOwnerName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getOwnerName());
+                        etEmail.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getEmail());
+                        tvDOB.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getDob());
+                        etCurrentShopNo.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress());
+                        etCurrentStreet.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress1());
+                        etCurrentLandmark.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressLandmark());
+                        etCurrentPincode.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressPicode());
+                        etCurrentCity.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressCity());
+                        etCurrentState.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressState());
+                        etPerShopNo.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getPermanentAddress());
+                        etPerStreet.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getPermanentAddress1());
+                        etPerLandmark.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getPermanentAddressLandmark());
+                        etPerPincode.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getPermanentAddressPicode());
+                        etPerCity.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getPermanentAddressCity());
+                        etPerState.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getPermanentAddressState());
+                        tvLanguage.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getLanguages());
+                        Glide.with(EditOwnerInfoActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getOwnerImage()).into(ivOwnerImage);
+                    } else {
+                        Toast.makeText(EditOwnerInfoActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    Toast.makeText(EditOwnerInfoActivity.this, "#errorcode 2091 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetTrackDetailsResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditOwnerInfoActivity.this, "#errorcode 2091 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -406,7 +463,7 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
 
                 Bitmap bitmap = ImagePicker.getImageFromResult(EditOwnerInfoActivity.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
-                ownerImage = ImagePicker.getBitmapPath(bitmap, EditOwnerInfoActivity.this); // ImageUtils.getInstant().getImageUri(EditStoreInformationActivity.this, photo);
+                ownerImage = ImagePicker.getBitmapPath(bitmap, EditOwnerInfoActivity.this); // ImageUtils.getInstant().getImageUri(EditOwnerInfoActivity.this, photo);
                 Glide.with(EditOwnerInfoActivity.this).load(ownerImage).into(ivOwnerImage);
                 //  Log.e("imageowner", "back image" + shopImg);
                 ivOwnerImageSelected.setVisibility(View.VISIBLE);

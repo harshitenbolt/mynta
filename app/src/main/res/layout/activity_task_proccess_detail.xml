@@ -61,12 +61,16 @@
 
     </FrameLayout>
 
-
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:layout_width="match_parent"
+    android:layout_below="@+id/flTOp"
+    android:id="@+id/swResfresh"
+    android:layout_height="match_parent">
     <RelativeLayout
         android:id="@+id/rvTaskDetails"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/flTOp">
+       >
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -1632,7 +1636,7 @@
                                         android:layout_gravity="end|center"
                                         android:src="@drawable/editnote" />
 
-                                    <TextView
+                                    <ImageView
                                         android:id="@+id/tvAddGST"
                                         android:visibility="gone"
                                         android:layout_width="wrap_content"
@@ -1646,9 +1650,8 @@
                                         android:paddingTop="@dimen/_5sdp"
                                         android:paddingRight="@dimen/_10sdp"
                                         android:paddingBottom="@dimen/_5sdp"
-                                        android:src="@drawable/location_green"
-                                        android:text="ADD"
-                                        android:textColor="@color/colorPrimary"
+                                        android:src="@drawable/ic_add_img"
+                                       android:textColor="@color/colorPrimary"
                                         android:textSize="@dimen/_7sdp" />
 
 
@@ -2080,7 +2083,7 @@
 
 
                                         <TextView
-
+                                            android:id="@+id/tvNoOfDeliveryBoys"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratsemibold"
@@ -2091,12 +2094,12 @@
 
 
                                         <TextView
-                                            android:id="@+id/tvNoOfDeliveryBoys"
+                                            android:visibility="gone"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratregular"
                                             android:text=""
-                                            android:textSize="@dimen/_7sdp" />
+                                            android:textSize="@dimen/_10sdp" />
                                     </LinearLayout>
 
 
@@ -2268,9 +2271,9 @@
                                             android:layout_height="wrap_content"
                                             android:fontFamily="@font/montserratsemibold"
                                             android:singleLine="true"
-                                            android:text="No.of rates added"
+                                            android:text="Rates added successfully"
                                             android:textColor="@color/text_color_dark_grey"
-                                            android:textSize="@dimen/_8sdp" />
+                                            android:textSize="@dimen/_10sdp" />
 
 
                                         <TextView
@@ -2390,7 +2393,7 @@
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         android:layout_weight="1"
                                         android:fontFamily="@font/montserratsemibold"
-                                        android:text="Rate details"
+                                        android:text="Rate Approval"
                                         android:textColor="@color/colorBlack"
                                         android:textSize="@dimen/_12sdp" />
 
@@ -2559,5 +2562,7 @@
 
         </LinearLayout>
     </RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </RelativeLayout>

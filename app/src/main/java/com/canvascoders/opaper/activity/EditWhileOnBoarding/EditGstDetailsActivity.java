@@ -166,8 +166,6 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
                 }
             }
         });
-        ivBack = findViewById(R.id.ivBack);
-        ivBack.setOnClickListener(this);
         ivPanImage = findViewById(R.id.ivPanImage);
         tvPanClick = findViewById(R.id.ivPanCard);
         ivPanImageSelected = findViewById(R.id.tvClickPanSelected);

@@ -47,6 +47,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -78,7 +81,7 @@ public class DialogUtil {
     ImageView ivClose;
     public static Spinner dc;
     private static ArrayList<String> dcLists = new ArrayList<>();
-
+    static String stringdob = "";
     static String order_type = "1";
     private static final String TAG = "DialogUtil";
 
@@ -132,6 +135,7 @@ public class DialogUtil {
         Button btSubmit;
         ImageView ivClose;
 
+
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
             dialog = null;
@@ -149,6 +153,7 @@ public class DialogUtil {
         etVotername.setText(name);
         etVoterFatherName.setText(fathername);
         etVoterIdNumber.setText(id);
+        stringdob = birthdate;
         etVoterDateofBirth.setText(birthdate);
         ivClose = dialog.findViewById(R.id.ivClose);
 
@@ -188,8 +193,8 @@ public class DialogUtil {
                                 if (daysString.length() == 1) {
                                     daysString = "0" + daysString;
                                 }
-
-                                etVoterDateofBirth.setText(year + "-" + monthString + "-" + daysString);
+                                stringdob = year + "-" + monthString + "-" + daysString;
+                                etVoterDateofBirth.setText(daysString + "-" + monthString + "-" + year);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -210,7 +215,17 @@ public class DialogUtil {
             public void onClick(View v) {
                 //dialogInterface.cancel();
                 if (isValid(v)) {
-                    dialogInterface.onClickDetails(etVotername.getText().toString(), etVoterFatherName.getText().toString(), etVoterDateofBirth.getText().toString(), etVoterIdNumber.getText().toString());
+                    DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = null;
+                    try {
+                        date = inputFormat.parse(etVoterDateofBirth.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String outputDateStr = outputFormat.format(date);
+
+                    dialogInterface.onClickDetails(etVotername.getText().toString(), etVoterFatherName.getText().toString(), outputDateStr, etVoterIdNumber.getText().toString());
                 }
             }
 
@@ -861,7 +876,7 @@ public class DialogUtil {
         CheckBox cbMain;
         Button btSubmit;
         if (dialog != null && dialog.isShowing()) {
-          //  dialog.dismiss();
+            //  dialog.dismiss();
             dialog = null;
         }
 

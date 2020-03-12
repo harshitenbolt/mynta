@@ -60,6 +60,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -773,7 +775,11 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                         EditDeliveryBoyActivity.CustomAdapter<String> spinnerArrayAdapter = new EditDeliveryBoyActivity.CustomAdapter<String>(EditDeliveryBoyActivity.this, android.R.layout.simple_spinner_item, items);
                         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spVehicleForDelivery.setAdapter(spinnerArrayAdapter);
-                        spVehicleForDelivery.setSelection(0);
+                        for(int i =0;i<items.size();i++){
+                            if(datum.getVehicleForDelivery().equalsIgnoreCase(items.get(i))){
+                                spVehicleForDelivery.setSelection(i);
+                            }
+                        }
 
                     } else {
                         Toast.makeText(EditDeliveryBoyActivity.this, getVehicleTypes.getResponse(), Toast.LENGTH_SHORT).show();
@@ -1392,6 +1398,17 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                             dlIdDetailId = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();*/
+                            etDrivingNumber.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber());
+
+                            //fathername = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFatherName();
+                            stringdob = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate();
+
+                            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                            Date date = inputFormat.parse(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
+                            String outputDateStr = outputFormat.format(date);
+
+                            dob.setText(outputDateStr);
 
 
                         } else {

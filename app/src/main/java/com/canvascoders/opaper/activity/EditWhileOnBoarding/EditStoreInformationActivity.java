@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
+import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
 import com.canvascoders.opaper.Beans.GetVendorTypeDetails;
 import com.canvascoders.opaper.Beans.ObjectPopup;
 import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
@@ -63,6 +65,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 import okhttp3.MediaType;
@@ -103,6 +106,11 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
     boolean[] checkedStoreType;
     RelativeLayout rvVendorType, rvStoreType, rvLocality, rvApproach, rvShipmentTransfer, rvVendorTypeDetail;
     private TextView tvTypeofVendor, tvStoreType, tvVendorTypeDetail, tvLocality, tvApproach, tvShipment;
+
+
+
+
+    String storeName="",shopNo="",streetName="",landmark="",storePincode="",storecity="",storeState="",route="",tyepeofVendor="",vendorType="",locality="",approach="",shipment_transfer="",licence_number="",storeType="",storeImage="";
     private Spinner dc;
     private String lattitude = "", longitude = "";
     List<String> listStoreType = new ArrayList<>();
@@ -160,7 +168,68 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
         }
 
 
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            APiCallGetTrackDetails();
+        } else {
+            Constants.ShowNoInternet(this);
+        }
+
+
     }
+
+
+
+
+
+    private void APiCallGetTrackDetails() {
+        mProgressDialog.show();
+        Map<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        ApiClient.getClient().create(ApiInterface.class).geTrackingDetails("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<GetTrackDetailsResponse>() {
+            @Override
+            public void onResponse(Call<GetTrackDetailsResponse> call, Response<GetTrackDetailsResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetTrackDetailsResponse getTrackDetailsResponse = response.body();
+                    if (getTrackDetailsResponse.getResponseCode() == 200) {
+                        //  Toast.makeText(EditStoreInformationActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        etStoreName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreName());
+                        etStoreShopname.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddress());
+                        etStoreStreetName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddress1());
+                        etStoreLandmarl.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddressLandmark());
+                        etStorePincode.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getPincode());
+                        etStoreCity.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getCity());
+                        etStoreState.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getState());
+
+                        etStoreRoute.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getRoute().substring(getTrackDetailsResponse.getData().get(0).getBasicDetails().getRoute().lastIndexOf("-")+1));
+                        tvTypeofVendor.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getVendorType());
+                        tvVendorTypeDetail.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getVendorTypeDetail());
+                        tvLocality.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getLocality());
+                        tvApproach.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getApproach());
+                        tvShipment.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getShipmentTransfer());
+                        etLicenceNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getLicenseNo());
+                        tvStoreType.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreType());
+                        Glide.with(EditStoreInformationActivity.this).load(Constants.BaseImageURL+getTrackDetailsResponse.getData().get(0).getDocUpload().getShopImage()).into(ivStoreImage);
+                    } else {
+                        Toast.makeText(EditStoreInformationActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    Toast.makeText(EditStoreInformationActivity.this, "#errorcode 2091 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetTrackDetailsResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditStoreInformationActivity.this, "#errorcode 2091 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
 
     private void init() {
         etStoreName = findViewById(R.id.etStoreName);

@@ -215,6 +215,7 @@ public class RateListonBoardingAdapter extends RecyclerView.Adapter<RateListonBo
 
                                 } else {
                                     holder.check_box_store.setChecked(false);
+                                    dataViews.get(position).setSelected(false);
                                     str = "";
                                     dialog.dismiss();
                                     InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -222,8 +223,6 @@ public class RateListonBoardingAdapter extends RecyclerView.Adapter<RateListonBo
                                     imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                                 }
                                 recyclerViewClickListener.SingleClick(str, position);
-
-
                             }
                         });
                         ivClose1 = dialog.findViewById(R.id.ivClose);
@@ -242,16 +241,13 @@ public class RateListonBoardingAdapter extends RecyclerView.Adapter<RateListonBo
                                     dialog.dismiss();
                                 }
                                 holder.check_box_store.setChecked(false);
+                                dataViews.get(position).setSelected(false);
+
                             }
                         });
-
-
                         dialog.show();
                     }
-
                 }
-
-
                 if (holder.check_box_store.isChecked()) {
                     if (!store.getStoreType().contains(Constants.CAC_STORE))
                         holder.edt_store_amount.setEnabled(true);

@@ -216,6 +216,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
 
                                 } else {
                                     holder.check_box_store.setChecked(false);
+                                    dataViews.get(position).setSelected(false);
                                     str = "";
                                     dialog.dismiss();
                                     InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
@@ -223,8 +224,6 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                                     imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                                 }
                                 recyclerViewClickListener.SingleClick(str, position);
-
-
                             }
                         });
                         ivClose1 = dialog.findViewById(R.id.ivClose);
@@ -240,9 +239,12 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                                 } else {
                                     holder.check_box_store.setChecked(false);
                                     str = "";
+                                    dataViews.get(position).setSelected(false);
                                     dialog.dismiss();
                                 }
                                 holder.check_box_store.setChecked(false);
+                                dataViews.get(position).setSelected(false);
+
                             }
                         });
 
@@ -256,7 +258,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                 if (holder.check_box_store.isChecked()) {
                     if (!store.getStoreType().contains(Constants.CAC_STORE))
                         holder.edt_store_amount.setEnabled(true);
-                    dataViews.get(position).setSelected(true);
+                         dataViews.get(position).setSelected(true);
                 } else {
                     holder.edt_store_amount.setEnabled(false);
                     dataViews.get(position).setSelected(false);

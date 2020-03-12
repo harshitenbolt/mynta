@@ -1,6 +1,7 @@
 package com.canvascoders.opaper.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -29,10 +30,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TaskProccessDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class TaskProccessDetailActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     ImageView ivBack;
-    TextView tvAddNewGST;
+    ImageView tvAddNewGST;
     ImageView ivEditLocation, ivEditKyc, ivEditPan, ivEditBank, ivEditStoreDetails, ivOwnerDetails, ivGstInformation, ivShopActEdit, ivDeliveryDetails, ivRateDetails;
     String proccess_id = "";
     NetworkConnectivity networkConnectivity;
@@ -46,6 +47,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
 
     TextView tvRemarkLocation, tvRemarkKYC, tvRemarkPan, tvRemarkBank, tvRemarkStore, tvRemarkOwner, tvRemarkGST, tvRemarkShopAct, tvRemarkDelivery, tvRemarkRateDetails, tvRemarkRateApproval;
     ImageView ivChequeImage;
+    SwipeRefreshLayout swResfresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +173,9 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
 
         tvNoDeliveryBoysAdded = findViewById(R.id.tvNoOfDeliveryBoys);
         tvNoofRates = findViewById(R.id.tvnoOfRates);
-      /*  if (networkConnectivity.isNetworkAvailable()) {
+        swResfresh = findViewById(R.id.swResfresh);
+        swResfresh.setOnRefreshListener(this);
+        /*  if (networkConnectivity.isNetworkAvailable()) {
             APiCallGetTrackDetails();
         } else {
             Constants.ShowNoInternet(this);
@@ -179,6 +183,8 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
     }
 
     private void APiCallGetTrackDetails() {
+        swResfresh.setRefreshing(false);
+
         progressDialog.show();
         Map<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_PROCESS_ID, proccess_id);
@@ -238,14 +244,14 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                         if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getAadhaarVerify() == 1) {
                             llKyCEnable.setVisibility(View.VISIBLE);
                             llKYCDisable.setVisibility(View.GONE);
-                            if (!getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterName().equalsIgnoreCase("")) {
+                            if (getTrackDetailsResponse.getData().get(0).getProccessDetail().getKycType().equalsIgnoreCase("2")) {
                                 tvDocNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterIdNum());
                                 tvDocAddress.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterDob());
                                 tvDocName.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterName());
                                 Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getVoterCardFront()).into(ivAdharFront);
                                 Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getVoterCardFront()).into(ivAdharBack);
 
-                            } else if (!getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlName().equalsIgnoreCase("")) {
+                            } else if (getTrackDetailsResponse.getData().get(0).getProccessDetail().getKycType().equalsIgnoreCase("3")) {
                                 tvDocNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlNumber());
                                 tvDocAddress.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlDob());
                                 tvDocName.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlName());
@@ -281,8 +287,8 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                                 // tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
 
                                 if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getAadhaarVerifyRemark().equalsIgnoreCase("")) {
-                                    llKyCEnable.setVisibility(View.VISIBLE);
-                                    llKYCDisable.setVisibility(View.GONE);
+                                    llKyCEnable.setVisibility(View.GONE);
+                                    llKYCDisable.setVisibility(View.VISIBLE);
                                     tvKYCText.setVisibility(View.GONE);
                                     tvRemarkKYC.setVisibility(View.VISIBLE);
                                     tvRemarkKYC.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getAadhaarVerifyRemark());
@@ -736,14 +742,14 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                         if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getDeliveryBoy() == 1) {
                             llDeliveryBoysDisable.setVisibility(View.GONE);
                             llDeliveryBoysEnable.setVisibility(View.VISIBLE);
-                            tvNoDeliveryBoysAdded.setText(getTrackDetailsResponse.getData().get(0).getDeliveryBoysDetailCount() + "");
+                            tvNoDeliveryBoysAdded.setText("Total " + getTrackDetailsResponse.getData().get(0).getDeliveryBoysDetailCount() + " delivery boy added.");
 
                             if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
                                 // tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
 
                                 if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getDeliveryBoyRemark().equalsIgnoreCase("")) {
                                     llDeliveryBoysEnable.setVisibility(View.VISIBLE);
-                                    tvNoDeliveryBoysAdded.setText(getTrackDetailsResponse.getData().get(0).getDeliveryBoysDetailCount() + "");
+                                    tvNoDeliveryBoysAdded.setText("Total " + getTrackDetailsResponse.getData().get(0).getDeliveryBoysDetailCount() + " delivery boy added.");
                                     llDeliveryBoysDisable.setVisibility(View.GONE);
                                     tvDeliveryText.setVisibility(View.GONE);
                                     tvRemarkDelivery.setVisibility(View.VISIBLE);
@@ -958,5 +964,15 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         } else {
             Constants.ShowNoInternet(this);
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        if (networkConnectivity.isNetworkAvailable()) {
+            APiCallGetTrackDetails();
+        } else {
+            Constants.ShowNoInternet(this);
+        }
+
     }
 }

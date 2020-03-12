@@ -759,10 +759,9 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
                     }
                 } else {
+                    progressDialog.dismiss();
                     Toast.makeText(TaskDetailActivity.this, "#errorcode 2085 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
-
-
             }
 
             @Override

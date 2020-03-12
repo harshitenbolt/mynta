@@ -70,7 +70,10 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1376,9 +1379,18 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                             voterDetailsId = String.valueOf(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdDetailId());
                             filename = voterOCRGetDetaisResponse.getVoterIdDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getVoterIdDetail().getFileUrl();
+                            String outputDateStr="";
+
+                            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                            if(!voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate().equalsIgnoreCase("")) {
+                                Date date = inputFormat.parse(voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate());
+                                outputDateStr = outputFormat.format(date);
+                            }
 
 
-                            DialogUtil.VoterDetail(EditKycActivity.this, voterOCRGetDetaisResponse.getVoterIdDetail().getName(), voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber(), voterOCRGetDetaisResponse.getVoterIdDetail().getFatherName(), voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate(), new DialogListner() {
+
+                            DialogUtil.VoterDetail(EditKycActivity.this, voterOCRGetDetaisResponse.getVoterIdDetail().getName(), voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber(), voterOCRGetDetaisResponse.getVoterIdDetail().getFatherName(),outputDateStr, new DialogListner() {
                                 @Override
                                 public void onClickPositive() {
 
