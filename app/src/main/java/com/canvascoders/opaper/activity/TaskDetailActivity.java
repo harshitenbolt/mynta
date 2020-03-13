@@ -122,6 +122,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
     List<String> keyList = new ArrayList<>();
     Button btGotoScreen;
     String screenNumber = "";
+    String docRequire = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -486,7 +487,18 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                EndApiCall();
+
+                //condition would be here...
+                if (docRequire.equalsIgnoreCase("1")) {
+                    Intent i = new Intent(TaskDetailActivity.this, EndTaskActivity.class);
+                    i.putExtra(Constants.PARAM_TASK_ID, taskid);
+                    startActivityForResult(i, 0);
+
+                } else {
+                    EndApiCall();
+                }
+
+                //
             }
         });
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -640,6 +652,10 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
 
                         }*/
+
+                        docRequire = datum.getIsRequiredProof();
+
+
                         Log.e("ScreeName", datum.getRedirectScreenNumber());
                         screenNumber = datum.getRedirectScreenNumber();
                         for (Map<String, String> map : list)
@@ -925,6 +941,20 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }
+        }
+
+        // for end Task
+        if (requestCode == 0) {
+            if (resultCode == Activity.RESULT_OK) {
+                String result = data.getStringExtra("result");
+                if (result.equalsIgnoreCase("stop")) {
+                    finish();
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+
         }
     }//onAct
 

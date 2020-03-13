@@ -26,6 +26,7 @@ import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGstListing.GetGstListing;
 import com.canvascoders.opaper.Beans.GetGstPanEditResponse.GetGstPanEditResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
+import com.canvascoders.opaper.Beans.GetTaskEndResponse.GetTaskEndResponse;
 import com.canvascoders.opaper.Beans.GetTasksTypeListing;
 import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
 import com.canvascoders.opaper.Beans.GetVehicleTypes;
@@ -780,5 +781,15 @@ public interface ApiInterface {
     @Multipart
     @POST("aadhar-card-detail")
     Call<AdharOCRResponse> adharOcr(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part List<MultipartBody.Part> attachment);
+
+
+    @Multipart
+    @POST("self-gen-task-end")
+    Call<GetTaskEndResponse> getSelfTaskEnd(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                            @Part MultipartBody.Part[] store_image_act);
+
+
+
+
 
 }

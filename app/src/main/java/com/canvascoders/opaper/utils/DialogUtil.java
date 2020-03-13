@@ -475,6 +475,7 @@ public class DialogUtil {
         etDlDob = dialog.findViewById(R.id.etDlDateofBirth);
         etDlNumber = dialog.findViewById(R.id.etDlNumber);
         etFathername.setText(fathername);
+        stringdob = birthdate;
         etDlDob.setText(birthdate);
         etDlNumber.setText(id);
         etDlDob.setOnClickListener(new View.OnClickListener() {
@@ -511,7 +512,11 @@ public class DialogUtil {
                                     daysString = "0" + daysString;
                                 }
 
-                                etDlDob.setText(year + "-" + monthString + "-" + daysString);
+
+                                stringdob = year + "-" + monthString + "-" + daysString;
+                                etDlDob.setText(daysString + "-" + monthString + "-" + year);
+
+                            //    etDlDob.setText(year + "-" + monthString + "-" + daysString);
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog1.getDatePicker().setMaxDate(minDate1);
@@ -527,7 +532,19 @@ public class DialogUtil {
 
                                             //hideKeyboardwithoutPopulate(mContext);
                                             if (isValid(v)) {
-                                                dialogInterface.onClickDetails(etDlName.getText().toString(), etFathername.getText().toString(), etDlDob.getText().toString(), etDlNumber.getText().toString());
+
+                                                DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                                                DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                                Date date = null;
+                                                try {
+                                                    date = inputFormat.parse(etDlDob.getText().toString());
+                                                } catch (ParseException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                String outputDateStr = outputFormat.format(date);
+
+
+                                                dialogInterface.onClickDetails(etDlName.getText().toString(), etFathername.getText().toString(), outputDateStr, etDlNumber.getText().toString());
                                             }
                                         }
 

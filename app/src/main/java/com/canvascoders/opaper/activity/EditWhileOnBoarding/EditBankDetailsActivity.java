@@ -180,7 +180,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
                     GetTrackDetailsResponse getTrackDetailsResponse = response.body();
                     if (getTrackDetailsResponse.getResponseCode() == 200) {
                         //  Toast.makeText(EditBankDetailsActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                        Glide.with(EditBankDetailsActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getCancelledCheque()).into(ivChequeImage);
+                        Glide.with(EditBankDetailsActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getCancelledCheques().get(0).getCancelledCheque()).into(ivChequeImage);
                     } else {
                         Toast.makeText(EditBankDetailsActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
 

@@ -61,6 +61,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -111,7 +112,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     boolean[] checkedItems;
     private TextView tvLanguage, dob;
     private CheckBox cbSame;
-    String stringdob="";
+    String stringdob = "";
     private String isUpdate = "";
     String otp = "", mobile_number = "";
     Datum datum;
@@ -163,7 +164,20 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         etOtp = findViewById(R.id.etOtp);
         dob = findViewById(R.id.tvDateofBirth);
         stringdob = datum.getDrivingLicenceDob();
-        dob.setText(datum.getDrivingLicenceDob());
+
+        String outputDateStr = "";
+        DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+        if (!datum.getDrivingLicenceDob().equalsIgnoreCase("")) {
+            Date date = null;
+            try {
+                date = inputFormat.parse(datum.getDrivingLicenceDob());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            outputDateStr = outputFormat.format(date);
+        }
+        dob.setText(outputDateStr);
         dob.setOnClickListener(this);
         spVehicleForDelivery = findViewById(R.id.spVehicleForDelivery);
 
@@ -729,7 +743,6 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         if (i == 3) {
 
 
-
             if (tvLanguage.getText().equals("Select Language")) {
                 Toast.makeText(this, "Please Select Language", Toast.LENGTH_SHORT).show();
                 // showMSG(false, "Provide Pincode");
@@ -775,8 +788,8 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                         EditDeliveryBoyActivity.CustomAdapter<String> spinnerArrayAdapter = new EditDeliveryBoyActivity.CustomAdapter<String>(EditDeliveryBoyActivity.this, android.R.layout.simple_spinner_item, items);
                         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spVehicleForDelivery.setAdapter(spinnerArrayAdapter);
-                        for(int i =0;i<items.size();i++){
-                            if(datum.getVehicleForDelivery().equalsIgnoreCase(items.get(i))){
+                        for (int i = 0; i < items.size(); i++) {
+                            if (datum.getVehicleForDelivery().equalsIgnoreCase(items.get(i))) {
                                 spVehicleForDelivery.setSelection(i);
                             }
                         }

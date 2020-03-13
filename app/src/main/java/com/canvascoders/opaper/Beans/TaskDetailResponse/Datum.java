@@ -25,6 +25,19 @@ public class Datum implements Serializable {
     @SerializedName("admin_id")
     @Expose
     private String adminId;
+
+    public String getIsRequiredProof() {
+        return isRequiredProof;
+    }
+
+    public void setIsRequiredProof(String isRequiredProof) {
+        this.isRequiredProof = isRequiredProof;
+    }
+
+    @SerializedName("is_required_proof")
+    @Expose
+    private String isRequiredProof;
+
     @SerializedName("assign_by")
     @Expose
     private String assignBy;

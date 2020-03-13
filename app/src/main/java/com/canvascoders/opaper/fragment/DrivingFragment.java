@@ -37,6 +37,9 @@ import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -154,7 +157,17 @@ public class DrivingFragment extends Fragment implements View.OnClickListener {
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();
 
-                            DialogUtil.DrivingDetail(getActivity(), name, fathername, dob, dlnumber, new DialogListner() {
+                            String outputDateStr="";
+
+                            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                            if(!voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate().equalsIgnoreCase("")) {
+                                Date date = inputFormat.parse(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
+                                outputDateStr = outputFormat.format(date);
+                            }
+
+
+                            DialogUtil.DrivingDetail(getActivity(), name, fathername, outputDateStr, dlnumber, new DialogListner() {
                                 @Override
                                 public void onClickPositive() {
 

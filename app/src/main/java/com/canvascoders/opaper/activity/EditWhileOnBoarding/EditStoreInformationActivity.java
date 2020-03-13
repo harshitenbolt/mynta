@@ -390,7 +390,7 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
 
                 if (validation()) {
 
-                    hideKeyboardwithoutPopulate(EditStoreInformationActivity.this);
+//                    hideKeyboardwithoutPopulate(EditStoreInformationActivity.this);
                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                         // getBankDetails(EditStoreInformationActivity.this,s.toString(),processId);
                         bizDetailsSubmit(v);
@@ -785,7 +785,6 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
         });
 
     }
-
 
     class CustomAdapter<T> extends ArrayAdapter<T> {
         public CustomAdapter(Context context, int textViewResourceId,

@@ -1516,7 +1516,17 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();
 
-                            DialogUtil.DrivingDetail(EditKycActivity.this, name, fathername, dob, dlnumber, new DialogListner() {
+                            String outputDateStr="";
+
+                            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                            if(!voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate().equalsIgnoreCase("")) {
+                                Date date = inputFormat.parse(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
+                                outputDateStr = outputFormat.format(date);
+                            }
+
+
+                            DialogUtil.DrivingDetail(EditKycActivity.this, name, fathername, outputDateStr, dlnumber, new DialogListner() {
                                 @Override
                                 public void onClickPositive() {
 

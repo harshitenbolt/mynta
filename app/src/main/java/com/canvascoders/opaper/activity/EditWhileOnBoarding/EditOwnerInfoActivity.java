@@ -47,6 +47,9 @@ import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.JsonObject;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -91,6 +94,7 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
     private int mYear, mMonth, mDay, mHour, mMinute;
     private String lattitude = "", longitude = "";
     RelativeLayout rvSelectLanguage;
+    String stringdob="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,8 +200,8 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
                                     daysString = "0" + daysString;
                                 }
 
-
-                                tvDOB.setText(year + "-" + monthString + "-" + daysString);
+                                stringdob = year + "-" + monthString + "-" + daysString;
+                                tvDOB.setText(daysString + "-" + monthString + "-" + year);
                                 mYear = year;
                                 mMonth = monthOfYear;
                                 mDay = dayOfMonth;
@@ -287,7 +291,23 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
                         //  Toast.makeText(EditOwnerInfoActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         etOwnerName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getOwnerName());
                         etEmail.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getEmail());
-                        tvDOB.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getDob());
+                        String outputDateStr="";
+
+                        DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                        if(!getTrackDetailsResponse.getData().get(0).getBasicDetails().getDob().equalsIgnoreCase("")) {
+                            Date date = null;
+                            try {
+                                date = inputFormat.parse(getTrackDetailsResponse.getData().get(0).getBasicDetails().getDob());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            outputDateStr = outputFormat.format(date);
+                        }
+
+                        stringdob=getTrackDetailsResponse.getData().get(0).getBasicDetails().getDob();
+
+                        tvDOB.setText(outputDateStr);
                         etCurrentShopNo.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress());
                         etCurrentStreet.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress1());
                         etCurrentLandmark.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddressLandmark());
@@ -631,7 +651,7 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
 
         //new Update
         user.put(Constants.PARAM_OWNER_NAME, "" + etOwnerName.getText());
-        user.put(Constants.PARAM_DOB, "" + tvDOB.getText());
+        user.put(Constants.PARAM_DOB, "" + stringdob);
         // user.put(Constants.PARAM_ROUTE, "R-" + etRoute.getText());
         user.put(Constants.PARAM_RESIDENTIAL_ADDRESS, "" + etCurrentShopNo.getText());
         user.put(Constants.PARAM_RESIDENTIAL_ADDRESS1, "" + etCurrentStreet.getText());

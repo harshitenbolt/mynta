@@ -1153,7 +1153,16 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();
 
-                            DialogUtil.DrivingDetail(getActivity(), name, fathername, dob, dlnumber, new DialogListner() {
+                            String outputDateStr="";
+
+                            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                            if(!voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate().equalsIgnoreCase("")) {
+                                Date date = inputFormat.parse(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
+                                outputDateStr = outputFormat.format(date);
+                            }
+
+                            DialogUtil.DrivingDetail(getActivity(), name, fathername, outputDateStr, dlnumber, new DialogListner() {
                                 @Override
                                 public void onClickPositive() {
 

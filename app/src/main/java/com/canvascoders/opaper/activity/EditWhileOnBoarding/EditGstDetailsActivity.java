@@ -395,6 +395,33 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
                                     //showAlertValidation(validation.getVoterCardFront());
                                     Toast.makeText(EditGstDetailsActivity.this, validation.getGstCertificateImage(), Toast.LENGTH_SHORT).show();
                                 }
+                                if (validation.getStoreName() != null && validation.getStoreName().length() > 0) {
+                                    Toast.makeText(EditGstDetailsActivity.this, validation.getStoreName(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getStoreAddress() != null && validation.getStoreAddress().length() > 0) {
+                                    Toast.makeText(EditGstDetailsActivity.this, validation.getStoreAddress(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getStoreAddress1() != null && validation.getStoreAddress1().length() > 0) {
+                                    Toast.makeText(EditGstDetailsActivity.this, validation.getStoreAddress1(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getStoreAddressLandmark() != null && validation.getStoreAddressLandmark().length() > 0) {
+                                    Toast.makeText(EditGstDetailsActivity.this, validation.getStoreAddressLandmark(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getDc() != null && validation.getDc().length() > 0) {
+                                    Toast.makeText(EditGstDetailsActivity.this, validation.getDc(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getGstn() != null && validation.getGstn().length() > 0) {
+                                    Toast.makeText(EditGstDetailsActivity.this, validation.getGstn(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getPincode() != null && validation.getProccessId().length() > 0) {
+                                    Toast.makeText(EditGstDetailsActivity.this, validation.getProccessId(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getProccessId() != null && validation.getPincode().length() > 0) {
+                                    Toast.makeText(EditGstDetailsActivity.this, validation.getPincode(), Toast.LENGTH_SHORT).show();
+                                }
+                                if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                    Toast.makeText(EditGstDetailsActivity.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
+                                }
 
                             } else {
                                 //  showAlert2(getaadhardetail.getResponse());
@@ -402,6 +429,7 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
 
                             }
                         }
+                        // Toast.makeText(EditGstDetailsActivity.this, verifyGst.getResponse(), Toast.LENGTH_SHORT).show();
                         //   Toast.makeText(EditGstDetailsActivity.this, verifyGst.getResponse(), Toast.LENGTH_SHORT).show();
                     }
                 } else {

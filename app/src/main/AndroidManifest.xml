@@ -40,10 +40,15 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".activity.FilterActivity"
+        <activity android:name=".activity.EndTaskActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" ></activity>
-        <activity android:name=".activity.AddNewTaskActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".activity.FilterActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".activity.AddNewTaskActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity

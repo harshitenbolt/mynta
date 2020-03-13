@@ -23,6 +23,10 @@ import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.NetworkConnectivity;
 import com.canvascoders.opaper.utils.SessionManager;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,6 +52,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
     TextView tvRemarkLocation, tvRemarkKYC, tvRemarkPan, tvRemarkBank, tvRemarkStore, tvRemarkOwner, tvRemarkGST, tvRemarkShopAct, tvRemarkDelivery, tvRemarkRateDetails, tvRemarkRateApproval;
     ImageView ivChequeImage;
     SwipeRefreshLayout swResfresh;
+    ImageView ivStoreImage,ivOwnerImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +91,8 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         ivDeliveryDetails = findViewById(R.id.ivDeliveryDetails);
         ivRateDetails = findViewById(R.id.ivRateDetails);
         ivChequeImage = findViewById(R.id.ivChequeImage);
+        ivStoreImage = findViewById(R.id.ivStoreImage);
+        ivOwnerImage = findViewById(R.id.ivOwnerImage);
         ivRateDetails.setOnClickListener(this);
         ivEditLocation.setOnClickListener(this);
         ivEditKyc.setOnClickListener(this);
@@ -128,6 +135,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         tvSHopActText = findViewById(R.id.tvTextStepShopAct);
         tvKYCText = findViewById(R.id.tvTextStepKYC);
         tvPanText = findViewById(R.id.tvTextStepPan);
+        tvBankText = findViewById(R.id.tvTextStepCheque);
         tvBankText = findViewById(R.id.tvTextStepCheque);
         tvStoreText = findViewById(R.id.tvTextStepStoreAddress);
         tvOwnerText = findViewById(R.id.tvTextStepOwnerInfo);
@@ -246,14 +254,41 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llKYCDisable.setVisibility(View.GONE);
                             if (getTrackDetailsResponse.getData().get(0).getProccessDetail().getKycType().equalsIgnoreCase("2")) {
                                 tvDocNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterIdNum());
-                                tvDocAddress.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterDob());
+                                String outputDateStr="";
+                                DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                                if(!getTrackDetailsResponse.getData().get(0).getBasicDetails().getDob().equalsIgnoreCase("")) {
+                                    Date date = null;
+                                    try {
+                                        date = inputFormat.parse(getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterDob());
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    outputDateStr = outputFormat.format(date);
+                                }
+
+
+                                tvDocAddress.setText(outputDateStr);
                                 tvDocName.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterName());
                                 Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getVoterCardFront()).into(ivAdharFront);
                                 Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getVoterCardFront()).into(ivAdharBack);
 
                             } else if (getTrackDetailsResponse.getData().get(0).getProccessDetail().getKycType().equalsIgnoreCase("3")) {
                                 tvDocNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlNumber());
-                                tvDocAddress.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlDob());
+
+                                String outputDateStr="";
+                                DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                                DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                                if(!getTrackDetailsResponse.getData().get(0).getBasicDetails().getDob().equalsIgnoreCase("")) {
+                                    Date date = null;
+                                    try {
+                                        date = inputFormat.parse(getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlDob());
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    outputDateStr = outputFormat.format(date);
+                                }
+                                tvDocAddress.setText(outputDateStr);
                                 tvDocName.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlName());
                                 Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getDlCardFront()).into(ivAdharFront);
                                 Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getDlCardBack()).into(ivAdharBack);
@@ -426,8 +461,19 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                                 llGstEnable.setVisibility(View.VISIBLE);
                                 ivGstInformation.setVisibility(View.GONE);
                                 tvAddNewGST.setVisibility(View.VISIBLE);
-                                tvGSTNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn());
-                                Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage()).into(ivGstFront);
+                                if (!getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn().equalsIgnoreCase("")) {
+                                    tvGSTNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn());
+                                    ivGstInformation.setVisibility(View.VISIBLE);
+                                    tvAddNewGST.setVisibility(View.GONE);
+
+                                } else {
+                                    tvGSTNumber.setText("Not available");
+                                    ivGstInformation.setVisibility(View.GONE);
+                                    tvAddNewGST.setVisibility(View.VISIBLE);
+
+                                }
+
+                                Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage()).placeholder(R.drawable.abbreviation).into(ivGstFront);
                                 tvGStPanNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanNo());
                                 tvGstText.setVisibility(View.GONE);
                                 if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
@@ -435,8 +481,18 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
 
                                     if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark().equalsIgnoreCase("")) {
                                         llGstEnable.setVisibility(View.VISIBLE);
-                                        tvGSTNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn());
-                                        Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage()).into(ivGstFront);
+                                        if (!getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn().equalsIgnoreCase("")) {
+                                            tvGSTNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn());
+                                            ivGstInformation.setVisibility(View.VISIBLE);
+                                            tvAddNewGST.setVisibility(View.GONE);
+
+                                        } else {
+                                            tvGSTNumber.setText("Not available");
+                                            ivGstInformation.setVisibility(View.GONE);
+                                            tvAddNewGST.setVisibility(View.VISIBLE);
+
+                                        }
+                                        Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage()).placeholder(R.drawable.abbreviation).into(ivGstFront);
                                         tvGStPanNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanNo());
                                         llGstDisable.setVisibility(View.GONE);
                                         tvGstText.setVisibility(View.GONE);
@@ -462,15 +518,26 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                                 llGstEnable.setVisibility(View.VISIBLE);
                                 tvGstText.setVisibility(View.GONE);
                                 tvGSTNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn());
-                                Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage()).into(ivGstFront);
+                                Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage()).placeholder(R.drawable.abbreviation).into(ivGstFront);
                                 tvGStPanNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanNo());
                                 if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
                                     // tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
 
                                     if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark().equalsIgnoreCase("")) {
                                         llGstEnable.setVisibility(View.VISIBLE);
-                                        tvGSTNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn());
-                                        Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage()).into(ivGstFront);
+                                        if (!getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn().equalsIgnoreCase("")) {
+                                            tvGSTNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getGstn());
+                                            ivGstInformation.setVisibility(View.VISIBLE);
+                                            tvAddNewGST.setVisibility(View.GONE);
+
+                                        } else {
+                                            tvGSTNumber.setText("Not available");
+                                            ivGstInformation.setVisibility(View.GONE);
+                                            tvAddNewGST.setVisibility(View.VISIBLE);
+
+                                        }
+
+                                        Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getGstCertificateImage()).placeholder(R.drawable.abbreviation).into(ivGstFront);
                                         tvGStPanNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanNo());
                                         llGstDisable.setVisibility(View.GONE);
                                         tvGstText.setVisibility(View.GONE);
@@ -511,6 +578,8 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llVendorDetailsEnable.setVisibility(View.VISIBLE);
                             llVendorsDetailsDisable.setVisibility(View.GONE);
                             tvStoreName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreName());
+                            Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getShopImage()).placeholder(R.drawable.abbreviation).into(ivStoreImage);
+
                             tvStoreAddress.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddress() + " " +
                                     getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddress1() + " " +
                                     getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddressLandmark() + " " +
@@ -555,6 +624,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                                     if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillStoreDetailsRemark().equalsIgnoreCase("")) {
                                         llVendorDetailsEnable.setVisibility(View.VISIBLE);
                                         tvStoreName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreName());
+                                        Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getShopImage()).placeholder(R.drawable.abbreviation).into(ivStoreImage);
                                         tvStoreAddress.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddress() + " " +
                                                 getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddress1() + " " +
                                                 getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreAddressLandmark() + " " +
@@ -605,6 +675,8 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llOwnerEnable.setVisibility(View.VISIBLE);
                             llOwnerDisable.setVisibility(View.GONE);
                             tvOwnerNAme.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getOwnerName());
+                            Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getOwnerImage()).placeholder(R.drawable.abbreviation).into(ivOwnerImage);
+
                             tvOwnerEmailID.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getEmail());
                             tvOwnerAddress.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress() + " " +
                                     getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress1() + " " +
@@ -640,6 +712,8 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                                     if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillOwnerDetailsRemark().equalsIgnoreCase("")) {
                                         llOwnerEnable.setVisibility(View.VISIBLE);
                                         tvOwnerNAme.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getOwnerName());
+                                        Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getOwnerImage()).placeholder(R.drawable.abbreviation).into(ivOwnerImage);
+
                                         tvOwnerEmailID.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getEmail());
                                         tvOwnerAddress.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress() + " " +
                                                 getTrackDetailsResponse.getData().get(0).getBasicDetails().getResidentialAddress1() + " " +

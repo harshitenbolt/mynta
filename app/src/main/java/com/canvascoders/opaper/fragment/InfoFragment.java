@@ -102,6 +102,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     private EditText etCurrentShopNo, etCurrentStreet, etCurrentLandmark, etCurrentPincode, etCurrentCity, etCurrentState, etPerShopNo, etPerStreet, etPerLandmark, etPerPincode, etPerCity, etPerState, edit_gstn;
     private EditText etLicenceNumeber;
     private TextView tvDOB;
+    String stringDOB = "";
     private Toolbar toolbar;
     private String selectedString = "";
     private static Dialog dialog;
@@ -357,8 +358,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                                     daysString = "0" + daysString;
                                 }
 
-
-                                tvDOB.setText(year + "-" + monthString + "-" + daysString);
+                                stringDOB = year + "-" + monthString + "-" + daysString;
+                                tvDOB.setText(daysString + "-" + monthString + "-" + year);
                                 mYear = year;
                                 mMonth = monthOfYear;
                                 mDay = dayOfMonth;
@@ -746,7 +747,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
                         mDialog.dismiss();
 
-                        selectedString="";
+                        selectedString = "";
 
                     }
                 });
@@ -947,7 +948,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
 
                         mDialogShipment.dismiss();
-                        selectedString="";
+                        selectedString = "";
 
                     }
                 });
@@ -1059,7 +1060,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             user.addProperty(Constants.PARAM_EMAIL, "" + etEmail.getText());
             user.addProperty(Constants.PARAM_STORE_NAME, "" + etStorename.getText());
             user.addProperty(Constants.PARAM_OWNER_NAME, "" + etOwnerName.getText());
-            user.addProperty(Constants.PARAM_DOB, "" + tvDOB.getText());
+            user.addProperty(Constants.PARAM_DOB, "" + stringDOB);
             user.addProperty(Constants.PARAM_STORE_ADDRESS, "" + etStoreShopNo.getText());
             user.addProperty(Constants.PARAM_STORE_ADDRESS1, "" + etStoreStreet.getText());
             user.addProperty(Constants.PARAM_STORE_ADDRESS_LANDMARK, "" + etStoreLandmark.getText());
@@ -1327,7 +1328,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     }
 
     @Override
-    public void onLongClick(View view, int position,String data) {
+    public void onLongClick(View view, int position, String data) {
 
     }
 
@@ -1711,7 +1712,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
         //new Update
         user.put(Constants.PARAM_OWNER_NAME, "" + etOwnerName.getText());
-        user.put(Constants.PARAM_DOB, "" + tvDOB.getText());
+        user.put(Constants.PARAM_DOB, "" + stringDOB);
         user.put(Constants.PARAM_ROUTE, "R-" + etRoute.getText());
         user.put(Constants.PARAM_RESIDENTIAL_ADDRESS, "" + etCurrentShopNo.getText());
         user.put(Constants.PARAM_RESIDENTIAL_ADDRESS1, "" + etCurrentStreet.getText());
