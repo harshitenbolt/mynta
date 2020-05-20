@@ -27,7 +27,7 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void createLogin(String agent_id, String tkn, String name, String email, String rh_id, String emp_id, String mobile, String city) {
+    public void createLogin(String agent_id, String tkn, String name, String email, String rh_id, String emp_id, String mobile, String city, String ismobileVerify) {
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(Constants.KEY_AGENTID, agent_id);
         editor.putString(Constants.KEY_RH_ID, rh_id);
@@ -37,6 +37,7 @@ public class SessionManager {
         editor.putString(Constants.KEY_EMAIL, email);
         editor.putString(Constants.KEY_VENDOR_MOBILE, mobile);
         editor.putString(Constants.KEY_EMP_CITY, city);
+        editor.putString(Constants.KEY_IS_MOBILE_VERIFY, ismobileVerify);
         editor.commit();
     }
 
@@ -62,12 +63,28 @@ public class SessionManager {
         return pref.getString(Constants.KEY_AGENTID, null);
     }
 
+    public String getMobile() {
+        return pref.getString(Constants.KEY_VENDOR_MOBILE, null);
+    }
+
+    public String getIsmobileVerify() {
+        return pref.getString(Constants.KEY_IS_MOBILE_VERIFY, null);
+    }
+
     public String getName() {
         return pref.getString(Constants.KEY_NAME, null);
     }
 
     public String getEmail() {
         return pref.getString(Constants.KEY_EMAIL, null);
+    }
+
+    public String getRHID() {
+        return pref.getString(Constants.KEY_RH_ID, null);
+    }
+
+    public String getEmpId() {
+        return pref.getString(Constants.KEY_EMP_ID, null);
     }
 
     public String getToken() {

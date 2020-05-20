@@ -30,6 +30,19 @@ public class UserDetailDatum {
     @SerializedName("mobile")
     @Expose
     private String mobile;
+
+    public String getIsMobileVerify() {
+        return isMobileVerify;
+    }
+
+    public void setIsMobileVerify(String isMobileVerify) {
+        this.isMobileVerify = isMobileVerify;
+    }
+
+    @SerializedName("is_mobile_verify")
+    @Expose
+    private String isMobileVerify;
+
     @SerializedName("assign_user_id")
     @Expose
     private Object assignUserId;

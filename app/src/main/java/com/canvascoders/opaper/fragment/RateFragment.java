@@ -109,7 +109,7 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
 //        edit_rate = (EditText) view.findViewById(R.id.edit_rate);
         mProgressDialog = new ProgressDialog(mcontext);
         mProgressDialog.setCancelable(false);
-        mProgressDialog.setMessage("Submitting rate details , Please wait ...");
+        mProgressDialog.setMessage("Submitting rate. Please wait...");
 //        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         btn_next.setOnClickListener(this);
 

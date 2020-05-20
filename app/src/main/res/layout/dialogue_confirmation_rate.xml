@@ -76,7 +76,7 @@
                             android:layout_marginTop="@dimen/_15sdp"
                             android:fontFamily="@font/montesemibold"
 
-                            android:text="Your agreement will be generated with below working rate , kindly confirm by clicking on Submit ."
+                            android:text="Your request for rate change is waiting for approval. Please check again later."
                             android:textColor="@color/text_color_dark_grey" />
 
                         <TextView

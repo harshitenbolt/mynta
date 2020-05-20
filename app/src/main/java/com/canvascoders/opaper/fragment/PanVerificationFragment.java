@@ -256,7 +256,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                         Bitmap bitmap = ImagePicker.getBitmapFromURL(Constants.BaseImageURL + updatePanDetailResponse.getData().get(0).getPan());
                         panImagepath = ImagePicker.getBitmapPath(bitmap, getActivity());
                         // llGoback.setEnabled(true);
-                        DialogUtil.PanDetail(getActivity(), updatePanDetailResponse.getData().get(0).getPanName(), updatePanDetailResponse.getData().get(0).getFatherName(), updatePanDetailResponse.getData().get(0).getPanNo(), new DialogListner() {
+                        DialogUtil.PanDetail(getActivity(), str_process_id, updatePanDetailResponse.getData().get(0).getPanName(), updatePanDetailResponse.getData().get(0).getFatherName(), updatePanDetailResponse.getData().get(0).getPanNo(), new DialogListner() {
                             @Override
                             public void onClickPositive() {
 
@@ -271,11 +271,20 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                             public void onClickDetails(String name, String fathername, String dob, String id) {
 
                                 Constants.hideKeyboardwithoutPopulate(getActivity());
-                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                                    // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
-                                    storePAN(name, fathername, id);
+                                if (dob.equalsIgnoreCase("")) {
+                                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                        // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                        storePAN(name, fathername, id, "");
+                                    } else {
+                                        Constants.ShowNoInternet(getActivity());
+                                    }
                                 } else {
-                                    Constants.ShowNoInternet(getActivity());
+                                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                        // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                        storePAN(name, fathername, id, dob);
+                                    } else {
+                                        Constants.ShowNoInternet(getActivity());
+                                    }
                                 }
 
                             }
@@ -297,7 +306,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                         sessionManager.logoutUser(getActivity());
                     } else {
 
-                        DialogUtil.PanDetail(getActivity(), updatePanDetailResponse.getData().get(0).getPanName(), updatePanDetailResponse.getData().get(0).getFatherName(), updatePanDetailResponse.getData().get(0).getPanNo(), new DialogListner() {
+                        DialogUtil.PanDetail(getActivity(), str_process_id, updatePanDetailResponse.getData().get(0).getPanName(), updatePanDetailResponse.getData().get(0).getFatherName(), updatePanDetailResponse.getData().get(0).getPanNo(), new DialogListner() {
                             @Override
                             public void onClickPositive() {
 
@@ -312,11 +321,20 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                             public void onClickDetails(String name, String fathername, String dob, String id) {
 
                                 Constants.hideKeyboardwithoutPopulate(getActivity());
-                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                                    // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
-                                    storePAN(name, fathername, id);
+                                if (dob.equalsIgnoreCase("")) {
+                                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                        // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                        storePAN(name, fathername, id, "");
+                                    } else {
+                                        Constants.ShowNoInternet(getActivity());
+                                    }
                                 } else {
-                                    Constants.ShowNoInternet(getActivity());
+                                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                        // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                        storePAN(name, fathername, id, dob);
+                                    } else {
+                                        Constants.ShowNoInternet(getActivity());
+                                    }
                                 }
 
                             }
@@ -349,18 +367,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         });
     }
 
-    /* private void setButtonImage() {
-         if (isPanSelected == true) {
-             btn_next.setBackground(getResources().getDrawable(R.drawable.btn_active));
-             btn_next.setEnabled(true);
-             btn_next.setTextColor(getResources().getColor(R.color.colorWhite));
-         } else {
-             btn_next.setBackground(getResources().getDrawable(R.drawable.btn_normal));
-             btn_next.setEnabled(false);
-             btn_next.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-         }
-     }
- */
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -524,7 +531,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         });
     }
 
-    public void storePAN(String name, String fathername, String id) {
+    public void storePAN(String name, String fathername, String id, String process_id) {
         gps = new GPSTracker(getActivity());
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
@@ -552,6 +559,12 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             params.put(Constants.PARAM_PROCESS_ID, str_process_id);
             params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
             params.put(Constants.PARAM_PAN_NO, id);
+            if (!process_id.equalsIgnoreCase("")) {
+                params.put(Constants.PARAM_pan_matched_kiran_proccess_id, process_id);
+                params.put(Constants.PARAM_IS_PAN_EXIST, "1");
+            } else {
+                params.put(Constants.PARAM_IS_PAN_EXIST, "0");
+            }
             params.put(Constants.PARAM_PAN_NAME, name);
             params.put(Constants.PARAM_FATHER_NAME, fathername);
             params.put(Constants.PARAM_LATITUDE, lattitude);
@@ -587,7 +600,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                             deleteImages();
                             str_process_id = panVerificationDetail.getData().get(0).getProccess_id();
                             DialogUtil.dismiss();
-                            showAlert(response.body().getResponse());
+                            showAlert(response.body().getResponse(),process_id);
                         }
                         if (panVerificationDetail.getResponseCode() == 411) {
                             deleteImages();
@@ -683,44 +696,13 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         if (!TextUtils.isEmpty(panImagepath)) {
 
-            mProgressDialog.setMessage("Extracting image..");
+            mProgressDialog.setMessage("Extracting image...");
             mProgressDialog.setCancelable(false);
             mProgressDialog.show();
 
             File imagefile = new File(panImagepath);
             typedFile = MultipartBody.Part.createFormData("image", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
 
-           /* Call<PanImageResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getPancardOcrUrl("Bearer "+sessionManager.getToken(),sessionManager.getToken(), str_process_id, typedFile);
-
-            callUpload.enqueue(new Callback<PanImageResponse>() {
-                @Override
-                public void onResponse(Call<PanImageResponse> call, retrofit2.Response<PanImageResponse> response) {
-                    mProgressDialog.dismiss();
-
-                    if (response.isSuccessful()) {
-                        PanImageResponse panImageResponse = response.body();
-                        if (panImageResponse.getResponseCode() == 200) {
-                            String imagePath = panImageResponse.getData().get(0).getPan_url();
-                            if (!TextUtils.isEmpty(imagePath)) {
-                                ExtractPanDetail extractPanDetail = new ExtractPanDetail();
-                                extractPanDetail.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imagePath);
-                            } else {
-
-                            }
-                        } else if (panImageResponse.getResponseCode() == 405) {
-                            sessionManager.logoutUser(mcontext);
-                        } else {
-                            Toast.makeText(mcontext, panImageResponse.getResponse(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<PanImageResponse> call, Throwable t) {
-                    mProgressDialog.dismiss();
-                    Toast.makeText(mcontext, t.getMessage().toString(), Toast.LENGTH_LONG).show();
-                }
-            });*/
 
 
             Call<GetPanDetailsResponse> call = ApiClient.getClient2().create(ApiInterface.class).getPanDetails(params, typedFile);
@@ -742,7 +724,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                                 birth_date = getPanDetailsResponse.getPanCardDetail().getBirthDate();
 
 
-                                DialogUtil.PanDetail(getActivity(), getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
+                                DialogUtil.PanDetail(getActivity(), str_process_id, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
                                     @Override
                                     public void onClickPositive() {
 
@@ -757,11 +739,31 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                                     public void onClickDetails(String name, String fathername, String dob, String id) {
 
                                         Constants.hideKeyboardwithoutPopulate(getActivity());
-                                        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                      /*  if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                             storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
                                             storePAN(name, fathername, id);
                                         } else {
                                             Constants.ShowNoInternet(getActivity());
+                                        }*/
+
+
+                                        if (dob.equalsIgnoreCase("")) {
+                                            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                                storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                                storePAN(name, fathername, id, "");
+                                            } else {
+                                                Constants.ShowNoInternet(getActivity());
+                                            }
+                                        } else {
+                                            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                                storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+
+                                                storePAN(name, fathername, id, dob);
+                                            } else {
+                                                Constants.ShowNoInternet(getActivity());
+                                            }
                                         }
 
                                     }
@@ -793,7 +795,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                                     birth_date = getPanDetailsResponse.getPanCardDetail().getBirthDate();
                                     Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
-                                    DialogUtil.PanDetail(getActivity(), getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
+                                    DialogUtil.PanDetail(getActivity(), str_process_id, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
                                         @Override
                                         public void onClickPositive() {
 
@@ -808,12 +810,32 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                                         public void onClickDetails(String name, String fathername, String dob, String id) {
 
                                             Constants.hideKeyboardwithoutPopulate(getActivity());
-                                            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+
+                                            if (dob.equalsIgnoreCase("")) {
+                                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                    // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                                    storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                                    storePAN(name, fathername, id, "");
+                                                } else {
+                                                    Constants.ShowNoInternet(getActivity());
+                                                }
+                                            } else {
+                                                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                    // storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                                    storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+                                                    storePAN(name, fathername, id, dob);
+                                                } else {
+                                                    Constants.ShowNoInternet(getActivity());
+                                                }
+                                            }
+
+
+                                           /* if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                                 storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
                                                 storePAN(name, fathername, id);
                                             } else {
                                                 Constants.ShowNoInternet(getActivity());
-                                            }
+                                            }*/
 
                                         }
 
@@ -1182,6 +1204,27 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         }
     }
 
+
+    public void commanFragmentCallWithoutBackStackwithName(Fragment fragment,String process_id) {
+
+        Fragment cFragment = fragment;
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.PARAM_pan_matched_kiran_proccess_id,process_id);
+        if (cFragment != null) {
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            cFragment.setArguments(bundle);
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
+            fragmentTransaction.replace(R.id.rvContentMainOTP, cFragment);
+            fragmentTransaction.commit();
+
+        }
+    }
+
+
+
     public void commanFragmentCallWithoutBackStack2(Fragment fragment) {
 
         Fragment cFragment = fragment;
@@ -1235,7 +1278,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     }
 
 
-    private void showAlert(String msg) {
+    private void showAlert(String msg,String proccessId) {
         Button btSubmit;
         TextView tvMessage, tvTitle;
         if (dialog != null && dialog.isShowing()) {
@@ -1263,7 +1306,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                 if (isedit == true) {
                     commanFragmentCallWithoutBackStack(new InfoFragment());
                 } else {
-                    commanFragmentCallWithoutBackStack(new ChequeUploadFragment());
+                    commanFragmentCallWithoutBackStackwithName(new ChequeUploadFragment(),proccessId);
                 }
 
             }

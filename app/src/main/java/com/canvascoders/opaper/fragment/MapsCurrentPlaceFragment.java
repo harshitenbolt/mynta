@@ -126,7 +126,7 @@ public class MapsCurrentPlaceFragment extends Fragment
         progressDialog.setMessage("getting Location...");
         progressDialog.setCancelable(false);
         mProgressDialog = new ProgressDialog(mcontext);
-        mProgressDialog.setMessage("Verifying Location...");
+        mProgressDialog.setMessage("Determining your location...");
         sessionManager = new SessionManager(mcontext);
         // etSearch =view.findViewById(R.id.etSearchPlace);
 

@@ -46,6 +46,19 @@ public class Datum {
     @Expose
     private String cancelledCheque;
 
+
+    public String getStoreName() {
+        return StoreName;
+    }
+
+    public void setStoreName(String storeName) {
+        StoreName = storeName;
+    }
+
+    @SerializedName("store_name")
+    @Expose
+    private String StoreName;
+
     public Integer getId() {
         return id;
     }

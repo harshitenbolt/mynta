@@ -140,7 +140,7 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
 
 
         progressDialog = new ProgressDialog(mcontext);
-        progressDialog.setMessage("please wait loading onboarded vendors...");
+        progressDialog.setMessage("Loading in progress. Please wait...");
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);

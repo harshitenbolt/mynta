@@ -63,7 +63,7 @@ public class ChangeMobileActivity extends AppCompatActivity implements View.OnCl
     private void initView() {
         //  cvFirst = findViewById(R.id.cvfirst);
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("Sending OTP to mobile.");
+        mProgressDialog.setMessage("Sending OTP to your mobile.");
         edit_mobile_no = findViewById(R.id.edit_mobile);
         ivBackProcess = findViewById(R.id.iv_back_process);
         ivBackProcess.setOnClickListener(new View.OnClickListener() {

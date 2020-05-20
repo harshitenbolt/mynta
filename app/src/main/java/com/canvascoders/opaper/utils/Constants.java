@@ -31,8 +31,6 @@ public class Constants {
     //-------------------------------------------------------------------------
     public final static int APP_VERSION = 29; // need to set +1 here befor apk sent on last update before 942018 @ 12 version
     //-------------------------------------------------------------------------
-
-
     public final static String FORMAT = "format";
     public final static String CONTENT = "content";
     public final static String DATA = "data";
@@ -45,14 +43,14 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
 
-     public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
-    //public static String BaseURL = "https://mystaging.opaper.in/api3/";
+     //public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+    public static String BaseURL = "https://mystaging.opaper.in/api3/";
     // test server 20
 
-    //public final static String APP_NAME = "my_stage"; //stage
-     public final static String APP_NAME = "my_live"; //live
-    public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
-  //  public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
+    public final static String APP_NAME = "my_stage"; //stage
+    // public final static String APP_NAME = "my_live"; //live
+    //public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+    public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
 
@@ -99,6 +97,7 @@ public class Constants {
 
     //OTP Tmeplate for SMS
     public static String OTP_TEMPLATE = "One Time Password is ";
+    public static String OTP = "otp";
     public static String OTP_TEMPLATE1 = " ,Please use this OTP to complete the transaction. This is usable once and expire in 10 minutes. Please do not share this with anyone.";
     //SMS Getway
     public static String SMSSPI = "https://control.msg91.com/api/sendhttp.php?";  // msg
@@ -131,6 +130,7 @@ public class Constants {
 
     public static String KEY_EMP_MOBILE = "mobile";
     public static String KEY_EMP_CITY = "city";
+    public static String KEY_IS_MOBILE_VERIFY = "is_mobile_verify";
     public static String KEY_DC = "dc";
     public static String KEY_PASSWORD = "password";
     public static String KEY_FCM_ID = "FCMID";
@@ -235,7 +235,7 @@ public class Constants {
     public static String PARAMS_FROM_DATE = "from_date";
     public static String PARAMS_TO_DATE = "to_date";
     public static String PARAM_MOBILE_NO = "mobile_no";
-
+    public static String PARAM_MOBILE = "mobile";
     public static String PARAM_DRIVING_LICENCE_NUM = "driving_licence_num";
     public static String PARAM_DRIVING_LICENCE_NUMBER = "driving_licence_number";
     public static String PARAM_DRIVING_LICENCE_DOB = "driving_licence_dob";
@@ -310,6 +310,8 @@ public class Constants {
 
     public static String PARAM_LATITUDE = "latitude";
     public static String PARAM_PAN_NO = "pan_no";
+    public static String PARAM_pan_matched_kiran_proccess_id = "pan_matched_kiran_proccess_id";
+
     public static String PARAM_GST_PAN_NO = "gst_pan_no";
 
 
@@ -483,6 +485,7 @@ public class Constants {
     }
 
     // url = file path or whatever suitable URL you want.
+
     public static String getMimeType(String url) {
         String type = "application/octact-stream";
         String extension = MimeTypeMap.getFileExtensionFromUrl(url);

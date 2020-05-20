@@ -146,7 +146,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
 
 
         progressDialog = new ProgressDialog(mcontext);
-        progressDialog.setMessage("please wait loading onboarded vendors...");
+        progressDialog.setMessage("Loading onboarded vendors. Please wait...");
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -210,7 +210,7 @@ public class VendorOnboardedList extends Fragment implements SwipeRefreshLayout.
 
         apiName = "completed-vendors";
         onboard = true;
-        progressDialog.setMessage("please wait loading onboarded vendors...");
+        progressDialog.setMessage("Loading onboarded vendors. Please wait...");
 
         new GetVendorList(object.toString(), apiName).execute();
 

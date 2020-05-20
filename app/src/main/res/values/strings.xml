@@ -191,7 +191,11 @@
     <string name="send_otp">Send OTP</string>
 
     <string name="o_paper_will_send_one_time_password">We will send a <b>One Time Password</b> to this mobile number.</string>
+    <string name="noticed_error_messge">We have noticed you have not yet verified your mobile number.</string>
+
     <string name="please_enter_store_owner_mobile_number">Please enter Kirana\'s registered mobile number</string>
+    <string name="please_enter_your_mobile_number">Please enter your mobile number</string>
+
     <string name="owner_store_information"><![CDATA[Owner & Store Information]]></string>
     <string name="skip_and_send">Skip &amp; Send</string>
     <string name="notice">If you want to change rate or store type please tap on change rate and if you want to continue with current working rate than tap on resign agreement.</string>
@@ -205,6 +209,6 @@
     <string name="qt_fp_access">n</string>
     <string name="qt_iris_access">n</string>
     <string name="you_can_find_b_eid_from_kirana_s_profile_screen">*You can find <b>EID</b> from Kirana\'s profile screen.></string>
-
+    <string name="report_here"><u>Report Here</u></string>
 
 </resources>

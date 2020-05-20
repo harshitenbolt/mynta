@@ -65,7 +65,7 @@ public class ReportFragment extends Fragment {
         sessionManager = new SessionManager(mcontext);
 
         progressDialog = new ProgressDialog(mcontext);
-        progressDialog.setTitle("please wait loading report...");
+        progressDialog.setTitle("we are loading reports, please wait!");
 
         if (!networkConnectivity.isNetworkAvailable()) {
 
@@ -124,7 +124,7 @@ public class ReportFragment extends Fragment {
         recyclerview = (RecyclerView) view.findViewById(R.id.recyclerview);
         recyclerview.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mcontext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerview.setLayoutManager(linearLayoutManager);
         linearAdapter = new ReportAdapter(billLists);
         recyclerview.setAdapter(linearAdapter);

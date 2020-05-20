@@ -70,7 +70,7 @@ public class EditFunctionalityKiranaActivity extends AppCompatActivity implement
         tvTitle.setText("Edit " + titlename);
 
         mProgressDialog = new ProgressDialog(EditFunctionalityKiranaActivity.this);
-        mProgressDialog.setMessage("Sending OTP to mobile.");
+        mProgressDialog.setMessage("Sending OTP to your mobile.");
         mProgressDialog.setCancelable(false);
         edit_mobile_no = findViewById(R.id.etMobileNumber);
         btn_next = findViewById(R.id.btSendOTP);

@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
@@ -14,8 +15,12 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import android.text.Editable;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +35,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.canvascoders.opaper.Beans.GetPanExistResponse.GetPanAlreadyExistResponse;
+import com.canvascoders.opaper.Beans.MakeReportResponse.MakeReportResponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
@@ -84,6 +91,9 @@ public class DialogUtil {
     static String stringdob = "";
     static String order_type = "1";
     private static final String TAG = "DialogUtil";
+    public static LinearLayout llsameExistPan, llSubmitData;
+    public static String proccess_id = "";
+    public static TextView tvStoreName, tvStoreAddress, tvStoreinMessage, tvReportHere;
 
 
     public static void AdharDetail(Context mContext, String name, String year, String pincode, String udi, final DialogListner dialogInterface) {
@@ -516,7 +526,7 @@ public class DialogUtil {
                                 stringdob = year + "-" + monthString + "-" + daysString;
                                 etDlDob.setText(daysString + "-" + monthString + "-" + year);
 
-                            //    etDlDob.setText(year + "-" + monthString + "-" + daysString);
+                                //    etDlDob.setText(year + "-" + monthString + "-" + daysString);
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog1.getDatePicker().setMaxDate(minDate1);
@@ -583,11 +593,12 @@ public class DialogUtil {
 
     //driving Licence Detail
 
-    public static void PanDetail(Context mContext, String name, String fathername, String pannumber, final DialogListner dialogInterface) {
+    public static void PanDetail(Context mContext, String process_id, String name, String fathername, String pannumber, final DialogListner dialogInterface) {
 
         ImageView ivClose;
         CheckBox cbMain;
-        Button btSubmit;
+
+        Button btSubmit, btOk, btChanegPan;
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
             dialog = null;
@@ -606,7 +617,15 @@ public class DialogUtil {
         etPanNumber = dialog.findViewById(R.id.etPanNumber);
         ivClose = dialog.findViewById(R.id.ivClose);
         etPanFatherName.setText(fathername);
-        etPanNumber.setText(pannumber);
+
+        tvStoreAddress = dialog.findViewById(R.id.tvStoreAddress);
+        tvStoreinMessage = dialog.findViewById(R.id.tvStoreinMessage);
+        tvReportHere = dialog.findViewById(R.id.tvReportHere);
+        tvStoreName = dialog.findViewById(R.id.tvStoreName);
+        llsameExistPan = dialog.findViewById(R.id.llsameExistPan);
+        llSubmitData = dialog.findViewById(R.id.llSubmitData);
+        tvReportHere.setText(R.string.report_here);
+
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -614,8 +633,84 @@ public class DialogUtil {
             }
         });
 
+        etPanNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() >= 10) {
+                    APiCallgetPanExist(mContext, process_id, etPanNumber.getText().toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        etPanNumber.setText(pannumber);
+
 
         btSubmit = dialog.findViewById(R.id.btSubmitDlDetail);
+        btOk = dialog.findViewById(R.id.btOk);
+        btChanegPan = dialog.findViewById(R.id.btChangePan);
+
+        tvReportHere.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApiCallReportHere(mContext, process_id);
+            }
+        });
+
+
+        btOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validation(v)) {
+                    dialogInterface.onClickDetails(etPanName.getText().toString(), etPanFatherName.getText().toString(), proccess_id, etPanNumber.getText().toString());
+
+                }
+            }
+
+            private boolean validation(View v) {
+                if (etPanName.getText().toString().equalsIgnoreCase("")) {
+                    etPanName.setError("Provide name");
+                    etPanName.requestFocus();
+                    return false;
+                }
+                if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
+                    etPanFatherName.setError("Provide Father name");
+                    etPanFatherName.requestFocus();
+                    return false;
+                }
+                Matcher matcher = Constants.PAN_PATTERN.matcher(etPanNumber.getText().toString());
+                if (TextUtils.isEmpty(etPanNumber.getText().toString()) || etPanNumber.getText().toString().length() < 5) {
+                    etPanNumber.setError("Provide Number");
+                    etPanNumber.requestFocus();
+                    return false;
+                } else if (!matcher.matches()) {
+                    etPanNumber.setError("Provide Valid Pan Number");
+                    etPanNumber.requestFocus();
+
+                    return false;
+                }
+                if (!cbMain.isChecked()) {
+                    cbMain.setError("Please verify all details with physical evidence.");
+                    //showMSG(false, "Please verify all details with physical evidence.");
+                    return false;
+                }
+                return true;
+            }
+        });
+        btChanegPan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
         btSubmit.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
@@ -644,6 +739,7 @@ public class DialogUtil {
                                             } else if (!matcher.matches()) {
                                                 etPanNumber.setError("Provide Valid Pan Number");
                                                 etPanNumber.requestFocus();
+
                                                 return false;
                                             }
                                             if (!cbMain.isChecked()) {
@@ -667,11 +763,207 @@ public class DialogUtil {
 
     }
 
+    private static void ApiCallReportHere(Context context, String process_id) {
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Please wait...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        sessionManager = new SessionManager(context);
+        Map<String, String> param = new HashMap<>();
+        param.put(Constants.PARAM_PROCESS_ID, process_id);
+        param.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        param.put(Constants.PARAM_pan_matched_kiran_proccess_id, proccess_id);
+        ApiClient.getClient().create(ApiInterface.class).makeResportResponse("Bearer " + sessionManager.getToken(), param).enqueue(new Callback<MakeReportResponse>() {
+            @Override
+            public void onResponse(Call<MakeReportResponse> call, Response<MakeReportResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    MakeReportResponse makeReportResponse = response.body();
+                    if (makeReportResponse.getResponseCode() == 200) {
+                        Toast.makeText(context, makeReportResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, makeReportResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(context, "#errorcode 2106 " + context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
-    public static void PanDetail2(Context mContext, String name, String fathername, String pannumber, boolean individual, final DialogListner dialogInterface) {
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MakeReportResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(context, "#errorcode 2106 " + context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    private static void APiCallgetPanExist(Context context, String process_id, String panNo) {
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Please wait...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        sessionManager = new SessionManager(context);
+        Map<String, String> param = new HashMap<>();
+        param.put(Constants.PARAM_PROCESS_ID, process_id);
+        param.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        param.put(Constants.PARAM_PAN_NO, panNo);
+
+        ApiClient.getClient().create(ApiInterface.class).getPanAlreadyExistResponse("Bearer " + sessionManager.getToken(), param).enqueue(new Callback<GetPanAlreadyExistResponse>() {
+            @Override
+            public void onResponse(Call<GetPanAlreadyExistResponse> call, Response<GetPanAlreadyExistResponse> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetPanAlreadyExistResponse getPanAlreadyExistResponse = response.body();
+                    if (getPanAlreadyExistResponse.getResponseCode() == 202) {
+                        if (getPanAlreadyExistResponse.getIsPanExist() == 1) {
+                            llSubmitData.setVisibility(View.GONE);
+                            llsameExistPan.setVisibility(View.VISIBLE);
+                            tvStoreAddress.setText(getPanAlreadyExistResponse.getData().get(0).getStoreAddress() + " " + getPanAlreadyExistResponse.getData().get(0).getStoreAddress1() +
+                                    " " + getPanAlreadyExistResponse.getData().get(0).getStoreAddressLandmark() + " " + getPanAlreadyExistResponse.getData().get(0).getCity() + " " +
+                                    getPanAlreadyExistResponse.getData().get(0).getState() + " " + getPanAlreadyExistResponse.getData().get(0).getPincode());
+                            tvStoreName.setText(getPanAlreadyExistResponse.getData().get(0).getStoreName());
+                          /*  Spannable WordtoSpan = new SpannableString(getPanAlreadyExistResponse.getData().get(0).getStoreName());
+                            WordtoSpan.setSpan(new ForegroundColorSpan(Color.BLUE), 0, 4,
+                                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                          */
+                            proccess_id = getPanAlreadyExistResponse.getData().get(0).getPanMatchedKiranProccessId() + "";
+                            tvStoreinMessage.setText(Html.fromHtml("<font color='#000000'>Is </font>" + "<font color='#446BE4'>" + getPanAlreadyExistResponse.getData().get(0).getStoreName() + "</font>" + "<font color='#000000'> your's? </font>"));
+                        } else {
+                            llsameExistPan.setVisibility(View.GONE);
+                            llSubmitData.setVisibility(View.VISIBLE);
+                            proccess_id = "";
+
+                        }
+                    } else {
+                        proccess_id = "";
+                        llsameExistPan.setVisibility(View.GONE);
+                        llSubmitData.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    Toast.makeText(context, "#errorcode 2105 " + context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<GetPanAlreadyExistResponse> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(context, "#errorcode 2105 " + context.getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
+
+    public static void NoticeforFChequeChange(Context mContext, String message, final DialogListner dialogInterface) {
+
+        Button btSubmit;
+        ImageView ivClose;
+        TextView tvMessage;
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_notice_bank);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
+        dialog.findViewById(R.id.ivClose);
+
+
+        ivClose = dialog.findViewById(R.id.ivClose);
+        tvMessage = dialog.findViewById(R.id.tvStoreNameMessage);
+        tvMessage.setText(Html.fromHtml("<font color='#000000'>Note:- </font>" + "<font color='#446BE4'>" + message + "'s" + "</font>" + "<font color='#000000'> bank details will also change. Because every store which is registered with the same PAN card should have same Bank account details.</font>"));
+        btSubmit = dialog.findViewById(R.id.btOkCOntiunue);
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            //hideKeyboardwithoutPopulate(mContext);
+
+
+                                            dialogInterface.onClickPositive();
+                                        }
+
+
+                                    }
+        );
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
+
+    public static void NoticeforFPAN(Context mContext, String message, final DialogListner dialogInterface) {
+
+        Button btSubmit, btCancel;
+        ImageView ivClose;
+        TextView tvMessage;
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_notice_change_pan);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
+        dialog.findViewById(R.id.ivClose);
+
+        btCancel = dialog.findViewById(R.id.btCancel);
+        btCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialogInterface.onClickNegative();
+            }
+        });
+        ivClose = dialog.findViewById(R.id.ivClose);
+        tvMessage = dialog.findViewById(R.id.tvStoreNameMessage);
+        btSubmit = dialog.findViewById(R.id.btOkCOntiunue);
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            //hideKeyboardwithoutPopulate(mContext);
+
+
+                                            dialogInterface.onClickPositive();
+                                        }
+
+
+                                    }
+        );
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
+
+    public static void PanDetail2(Context mContext, String name, String fathername, String pannumber, boolean individual, String process_id, final DialogListner dialogInterface) {
 
         ImageView ivClose;
-        Button btSubmit;
+        Button btSubmit, btOk, btChanegPan;
         CheckBox cbMain;
 
         individua = individual;
@@ -689,6 +981,12 @@ public class DialogUtil {
         dialog.findViewById(R.id.ivClose);
         etPanName = dialog.findViewById(R.id.etPanName);
         llStoreDetails = dialog.findViewById(R.id.llStoreDetails);
+        llsameExistPan = dialog.findViewById(R.id.llsameExistPan);
+        llSubmitData = dialog.findViewById(R.id.llSubmitData);
+        tvStoreAddress = dialog.findViewById(R.id.tvStoreAddress);
+        tvStoreinMessage = dialog.findViewById(R.id.tvStoreinMessage);
+        tvReportHere = dialog.findViewById(R.id.tvReportHere);
+        tvStoreName = dialog.findViewById(R.id.tvStoreName);
         etStoreName = dialog.findViewById(R.id.etStoreName);
         cbMain = dialog.findViewById(R.id.cbAgreeTC);
         etPanName.setText(name);
@@ -696,7 +994,7 @@ public class DialogUtil {
         etPanNumber = dialog.findViewById(R.id.etPanNumber);
         ivClose = dialog.findViewById(R.id.ivClose);
         etPanFatherName.setText(fathername);
-        etPanNumber.setText(pannumber);
+
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -728,8 +1026,10 @@ public class DialogUtil {
                         etStoreName.setVisibility(View.VISIBLE);
                         llStoreDetails.setVisibility(View.VISIBLE);
                     }
+                }
 
-
+                if (s.length() >= 10) {
+                    APiCallgetPanExist(mContext, process_id, etPanNumber.getText().toString());
                 }
             }
 
@@ -748,7 +1048,59 @@ public class DialogUtil {
             llStoreDetails.setVisibility(View.VISIBLE);
         }
 
+        etPanNumber.setText(pannumber);
         btSubmit = dialog.findViewById(R.id.btSubmitDlDetail);
+        btOk = dialog.findViewById(R.id.btOk);
+        btChanegPan = dialog.findViewById(R.id.btChangePan);
+
+
+        btOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validation(v)) {
+                    dialogInterface.onClickChequeDetails(etPanName.getText().toString(), etPanFatherName.getText().toString(), proccess_id, etPanNumber.getText().toString(), etStoreName.getText().toString(), "");
+                }
+                //           dialogInterface.onClickDetails(etPanName.getText().toString(), etPanFatherName.getText().toString(), proccess_id, etPanNumber.getText().toString());
+
+            }
+
+            private boolean validation(View v) {
+                if (etPanName.getText().toString().equalsIgnoreCase("")) {
+                    etPanName.setError("Provide name");
+                    etPanName.requestFocus();
+                    return false;
+                }
+                if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
+                    etPanFatherName.setError("Provide Father name");
+                    etPanFatherName.requestFocus();
+                    return false;
+                }
+                Matcher matcher = Constants.PAN_PATTERN.matcher(etPanNumber.getText().toString());
+                if (TextUtils.isEmpty(etPanNumber.getText().toString()) || etPanNumber.getText().toString().length() < 5) {
+                    etPanNumber.setError("Provide Number");
+                    etPanNumber.requestFocus();
+                    return false;
+                } else if (!matcher.matches()) {
+                    etPanNumber.setError("Provide Valid Pan Number");
+                    etPanNumber.requestFocus();
+
+                    return false;
+                }
+                if (!cbMain.isChecked()) {
+                    cbMain.setError("Please verify all details with physical evidence.");
+                    //showMSG(false, "Please verify all details with physical evidence.");
+                    return false;
+                }
+                return true;
+            }
+        });
+        btChanegPan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
         btSubmit.setOnClickListener(new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {

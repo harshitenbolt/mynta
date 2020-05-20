@@ -265,7 +265,7 @@
 
                             android:layout_marginRight="@dimen/_15sdp"
                             android:fontFamily="@font/montesemibold"
-                            android:text="To continue with the same rate . \nplease click ' skip to resign agreement '"
+                            android:text="To continue with the same rate.\nplease click on SKIP to resign the agreement."
                             android:textColor="@color/text_color_dark_grey"
                             android:textSize="@dimen/_10sdp" />
 

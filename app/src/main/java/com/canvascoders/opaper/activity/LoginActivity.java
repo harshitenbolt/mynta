@@ -125,7 +125,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         ivShowPassword = findViewById(R.id.ivShowPw);
 
         mProgressDialog = new ProgressDialog(LoginActivity.this);
-        mProgressDialog.setMessage("Authenticating store executive. Please wait.");
+        mProgressDialog.setMessage("Authenticating store executive. Please wait...");
         mProgressDialog.setCancelable(false);
 
         edt_email_id = (EditText) findViewById(R.id.etEmail);
@@ -336,6 +336,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         String emp_id;
                         String mobile;
                         String city;
+                        String isMobileVerify;
 
                         agent_id = String.valueOf(getUserDetails.getData().get(0).getAgentId());
                         token = String.valueOf(getUserDetails.getData().get(0).getToken());
@@ -344,11 +345,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         rh_id = String.valueOf(getUserDetails.getData().get(0).getRhId());
                         emp_id = getUserDetails.getData().get(0).getEmpId();
                         mobile = getUserDetails.getData().get(0).getMobile();
+                        isMobileVerify = getUserDetails.getData().get(0).getIsMobileVerify();
                         city = getUserDetails.getData().get(0).getCity();
-                        sessionManager.createLogin(agent_id, token, name, email, rh_id, emp_id, mobile, city);
-                        Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
-                        startActivity(i);
-                        finish();
+                        sessionManager.createLogin(agent_id, token, name, email, rh_id, emp_id, mobile, city, isMobileVerify);
+
+                        if (isMobileVerify.equalsIgnoreCase("1")) {
+                            Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
+                            startActivity(i);
+                            finish();
+                        } else {
+                            Intent i = new Intent(LoginActivity.this, ExecutiveMobileVerifyActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
                     } else {
                         showAlert(v, response.body().getResponse(), false);
                         tvForgot.setVisibility(View.VISIBLE);

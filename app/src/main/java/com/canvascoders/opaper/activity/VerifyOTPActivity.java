@@ -246,7 +246,7 @@ public class VerifyOTPActivity extends AppCompatActivity implements View.OnClick
                                 public void onTick(long millisUntilFinished) {
                                     countDown--;
                                     tvSendOTP.setVisibility(View.VISIBLE);
-                                    tvSendOTP.setText("Uploading cheque document. Please wait... in 00:" + countDown);
+                                    tvSendOTP.setText("Please wait... in 00:" + countDown);
                                 }
 
                                 public void onFinish() {

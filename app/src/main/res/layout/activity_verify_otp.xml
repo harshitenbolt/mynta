@@ -242,7 +242,7 @@
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:fontFamily="@font/montesemibold"
-                            android:text="Uploading cheque document. Please wait... in"
+                            android:text="Please wait... in"
                             android:textColor="@color/colorYellow"
                             android:textSize="@dimen/_10sdp" />
 

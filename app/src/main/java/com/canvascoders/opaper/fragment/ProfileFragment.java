@@ -74,7 +74,7 @@ public class ProfileFragment extends Fragment {
 
     private void initView() {
         mProgressDialog = new ProgressDialog(mcontext);
-        mProgressDialog.setTitle("Please wait updating vendor details");
+        mProgressDialog.setTitle("Uploading vendor information, please wait!");
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         edit_fathername = (EditText) view.findViewById(R.id.edit_fathername);
         edit_email = (EditText) view.findViewById(R.id.edit_email);
@@ -105,7 +105,7 @@ public class ProfileFragment extends Fragment {
             params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
             params.put(Constants.PARAM_PROCESS_ID, str_process_id);
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            mProgressDialog.setMessage("Fetching details. Please wait......");
+            mProgressDialog.setMessage("we are retrieving information, please wait!");
             mProgressDialog.show();
 
             Call<ResponseBody> callUpload = ApiClient.getClient().create(ApiInterface.class).getDetails("Bearer "+sessionManager.getToken(),params);

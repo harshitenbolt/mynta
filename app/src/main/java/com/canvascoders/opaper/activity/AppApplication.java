@@ -6,6 +6,7 @@ import android.os.StrictMode;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
+import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.NetworkConnectivity;
 import com.canvascoders.opaper.utils.SessionManager;
@@ -115,6 +116,12 @@ public class AppApplication extends MultiDexApplication {
         Realm.setDefaultConfiguration(realmConfiguration);
 
 
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Glide.get(this).clearMemory();
     }
 
     public static AppApplication getInstance() {

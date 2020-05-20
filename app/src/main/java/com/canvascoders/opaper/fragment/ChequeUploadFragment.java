@@ -6,8 +6,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -29,15 +31,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.canvascoders.opaper.Beans.BankDetailsResponse.BankDetailsResponse;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.Beans.getMerakApiResponse.GetMerakResponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.CropImage2Activity;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.activity.EditDeliveryBoyActivity;
 import com.canvascoders.opaper.activity.OTPActivity;
 import com.canvascoders.opaper.activity.TaskListActivity;
 import com.canvascoders.opaper.api.ApiClient;
@@ -63,6 +69,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -88,7 +96,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     Pattern pattern = Pattern.compile("[A-Z]{5}[0-9]{4}[A-Z]{1}");
     ProgressDialog progressDialog;
     private String TAG = "ChequeUpload";
-    private Button btExtract;
+    private Button btExtract, btCHangeCHeque, btSubmit;
     private String cancelChequeImagepath = "", imagecamera = "";
     private Uri imgURI;
     private static Dialog dialog;
@@ -110,7 +118,14 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     private CheckBox cd_aggre_terms_condition;
     private String str_process_id;
     int request_id = 0;
+    LinearLayout lineardata, llBottom;
+    EditText etAccountNo, etAccountName, etIFSCCODE, etBankName, etBranchName, etBankAddress;
+    File auxFile = null;
     NetworkConnectivity networkConnectivity;
+    String storName = "", oldProccess_id = "";
+    TextView tvBack;
+    boolean changecheque = false;
+
 
 //    public static final String OCRMEREK = "https://api.merak.ai/v1/text-recognition/cheque/recognize/?key=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImJpa2FzaC5taXNocmFAbXludHJhLmNvbSIsIm9yZ2FuaXphdGlvbl9pZCI6OSwiaWF0IjoxNTMxOTkwOTUzfQ.5EpThmiqO_iN9Bg6RBR-kKQch0QjvEmI-lNg2SQxi8k";
 
@@ -136,6 +151,10 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
         return mediaFile;
     }
 
+    String proccess_id = "";
+
+    String accountNumber1 = "", payeeName1 = "", ifsccode1 = "", bank_name1 = "", bank_branch1 = "", branch_address1 = "";
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -151,12 +170,129 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
         requestPermissionHandler = new RequestPermissionHandler();
 
+        proccess_id = getArguments().getString(Constants.PARAM_pan_matched_kiran_proccess_id);
+
         initView();
 
+        if (!proccess_id.equalsIgnoreCase("")) {
+            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                oldProccess_id = proccess_id;
+                getUserBankDetailsUpdated();
+
+            } else {
+                Constants.ShowNoInternet(getActivity());
+            }
+        }
         return view;
 
     }
 
+    private void getUserBankDetailsUpdated() {
+
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+            params.put(Constants.KEY_PROCESS_ID, oldProccess_id);
+            params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+            params.put("pan_matched_existing_kirana_details", "1");
+            progressDialog.dismiss();
+
+            Call<BankDetailsResponse> call = ApiClient.getClient().create(ApiInterface.class).getBankkDetails("Bearer " + sessionManager.getToken(), params);
+            call.enqueue(new Callback<BankDetailsResponse>() {
+                @Override
+                public void onResponse(Call<BankDetailsResponse> call, Response<BankDetailsResponse> response) {
+
+                    if (response.isSuccessful()) {
+                        progressDialog.dismiss();
+                        Mylogger.getInstance().Logit(TAG, String.valueOf(response));
+                        BankDetailsResponse checkEsignResponse = response.body();
+
+                        if (checkEsignResponse.getResponseCode() == 200) {
+                            progressDialog.dismiss();
+                            Glide.with(getActivity()).load(checkEsignResponse.getData().get(0).getCancelledCheque()).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .into(ivChequeImage);
+
+                           /* final File file = new File(Environment.getExternalStorageDirectory(), checkEsignResponse.getData().get(0).getCancelledCheque());
+                          //  Uri uri = Uri.fromFile(file);
+                            cancelChequeImagepath = file.getPath();
+                            isPanSelected = true;
+                            Log.e("CHEQUE IMAGE", "" + cancelChequeImagepath.toString());*/
+                            new getBitmapFromURL().execute(checkEsignResponse.getData().get(0).getCancelledCheque());
+
+                            storName = checkEsignResponse.getData().get(0).getStoreName();
+                            lineardata.setVisibility(View.VISIBLE);
+
+                            accountNumber1 = checkEsignResponse.getData().get(0).getBankAc();
+                            payeeName1 = checkEsignResponse.getData().get(0).getPayeeName();
+                            ifsccode1 = checkEsignResponse.getData().get(0).getIfsc();
+                            bank_name1 = checkEsignResponse.getData().get(0).getBankName();
+                            bank_branch1 = checkEsignResponse.getData().get(0).getBankBranchName();
+                            branch_address1 = checkEsignResponse.getData().get(0).getBankAddress();
+
+                            etAccountNo.setText(accountNumber1);
+                            etAccountName.setText(payeeName1);
+                            etIFSCCODE.setText(ifsccode1);
+                            etBankName.setText(bank_name1);
+                            etBranchName.setText(bank_branch1);
+                            etBankAddress.setText(branch_address1);
+                            llBottom.setVisibility(View.VISIBLE);
+                            btExtract.setVisibility(View.GONE);
+
+                            btn_cheque_card.setVisibility(View.GONE);
+                            btn_cheque_card_select.setVisibility(View.GONE);
+                            tvBack.setVisibility(View.GONE);
+
+                        } else if (checkEsignResponse.getResponseCode() == 405) {
+                            sessionManager.logoutUser(mcontext);
+                        } else if (checkEsignResponse.getResponseCode() == 411) {
+                            sessionManager.logoutUser(mcontext);
+                        } else {
+                            progressDialog.dismiss();
+                            Toast.makeText(getActivity(), checkEsignResponse.getResponse(), Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        progressDialog.dismiss();
+                        Toast.makeText(getActivity(), "#errorcode 2062 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<BankDetailsResponse> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode 2062 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    Mylogger.getInstance().Logit(TAG, t.toString());
+                }
+            });
+
+        }
+
+    }
+
+
+    private class getBitmapFromURL extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                cancelChequeImagepath = ImagePicker.getBitmapPath(myBitmap, getActivity());
+                isPanSelected = true;
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
 
     private void showMSG(boolean b, String msg) {
         final TextView txt_show_msg_sucess = (TextView) view.findViewById(R.id.txt_show_msg_sucess);
@@ -182,27 +318,28 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     }
 
     private void initView() {
-
+        lineardata = view.findViewById(R.id.lineardata);
+        llBottom = view.findViewById(R.id.llBottom);
         btExtract = view.findViewById(R.id.btExtract);
+        btCHangeCHeque = view.findViewById(R.id.btChangeCheque);
+        btCHangeCHeque.setOnClickListener(this);
+        btSubmit = view.findViewById(R.id.btSUbmit);
+        btSubmit.setOnClickListener(this);
         btn_cheque_card = (TextView) view.findViewById(R.id.tvClickCheque);
         btn_cheque_card_select = (ImageView) view.findViewById(R.id.tvClickChequeSelected);
         btn_cheque_card_select.setOnClickListener(this);
         ivChequeImage = view.findViewById(R.id.ivChequeImage);
-        /*cd_aggre_terms_condition = view.findViewById(R.id.cbAgreeTC);
-        edit_ac_no = (EditText) view.findViewById(R.id.edit_ac_no);
-        edit_ac_name = (EditText) view.findViewById(R.id.edit_ac_name);
-        edit_ifsc = (EditText) view.findViewById(R.id.edit_ifsc);
-        edit_bank_name = (EditText) view.findViewById(R.id.edit_bank_name);
-        edit_bank_branch_name = (EditText) view.findViewById(R.id.edit_bank_branch_name);
-        edit_bank_address = (EditText) view.findViewById(R.id.edit_bank_address);*/
 
-       /* edit_bank_name.setEnabled(false);
-        edit_bank_branch_name.setEnabled(false);
-        edit_bank_address.setEnabled(false);
-        edit_ac_no.setEnabled(false);
-        edit_ac_name.setEnabled(false);
-        edit_ifsc.setEnabled(false);
-*/
+
+        etAccountNo = view.findViewById(R.id.etAccountNum);
+        etAccountName = view.findViewById(R.id.etPayeeName);
+        etIFSCCODE = view.findViewById(R.id.etIfscCode);
+        etBankName = view.findViewById(R.id.etBankName);
+        etBranchName = view.findViewById(R.id.etBranchName);
+        etBankAddress = view.findViewById(R.id.etBankAddress);
+
+        tvBack = view.findViewById(R.id.tvBack);
+        tvBack.setOnClickListener(this);
 
         btExtract.setOnClickListener(this);
         btn_cheque_card.setOnClickListener(this);
@@ -243,50 +380,157 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
         if (v.getId() == R.id.btExtract) {
             Constants.hideKeyboardwithoutPopulate(getActivity());
             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-
                 if (validation())
                     CallMerekApi();
-
-                /*storeCheque()*/
-                ;/*{
-                    DialogueUtils.failedPayment(getActivity(), new DialogListner() {
-                        @Override
-                        public void onClickPositive() {
-                            DialogueUtils.dismiss();
-                        }
-
-                        @Override
-                        public void onClickNegative() {
-                            DialogueUtils.dismiss();
-                        }
-                    });
-
-                }*///
-               /* else{
-                    DialogueUtils.successPayment(getActivity(), new DialogListner() {
-                        @Override
-                        public void onClickPositive() {
-                            DialogueUtils.dismiss();
-                        }
-
-                        @Override
-                        public void onClickNegative() {
-                            DialogueUtils.dismiss();
-                        }
-                    });
-                }*/
-
-
             } else {
                 Constants.ShowNoInternet(getActivity());
             }
 
-        } else if (v.getId() == R.id.tvClickCheque) {
+        } else if (v.getId() == R.id.tvBack) {
 
-            capture_cheque_image();
+            getUserBankDetailsUpdated();
+        } else if (v.getId() == R.id.tvClickCheque) {
+            if (proccess_id.equalsIgnoreCase("")) {
+                capture_cheque_image();
+            } else {
+                DialogUtil.NoticeforFChequeChange(getActivity(), storName, new DialogListner() {
+                    @Override
+                    public void onClickPositive() {
+                        cancelChequeImagepath = "";
+                        Glide.with(getActivity()).load(cancelChequeImagepath).placeholder(R.drawable.checkimage)
+                                .into(ivChequeImage);
+                        isPanSelected = false;
+                        btn_cheque_card.setVisibility(View.VISIBLE);
+                        btn_cheque_card_select.setVisibility(View.GONE);
+                        llBottom.setVisibility(View.GONE);
+                        lineardata.setVisibility(View.GONE);
+                        btExtract.setVisibility(View.VISIBLE);
+                        proccess_id = "";
+                        btn_cheque_card.setVisibility(View.VISIBLE);
+                        btn_cheque_card_select.setVisibility(View.GONE);
+                        DialogUtil.dismiss();
+                    }
+
+                    @Override
+                    public void onClickNegative() {
+
+                    }
+
+                    @Override
+                    public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                    }
+
+                    @Override
+                    public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                    }
+
+                    @Override
+                    public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                    }
+                });
+            }
 
         } else if (v.getId() == R.id.tvClickChequeSelected) {
-            capture_cheque_image();
+            if (proccess_id.equalsIgnoreCase("")) {
+                capture_cheque_image();
+            } else {
+                DialogUtil.NoticeforFChequeChange(getActivity(), storName, new DialogListner() {
+                    @Override
+                    public void onClickPositive() {
+
+                        cancelChequeImagepath = "";
+                        Glide.with(getActivity()).load(cancelChequeImagepath).placeholder(R.drawable.checkimage)
+                                .into(ivChequeImage);
+                        isPanSelected = false;
+                        btn_cheque_card.setVisibility(View.VISIBLE);
+                        btn_cheque_card_select.setVisibility(View.GONE);
+                        llBottom.setVisibility(View.GONE);
+                        lineardata.setVisibility(View.GONE);
+                        btExtract.setVisibility(View.VISIBLE);
+                        proccess_id = "";
+                        btn_cheque_card.setVisibility(View.VISIBLE);
+                        btn_cheque_card_select.setVisibility(View.GONE);
+                        DialogUtil.dismiss();
+
+                    }
+
+                    @Override
+                    public void onClickNegative() {
+
+                    }
+
+                    @Override
+                    public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                    }
+
+                    @Override
+                    public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                    }
+
+                    @Override
+                    public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                    }
+                });
+            }
+        } else if (v.getId() == R.id.btSUbmit) {
+            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                storeChequenotupdated();
+
+            } else {
+                Constants.ShowNoInternet(getActivity());
+            }
+        } else if (v.getId() == R.id.btChangeCheque) {
+
+            DialogUtil.NoticeforFChequeChange(getActivity(), storName, new DialogListner() {
+                @Override
+                public void onClickPositive() {
+
+                    cancelChequeImagepath = "";
+                    Glide.with(getActivity()).load(cancelChequeImagepath).placeholder(R.drawable.checkimage)
+                            .into(ivChequeImage);
+                    isPanSelected = false;
+                    btn_cheque_card.setVisibility(View.VISIBLE);
+                    btn_cheque_card_select.setVisibility(View.GONE);
+                    llBottom.setVisibility(View.GONE);
+                    lineardata.setVisibility(View.GONE);
+                    btExtract.setVisibility(View.VISIBLE);
+                    btn_cheque_card.setVisibility(View.VISIBLE);
+                    btn_cheque_card_select.setVisibility(View.GONE);
+                    proccess_id = "";
+                    changecheque = true;
+                    tvBack.setVisibility(View.VISIBLE);
+                    DialogUtil.dismiss();
+
+                }
+
+                @Override
+                public void onClickNegative() {
+
+                }
+
+                @Override
+                public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                }
+
+                @Override
+                public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                }
+
+                @Override
+                public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                }
+            });
+
+
         }
 
     }
@@ -339,12 +583,9 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 //                Constants.hideKeyboardwithoutPopulate(getActivity());
                 Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
-
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
                 intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
                 startActivityForResult(intent, CROPPED_IMAGE);
-
-
             }
             if (requestCode == CROPPED_IMAGE) {
                 imgURI = Uri.parse(data.getStringExtra("uri"));
@@ -358,8 +599,6 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                 if (casted_image6.exists()) {
                     casted_image6.delete();
                 }
-
-
             }
         }
     }
@@ -556,11 +795,16 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             params.put(Constants.PARAM_LATITUDE, lattitude);
             params.put(Constants.PARAM_LONGITUDE, longitude);
 
+            if (changecheque) {
+                params.put(Constants.PARAM_pan_matched_kiran_proccess_id, oldProccess_id);
+                params.put("is_change_cheque_submit", "1");
+            }
+
             File imagefile = new File(cancelChequeImagepath);
             cheque_image_part = MultipartBody.Part.createFormData(Constants.PARAM_CANCELLED_CHEQUE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(cancelChequeImagepath)), imagefile));
 
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            progressDialog.setMessage("Uploading cheque document. Please wait......");
+            progressDialog.setMessage("Uploading cheque copy. Please wait...");
             progressDialog.show();
 
             Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreCheque("Bearer " + sessionManager.getToken(), params, cheque_image_part);
@@ -830,4 +1074,146 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
         }
 
     }
+
+
+    public void storeChequenotupdated() {
+        gps = new GPSTracker(getActivity());
+        if (gps.canGetLocation()) {
+            Double lat = gps.getLatitude();
+            Double lng = gps.getLongitude();
+            lattitude = String.valueOf(gps.getLatitude());
+            longitude = String.valueOf(gps.getLongitude());
+            Log.e("Lattitude", lattitude);
+            Log.e("Longitude", longitude);
+        } else {
+
+            gps.showSettingsAlert();
+        }
+
+        MultipartBody.Part cheque_image_part = null;
+
+
+        Mylogger.getInstance().Logit(TAG, "getUserInfo");
+
+
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+
+            Map<String, String> params = new HashMap<String, String>();
+
+            params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+            params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+            params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+            params.put(Constants.PARAM_AC_NAME, "" + etAccountName.getText().toString());
+            params.put(Constants.PARAM_BANK_AC, "" + etAccountNo.getText().toString());
+            params.put(Constants.PARAM_IFSC, "" + etIFSCCODE.getText().toString());
+            params.put(Constants.PARAM_REQUEST_ID, "" + request_id);
+            params.put(Constants.PARAM_LATITUDE, lattitude);
+            params.put(Constants.PARAM_pan_matched_kiran_proccess_id, oldProccess_id);
+            params.put(Constants.PARAM_LONGITUDE, longitude);
+
+            File imagefile = new File(cancelChequeImagepath);
+            cheque_image_part = MultipartBody.Part.createFormData(Constants.PARAM_CANCELLED_CHEQUE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(cancelChequeImagepath)), imagefile));
+
+            Mylogger.getInstance().Logit(TAG, "getUserInfo");
+            progressDialog.setMessage("Uploading cheque copy. Please wait...");
+            progressDialog.show();
+
+            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreCheque("Bearer " + sessionManager.getToken(), params, cheque_image_part);
+            callUpload.enqueue(new Callback<CommonResponse>() {
+                @Override
+                public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
+                    try {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                        if (response.isSuccessful()) {
+                            CommonResponse chequeDetail = response.body();
+
+                            if (chequeDetail.getResponseCode() == 200) {
+                                deleteImages();
+                                DialogUtil.dismiss();
+                                showAlert(response.body().getResponse());
+                            }
+                            if (chequeDetail.getResponseCode() == 411) {
+                                sessionManager.logoutUser(mcontext);
+                            }
+                            if (chequeDetail.getResponseCode() == 400) {
+                                progressDialog.dismiss();
+                                if (chequeDetail.getValidation() != null) {
+                                    Validation validation = chequeDetail.getValidation();
+                                    if (validation.getIfsc() != null && validation.getIfsc().length() > 0) {
+                                        etIFSCCODE.requestFocus();
+                                        etIFSCCODE.setError(validation.getIfsc());
+                                        Toast.makeText(getActivity(), validation.getIfsc(), Toast.LENGTH_LONG).show();
+
+                                        // return false;
+                                    }
+                                    if (validation.getBankAc() != null && validation.getBankAc().length() > 0) {
+                                        etAccountNo.requestFocus();
+                                        etAccountNo.setError(validation.getBankAc());
+                                        Toast.makeText(getActivity(), validation.getBankAc(), Toast.LENGTH_LONG).show();
+
+
+                                    }
+                                    if (validation.getAcName() != null && validation.getAcName().length() > 0) {
+                                        etAccountName.requestFocus();
+                                        etAccountName.setError(validation.getAcName());
+                                        Toast.makeText(getActivity(), validation.getAcName(), Toast.LENGTH_LONG).show();
+
+
+                                        // Toast.makeText(getActivity(),validation.getAgentId(),Toast.LENGTH_LONG).show();
+                                    }
+                                    if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
+                                        Toast.makeText(getActivity(), validation.getProccessId(), Toast.LENGTH_LONG).show();
+                                    }
+                                    if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                        Toast.makeText(getActivity(), validation.getAgentId(), Toast.LENGTH_LONG).show();
+                                    }
+                                    if (validation.getRequestId() != null && validation.getRequestId().length() > 0) {
+                                        Toast.makeText(getActivity(), validation.getRequestId(), Toast.LENGTH_LONG).show();
+
+                                    }
+                                    if (validation.getCancelledCheque() != null && validation.getCancelledCheque().length() > 0) {
+                                        Toast.makeText(getActivity(), validation.getCancelledCheque(), Toast.LENGTH_LONG).show();
+                                    }
+
+
+                                } else {
+                                    Toast.makeText(getActivity(), chequeDetail.getResponse(), Toast.LENGTH_LONG).show();
+                                }
+
+                                // ErrorResponsePanCard errorResponsePanCard = response.body();
+                            } else {
+                                Toast.makeText(getActivity(), chequeDetail.getResponse(), Toast.LENGTH_LONG).show();
+                                // Constants.showAlert(edit_ac_name.getRootView(), chequeDetail.getResponse(), true);
+                            }
+
+                        } else {
+                            Toast.makeText(getActivity(), "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                            // Toast.makeText(mcontext, response.message(), Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        progressDialog.dismiss();
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(), "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                    }
+
+
+                }
+
+                @Override
+                public void onFailure(Call<CommonResponse> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode :- 2040 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Constants.ShowNoInternet(mcontext);
+        }
+
+    }
+
+
 }

@@ -16,6 +16,19 @@ public class GetMobileResponse {
     @SerializedName("status")
     @Expose
     private String status;
+
+    @SerializedName("pan_matched_kiran_proccess_id")
+    @Expose
+    private Integer panmatchedkiranaprocessId;
+
+    public Integer getPanmatchedkiranaprocessId() {
+        return panmatchedkiranaprocessId;
+    }
+
+    public void setPanmatchedkiranaprocessId(Integer panmatchedkiranaprocessId) {
+        this.panmatchedkiranaprocessId = panmatchedkiranaprocessId;
+    }
+
     @SerializedName("data")
     @Expose
     private List<VerifyMobileDatum> data = null;

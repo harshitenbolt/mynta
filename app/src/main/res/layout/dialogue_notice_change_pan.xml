@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CustomCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/whitePrimary">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whitePrimary">
+
+        <LinearLayout
+            android:id="@+id/lineardata"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/montesemibold"
+                    android:gravity="center"
+                    android:text="PAN DETAILS"
+                    android:textColor="@color/colorBlack" />
+
+                <ImageView
+                    android:id="@+id/ivClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:visibility="gone"
+                    android:src="@drawable/close" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/lightGrey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvStoreNameMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/monteregular"
+                    android:textSize="@dimen/_12sdp"
+                    android:text="Are you want to change your PAN card to the company or firm pan card?" />
+
+
+                <ImageView
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_75sdp"
+                    android:src="@drawable/data"/>
+
+
+                <TextView
+                    android:id="@+id/tvMessaageNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/monteregular"
+                    android:textColor="@color/colorYellow"
+                    android:textSize="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:text="You won't be able to change your pan card to an individual's PAN card." />
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/lineardata"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btCancel"
+                style="@style/Button_withGREY"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_corner_button_grey"
+                android:text="CANCEL"
+                android:textAllCaps="true" />
+
+            <Button
+                android:id="@+id/btOkCOntiunue"
+                style="@style/Button_withGreen"
+                android:layout_below="@+id/lineardata"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_bottom_corner_view_green"
+                android:text="Yes,Continue"
+                android:textAllCaps="true" />
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

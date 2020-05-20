@@ -52,9 +52,15 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (sessionManager.isLoggedIn()) {
-                    Intent i = new Intent(SplashActivity.this, DashboardActivity.class);
-                    startActivity(i);
-                    finish();
+                    if (sessionManager.getIsmobileVerify().equalsIgnoreCase("0")) {
+                        Intent i = new Intent(SplashActivity.this, ExecutiveMobileVerifyActivity.class);
+                        startActivity(i);
+                        finish();
+                    } else {
+                        Intent i = new Intent(SplashActivity.this, DashboardActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
                 } else {
                     Intent i = new Intent(SplashActivity.this, LoginActivity.class);
                     startActivity(i);

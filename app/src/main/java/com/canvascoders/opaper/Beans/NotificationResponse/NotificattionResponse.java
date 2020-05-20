@@ -37,6 +37,30 @@ public class NotificattionResponse {
     @Expose
     private int agentNotificationCount;
 
+    public String getIsMobileVerify() {
+        return IsMobileVerify;
+    }
+
+    public void setIsMobileVerify(String isMobileVerify) {
+        IsMobileVerify = isMobileVerify;
+    }
+
+    @SerializedName("is_mobile_verify")
+    @Expose
+    private String IsMobileVerify;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    @SerializedName("mobile")
+    @Expose
+    private String mobile;
+
     public int getTaskCount() {
         return taskCount;
     }
@@ -48,7 +72,6 @@ public class NotificattionResponse {
     @SerializedName("task_count")
     @Expose
     private int taskCount;
-
 
 
     @SerializedName("in_procces_count")

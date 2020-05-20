@@ -25,13 +25,17 @@ import com.canvascoders.opaper.Beans.GetAgentDetailResponse.GetAgentDetailRespon
 import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGstListing.GetGstListing;
 import com.canvascoders.opaper.Beans.GetGstPanEditResponse.GetGstPanEditResponse;
+import com.canvascoders.opaper.Beans.GetOTPfrStoreExeResponse.GetOTPfrStoreExeResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
+import com.canvascoders.opaper.Beans.GetPanExistResponse.GetPanAlreadyExistResponse;
 import com.canvascoders.opaper.Beans.GetTaskEndResponse.GetTaskEndResponse;
 import com.canvascoders.opaper.Beans.GetTasksTypeListing;
 import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
 import com.canvascoders.opaper.Beans.GetVehicleTypes;
 import com.canvascoders.opaper.Beans.GetVendorInvoiceList.GetVendorInvoiceDetails;
 import com.canvascoders.opaper.Beans.GetVendorTypeDetails;
+import com.canvascoders.opaper.Beans.GetVerifyStoreExecResponse.GetVerifyExecutiveResponse;
+import com.canvascoders.opaper.Beans.MakeReportResponse.MakeReportResponse;
 import com.canvascoders.opaper.Beans.NotificationResponse.NotificattionResponse;
 import com.canvascoders.opaper.Beans.PanCardOcrResponse.PanCardSubmitResponse;
 import com.canvascoders.opaper.Beans.PanImageResponse.PanImageResponse;
@@ -441,6 +445,24 @@ public interface ApiInterface {
     Call<EditUserResponse> getUserinfo(@FieldMap() Map<String, String> data);
 
     @FormUrlEncoded
+    @POST("update-agent-mobile")
+    Call<GetOTPfrStoreExeResponse> updateAgentMobile(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+
+    @FormUrlEncoded
+    @POST("resend-otp-agent-mobile")
+    Call<GetOTPfrStoreExeResponse> resendOTPAgentMobile(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+    @FormUrlEncoded
+    @POST("verify-agent-mobile")
+    Call<GetVerifyExecutiveResponse> verifyStoreExecutive(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+
+
+    @FormUrlEncoded
     @POST("update-gst")
     Call<CommonResponse> gstUpdate(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
@@ -482,6 +504,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("get-pan-details")
     Call<UpdatePanDetailResponse> pandetailResponse(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
+
+
 
 
     @FormUrlEncoded
@@ -788,6 +812,13 @@ public interface ApiInterface {
     Call<GetTaskEndResponse> getSelfTaskEnd(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                             @Part MultipartBody.Part[] store_image_act);
 
+    @FormUrlEncoded
+    @POST("pancard-already-exists")
+    Call<GetPanAlreadyExistResponse> getPanAlreadyExistResponse(@Header("Authorization") String token, @FieldMap Map<String, String> params);
+
+    @FormUrlEncoded
+    @POST("report-pancard")
+    Call<MakeReportResponse> makeResportResponse(@Header("Authorization") String token, @FieldMap Map<String, String> params);
 
 
 

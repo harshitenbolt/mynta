@@ -258,7 +258,6 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
         user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
         user.addProperty(Constants.PARAM_LATITUDE, lattitude);
         user.addProperty(Constants.PARAM_LONGITUDE, longitude);
-
         Mylogger.getInstance().Logit(TAG, user.toString());
         ApiClient.getClient().create(ApiInterface.class).verifyMobile("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetMobileResponse>() {
             @Override
@@ -270,13 +269,14 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                     if (mobileResponse.getResponseCode() == 200) {
 
                         Mylogger.getInstance().Logit(TAG, mobileResponse.getData().get(0).getScreen() + "");
-
                         sessionManager.saveData(Constants.KEY_EMP_MOBILE, mobile);
                         processID = String.valueOf(mobileResponse.getData().get(0).getProccessId());
                         sessionManager.saveData(Constants.KEY_PROCESS_ID, processID);
                         Log.e("PROCESS ID", "" + processID);
                         chqCount = mobileResponse.getData().get(0).getBank();
-                        goTOScreen(mobileResponse.getData().get(0).getScreen());
+
+
+                        goTOScreen(mobileResponse.getData().get(0).getScreen(), String.valueOf(mobileResponse.getPanmatchedkiranaprocessId()));
                     } else if (mobileResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(OTPActivity.this);
                     } else {
@@ -288,20 +288,20 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                         }
                     }
                 } else {
-                    showMSG(false, "#errorcode :- 2022 "+getString(R.string.something_went_wrong));
+                    showMSG(false, "#errorcode :- 2022 " + getString(R.string.something_went_wrong));
                 }
             }
 
             @Override
             public void onFailure(Call<GetMobileResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(OTPActivity.this, "#errorcode :- 2022 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(OTPActivity.this, "#errorcode :- 2022 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });
     }
 
-    private void goTOScreen(Integer screenID) {
+    private void goTOScreen(Integer screenID, String processID) {
         Integer screen = screenID;
 
         Log.e("Screen id", String.valueOf(screen));
@@ -323,7 +323,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
 
         } else if (screen == 4) {
 
-            commanFragmentCallWithoutBackStack(new ChequeUploadFragment());
+            commanFragmentCallWithoutBackStackCheque(new ChequeUploadFragment(), processID);
 
 
         } else if (screen == 5) {
@@ -797,7 +797,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
             @Override
             public void onFailure(Call<GetOTP> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(getApplicationContext(), "#errorcode :- 2012 " +getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "#errorcode :- 2012 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -848,6 +848,22 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
         if (cFragment != null) {
 
             FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.rvContentMainOTP, cFragment);
+            fragmentTransaction.commit();
+        }
+    }
+
+    public void commanFragmentCallWithoutBackStackCheque(Fragment fragment, String processID) {
+
+        Fragment cFragment = fragment;
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.PARAM_pan_matched_kiran_proccess_id, processID);
+
+        if (cFragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            cFragment.setArguments(bundle);
             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.rvContentMainOTP, cFragment);
@@ -970,7 +986,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                         Toast.makeText(OTPActivity.this, submitReportResponse.getResponse(), Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(OTPActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OTPActivity.this, "#errorcode :- 2038 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -978,7 +994,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
             @Override
             public void onFailure(Call<SubmitImageResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(OTPActivity.this,"#errorcode :- 2038 "+ getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(OTPActivity.this, "#errorcode :- 2038 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 

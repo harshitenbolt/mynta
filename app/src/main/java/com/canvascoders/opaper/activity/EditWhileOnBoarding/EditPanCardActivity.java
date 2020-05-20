@@ -82,7 +82,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
     public static final int CROPPED_IMAGE = 5333;
     private EditText etPanName, etFatherName, etpanNumber;
     private Button btSubmit;
-    String gstImg = "", imagecamera = "";
+    String gstImg = "", imagecamera = "",old_process_id="";
     boolean individual = true;
     private ImageView ivSearch, ivEdit;
     String panno = "";
@@ -722,7 +722,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         if (!TextUtils.isEmpty(panImagepath)) {
 
-            mProgressDialog.setMessage("Extracting image..");
+            mProgressDialog.setMessage("Extracting image...");
             mProgressDialog.setCancelable(false);
             mProgressDialog.show();
 
@@ -743,7 +743,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                 Toast.makeText(EditPanCardActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
 
-                                DialogUtil.PanDetail2(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual, new DialogListner() {
+                                DialogUtil.PanDetail2(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual, str_process_id,new DialogListner() {
                                     @Override
                                     public void onClickPositive() {
 
@@ -781,8 +781,9 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                     }
 
                                     @Override
-                                    public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
-
+                                    public void onClickChequeDetails(String accName, String payeename, String proccessId, String storeanem, String BranchName, String bankAdress) {
+                                        old_process_id=proccessId;
+                                        UpadatePan1(accName,payeename,str_process_id,storeanem);
                                     }
 
                                     @Override
@@ -804,7 +805,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                                     Toast.makeText(EditPanCardActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
-                                    DialogUtil.PanDetail2(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual, new DialogListner() {
+                                    DialogUtil.PanDetail2(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual,str_process_id, new DialogListner() {
                                         @Override
                                         public void onClickPositive() {
 
@@ -842,10 +843,10 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                         }
 
                                         @Override
-                                        public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
-
+                                        public void onClickChequeDetails(String accName, String payeename, String proccessId, String storeanem, String BranchName, String bankAdress) {
+                                            old_process_id=proccessId;
+                                            UpadatePan1(accName,payeename,str_process_id,storeanem);
                                         }
-
                                         @Override
                                         public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
 
@@ -1157,5 +1158,114 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
+
+
+    private void UpadatePan1(String name, String fathername, String panId, String storename) {
+
+        mProgressDialog.show();
+
+        MultipartBody.Part pan_card_part = null;
+
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        params.put(Constants.PARAM_PAN_NO, "" + panId);
+        params.put(Constants.PARAM_PAN_NAME, "" + name);
+
+
+        params.put(Constants.PARAM_pan_matched_kiran_proccess_id, old_process_id);
+        params.put(Constants.PARAM_IS_PAN_EXIST, "1");
+
+
+        params.put(Constants.PARAM_FATHER_NAME, "" + fathername);
+        if (storename.equalsIgnoreCase("")) {
+
+        } else {
+            params.put(Constants.PARAM_STORE_NAME, storename);
+        }
+       /* params.put(Constants.PARAM_LATITUDE, lattitude);
+        params.put(Constants.PARAM_LONGITUDE, longitude);*/
+        File imagefile = new File(panImagepath);
+        pan_card_part = MultipartBody.Part.createFormData(Constants.PARAM_PAN_CARD_FRONT, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile));
+
+        Call<UpdatePancardResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).updatePanDetails("Bearer " + sessionManager.getToken(), params, pan_card_part);
+
+        callUpload.enqueue(new Callback<UpdatePancardResponse>() {
+            @Override
+            public void onResponse(Call<UpdatePancardResponse> call, Response<UpdatePancardResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+
+
+                    UpdatePancardResponse updatePancardResponse = response.body();
+                    if (updatePancardResponse.getResponseCode() == 200) {
+                        //deleteImages();
+
+
+                        Toast.makeText(EditPanCardActivity.this, updatePancardResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                    if (updatePancardResponse.getResponseCode() == 400) {
+                        mProgressDialog.dismiss();
+                        try {
+                            if (updatePancardResponse.getValidation() != null) {
+
+                                Validation validation = updatePancardResponse.getValidation();
+                                if (validation.getPanName() != null && validation.getPanName().length() > 0) {
+
+                                    DialogUtil.etPanName.setError(validation.getPanName());
+
+                                }
+                                if (validation.getFatherName() != null && validation.getFatherName().length() > 0) {
+
+                                    DialogUtil.etPanFatherName.setError(validation.getFatherName());
+                                }
+
+                                if (validation.getStoreName() != null && validation.getStoreName().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getStoreName(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getAgentId(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getProccessId(), Toast.LENGTH_LONG).show();
+                                }
+                                if (validation.getPanNo() != null && validation.getPanNo().length() > 0) {
+                                    DialogUtil.etPanNumber.setError(validation.getPanNo());
+                                }
+                                if (validation.getPanCardFront() != null && validation.getPanCardFront().length() > 0) {
+                                    Toast.makeText(EditPanCardActivity.this, validation.getPanCardFront(), Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                Toast.makeText(EditPanCardActivity.this, updatePancardResponse.getResponse(), Toast.LENGTH_LONG).show();
+                            }
+                        } catch (Exception e) {
+                            Toast.makeText(EditPanCardActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        // ErrorResponsePanCard errorResponsePanCard = response.body();
+                    } else {
+                        Toast.makeText(EditPanCardActivity.this, updatePancardResponse.getResponse(), Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    Toast.makeText(EditPanCardActivity.this, "#errorcode 2039 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UpdatePancardResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditPanCardActivity.this, "#errorcode 2039 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //  Toast.makeText(EditPanCardActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
 
 }

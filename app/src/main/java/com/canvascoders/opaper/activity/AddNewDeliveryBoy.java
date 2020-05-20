@@ -112,6 +112,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
 
     String[] selectVehicleType = {"Bike", "Cycle", "Truck"};
+    String[] selectBloodGroupType = {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
     String stringDob = "";
     private TextView tvLanguage, dob;
     private CheckBox cbSame;
@@ -119,7 +120,8 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     Button btGetOtp;
     String otp = "", mobile_number = "";
     private String TAG = "sfdfdg";
-    Spinner spVehicleForDelivery;
+    Spinner spVehicleForDelivery, spBloodGroupType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,6 +166,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
 
         spVehicleForDelivery = findViewById(R.id.spVehicleForDelivery);
+        spBloodGroupType = findViewById(R.id.spBloodGroup);
         ivProfile = findViewById(R.id.ivProfileImage);
         ivDriving_Licence = findViewById(R.id.ivDrivingLicence);
         ivDriving_Licence.setOnClickListener(this);
@@ -173,7 +176,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         checkedItems = new boolean[select_language.length];
         tvLanguage = findViewById(R.id.tvLanguage);
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("Please wait ...");
+        mProgressDialog.setMessage("Please wait...");
         mProgressDialog.setCancelable(false);
         btAddNext = findViewById(R.id.btNext);
         btAddNext.setOnClickListener(this);
@@ -267,6 +270,13 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             Constants.ShowNoInternet(AddNewDeliveryBoy.this);
         }
         //ApiCallGetDc();
+
+        List<String> stringList = new ArrayList<String>(Arrays.asList(selectBloodGroupType));
+
+        CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(AddNewDeliveryBoy.this, android.R.layout.simple_spinner_item, stringList);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spBloodGroupType.setAdapter(spinnerArrayAdapter);
+        spBloodGroupType.setSelection(0);
     }
 
     private void APiCallgetvehicleNames() {
@@ -1322,7 +1332,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
 
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
-        mProgressDialog.setMessage("Fetching details. Please wait......");
+        mProgressDialog.setMessage("we are retrieving information, please wait!");
         mProgressDialog.show();
         // hideKeyboardwithoutPopulateFragment();
         Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);

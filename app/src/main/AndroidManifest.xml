@@ -40,9 +40,14 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
-        <activity android:name=".activity.EndTaskActivity"
+        <activity
+            android:name=".activity.ExecutiveMobileVerifyActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".activity.EndTaskActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.FilterActivity"
             android:screenOrientation="portrait"

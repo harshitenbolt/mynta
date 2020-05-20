@@ -876,7 +876,7 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         if (!TextUtils.isEmpty(panImagepath)) {
 
-            progressDialog.setMessage("Extracting image..");
+            progressDialog.setMessage("Extracting image...");
             progressDialog.setCancelable(false);
             progressDialog.show();
 
@@ -897,7 +897,7 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
                                 Toast.makeText(EditGstDetailsActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
 
-                                DialogUtil.PanDetail2(EditGstDetailsActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual, new DialogListner() {
+                                DialogUtil.PanDetail2(EditGstDetailsActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual,str_process_id, new DialogListner() {
                                     @Override
                                     public void onClickPositive() {
 
@@ -956,7 +956,7 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
 
                                     Toast.makeText(EditGstDetailsActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
-                                    DialogUtil.PanDetail2(EditGstDetailsActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual, new DialogListner() {
+                                    DialogUtil.PanDetail2(EditGstDetailsActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual,str_process_id, new DialogListner() {
                                         @Override
                                         public void onClickPositive() {
 

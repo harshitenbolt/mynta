@@ -271,7 +271,7 @@
                             style="@style/TextviewwithoutSize"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Esign Verification for this user is pending. Underlink for complete e-sign verification has been sent to the user's registered Mobile No."
+                            android:text="E-sign is pending. link to sign the agreement has been sent to kirana's registered mobile number."
                             android:textSize="@dimen/_10sdp" />
 
                         <TextView

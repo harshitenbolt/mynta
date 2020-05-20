@@ -318,7 +318,7 @@ public class InvoiceEsignActivity extends AppCompatActivity /*implements Navigat
             params.put(Constants.PARAM_INVOICE_ID, invoice_id);
             params.put(Constants.PARAMS_INVOICE_TYPE, invoice_type);
 
-            progressDialog.setTitle("Please Wait ...");
+            progressDialog.setTitle("Please Wait...");
             progressDialog.show();
             Call<SendInvoiceLinkresponse> call = ApiClient.getClient().create(ApiInterface.class).sendInvoice("Bearer " + sessionManager.getToken(), params);
             call.enqueue(new Callback<SendInvoiceLinkresponse>() {

@@ -159,7 +159,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
         requestPermissionHandler = new RequestPermissionHandler();
         str_process_id = getIntent().getStringExtra(Constants.KEY_PROCESS_ID);
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Please wait..");
+        progressDialog.setMessage("Please wait...");
         progressDialog.setCancelable(false);
         init();
 
@@ -176,7 +176,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
 
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setTitle("Please wait updating vendor details");
+        mProgressDialog.setTitle("Uploading vendor information, please wait!");
         mProgressDialog.setCancelable(false);
 
 
@@ -953,7 +953,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
 
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            mProgressDialog.setMessage("Fetching details. Please wait......");
+            mProgressDialog.setMessage("we are retrieving information, please wait!");
             mProgressDialog.show();
             // hideKeyboardwithoutPopulateFragment();
             Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadharEdit("Bearer " + sessionManager.getToken(), params, aadharcard_front_part, aadharcard_back_part);
@@ -1362,7 +1362,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
         voter_back_part = MultipartBody.Part.createFormData(Constants.PARAM_BACKSIDE_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathBack)), imagefile));
 
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
-        mProgressDialog.setMessage("Fetching details. Please wait......");
+        mProgressDialog.setMessage("we are retrieving information, please wait!");
         mProgressDialog.show();
         //hideKeyboardwithoutPopulateFragment();
 
@@ -1494,7 +1494,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
         driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
 
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
-        mProgressDialog.setMessage("Fetching details. Please wait......");
+        mProgressDialog.setMessage("we are retrieving information, please wait!");
         mProgressDialog.show();
         //hideKeyboardwithoutPopulateFragment();
         Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);
@@ -2076,7 +2076,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             aadharcard_back_part = MultipartBody.Part.createFormData(Constants.PARAM_AADHAR_BACK, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathBack)), imagefile1));
 
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            mProgressDialog.setMessage("Fetching details. Please wait......");
+            mProgressDialog.setMessage("we are retrieving information, please wait!");
             mProgressDialog.show();
 
             Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadharEdit("Bearer " + sessionManager.getToken(), params, aadharcard_front_part, aadharcard_back_part);
@@ -2242,7 +2242,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             aadharcard_back_part = MultipartBody.Part.createFormData(Constants.PARAM_AADHAR_BACK, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathBack)), imagefile1));
 */
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            mProgressDialog.setMessage("Fetching details. Please wait......");
+            mProgressDialog.setMessage("we are retrieving information, please wait!");
             mProgressDialog.show();
 
             Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadharEditwithoutImage("Bearer " + sessionManager.getToken(), params);

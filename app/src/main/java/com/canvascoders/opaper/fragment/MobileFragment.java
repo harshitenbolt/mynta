@@ -68,7 +68,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
 
     private void initView() {
         mProgressDialog = new ProgressDialog(mcontext);
-        mProgressDialog.setMessage("Sending OTP to mobile.");
+        mProgressDialog.setMessage("Sending OTP to your mobile.");
         mProgressDialog.setCancelable(false);
         edit_mobile_no = view.findViewById(R.id.etMobileNumber);
         btn_next = view.findViewById(R.id.btSendOTP);
@@ -154,7 +154,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
                         showMSG(false, getOTP.getResponse());
                     }
                 } else {
-                    showMSG(false, "#errorcode :- 2012 " +getString(R.string.something_went_wrong));
+                    showMSG(false, "#errorcode :- 2012 " + getString(R.string.something_went_wrong));
                 }
             }
 
@@ -163,7 +163,7 @@ public class MobileFragment extends Fragment implements View.OnClickListener {
                 mProgressDialog.dismiss();
                 Toast.makeText(getActivity(), "#errorcode :- 2012 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
-              //  Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+                //  Toast.makeText(mcontext, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
             }
         });
     }

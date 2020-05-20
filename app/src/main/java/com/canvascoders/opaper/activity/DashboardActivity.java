@@ -680,7 +680,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
 
 
-            mProgressDialog.setMessage("Gettting details. Please wait.");
+            mProgressDialog.setMessage("we are retrieving information, please wait!");
             mProgressDialog.show();
 
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -717,6 +717,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     }
                     if (response.isSuccessful()) {
                         Log.e("First", "Step done");
+
                         if (getnotificationdata.getLiveVendorCount() == 0) {
                             tvLiveVendorCount.setVisibility(View.GONE);
                         } else {
@@ -745,6 +746,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                         tvLiveVendorCount.setText(String.valueOf(getnotificationdata.getLiveVendorCount()));
                         tvCountNotification.setText(String.valueOf(getnotificationdata.getAgentNotificationCount()));
                         tvCountTasks.setText(String.valueOf(getnotificationdata.getTaskCount()));
+
+
                         if (getnotificationdata.getResponse().equalsIgnoreCase("success")) {
                             Log.e("Sec", "Step done");
 
@@ -752,6 +755,15 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 //
 //                            }
 
+                            if (getnotificationdata.getIsMobileVerify().equalsIgnoreCase("0")) {
+                                Intent i = new Intent(DashboardActivity.this, ExecutiveMobileVerifyActivity.class);
+                                startActivity(i);
+                                finish();
+                                sessionManager.createLogin(sessionManager.getAgentID(), sessionManager.getToken(), sessionManager.getName(), sessionManager.getEmail(), sessionManager.getRHID(), sessionManager.getEmpId(), getnotificationdata.getMobile(), "", getnotificationdata.getIsMobileVerify());
+
+                            } else {
+                                sessionManager.createLogin(sessionManager.getAgentID(), sessionManager.getToken(), sessionManager.getName(), sessionManager.getEmail(), sessionManager.getRHID(), sessionManager.getEmpId(), getnotificationdata.getMobile(), "", getnotificationdata.getIsMobileVerify());
+                            }
                             if (getnotificationdata.getIsupdateavailable()) {
                                 Log.e("Update available", "Step done");
 
@@ -860,6 +872,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             public void onSuccess() {
 
             }
+
             @Override
             public void onFailed() {
                 Toast.makeText(getApplicationContext(), "request permission failed", Toast.LENGTH_SHORT).show();

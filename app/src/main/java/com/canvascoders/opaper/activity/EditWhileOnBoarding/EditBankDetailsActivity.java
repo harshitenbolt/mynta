@@ -521,7 +521,7 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
             cheque_image_part = MultipartBody.Part.createFormData(Constants.PARAM_CANCELLED_CHEQUE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(cancelChequeImagepath)), imagefile));
 
             Mylogger.getInstance().Logit(TAG, "getUserInfo");
-            progressDialog.setMessage("Uploading cheque document. Please wait......");
+            progressDialog.setMessage("Uploading cheque copy. Please wait...");
             progressDialog.show();
 
             Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).editgetstoreCheque("Bearer " + sessionManager.getToken(), params, cheque_image_part);

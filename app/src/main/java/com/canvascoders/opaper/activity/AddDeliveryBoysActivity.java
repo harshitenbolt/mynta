@@ -860,7 +860,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
     }
 
     private void ApiCallDelete(String deliveryBoyId) {
-        mProgressDialog.setTitle("Delete...");
+        mProgressDialog.setTitle("Deleting...");
         mProgressDialog.show();
         delivery_boys_list.clear();
         Map<String, String> params = new HashMap<String, String>();
@@ -948,7 +948,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
 
     private void ApiCallSubmit() {
 
-        mProgressDialog.setTitle("Please wait");
+        mProgressDialog.setTitle("Please wait...");
         mProgressDialog.show();
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
@@ -1014,7 +1014,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
 
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
-        mProgressDialog.setMessage("Fetching details. Please wait......");
+        mProgressDialog.setMessage("we are retrieving information, please wait!");
         mProgressDialog.show();
         // hideKeyboardwithoutPopulateFragment();
         Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);
