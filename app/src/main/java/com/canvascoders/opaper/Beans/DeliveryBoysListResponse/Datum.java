@@ -101,6 +101,32 @@ public class Datum implements Serializable {
     @SerializedName("vehicle_for_delivery")
     @Expose
     private String vehicleForDelivery;
+
+
+    @SerializedName("driving_licence_till_date")
+    @Expose
+    private String driving_licence_till_date;
+
+    public String getDriving_licence_issue_date() {
+        return driving_licence_issue_date;
+    }
+
+    public void setDriving_licence_issue_date(String driving_licence_issue_date) {
+        this.driving_licence_issue_date = driving_licence_issue_date;
+    }
+
+    @SerializedName("driving_licence_issue_date")
+    @Expose
+    private String driving_licence_issue_date;
+
+    public String getDriving_licence_till_date() {
+        return driving_licence_till_date;
+    }
+
+    public void setDriving_licence_till_date(String driving_licence_till_date) {
+        this.driving_licence_till_date = driving_licence_till_date;
+    }
+
     @SerializedName("languages")
     @Expose
     private String languages;
@@ -119,6 +145,18 @@ public class Datum implements Serializable {
     @SerializedName("better_place_client_reference_id")
     @Expose
     private String betterPlaceClientReferenceId;
+
+    public String getKyc_type() {
+        return kyc_type;
+    }
+
+    public void setKyc_type(String kyc_type) {
+        this.kyc_type = kyc_type;
+    }
+
+    @SerializedName("kyc_type")
+    @Expose
+    private String kyc_type;
 
     public Integer getId() {
         return id;
@@ -383,4 +421,154 @@ public class Datum implements Serializable {
     public void setBetterPlaceClientReferenceId(String betterPlaceClientReferenceId) {
         this.betterPlaceClientReferenceId = betterPlaceClientReferenceId;
     }
+
+
+
+
+    @SerializedName("voter_id")
+    @Expose
+    private String voterIdNum;
+
+    @SerializedName("voter_name")
+    @Expose
+    private String voter_name;
+
+    public String getVoterIdNum() {
+        return voterIdNum;
+    }
+
+    public void setVoterIdNum(String voterIdNum) {
+        this.voterIdNum = voterIdNum;
+    }
+
+    public String getVoter_name() {
+        return voter_name;
+    }
+
+    public void setVoter_name(String voter_name) {
+        this.voter_name = voter_name;
+    }
+
+    public String getVoter_dob() {
+        return voter_dob;
+    }
+
+    public void setVoter_dob(String voter_dob) {
+        this.voter_dob = voter_dob;
+    }
+
+    public String getVoter_front_image() {
+        return voter_front_image;
+    }
+
+    public void setVoter_front_image(String voter_front_image) {
+        this.voter_front_image = voter_front_image;
+    }
+
+    public String getVoter_back_image() {
+        return voter_back_image;
+    }
+
+    public void setVoter_back_image(String voter_back_image) {
+        this.voter_back_image = voter_back_image;
+    }
+
+    public String getAadhaar_no() {
+        return aadhaar_no;
+    }
+
+    public void setAadhaar_no(String aadhaar_no) {
+        this.aadhaar_no = aadhaar_no;
+    }
+
+    public String getAadhaar_name() {
+        return aadhaar_name;
+    }
+
+    public void setAadhaar_name(String aadhaar_name) {
+        this.aadhaar_name = aadhaar_name;
+    }
+
+    public String getAadhaar_dob() {
+        return aadhaar_dob;
+    }
+
+    public void setAadhaar_dob(String aadhaar_dob) {
+        this.aadhaar_dob = aadhaar_dob;
+    }
+
+    public String getAadhaar_card_front() {
+        return aadhaar_card_front;
+    }
+
+    public void setAadhaar_card_front(String aadhaar_card_front) {
+        this.aadhaar_card_front = aadhaar_card_front;
+    }
+
+    public String getAadhaar_card_back() {
+        return aadhaar_card_back;
+    }
+
+    public void setAadhaar_card_back(String aadhaar_card_back) {
+        this.aadhaar_card_back = aadhaar_card_back;
+    }
+
+    public String getBlood_group() {
+        return blood_group;
+    }
+
+    public void setBlood_group(String blood_group) {
+        this.blood_group = blood_group;
+    }
+
+    @SerializedName("voter_dob")
+    @Expose
+    private String voter_dob;
+
+    @SerializedName("voter_id_front_image")
+    @Expose
+    private String voter_front_image;
+
+    @SerializedName("voter_id_back_image")
+    @Expose
+    private String voter_back_image;
+
+
+    @SerializedName("aadhar_no")
+    @Expose
+    private String aadhaar_no;
+
+    @SerializedName("aadhaar_name")
+    @Expose
+    private String aadhaar_name;
+
+    @SerializedName("aadhaar_dob")
+    @Expose
+    private String aadhaar_dob;
+
+    @SerializedName("aadhar_front_image")
+    @Expose
+    private String aadhaar_card_front;
+
+    @SerializedName("aadhar_back_image")
+    @Expose
+    private String aadhaar_card_back;
+
+    @SerializedName("blood_group")
+    @Expose
+    private String blood_group;
+
+
+    public String getDexter() {
+        return dexter;
+    }
+
+    public void setDexter(String dexter) {
+        this.dexter = dexter;
+    }
+
+    @SerializedName("dexter")
+    @Expose
+    private String dexter;
+
 }

@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 public class Constants {
 
     //-------------------------------------------------------------------------
-    public final static int APP_VERSION = 29; // need to set +1 here befor apk sent on last update before 942018 @ 12 version
+    public final static int APP_VERSION = 30; // need to set +1 here befor apk sent on last update before 942018 @ 12 version
     //-------------------------------------------------------------------------
     public final static String FORMAT = "format";
     public final static String CONTENT = "content";
@@ -43,14 +43,14 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
 
-     //public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
-    public static String BaseURL = "https://mystaging.opaper.in/api3/";
+    public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+    //  public static String BaseURL = "https://mystaging.opaper.in/api3/";
     // test server 20
 
-    public final static String APP_NAME = "my_stage"; //stage
-    // public final static String APP_NAME = "my_live"; //live
-    //public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
-    public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
+    //public final static String APP_NAME = "my_stage"; //stage
+    public final static String APP_NAME = "my_live"; //live
+    public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+    //public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
 
@@ -229,8 +229,12 @@ public class Constants {
     public static String PARAM_PERMANENT_ADDRESS_STATE = "permanent_address_state";
 
     public static String PHONE_NUMBER = "phone_number";
+    public static String PARAM_GENDER = "gender";
+
     public static String NAME = "name";
     public static String ROUTE_NUMBER = "route_number";
+    public static String PARAM_BLOOD_GROUP = "blood_group";
+
     public static String PARAMS_INVOICE_TYPE = "invoice_type";
     public static String PARAMS_FROM_DATE = "from_date";
     public static String PARAMS_TO_DATE = "to_date";
@@ -240,6 +244,13 @@ public class Constants {
     public static String PARAM_DRIVING_LICENCE_NUMBER = "driving_licence_number";
     public static String PARAM_DRIVING_LICENCE_DOB = "driving_licence_dob";
     public static String PARAM_DRIVING_LICENCE_VEHICLE = "vehicle_for_delivery";
+
+    public static String PARAM_AADHAR_NO = "aadhaar_no";
+    public static String PARAM_AADHAR_DOB = "aadhaar_dob";
+    public static String PARAM_AADHAR_NAME = "aadhaar_name";
+
+
+    public static String PARAM_VOTER_NO = "voter_id_num";
 
 
     public static String PARAM_PROCESS_ID = "proccess_id";
@@ -366,6 +377,9 @@ public class Constants {
     public static String PARAM_LOCALITY = "locality";
     public static String PARAM_APPROACH = "approach";
     public static String PARAM_LANGUAGES = "languages";
+    public static String PARAM_DL_ISSUE_DATE = "driving_licence_issue_date";
+    public static String PARAM_DL_VALID_TILL_DATE = "driving_licence_till_date";
+
     public static String PARAM_IS_ADD_FROM_PROFILE = "is_add_from_profile";
     public static String PARAM_SHIPMENT_TRANS = "shipment_transfer";
     public static String PARAM_PARTNER_WITH_OTHER = "partner_with_other_ecommerce";

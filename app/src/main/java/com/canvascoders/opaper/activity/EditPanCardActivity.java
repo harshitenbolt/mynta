@@ -488,38 +488,6 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
             File imagefile = new File(panImagepath);
             typedFile = MultipartBody.Part.createFormData("image", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
 
-           /* Call<PanImageResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getPancardOcrUrl("Bearer "+sessionManager.getToken(),sessionManager.getToken(), str_process_id, typedFile);
-
-            callUpload.enqueue(new Callback<PanImageResponse>() {
-                @Override
-                public void onResponse(Call<PanImageResponse> call, retrofit2.Response<PanImageResponse> response) {
-                    mProgressDialog.dismiss();
-
-                    if (response.isSuccessful()) {
-                        PanImageResponse panImageResponse = response.body();
-                        if (panImageResponse.getResponseCode() == 200) {
-                            String imagePath = panImageResponse.getData().get(0).getPan_url();
-                            if (!TextUtils.isEmpty(imagePath)) {
-                                ExtractPanDetail extractPanDetail = new ExtractPanDetail();
-                                extractPanDetail.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imagePath);
-                            } else {
-
-                            }
-                        } else if (panImageResponse.getResponseCode() == 405) {
-                            sessionManager.logoutUser(mcontext);
-                        } else {
-                            Toast.makeText(mcontext, panImageResponse.getResponse(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<PanImageResponse> call, Throwable t) {
-                    mProgressDialog.dismiss();
-                    Toast.makeText(mcontext, t.getMessage().toString(), Toast.LENGTH_LONG).show();
-                }
-            });*/
-
 
             Call<GetPanDetailsResponse> call = ApiClient.getClient2().create(ApiInterface.class).getPanDetails(params, typedFile);
             call.enqueue(new Callback<GetPanDetailsResponse>() {

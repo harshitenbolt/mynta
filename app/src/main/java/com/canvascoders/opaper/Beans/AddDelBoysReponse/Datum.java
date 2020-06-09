@@ -10,6 +10,18 @@ public class Datum {
     @Expose
     private String proccessId;
 
+    public Integer getIsDcDexterPresent() {
+        return isDcDexterPresent;
+    }
+
+    public void setIsDcDexterPresent(Integer isDcDexterPresent) {
+        this.isDcDexterPresent = isDcDexterPresent;
+    }
+
+    @SerializedName("is_dc_dexter_present")
+    @Expose
+    private Integer isDcDexterPresent;
+
     public String getProccessId() {
         return proccessId;
     }

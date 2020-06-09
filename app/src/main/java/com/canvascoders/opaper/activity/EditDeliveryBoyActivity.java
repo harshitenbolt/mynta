@@ -1,13 +1,16 @@
 package com.canvascoders.opaper.activity;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -31,6 +34,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -40,25 +45,37 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
+import com.canvascoders.opaper.Beans.AdharocrResponse.AdharOCRResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.Datum;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.GetVehicleTypes;
 import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
+import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
+import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.DataAttributes;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.Mylogger;
+import com.canvascoders.opaper.utils.RealPathUtil;
+import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -70,6 +87,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -78,25 +96,42 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
+
 public class EditDeliveryBoyActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etName, etFatherName, etPhoneNumber, etRoute, etDrivingNumber;
     private ImageView ivProfile, ivDriving_Licence, ivBack;
     private String profileImagepath = "", licenceImagePath = "";
     private int PROFILEIMAGE = 200, LICENCEIMAGE = 300;
+    String stringDob = "";
     private int mYear, mMonth, mDay, mHour, mMinute;
     private Button addDelBoy;
     private RelativeLayout rvLanguage;
+    private static int IMAGE_SELCTION_CODE = 0;
+    LinearLayout llDrivingLicenceDetails, llAadharDetails, llVoterDetails;
     private ProgressDialog mProgressDialog;
+    private final static int REQUEST_SCANNER = 1000;
     Spinner dc;
     ScrollView svMain;
+    private ImageView ivAdharFrontSelected, ivAdharABackSelected, ivVoterFrontSelected, ivDlFrontSelected, ivVoterBackSelected, ivAdharIamgeFront, ivAdharImageBack, ivVoterImageFront, ivVoterImageBack, ivDlImageFront, ivDlImageBack;
+
+    private String aadharImagepathBack = "";
+    private RelativeLayout rvLanguageAdhar, rvLanguage1;
     String validationapiUrl;
+    private Uri imgURI;
+    private static final int IMAGE_AADHAR_FRONT = 1021;
+    private static final int IMAGE_AADHAR_BACK = 1022, IMAGE_VOTER_FRONT = 1023, IMAGE_VOTER_BACK = 1024, IMAGE_DL_FRONT = 1025, IMAGE_DL_BACK = 1026;
+    private String imagecamera = "", aadharImagepathFront = "", voterImagePathFront = "", voterImagePathBack = "", dlImagePathBack = "", dlImageOathFront = "";
+    private static int CROPPED_IMAGE_VOTER_FRONT = 7000, CROPPED_IMAGE_VOTER_BACK = 8000, CROPPED_IMAGE_DL_BACK = 8001, CROPPED_IMAGE_DL_FRONT = 8002, CROPPED_IMAGE_ADHAR_FRONT = 8003, CROPPED_IMAGE_ADHAR_BACK = 8004;
+    int optnal = 0;
     View view2, view3;
     int i = 0;
     Bitmap bitmapFromUrl, resizedBitmap;
     private String lattitude = "", longitude = "", currentAdress = "", permAddress = "";
     GPSTracker gps;
     String deliveryBoy = "";
+    String[] selectBloodGroupType = {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
     String[] selectVehicleType = {"Bike", "Cycle", "Truck"};
     LinearLayout llOwnerInfo, llAddressInfo, llDrivingDetails;
     Button btAddNext;
@@ -105,35 +140,68 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     private SessionManager sessionManager;
     EditText etCurrentHouseNo, etOtp, etCurrentStreet, etCurrentLandmark, etCurrentPincode, etCurrentCity, etCurrentState, etPerHouseNo, etPermStreet, etPerLandmark, etPerPincode, etPerCity, etPerState;
 
+    private String kyc_type = "3";
     String[] select_language = {
             "English", "Assamese", "Bengali", "Gujarati", "Hindi",
             "Kannada", "Kashmiri", "Konkani", "Malayalam", "Manipuri", "Marathi", "Nepali", "Oriya", "Punjabi", "Sanskrit", "Sindhi", "Tamil", "Telugu", "Urdu", "Bodo", "Santhali", "Maithili", "Dogri"};
     ArrayList<String> listLanaguage = new ArrayList<>();
     boolean[] checkedItems;
-    private TextView tvLanguage, dob;
+    private TextView tvLanguage, tvLanguageAdhar, tvLanguage1, dob;
     private CheckBox cbSame;
     String stringdob = "";
     private String isUpdate = "";
     String otp = "", mobile_number = "";
     Datum datum;
     Button btGetOtp;
+    String kyc_old = "3";
+    private TextView tvLicenceIssueDate, tvLicenceValidDate;
+
     private String TAG = "akfdsbksbhdf";
-    Spinner spVehicleForDelivery;
+    Spinner spVehicleForDelivery, spBloodGroupType;
+    private TextView tvAdharFront, tvAdharBack, tvVoterFront, tvVoterBack, tvDlFront, tvDlBack, tvScan;
+    private EditText etAdharName, etDObAdhar, etAdharNumber, etVoterName, etVoterFatherName, etVoterDOB, etVoterIdNumber;
+    TextView tvAdharDOB, tvVoterDOB;
+    String VoteridDetailId, filename, fileUrl, backsideFileUrl, backsidefilename, dlIdDetailId;
+    private boolean isAadhaarFrontSelected = false;
+    private boolean isAadhaarBackSelected = false;
+    private RequestPermissionHandler requestPermissionHandler;
+
+    RadioGroup rg;
+    RadioGroup radioSexGroup;
+    private RadioButton radioSexButton;
+    boolean optional = false;
+    EditText etDexter;
+    RelativeLayout rvSelctVoterDOB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_delivery_boy);
 
-
+        requestPermissionHandler = new RequestPermissionHandler();
         datum = (Datum) getIntent().getSerializableExtra("data");
         str_process_id = String.valueOf(datum.getProccessId());
         deliveryBoy = String.valueOf(datum.getId());
+        if (!datum.getKyc_type().equalsIgnoreCase("")) {
+            kyc_old = datum.getKyc_type();
+        }
+
+
+        radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
 
         init();
     }
 
     private void init() {
+
+        rg = findViewById(R.id.rgMain);
+        llDrivingLicenceDetails = findViewById(R.id.llDrivingDetails);
+        llAadharDetails = findViewById(R.id.llAadharDetails);
+        llVoterDetails = findViewById(R.id.llVoterInfo);
+
+        rvSelctVoterDOB = findViewById(R.id.rvSelctVoterDOB);
+        rvSelctVoterDOB.setOnClickListener(this);
+
         dc = (Spinner) findViewById(R.id.dc);
         ivBack = findViewById(R.id.ivBack);
         ivBack.setOnClickListener(this);
@@ -150,11 +218,13 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         etName = findViewById(R.id.etName);
         etName.setText(datum.getName());
         view2 = findViewById(R.id.view2);
+        spBloodGroupType = findViewById(R.id.spBloodGroup);
         view3 = findViewById(R.id.view3);
         svMain = findViewById(R.id.svMain);
         etFatherName = findViewById(R.id.etFatherName);
         etFatherName.setText(datum.getFatherName());
         etPhoneNumber = findViewById(R.id.etPhone);
+        etDexter = findViewById(R.id.etDexter);
         etPhoneNumber.setText(datum.getPhoneNumber());
         // etPermanentAddress = findViewById(R.id.etPermAdd);
         etRoute = findViewById(R.id.etRouteNo);
@@ -164,6 +234,29 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         etOtp = findViewById(R.id.etOtp);
         dob = findViewById(R.id.tvDateofBirth);
         stringdob = datum.getDrivingLicenceDob();
+
+        tvLicenceIssueDate = findViewById(R.id.tvIssueDate);
+        tvLicenceIssueDate.setOnClickListener(this);
+        tvLicenceValidDate = findViewById(R.id.tvValidTilldate);
+        tvLicenceValidDate.setOnClickListener(this);
+
+        tvLicenceIssueDate.setText(datum.getDriving_licence_issue_date());
+        tvLicenceValidDate.setText(datum.getDriving_licence_till_date());
+
+        tvAdharDOB = findViewById(R.id.tvDOBAdhar);
+        tvAdharDOB.setOnClickListener(this);
+        tvVoterDOB = findViewById(R.id.tvDObVoter);
+        tvVoterDOB.setOnClickListener(this);
+
+
+        etAdharName = findViewById(R.id.etAdharName);
+        //etDObAdhar = findViewById(R.id.etDOBAdhar);
+        etAdharNumber = findViewById(R.id.etAdharNumber);
+        etVoterName = findViewById(R.id.etVotername);
+        //etVoterFatherName = findViewById(R.id.etVoterFathername);
+        //etVoterDOB = findViewById(R.id.etDateofBirthvoter);
+        etVoterIdNumber = findViewById(R.id.etVoterNumber);
+
 
         String outputDateStr = "";
         DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -180,6 +273,13 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         dob.setText(outputDateStr);
         dob.setOnClickListener(this);
         spVehicleForDelivery = findViewById(R.id.spVehicleForDelivery);
+
+        List<String> stringList = new ArrayList<String>(Arrays.asList(selectBloodGroupType));
+
+        CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(EditDeliveryBoyActivity.this, android.R.layout.simple_spinner_item, stringList);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spBloodGroupType.setAdapter(spinnerArrayAdapter);
+        spBloodGroupType.setSelection(0);
 
         ivProfile = findViewById(R.id.ivProfileImage);
 
@@ -221,7 +321,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         ivProfile.setOnClickListener(this);
         checkedItems = new boolean[select_language.length];
         tvLanguage = findViewById(R.id.tvLanguage);
-        tvLanguage.setText(datum.getLanguages());
+
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage("Please wait ...");
         mProgressDialog.setCancelable(false);
@@ -330,6 +430,144 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         }
 
 
+        tvAdharFront = findViewById(R.id.tvAdharFront);
+        tvAdharBack = findViewById(R.id.tvAdharBack);
+        ivAdharFrontSelected = findViewById(R.id.ivCheckAdharSelected);
+        ivAdharFrontSelected.setOnClickListener(this);
+        ivAdharABackSelected = findViewById(R.id.ivCheckAdharBackSelected);
+        ivAdharABackSelected.setOnClickListener(this);
+        ivAdharImageBack = findViewById(R.id.ivImageAdharBack);
+        ivAdharIamgeFront = findViewById(R.id.ivImageAdharFront);
+        tvScan = findViewById(R.id.tvScan);
+        tvScan.setOnClickListener(this);
+
+        tvAdharBack.setOnClickListener(this);
+        tvAdharFront.setOnClickListener(this);
+
+        tvVoterFront = findViewById(R.id.tvVoterFront);
+        tvVoterBack = findViewById(R.id.tvVoterBack);
+        ivVoterFrontSelected = findViewById(R.id.ivcheckedVoterFront);
+        ivVoterFrontSelected.setOnClickListener(this);
+        ivVoterBackSelected = findViewById(R.id.ivcheckedVoterBack);
+        ivVoterBackSelected.setOnClickListener(this);
+        ivVoterImageBack = findViewById(R.id.ivVoterBack);
+        ivVoterImageFront = findViewById(R.id.ivVoterFront);
+        tvVoterBack.setOnClickListener(this);
+        tvVoterFront.setOnClickListener(this);
+
+
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                RadioButton rb = (RadioButton) findViewById(checkedId);
+                if (rb.getId() == R.id.rbDriving) {
+                    kyc_type = "3";
+                    llDrivingLicenceDetails.setVisibility(View.VISIBLE);
+                    llAadharDetails.setVisibility(View.GONE);
+                    llVoterDetails.setVisibility(View.GONE);
+
+
+                    voterImagePathBack = "";
+                    ivVoterBackSelected.setVisibility(View.GONE);
+                    tvVoterBack.setVisibility(View.VISIBLE);
+                    Glide.with(EditDeliveryBoyActivity.this).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
+
+                    voterImagePathFront = "";
+                    ivVoterFrontSelected.setVisibility(View.GONE);
+                    tvVoterFront.setVisibility(View.VISIBLE);
+                    Glide.with(EditDeliveryBoyActivity.this).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
+
+                    etVoterName.setText("");
+                    tvVoterDOB.setText("Date of Birth");
+                    etVoterIdNumber.setText("");
+                    //tvLanguage1.setText("Select Language");
+
+
+                    aadharImagepathFront = "";
+                    ivAdharFrontSelected.setVisibility(View.GONE);
+                    tvAdharBack.setVisibility(View.VISIBLE);
+                    Glide.with(EditDeliveryBoyActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+
+                    aadharImagepathBack = "";
+                    ivAdharABackSelected.setVisibility(View.GONE);
+                    tvAdharBack.setVisibility(View.VISIBLE);
+                    Glide.with(EditDeliveryBoyActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                    etAdharName.setText("");
+                    etAdharNumber.setText("");
+                    //tvLanguageAdhar.setText("Select Language");
+                    tvAdharDOB.setText("Date of Birth");
+
+                }
+                if (rb.getId() == R.id.rbAdharCard) {
+                    llDrivingLicenceDetails.setVisibility(View.GONE);
+                    llAadharDetails.setVisibility(View.VISIBLE);
+                    llVoterDetails.setVisibility(View.GONE);
+                    kyc_type = "1";
+
+                    etDrivingNumber.setText("");
+                    tvLicenceIssueDate.setText("Licence issue date");
+                    tvLicenceValidDate.setText("Licence valid till date");
+                    // tvLanguage.setText("Select Language");
+                    dob.setText("Date of Birth");
+
+                    licenceImagePath = "";
+                    Glide.with(EditDeliveryBoyActivity.this).load(licenceImagePath).placeholder(R.drawable.blfront).into(ivDriving_Licence);
+
+                    voterImagePathBack = "";
+                    ivVoterBackSelected.setVisibility(View.GONE);
+                    tvVoterBack.setVisibility(View.VISIBLE);
+                    Glide.with(EditDeliveryBoyActivity.this).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
+
+
+                    voterImagePathFront = "";
+                    ivVoterFrontSelected.setVisibility(View.GONE);
+                    tvVoterFront.setVisibility(View.VISIBLE);
+                    Glide.with(EditDeliveryBoyActivity.this).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
+
+                    etVoterName.setText("");
+                    tvVoterDOB.setText("Date of Birth");
+                    etVoterIdNumber.setText("");
+                    //tvLanguage1.setText("Select Language");
+
+                }
+                if (rb.getId() == R.id.rbVoter) {
+                    llDrivingLicenceDetails.setVisibility(View.GONE);
+                    llAadharDetails.setVisibility(View.GONE);
+                    llVoterDetails.setVisibility(View.VISIBLE);
+                    kyc_type = "2";
+
+                    etDrivingNumber.setText("");
+                    tvLicenceIssueDate.setText("Licence issue date");
+                    tvLicenceValidDate.setText("Licence valid till date");
+                    //tvLanguage.setText("Select Language");
+                    dob.setText("Date of Birth");
+
+
+                    aadharImagepathFront = "";
+                    ivAdharFrontSelected.setVisibility(View.GONE);
+                    tvAdharBack.setVisibility(View.VISIBLE);
+                    Glide.with(EditDeliveryBoyActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+
+                    aadharImagepathBack = "";
+                    ivAdharABackSelected.setVisibility(View.GONE);
+                    tvAdharBack.setVisibility(View.VISIBLE);
+                    Glide.with(EditDeliveryBoyActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                    etAdharName.setText("");
+                    etAdharNumber.setText("");
+                    // tvLanguageAdhar.setText("Select Language");
+                    tvAdharDOB.setText("Date of Birth");
+
+                    licenceImagePath = "";
+                    Glide.with(EditDeliveryBoyActivity.this).load(licenceImagePath).placeholder(R.drawable.blfront).into(ivDriving_Licence);
+
+
+                }
+            }
+        });
+
+        tvLanguage.setText(datum.getLanguages());
+        etDexter.setText(datum.getDexter());
         //ApiCallGetDc();
     }
 
@@ -464,12 +702,468 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     }
 
 
+    private class getBitmapFromURLAdharFront extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                aadharImagepathFront = ImagePicker.getBitmapPath(myBitmap, EditDeliveryBoyActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
+
+    private class getBitmapFromURLAdharBack extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                aadharImagepathBack = ImagePicker.getBitmapPath(myBitmap, EditDeliveryBoyActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
+    private class getBitmapFromURLVoterFront extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                voterImagePathFront = ImagePicker.getBitmapPath(myBitmap, EditDeliveryBoyActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
+
+    private class getBitmapFromURLVoterBack extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                voterImagePathBack = ImagePicker.getBitmapPath(myBitmap, EditDeliveryBoyActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
+            case R.id.tvAdharFront:
+                capture_aadhar_front_and_back_image(1);
+                break;
+            case R.id.ivCheckAdharSelected:
+                capture_aadhar_front_and_back_image(1);
+                break;
+
+            case R.id.tvAdharBack: {
+                capture_aadhar_front_and_back_image(2);
+            }
+            break;
+
+
+            case R.id.tvVoterFront:
+                capture_aadhar_front_and_back_image(6);
+                break;
+            case R.id.ivcheckedVoterFront:
+                capture_aadhar_front_and_back_image(6);
+                break;
+
+            case R.id.ivcheckedVoterBack:
+                capture_aadhar_front_and_back_image(7);
+                break;
+
+            case R.id.tvVoterBack:
+                capture_aadhar_front_and_back_image(7);
+                break;
+
+            case R.id.ivCheckAdharBackSelected:
+                capture_aadhar_front_and_back_image(2);
+                break;
+
+            case R.id.tvScan:
+                if (isAadhaarBackSelected == true & isAadhaarFrontSelected == true) {
+
+                    capture_aadhar_front_and_back_image(3);
+                } else {
+                    Toast.makeText(EditDeliveryBoyActivity.this, "Please Upload Both Images First", Toast.LENGTH_LONG).show();
+                }
+
+                break;
+
+
             case R.id.ivProfileImage:
                 captureImage(1);
                 break;
+
+
+            /*case R.id.rvSelectLanguageAdhar:
+                AlertDialog.Builder mBuilder1 = new AlertDialog.Builder(this);
+                mBuilder1.setTitle("Select Languagaes");
+                mBuilder1.setMultiChoiceItems(select_language, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                        if (b) {
+                            listLanaguage.add(select_language[i]);
+                        } else {
+                            listLanaguage.remove(select_language[i]);
+                        }
+                    }
+                });
+                mBuilder1.setCancelable(false);
+                mBuilder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        String item = "";
+                        for (int i = 0; i < listLanaguage.size(); i++) {
+                            item = item + listLanaguage.get(i);
+                            if (i != listLanaguage.size() - 1) {
+                                item = item + ",";
+                            }
+                        }
+                        if (listLanaguage.size() == 0) {
+                            tvLanguageAdhar.setText("Select Language");
+                        } else {
+                            tvLanguageAdhar.setText(item);
+                        }
+                    }
+                });
+                AlertDialog mDialog1 = mBuilder1.create();
+                mDialog1.show();
+
+                break;
+
+
+            case R.id.rvSelectLanguage1:
+                AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(this);
+                mBuilder2.setTitle("Select Languagaes");
+                mBuilder2.setMultiChoiceItems(select_language, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
+                        if (b) {
+                            listLanaguage.add(select_language[i]);
+                        } else {
+                            listLanaguage.remove(select_language[i]);
+                        }
+                    }
+                });
+                mBuilder2.setCancelable(false);
+                mBuilder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        String item = "";
+                        for (int i = 0; i < listLanaguage.size(); i++) {
+                            item = item + listLanaguage.get(i);
+                            if (i != listLanaguage.size() - 1) {
+                                item = item + ",";
+                            }
+                        }
+                        if (listLanaguage.size() == 0) {
+                            tvLanguage1.setText("Select Language");
+                        } else {
+                            tvLanguage1.setText(item);
+                        }
+                    }
+                });
+                AlertDialog mDialog2 = mBuilder2.create();
+                mDialog2.show();
+
+                break;*/
+
+
+            case R.id.tvDateofBirth:
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+                Date today = new Date();
+                Calendar c1 = Calendar.getInstance();
+                c.setTime(today);
+                c.add(Calendar.YEAR, -18); // Subtract 18 year
+                long minDate = c.getTime().getTime(); //
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+
+                                String monthString = String.valueOf(monthOfYear + 1);
+                                if (monthString.length() == 1) {
+                                    monthString = "0" + monthString;
+                                }
+
+
+                                //logic for add 0 in string if date digit is on 1 only
+                                String daysString = String.valueOf(dayOfMonth);
+                                if (daysString.length() == 1) {
+                                    daysString = "0" + daysString;
+                                }
+                                stringDob = year + "-" + monthString + "-" + daysString;
+                                dob.setText(daysString + "-" + monthString + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMaxDate(minDate);
+                datePickerDialog.show();
+
+                break;
+
+
+            case R.id.tvDOBAdhar:
+                final Calendar c4 = Calendar.getInstance();
+                mYear = c4.get(Calendar.YEAR);
+                mMonth = c4.get(Calendar.MONTH);
+                mDay = c4.get(Calendar.DAY_OF_MONTH);
+
+                Date todayAdhar = new Date();
+                Calendar c5 = Calendar.getInstance();
+                c4.setTime(todayAdhar);
+                c4.add(Calendar.YEAR, -18); // Subtract 18 year
+                long minDateAdhar = c4.getTime().getTime(); //
+                DatePickerDialog datePickerDialogAdhar = new DatePickerDialog(this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+
+                                String monthString = String.valueOf(monthOfYear + 1);
+                                if (monthString.length() == 1) {
+                                    monthString = "0" + monthString;
+                                }
+
+
+                                //logic for add 0 in string if date digit is on 1 only
+                                String daysString = String.valueOf(dayOfMonth);
+                                if (daysString.length() == 1) {
+                                    daysString = "0" + daysString;
+                                }
+                                stringDob = year + "-" + monthString + "-" + daysString;
+                                tvAdharDOB.setText(daysString + "-" + monthString + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialogAdhar.getDatePicker().setMaxDate(minDateAdhar);
+                datePickerDialogAdhar.show();
+
+                break;
+
+
+            case R.id.tvDObVoter:
+                final Calendar c6 = Calendar.getInstance();
+                mYear = c6.get(Calendar.YEAR);
+                mMonth = c6.get(Calendar.MONTH);
+                mDay = c6.get(Calendar.DAY_OF_MONTH);
+
+                Date todayVoter = new Date();
+                Calendar c7 = Calendar.getInstance();
+                c6.setTime(todayVoter);
+                c6.add(Calendar.YEAR, -18); // Subtract 18 year
+                long minDateVoter = c6.getTime().getTime(); //
+                DatePickerDialog datePickerDialogVoter = new DatePickerDialog(this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+
+                                String monthString = String.valueOf(monthOfYear + 1);
+                                if (monthString.length() == 1) {
+                                    monthString = "0" + monthString;
+                                }
+
+
+                                //logic for add 0 in string if date digit is on 1 only
+                                String daysString = String.valueOf(dayOfMonth);
+                                if (daysString.length() == 1) {
+                                    daysString = "0" + daysString;
+                                }
+                                stringDob = year + "-" + monthString + "-" + daysString;
+                                tvVoterDOB.setText(daysString + "-" + monthString + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialogVoter.getDatePicker().setMaxDate(minDateVoter);
+                datePickerDialogVoter.show();
+
+                break;
+
+
+            case R.id.rvSelctVoterDOB:
+                final Calendar c9 = Calendar.getInstance();
+                mYear = c9.get(Calendar.YEAR);
+                mMonth = c9.get(Calendar.MONTH);
+                mDay = c9.get(Calendar.DAY_OF_MONTH);
+
+                Date today9 = new Date();
+                Calendar c10 = Calendar.getInstance();
+                c9.setTime(today9);
+                c9.add(Calendar.YEAR, -18); // Subtract 18 year
+                long minDateVoter10 = c9.getTime().getTime(); //
+                DatePickerDialog datePickerDialogVoter10 = new DatePickerDialog(this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+
+                                String monthString = String.valueOf(monthOfYear + 1);
+                                if (monthString.length() == 1) {
+                                    monthString = "0" + monthString;
+                                }
+
+
+                                //logic for add 0 in string if date digit is on 1 only
+                                String daysString = String.valueOf(dayOfMonth);
+                                if (daysString.length() == 1) {
+                                    daysString = "0" + daysString;
+                                }
+                                stringDob = year + "-" + monthString + "-" + daysString;
+                                tvVoterDOB.setText(daysString + "-" + monthString + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialogVoter10.getDatePicker().setMaxDate(minDateVoter10);
+                datePickerDialogVoter10.show();
+
+                break;
+
+
+            case R.id.tvIssueDate:
+                final Calendar cIssue = Calendar.getInstance();
+                mYear = cIssue.get(Calendar.YEAR);
+                mMonth = cIssue.get(Calendar.MONTH);
+                mDay = cIssue.get(Calendar.DAY_OF_MONTH);
+
+                Date todayIssue = new Date();
+                Calendar c1Issue = Calendar.getInstance();
+                cIssue.setTime(todayIssue);
+                // cIssue.add(Calendar.YEAR, -); // Subtract 18 year
+                long minDateIssue = cIssue.getTime().getTime(); //
+                DatePickerDialog datePickerDialogIssue = new DatePickerDialog(this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+
+                                String monthString = String.valueOf(monthOfYear + 1);
+                                if (monthString.length() == 1) {
+                                    monthString = "0" + monthString;
+                                }
+
+
+                                //logic for add 0 in string if date digit is on 1 only
+                                String daysString = String.valueOf(dayOfMonth);
+                                if (daysString.length() == 1) {
+                                    daysString = "0" + daysString;
+                                }
+                                stringDob = year + "-" + monthString + "-" + daysString;
+                                tvLicenceIssueDate.setText(daysString + "-" + monthString + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialogIssue.getDatePicker().setMaxDate(minDateIssue);
+                datePickerDialogIssue.show();
+
+                break;
+
+            case R.id.tvValidTilldate:
+                final Calendar cValid = Calendar.getInstance();
+                mYear = cValid.get(Calendar.YEAR);
+                mMonth = cValid.get(Calendar.MONTH);
+                mDay = cValid.get(Calendar.DAY_OF_MONTH);
+
+                Date todayValid = new Date();
+                Calendar c1Valid = Calendar.getInstance();
+                //cValid.setTime(todayValid);
+                // cIssue.add(Calendar.YEAR, -); // Subtract 18 year
+                //long minDateValid = cValid.getTime().getTime(); //
+                DatePickerDialog datePickerDialogValid = new DatePickerDialog(this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+
+                                String monthString = String.valueOf(monthOfYear + 1);
+                                if (monthString.length() == 1) {
+                                    monthString = "0" + monthString;
+                                }
+
+
+                                //logic for add 0 in string if date digit is on 1 only
+                                String daysString = String.valueOf(dayOfMonth);
+                                if (daysString.length() == 1) {
+                                    daysString = "0" + daysString;
+                                }
+                                stringDob = year + "-" + monthString + "-" + daysString;
+                                tvLicenceValidDate.setText(daysString + "-" + monthString + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialogValid.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                datePickerDialogValid.show();
+
+                break;
+
+
             case R.id.ivDrivingLicence:
                 captureImage(2);
                 break;
@@ -510,45 +1204,6 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
                 break;
 
-            case R.id.tvDateofBirth:
-                final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
-
-                Date today = new Date();
-                Calendar c1 = Calendar.getInstance();
-                c.setTime(today);
-                c.add(Calendar.YEAR, -18); // Subtract 18 year
-                long minDate = c.getTime().getTime(); //
-                DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                        new DatePickerDialog.OnDateSetListener() {
-
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-
-
-                                String monthString = String.valueOf(monthOfYear + 1);
-                                if (monthString.length() == 1) {
-                                    monthString = "0" + monthString;
-                                }
-
-
-                                //logic for add 0 in string if date digit is on 1 only
-                                String daysString = String.valueOf(dayOfMonth);
-                                if (daysString.length() == 1) {
-                                    daysString = "0" + daysString;
-                                }
-                                stringdob = year + "-" + monthString + "-" + daysString;
-                                dob.setText(daysString + "-" + monthString + "-" + year);
-                            }
-                        }, mYear, mMonth, mDay);
-                datePickerDialog.getDatePicker().setMaxDate(minDate);
-                datePickerDialog.show();
-
-                break;
-
 
             case R.id.ivBack:
                 finish();
@@ -580,6 +1235,8 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
                     }
                 } else {
+
+
                     if (validation(3)) {
                         ApiCallSubmit();
                     }
@@ -589,6 +1246,64 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         }
 
     }
+
+
+    private void capture_aadhar_front_and_back_image(int imageSide) {
+        requestPermissionHandler.requestPermission(this, new String[]{
+                Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION
+        }, 123, new RequestPermissionHandler.RequestPermissionListener() {
+            @Override
+            public void onSuccess() {
+
+                if (imageSide == 1) {
+                    IMAGE_SELCTION_CODE = IMAGE_AADHAR_FRONT;
+                    Intent intent1 = ImagePicker.getCameraIntent(EditDeliveryBoyActivity.this);
+                    startActivityForResult(intent1, IMAGE_AADHAR_FRONT);
+
+                }
+                if (imageSide == 2) {
+
+                    IMAGE_SELCTION_CODE = IMAGE_AADHAR_BACK;
+
+                    Intent intent2 = ImagePicker.getCameraIntent(EditDeliveryBoyActivity.this);
+                    startActivityForResult(intent2, IMAGE_AADHAR_BACK);
+                }
+
+                if (imageSide == 3) {
+
+                    Intent intent3 = new Intent(EditDeliveryBoyActivity.this, ScannerActivity.class);
+                    startActivityForResult(intent3, REQUEST_SCANNER);
+                }
+
+
+                if (imageSide == 6) {
+
+                    IMAGE_SELCTION_CODE = IMAGE_VOTER_FRONT;
+
+                    Intent intent6 = ImagePicker.getCameraIntent(EditDeliveryBoyActivity.this);
+                    startActivityForResult(intent6, IMAGE_VOTER_FRONT);
+                }
+
+                if (imageSide == 7) {
+
+                    IMAGE_SELCTION_CODE = IMAGE_VOTER_BACK;
+                    Intent intent7 = ImagePicker.getCameraIntent(EditDeliveryBoyActivity.this);
+                    startActivityForResult(intent7, IMAGE_VOTER_BACK);
+                }
+
+
+            }
+
+            @Override
+            public void onFailed() {
+                Toast.makeText(EditDeliveryBoyActivity.this, "request permission failed", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+
 
     private boolean validation(int i) {
         if (i == 1) {
@@ -617,12 +1332,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                 //showMSG(false, "Provide Store address");
                 return false;
             }
-            if (TextUtils.isEmpty(etRoute.getText().toString())) {
-                etRoute.requestFocus();
-                etRoute.setError("Provide Route");
-                // showMSG(false, "Provide Pincode");
-                return false;
-            }
+
 
             if (!etPhoneNumber.getText().toString().equalsIgnoreCase(datum.getPhoneNumber())) {
                 if (TextUtils.isEmpty(etOtp.getText().toString())) {
@@ -649,6 +1359,11 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                 etPhoneNumber.requestFocus();
                 etPhoneNumber.setError("Provide Valid number");
                 //showMSG(false, "Provide Store address");
+                return false;
+            }
+            if (tvLanguage.getText().toString().equalsIgnoreCase("Select Language")) {
+                Toast.makeText(this, "Please Select Language", Toast.LENGTH_SHORT).show();
+                // showMSG(false, "Provide Pincode");
                 return false;
             }
         } else if (i == 2) {
@@ -738,19 +1453,24 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                 // showMSG(false, "Provide Pincode");
                 return false;
             }
+            if (!optional) {
+
+                if (TextUtils.isEmpty(etRoute.getText().toString())) {
+                    etRoute.requestFocus();
+                    etRoute.setError("Provide Route");
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
+            }
+
 
         }
         if (i == 3) {
 
 
-            if (tvLanguage.getText().equals("Select Language")) {
-                Toast.makeText(this, "Please Select Language", Toast.LENGTH_SHORT).show();
-                // showMSG(false, "Provide Pincode");
-                return false;
-            }
+            if (kyc_type.equalsIgnoreCase("3")) {
 
 
-            if (!spVehicleForDelivery.getSelectedItem().toString().equalsIgnoreCase("Cycle")) {
                 if (licenceImagePath.equals("")) {
                     Toast.makeText(this, "Please Select Licence Image", Toast.LENGTH_SHORT).show();
                     return false;
@@ -761,11 +1481,96 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                     // showMSG(false, "Provide Pincode");
                     return false;
                 }
-            }
-            if (dob.getText().equals("Date of Birth")) {
-                Toast.makeText(this, "Provide Date of Birth", Toast.LENGTH_SHORT).show();
-                // showMSG(false, "Provide Pincode");
-                return false;
+                if (tvLicenceIssueDate.getText().equals("Licence issue date") || tvLicenceIssueDate.getText().equals("")) {
+                    Toast.makeText(this, "Please Select Licence issue date", Toast.LENGTH_SHORT).show();
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
+                if (tvLicenceValidDate.getText().equals("Licence valid till date") || tvLicenceValidDate.getText().equals("")) {
+                    Toast.makeText(this, "Please Select valid till date", Toast.LENGTH_SHORT).show();
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
+
+
+                if (dob.getText().equals("Date of Birth") || dob.getText().equals("")) {
+                    Toast.makeText(this, "Provide Date of Birth", Toast.LENGTH_SHORT).show();
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
+            } else if (kyc_type.equalsIgnoreCase("1")) {
+
+                if (aadharImagepathFront.equals("")) {
+                    Toast.makeText(this, "Please upload Aadhar card front image", Toast.LENGTH_SHORT).show();
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
+                if (aadharImagepathBack.equals("")) {
+                    Toast.makeText(this, "Please upload Aadhar card back image", Toast.LENGTH_SHORT).show();
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
+
+                if (TextUtils.isEmpty(etAdharName.getText().toString())) {
+                    etAdharName.requestFocus();
+                    etAdharName.setError("Please enter Aadhar name");
+
+                    return false;
+                }
+                if (TextUtils.isEmpty(etAdharNumber.getText().toString())) {
+                    etAdharNumber.requestFocus();
+                    etAdharNumber.setError("Please enter Aadhar number");
+
+                    return false;
+                }
+                if (tvAdharDOB.getText().equals("Date of Birth") || tvAdharDOB.getText().equals("")) {
+                    tvAdharDOB.requestFocus();
+                    tvAdharDOB.setError("Please enter date of birth");
+
+                    return false;
+                }
+
+                if (etAdharNumber.getText().length() < 12) {
+                    etAdharNumber.requestFocus();
+                    etAdharNumber.setError("Please enter valid Aadhar number");
+
+                    return false;
+                }
+
+
+            } else {
+                if (voterImagePathFront.equals("")) {
+                    Toast.makeText(this, "Please upload Voter Id front image", Toast.LENGTH_SHORT).show();
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
+                if (voterImagePathBack.equals("")) {
+                    Toast.makeText(this, "Please upload Voter Id back image", Toast.LENGTH_SHORT).show();
+                    // showMSG(false, "Provide Pincode");
+                    return false;
+                }
+
+                if (TextUtils.isEmpty(etVoterName.getText().toString())) {
+                    etVoterName.requestFocus();
+                    etVoterName.setError("Please enter Voter name");
+
+                    return false;
+                }
+
+                if (tvVoterDOB.getText().equals("Date of Birth") || tvVoterDOB.getText().equals("")) {
+                    tvVoterDOB.requestFocus();
+                    tvVoterDOB.setError("Please enter date of birth");
+
+                    return false;
+
+                }
+                if (TextUtils.isEmpty(etVoterIdNumber.getText().toString())) {
+                    etVoterIdNumber.requestFocus();
+                    etVoterIdNumber.setError("Please enter voter id number");
+
+                    return false;
+                }
+
             }
         }
 
@@ -827,22 +1632,30 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         String image = "image";
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
 
 
         if (i1 == 1) {
+            int selectedId = radioSexGroup.getCheckedRadioButtonId();
+// find the radiobutton by returned id
+            radioSexButton = (RadioButton) findViewById(selectedId);
             File imagefile1 = new File(profileImagepath);
             prof_image = MultipartBody.Part.createFormData(image, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(profileImagepath)), imagefile1));
             params.put(Constants.NAME, etName.getText().toString().trim());
             params.put(Constants.PARAM_FATHER_NAME, etFatherName.getText().toString().trim());
             params.put(Constants.PHONE_NUMBER, etPhoneNumber.getText().toString().trim());
-            params.put(Constants.ROUTE_NUMBER, etRoute.getText().toString());
+            params.put(Constants.PARAM_GENDER, radioSexButton.getText().toString());
             params.put(Constants.PARAM_DELIVERY_BOY_ID, deliveryBoy);
+            params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
+            params.put(Constants.PARAM_BLOOD_GROUP, spBloodGroupType.getSelectedItem().toString());
             call = ApiClient.getClient().create(ApiInterface.class).DeliveryBoysDetailsValid1("Bearer " + sessionManager.getToken(), validationapiUrl, params, prof_image);
 
 
         } else if (i1 == 2) {
             params.put(Constants.PARAM_CURRENT_RESIDENTIAL, currentAdress);
+            params.put("is_dc_dexter_present", String.valueOf(optnal));
+            params.put("dexter", etDexter.getText().toString());
             params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
             params.put(Constants.PARAM_CURRENT_ADDRESS1, etCurrentStreet.getText().toString().trim());
             params.put(Constants.PARAM_CURRENT_ADDRESS_LANDMARK, etCurrentLandmark.getText().toString());
@@ -855,6 +1668,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
             params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_PINCODE, etPerPincode.getText().toString());
             params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_CITY, etPerCity.getText().toString());
             params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_STATE, etPerState.getText().toString());
+            params.put(Constants.ROUTE_NUMBER, etRoute.getText().toString());
             params.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
             call = ApiClient.getClient().create(ApiInterface.class).DeliveryBoysDetailsValid2("Bearer " + sessionManager.getToken(), validationapiUrl, params);
 
@@ -875,6 +1689,13 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                             llDrivingDetails.setVisibility(View.GONE);
                             view2.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             svMain.scrollTo(0, svMain.getBottom());
+                            if (addDelBoyResponse.getData().get(0).getIsDcDexterPresent() == 1) {
+                                optional = true;
+                                optnal = 1;
+                            } else {
+                                optional = false;
+                                optnal = 0;
+                            }
 
                         } else if (i1 == 2) {
                             llAddressInfo.setVisibility(View.GONE);
@@ -882,6 +1703,58 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                             llOwnerInfo.setVisibility(View.GONE);
                             view3.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                             svMain.scrollTo(0, svMain.getBottom());
+
+                            if (kyc_old.equalsIgnoreCase("1")) {
+                                kyc_type = kyc_old;
+                                rg.check(R.id.rbAdharCard);
+                                llDrivingLicenceDetails.setVisibility(View.GONE);
+                                llAadharDetails.setVisibility(View.VISIBLE);
+                                llVoterDetails.setVisibility(View.GONE);
+                                if (datum.getAadhaar_card_front() != null && !datum.getAadhaar_card_front().equalsIgnoreCase("")) {
+                                    new getBitmapFromURLAdharFront().execute(Constants.BaseImageURL + datum.getAadhaar_card_front());
+                                    Glide.with(EditDeliveryBoyActivity.this).load(Constants.BaseImageURL + datum.getAadhaar_card_front()).into(ivAdharIamgeFront);
+                                }
+                                if (datum.getAadhaar_card_back() != null && !datum.getAadhaar_card_back().equalsIgnoreCase("")) {
+                                    new getBitmapFromURLAdharBack().execute(Constants.BaseImageURL + datum.getAadhaar_card_back());
+                                    Glide.with(EditDeliveryBoyActivity.this).load(Constants.BaseImageURL + datum.getAadhaar_card_back()).into(ivAdharImageBack);
+                                }
+
+                                etAdharName.setText(datum.getAadhaar_name());
+                                etAdharNumber.setText(datum.getAadhaar_no());
+                                tvAdharDOB.setText(datum.getAadhaar_dob());
+
+
+                            } else if (kyc_old.equalsIgnoreCase("2")) {
+                                kyc_type = kyc_old;
+                                rg.check(R.id.rbVoter);
+                                llDrivingLicenceDetails.setVisibility(View.GONE);
+                                llAadharDetails.setVisibility(View.GONE);
+                                llVoterDetails.setVisibility(View.VISIBLE);
+                                if (datum.getVoter_front_image() != null && !datum.getVoter_front_image().equalsIgnoreCase("")) {
+
+                                    new getBitmapFromURLAdharFront().execute(Constants.BaseImageURL + datum.getVoter_front_image());
+
+                                    Glide.with(EditDeliveryBoyActivity.this).load(Constants.BaseImageURL + datum.getVoter_front_image()).into(ivVoterImageFront);
+
+                                }
+                                if (datum.getVoter_back_image() != null && !datum.getVoter_back_image().equalsIgnoreCase("")) {
+                                    new getBitmapFromURLAdharBack().execute(Constants.BaseImageURL + datum.getVoter_back_image());
+                                    Glide.with(EditDeliveryBoyActivity.this).load(Constants.BaseImageURL + datum.getVoter_back_image()).into(ivVoterImageBack);
+                                }
+                                etVoterName.setText(datum.getVoter_name());
+                                etVoterIdNumber.setText(datum.getVoterIdNum());
+                                tvVoterDOB.setText(datum.getVoter_dob());
+
+
+                            } else {
+                                kyc_type = kyc_old;
+                                rg.check(R.id.rbDriving);
+                                llDrivingLicenceDetails.setVisibility(View.VISIBLE);
+                                llAadharDetails.setVisibility(View.GONE);
+                                llVoterDetails.setVisibility(View.GONE);
+                            }
+
+
                         }
 
 
@@ -916,6 +1789,10 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                 if (validation.getCurrent_residential_address() != null && validation.getCurrent_residential_address().length() > 0) {
                                     etCurrentHouseNo.setError(validation.getCurrent_residential_address());
                                     etCurrentHouseNo.requestFocus();
+                                }
+
+                                if (validation.getBlood_group() != null && validation.getBlood_group().length() > 0) {
+                                    Toast.makeText(EditDeliveryBoyActivity.this, validation.getBlood_group(), Toast.LENGTH_SHORT).show();
                                 }
                                 if (validation.getPermanent_address() != null && validation.getPermanent_address().length() > 0) {
                                     //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
@@ -1099,6 +1976,8 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         }
         mProgressDialog.show();
         MultipartBody.Part prof_image = null;
+        MultipartBody.Part adhar_front_image = null, adhar_back_image = null, voter_front_image = null, voter_back_image = null;
+
         MultipartBody.Part license_image = null;
         String image = "image";
         String driving_licence = "driving_licence_image";
@@ -1119,6 +1998,10 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         params.put(Constants.PARAM_CURRENT_ADDRESS1, etCurrentStreet.getText().toString());
         params.put(Constants.PARAM_CURRENT_ADDRESS_LANDMARK, etCurrentLandmark.getText().toString());
         params.put(Constants.PARAM_CURRENT_ADDRESS_CITY, etCurrentCity.getText().toString());
+        params.put("is_dc_dexter_present", String.valueOf(optnal));
+        params.put(Constants.PARAM_KYC_TYPE, kyc_type);
+        params.put("dexter", etDexter.getText().toString());
+        params.put(Constants.PARAM_BLOOD_GROUP, spBloodGroupType.getSelectedItem().toString());
         params.put(Constants.PARAM_CURRENT_ADDRESS_STATE, etCurrentState.getText().toString());
         params.put(Constants.PARAM_CURRENT_ADDRESS_PINCODE, etCurrentPincode.getText().toString());
         params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS, etPerHouseNo.getText().toString());
@@ -1136,20 +2019,51 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         /*if(isUpdate.equalsIgnoreCase("1")){
             params.put(Constants.PARAM_IS_EDIT,"1");
         }*/
-        params.put(Constants.PARAM_DRIVING_LICENCE_NUM, etDrivingNumber.getText().toString().trim());
-        params.put(Constants.PARAM_DRIVING_LICENCE_DOB, stringdob);
         params.put(Constants.PARAM_DRIVING_LICENCE_VEHICLE, spVehicleForDelivery.getSelectedItem().toString());
         params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
         params.put(Constants.PARAM_LATITUDE, lattitude);
         params.put(Constants.PARAM_LONGITUDE, longitude);
 
-        if (!spVehicleForDelivery.getSelectedItem().toString().equalsIgnoreCase("Cycle")) {
+
+        if (kyc_type.equalsIgnoreCase("3")) {
+            params.put(Constants.PARAM_DRIVING_LICENCE_NUM, etDrivingNumber.getText().toString().trim());
+            params.put(Constants.PARAM_DRIVING_LICENCE_DOB, stringdob);
+
+            params.put(Constants.PARAM_DL_VALID_TILL_DATE, tvLicenceValidDate.getText().toString().trim());
+            params.put(Constants.PARAM_DL_ISSUE_DATE, tvLicenceIssueDate.getText().toString().trim());
             File imagefile2 = new File(licenceImagePath);
             license_image = MultipartBody.Part.createFormData(driving_licence, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(licenceImagePath)), imagefile2));
             callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image);
+        } else if (kyc_type.equalsIgnoreCase("1")) {
+
+            params.put(Constants.PARAM_AADHAR_NO, etAdharNumber.getText().toString().trim());
+            params.put(Constants.PARAM_AADHAR_DOB, tvAdharDOB.getText().toString());
+            // params.put(Constants.PARAM_LANGUAGES, tvLanguageAdhar.getText().toString().trim());
+            params.put(Constants.PARAM_AADHAR_NAME, etAdharName.getText().toString().trim());
+
+
+            File imagefile2 = new File(aadharImagepathFront);
+            adhar_front_image = MultipartBody.Part.createFormData("aadhaar_card_front", imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathFront)), imagefile2));
+
+            File imagefile3 = new File(aadharImagepathBack);
+            adhar_back_image = MultipartBody.Part.createFormData("aadhaar_card_back", imagefile3.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathBack)), imagefile3));
+
+            callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, adhar_front_image, adhar_back_image);
 
         } else {
-            callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image);
+
+            params.put(Constants.PARAM_VOTER_NO, etVoterIdNumber.getText().toString().trim());
+            params.put(Constants.PARAM_VOTER_NAME, etVoterName.getText().toString());
+            params.put(Constants.PARAM_VOTER_DOB, tvVoterDOB.getText().toString().trim());
+
+
+            File imagefile2 = new File(voterImagePathFront);
+            voter_front_image = MultipartBody.Part.createFormData("voter_front_image", imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathFront)), imagefile2));
+
+            File imagefile3 = new File(voterImagePathBack);
+            voter_back_image = MultipartBody.Part.createFormData("voter_back_image", imagefile3.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathBack)), imagefile3));
+
+            callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, voter_front_image, voter_back_image);
 
         }
 
@@ -1232,6 +2146,74 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                             }
                             if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
                                 //Toast.makeText(getActivity(),validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getLanguages(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            if (validation.getDriving_licence_issue_date() != null && validation.getDriving_licence_issue_date().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getDriving_licence_issue_date(), Toast.LENGTH_LONG).show();
+                            }
+
+                            if (validation.getDriving_licence_till_date() != null && validation.getDriving_licence_till_date().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getDriving_licence_till_date(), Toast.LENGTH_LONG).show();
+                            }
+
+
+                            if (validation.getAadhaar_card_front() != null && validation.getAadhaar_card_front().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getAadhaar_card_front(), Toast.LENGTH_LONG).show();
+                            }
+
+                            if (validation.getAadhaar_card_back() != null && validation.getAadhaar_card_back().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getAadhaar_card_back(), Toast.LENGTH_LONG).show();
+                            }
+
+                            if (validation.getAadhaar_name() != null && validation.getAadhaar_name().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getAadhaar_name(), Toast.LENGTH_LONG).show();
+                            }
+
+                            if (validation.getAadhaar_dob() != null && validation.getAadhaar_dob().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getAadhaar_dob(), Toast.LENGTH_LONG).show();
+                            }
+
+                            if (validation.getAadhaar_no() != null && validation.getAadhaar_no().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getAadhaar_no(), Toast.LENGTH_LONG).show();
+                            }
+
+                            if (validation.getVoter_front_image() != null && validation.getVoter_front_image().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getVoter_front_image(), Toast.LENGTH_LONG).show();
+                            }
+
+                            if (validation.getVoter_back_image() != null && validation.getVoter_back_image().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getVoter_back_image(), Toast.LENGTH_LONG).show();
+                            }
+
+                            if (validation.getVoter_name() != null && validation.getVoter_name().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getVoter_name(), Toast.LENGTH_LONG).show();
+                            }
+
+
+                            if (validation.getVoter_dob() != null && validation.getVoter_dob().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getVoter_dob(), Toast.LENGTH_LONG).show();
+                            }
+
+                            if (validation.getVoterIdNum() != null && validation.getVoterIdNum().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(EditDeliveryBoyActivity.this, validation.getVoterIdNum(), Toast.LENGTH_LONG).show();
+                            }
+
+
+                            if (validation.getLanguages() != null && validation.getLanguages().length() > 0) {
+                                //Toast.makeText(EditPanCardActivity,validation.getPanCardFront(),Toast.LENGTH_LONG).show();
                                 Toast.makeText(EditDeliveryBoyActivity.this, validation.getLanguages(), Toast.LENGTH_SHORT).show();
                             }
 
@@ -1458,6 +2440,183 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
+
+            if (requestCode == IMAGE_AADHAR_FRONT) {
+
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
+
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
+                Intent intent = new Intent(EditDeliveryBoyActivity.this, CropImage2Activity.class);
+                Log.e("datadata", imagecamera);
+                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
+
+
+            }
+            if (requestCode == CROPPED_IMAGE_ADHAR_FRONT) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                aadharImagepathFront = RealPathUtil.getPath(EditDeliveryBoyActivity.this, imgURI);
+                try {
+                    Glide.with(EditDeliveryBoyActivity.this).load(aadharImagepathFront).into(ivAdharIamgeFront);
+                    isAadhaarFrontSelected = true;
+                    ivAdharFrontSelected.setVisibility(View.VISIBLE);
+                    tvAdharFront.setVisibility(View.GONE);
+                    File casted_image = new File(imagecamera);
+                    if (casted_image.exists()) {
+                        casted_image.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (!aadharImagepathFront.equals("") && !aadharImagepathBack.equalsIgnoreCase("")) {
+                    //api OCR
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        ApiCallOCRAdhar();
+                    } else {
+                        Constants.ShowNoInternet(EditDeliveryBoyActivity.this);
+                    }
+                    //showEditDialog();
+                }
+
+
+            }
+            if (requestCode == IMAGE_AADHAR_BACK) {
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
+                Intent intent = new Intent(EditDeliveryBoyActivity.this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                startActivityForResult(intent, CROPPED_IMAGE_ADHAR_BACK);
+               /* File casted_image = new File(aadharImagepathFront);
+                if (casted_image.exists()) {
+                    casted_image.delete();
+                }
+*/
+            }
+
+            if (requestCode == CROPPED_IMAGE_ADHAR_BACK) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                aadharImagepathBack = RealPathUtil.getPath(EditDeliveryBoyActivity.this, imgURI);
+                try {
+                    Glide.with(EditDeliveryBoyActivity.this).load(aadharImagepathBack).into(ivAdharImageBack);
+                    isAadhaarBackSelected = true;
+                    tvAdharBack.setVisibility(View.GONE);
+                    ivAdharABackSelected.setVisibility(View.VISIBLE);
+                    File casted_image = new File(imagecamera);
+                    if (casted_image.exists()) {
+                        casted_image.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (!aadharImagepathFront.equals("") && !aadharImagepathBack.equalsIgnoreCase("")) {
+                    //api OCR
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        ApiCallOCRAdhar();
+                    } else {
+                        Constants.ShowNoInternet(EditDeliveryBoyActivity.this);
+                    }
+                    //showEditDialog();
+                }
+
+            }
+
+
+            if (requestCode == REQUEST_SCANNER && (data != null)) {
+                if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                    processScannedData(data.getStringExtra(Constants.CONTENT));
+                } else {
+                    Constants.ShowNoInternet(EditDeliveryBoyActivity.this);
+                }
+
+            }
+            if (requestCode == IMAGE_VOTER_FRONT) {
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
+                Intent intent = new Intent(EditDeliveryBoyActivity.this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                startActivityForResult(intent, CROPPED_IMAGE_VOTER_FRONT);
+
+            }
+            if (requestCode == CROPPED_IMAGE_VOTER_FRONT) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                voterImagePathFront = RealPathUtil.getPath(EditDeliveryBoyActivity.this, imgURI);
+
+                try {
+                    Glide.with(EditDeliveryBoyActivity.this).load(voterImagePathFront).into(ivVoterImageFront);
+                    ivVoterFrontSelected.setVisibility(View.VISIBLE);
+                    tvVoterFront.setVisibility(View.GONE);
+                    File casted_image = new File(imagecamera);
+                    if (casted_image.exists()) {
+                        casted_image.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (!voterImagePathFront.equals("") && !voterImagePathBack.equalsIgnoreCase("")) {
+
+                    try {
+                        Glide.with(EditDeliveryBoyActivity.this).load(voterImagePathBack).into(ivVoterImageBack);
+                        ivVoterBackSelected.setVisibility(View.VISIBLE);
+                        tvVoterBack.setVisibility(View.GONE);
+                        if (!voterImagePathFront.equals("") && !voterImagePathBack.equalsIgnoreCase("")) {
+                            ApiCallOCRVoter(voterImagePathFront, voterImagePathBack);
+                            // ApiCallSubmitOcr();
+                            // ApiCallSubmitKYC();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            if (requestCode == IMAGE_VOTER_BACK) {
+
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
+
+                Intent intent = new Intent(EditDeliveryBoyActivity.this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                startActivityForResult(intent, CROPPED_IMAGE_VOTER_BACK);
+
+            }
+            if (requestCode == CROPPED_IMAGE_VOTER_BACK) {
+
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                voterImagePathBack = RealPathUtil.getPath(EditDeliveryBoyActivity.this, imgURI);
+                try {
+                    Glide.with(EditDeliveryBoyActivity.this).load(voterImagePathBack).into(ivVoterImageBack);
+                    ivVoterBackSelected.setVisibility(View.VISIBLE);
+                    tvVoterBack.setVisibility(View.GONE);
+                    File casted_image = new File(imagecamera);
+                    if (casted_image.exists()) {
+                        casted_image.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (!voterImagePathFront.equals("") && !voterImagePathBack.equalsIgnoreCase("")) {
+
+                    try {
+                        Glide.with(EditDeliveryBoyActivity.this).load(voterImagePathBack).into(ivVoterImageBack);
+                        ivVoterBackSelected.setVisibility(View.VISIBLE);
+                        tvVoterBack.setVisibility(View.GONE);
+                        if (!voterImagePathFront.equals("") && !voterImagePathBack.equalsIgnoreCase("")) {
+                            ApiCallOCRVoter(voterImagePathFront, voterImagePathBack);
+                            // ApiCallSubmitOcr();
+                            // ApiCallSubmitKYC();
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+
             if (requestCode == LICENCEIMAGE) {
                 Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
@@ -1485,6 +2644,363 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
             }
         }
+    }
+
+
+    private void ApiCallOCRAdhar() {
+        mProgressDialog.setMessage("Please wait...");
+        mProgressDialog.show();
+        MultipartBody.Part attachment_adharFront = null;
+        MultipartBody.Part attachment_adharback = null;
+
+        Map<String, String> params = new HashMap<String, String>();
+
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+
+        File imagefile1 = new File(aadharImagepathFront);
+        attachment_adharFront = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathFront)), imagefile1));
+
+        File imagefile = new File(aadharImagepathBack);
+        attachment_adharback = MultipartBody.Part.createFormData(Constants.PARAM_BACKSIDE_IMAGE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(aadharImagepathBack)), imagefile));
+
+
+        List<MultipartBody.Part> imagepart = new ArrayList<>();
+        imagepart.add(attachment_adharFront);
+        imagepart.add(attachment_adharback);
+
+        Call<AdharOCRResponse> call = ApiClient.getClient2().create(ApiInterface.class).adharOcr("Bearer " + sessionManager.getToken(), params, imagepart);
+        call.enqueue(new Callback<AdharOCRResponse>() {
+            @Override
+            public void onResponse(Call<AdharOCRResponse> call, Response<AdharOCRResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    AdharOCRResponse adharOCRResponse = response.body();
+                    if (!adharOCRResponse.getIsFrontOk() && adharOCRResponse.getIsBackOk()) {
+                        aadharImagepathFront = "";
+                        ivAdharFrontSelected.setVisibility(View.GONE);
+                        tvAdharFront.setVisibility(View.VISIBLE);
+                        Glide.with(EditDeliveryBoyActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+                        Toast.makeText(EditDeliveryBoyActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
+                    } else if (!adharOCRResponse.getIsBackOk() && adharOCRResponse.getIsFrontOk()) {
+                        aadharImagepathBack = "";
+                        ivAdharABackSelected.setVisibility(View.GONE);
+                        tvAdharBack.setVisibility(View.VISIBLE);
+                        Glide.with(EditDeliveryBoyActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                        Toast.makeText(EditDeliveryBoyActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
+                    } else if (adharOCRResponse.getIsFrontOk() && adharOCRResponse.getIsBackOk()) {
+                        //  showEditDialog(adharOCRResponse.getAadharCardDetail());
+                        etAdharName.setText(adharOCRResponse.getAadharCardDetail().getName());
+                        tvAdharDOB.setText(adharOCRResponse.getAadharCardDetail().getBirthDate());
+                        etAdharNumber.setText(adharOCRResponse.getAadharCardDetail().getAadharCardNumber());
+                    } else if (!adharOCRResponse.getIsFrontOk() && !adharOCRResponse.getIsBackOk()) {
+                        aadharImagepathFront = "";
+                        ivAdharFrontSelected.setVisibility(View.GONE);
+                        tvAdharFront.setVisibility(View.VISIBLE);
+                        Glide.with(EditDeliveryBoyActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+                        Toast.makeText(EditDeliveryBoyActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
+                        aadharImagepathBack = "";
+                        ivAdharABackSelected.setVisibility(View.GONE);
+                        tvAdharBack.setVisibility(View.VISIBLE);
+                        Glide.with(EditDeliveryBoyActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+
+                    } else {
+                        Toast.makeText(EditDeliveryBoyActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
+                    }
+
+                } else {
+                    Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode 2089 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AdharOCRResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode 2089 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+    protected void processScannedData(String scanData) {
+
+        if (scanData != null) {
+            scanData = scanData.replaceAll(Pattern.quote("</?xml version=\"1.0\" encoding=\"UTF-8\"?>"), "").trim();
+        }
+
+        Mylogger.getInstance().Logit(TAG, scanData);
+        XmlPullParserFactory pullParserFactory;
+        try {
+            pullParserFactory = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = pullParserFactory.newPullParser();
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            parser.setInput(new StringReader(scanData));
+            int eventType = parser.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+
+                if (eventType == XmlPullParser.START_DOCUMENT) {
+
+                } else if (eventType == XmlPullParser.START_TAG && DataAttributes.AADHAAR_DATA_TAG.equals(parser.getName())) {
+
+                   /* udi = parser.getAttributeValue(null, DataAttributes.AADHAR_UID_ATTR);
+                    name = parser.getAttributeValue(null, DataAttributes.AADHAR_NAME_ATTR);
+
+                    year = parser.getAttributeValue(null, DataAttributes.AADHAR_YOB_ATTR);
+                    pincode = parser.getAttributeValue(null, DataAttributes.AADHAR_PC_ATTR);*/
+
+
+                   /* sessionManager.saveData(Constants.KEY_UID, udi);
+                    sessionManager.saveData(Constants.KEY_AADHAR_NAME, name);
+                    sessionManager.saveData(Constants.KEY_YEAR, year);
+                    sessionManager.saveData(Constants.KEY_PINCODE, pincode);
+
+
+                    Mylogger.getInstance().Logit(TAG, "udi: " + udi);
+                    Mylogger.getInstance().Logit(TAG, "name: " + name);
+                    Mylogger.getInstance().Logit(TAG, "year: " + year);
+                    Mylogger.getInstance().Logit(TAG, "pincode: " + pincode);*/
+                } else if (eventType == XmlPullParser.END_TAG) {
+                } else if (eventType == XmlPullParser.TEXT) {
+                }
+                eventType = parser.next();
+            }
+
+        } catch (XmlPullParserException e) {
+            e.printStackTrace();
+            Mylogger.getInstance().Logit("XmlPullParserException", e.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            Mylogger.getInstance().Logit("IOException", e.toString());
+        } catch (SQLiteConstraintException e) {
+            Mylogger.getInstance().Logit("SQLiteConstraintException", e.toString());
+        }
+        /* if (kyc_type.equalsIgnoreCase("1")) {*/
+        if (!aadharImagepathFront.equals("") && !aadharImagepathBack.equalsIgnoreCase("")) {
+            //api OCR
+            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                ApiCallOCRAdhar();
+            } else {
+                Constants.ShowNoInternet(EditDeliveryBoyActivity.this);
+            }
+            //showEditDialog();
+        } else {
+            Toast.makeText(EditDeliveryBoyActivity.this, "Please upload Both Images.", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+
+    private void ApiCallOCRVoter(String voterImagePathFront, String voterImagePathBack) {
+
+
+        MultipartBody.Part voter_front_part = null;
+        MultipartBody.Part voter_back_part = null;
+
+        Mylogger.getInstance().Logit(TAG, "getUserInfo");
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+
+        File imagefile = new File(voterImagePathFront);
+        voter_front_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathFront)), imagefile));
+
+        File imagefile1 = new File(voterImagePathBack);
+        voter_back_part = MultipartBody.Part.createFormData(Constants.PARAM_BACKSIDE_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathBack)), imagefile));
+
+        Mylogger.getInstance().Logit(TAG, "getocUserInfo");
+        mProgressDialog.setMessage("we are retrieving information, please wait!");
+        mProgressDialog.show();
+        //hideKeyboardwithoutPopulateFragment();
+
+        Call<VoterOCRGetDetaisResponse> call = ApiClient.getClient2().create(ApiInterface.class).getVoterIdOCR(params, voter_front_part, voter_back_part);
+        call.enqueue(new Callback<VoterOCRGetDetaisResponse>() {
+            @Override
+            public void onResponse(Call<VoterOCRGetDetaisResponse> call, Response<VoterOCRGetDetaisResponse> response) {
+                String voterDetailsId, fileUrl, filename;
+                mProgressDialog.dismiss();
+                try {
+                    if (response.isSuccessful()) {
+                        VoterOCRGetDetaisResponse voterOCRGetDetaisResponse = response.body();
+                        if (voterOCRGetDetaisResponse.getStatus().equalsIgnoreCase("success")) {
+                            voterDetailsId = String.valueOf(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdDetailId());
+                            filename = voterOCRGetDetaisResponse.getVoterIdDetail().getFileName();
+                            fileUrl = voterOCRGetDetaisResponse.getVoterIdDetail().getFileUrl();
+                            String outputDateStr = "";
+
+                            DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                            if (!voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate().equalsIgnoreCase("")) {
+                                Date date = inputFormat.parse(voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate());
+                                outputDateStr = outputFormat.format(date);
+
+                            }
+
+                            tvVoterDOB.setText(outputDateStr);
+                            etVoterName.setText(voterOCRGetDetaisResponse.getVoterIdDetail().getName());
+                            //etVoterFatherName.setText(voterOCRGetDetaisResponse.getVoterIdDetail().);
+                            etVoterIdNumber.setText(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber());
+
+                            ApiCallSubmitOcr(voterOCRGetDetaisResponse.getVoterIdDetail().getName(), "", tvVoterDOB.getText().toString(), etVoterIdNumber.getText().toString(), voterDetailsId, filename, fileUrl);
+
+                           /* DialogUtil.VoterDetail(EditDeliveryBoyActivity.this, voterOCRGetDetaisResponse.getVoterIdDetail().getName(), voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber(), voterOCRGetDetaisResponse.getVoterIdDetail().getFatherName(), outputDateStr, new DialogListner() {
+                                @Override
+                                public void onClickPositive() {
+
+                                }
+
+                                @Override
+                                public void onClickNegative() {
+
+                                }
+
+                                @Override
+                                public void onClickDetails(String name, String fathername, String dob, String id) {
+                                    ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
+                                    //  ApiCallSubmitKYC(name, fathername, dob, id);
+                                }
+
+                                @Override
+                                public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                }
+
+                                @Override
+                                public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                                }
+
+                            });*/
+
+
+                        } else {
+
+
+                           /* DialogUtil.VoterDetail(EditDeliveryBoyActivity.this, "", "", "", "", new DialogListner() {
+                                @Override
+                                public void onClickPositive() {
+
+                                }
+
+                                @Override
+                                public void onClickNegative() {
+
+                                }
+
+                                @Override
+                                public void onClickDetails(String name, String fathername, String dob, String id) {
+                                    ApiCallSubmitKYC(name, fathername, dob, id);
+                                }
+
+                                @Override
+                                public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                }
+
+                                @Override
+                                public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                                }
+
+                            });*/
+
+                            Toast.makeText(EditDeliveryBoyActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mProgressDialog.dismiss();
+                    Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                    //  Toast.makeText(EditDeliveryBoyActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<VoterOCRGetDetaisResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //   Toast.makeText(EditDeliveryBoyActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+
+    private void ApiCallSubmitOcr(String name, String fathername, String dob, String id, String detailsId, String filename, String fileUrl) {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        JSONObject jsonObject = new JSONObject();
+        if (kyc_type.equalsIgnoreCase("2")) {
+
+            try {
+                jsonObject.put(Constants.PARAM_VOTER_ID_DETAIL_ID, VoteridDetailId);
+                jsonObject.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+                jsonObject.put(Constants.PARAM_VOTER_ID_NUMBER, etVoterIdNumber.getText().toString());
+                jsonObject.put(Constants.PARAM_NAME, etVoterName.getText().toString());
+                jsonObject.put(Constants.PARAM_FATHER_NAME, etFatherName.getText().toString());
+                jsonObject.put(Constants.PARAM_BIRTH_DATE, tvVoterDOB.getText().toString());
+                jsonObject.put(Constants.PARAM_FILE_NAME, filename);
+                jsonObject.put(Constants.PARAM_FILE_URL, fileUrl);
+                jsonObject.put(Constants.PARAM_BACKSIDE_FILE_NAME, backsidefilename);
+                jsonObject.put(Constants.PARAM_BACKSIDE_FILE_URL, backsideFileUrl);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("error", e.getLocalizedMessage());
+            }
+
+            params.put(Constants.PARAM_VOTERID_DETAIL, jsonObject.toString());
+
+        }
+        if (kyc_type.equalsIgnoreCase("3")) {
+
+            try {
+                jsonObject.put(Constants.PARAM_DL_DETAIL_ID, detailsId);
+                jsonObject.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+                jsonObject.put(Constants.PARAM_DRIVING_LICENCE_NUMBER, id);
+                jsonObject.put(Constants.PARAM_NAME, name);
+                jsonObject.put(Constants.PARAM_FATHER_NAME, fathername);
+                jsonObject.put(Constants.PARAM_BIRTH_DATE, dob);
+                jsonObject.put(Constants.PARAM_FILE_NAME, filename);
+                jsonObject.put(Constants.PARAM_FILE_URL, fileUrl);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("error", e.getLocalizedMessage());
+            }
+            params.put(Constants.PARAM_DRIVING_LICENCE_DETAIL, jsonObject.toString());
+
+        }
+
+
+        Call<ApiSubmitOCRPanVoterDlResponse> call = ApiClient.getClient2().create(ApiInterface.class).submitDlorVoter(params);
+        call.enqueue(new Callback<ApiSubmitOCRPanVoterDlResponse>() {
+            @Override
+            public void onResponse(Call<ApiSubmitOCRPanVoterDlResponse> call, Response<ApiSubmitOCRPanVoterDlResponse> response) {
+                try {
+                    if (response.isSuccessful()) {
+
+                    } else {
+                        Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                    //  Toast.makeText(EditDeliveryBoyActivity.this, " Contact administartor immediately", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiSubmitOCRPanVoterDlResponse> call, Throwable t) {
+                Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 
 

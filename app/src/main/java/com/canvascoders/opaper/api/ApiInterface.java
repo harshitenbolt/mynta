@@ -416,6 +416,11 @@ public interface ApiInterface {
     Call<AddDelBoyResponse> addDelBoys(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                        @Part MultipartBody.Part image, @Part MultipartBody.Part driving_licence);
 
+    @Multipart
+    @POST("delivery-boys-store")
+    Call<AddDelBoyResponse> addDelBoys(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                       @Part MultipartBody.Part image, @Part MultipartBody.Part frontImage,@Part MultipartBody.Part backImage);
+
 
     @Multipart
     @POST("delivery-boys-store")

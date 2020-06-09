@@ -1385,16 +1385,30 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 etEmail.requestFocus();
                 return false;
             }
+
+
             if (TextUtils.isEmpty(etStorename.getText().toString())) {
                 etStorename.requestFocus();
                 //showMSG(false, "Provide Store name");
                 etStorename.setError("Provide store name");
                 return false;
             }
+            if (!isFirstnameValid(etStorename.getText().toString())) {
+                etStorename.requestFocus();
+                //showMSG(false, "Provide Store name");
+                etStorename.setError("Provide valid store name");
+                return false;
+            }
             if (TextUtils.isEmpty(etOwnerName.getText().toString())) {
                 etOwnerName.requestFocus();
                 etOwnerName.setError("Provide Owner Name");
                 // showMSG(false, "Provide Pincode");
+                return false;
+            }
+            if (!isFirstnameValid(etOwnerName.getText().toString())) {
+                etOwnerName.requestFocus();
+                //showMSG(false, "Provide Store name");
+                etOwnerName.setError("Provide valid owner name");
                 return false;
             }
             if (tvDOB.getText().equals("Date of Birth")) {
@@ -2142,6 +2156,12 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 CallMerekApi(data);
             }
         }*/
+    }
+
+
+    public boolean isFirstnameValid(String text) {
+
+        return text.matches("^([A-Za-z]+)(\\s[A-Za-z]+)*\\s?$");
     }
 
 
