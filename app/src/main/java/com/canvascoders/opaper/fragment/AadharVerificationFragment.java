@@ -555,7 +555,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                             ivVoterBackSelected.setVisibility(View.VISIBLE);
                             tvVoterBack.setVisibility(View.GONE);
                             if (!dlImageOathFront.equalsIgnoreCase("") && !dlImagePathBack.equalsIgnoreCase("")) {
-                                ApiCallGetDetailLicence(dlImageOathFront);
+                                ApiCallGetDetailLicence(dlImageOathFront,dlImagePathBack);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1114,10 +1114,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
     }
 
 
-    private void ApiCallGetDetailLicence(String drivingLicencePath) {
+    private void ApiCallGetDetailLicence(String drivingLicencePath,String drivinglicenceback) {
         // MultipartBody.Part voter_front_part = null;
         MultipartBody.Part driving_licence_part = null;
 
+        MultipartBody.Part dlPartBack = null;
         Mylogger.getInstance().Logit(TAG, "getUserInfo");
 
         Map<String, String> params = new HashMap<String, String>();
@@ -1130,11 +1131,16 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         File imagefile1 = new File(drivingLicencePath);
         driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
 
+        File imagefile2 = new File(drivinglicenceback);
+        dlPartBack = MultipartBody.Part.createFormData(Constants.PARAM_DL_BACK_IMAGE, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivinglicenceback)), imagefile2));
+
+
+
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
         mProgressDialog.setMessage("we are retrieving information, please wait!");
         mProgressDialog.show();
         hideKeyboardwithoutPopulateFragment();
-        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);
+        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part,dlPartBack);
         call.enqueue(new Callback<DrivingLicenceDetailResponse>() {
             @Override
             public void onResponse(Call<DrivingLicenceDetailResponse> call, Response<DrivingLicenceDetailResponse> response) {

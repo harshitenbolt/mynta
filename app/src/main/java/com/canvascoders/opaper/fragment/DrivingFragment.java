@@ -120,6 +120,7 @@ public class DrivingFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+/*
 
     private void ApiCallGetDetailLicence(String drivingLicencePath) {
         // MultipartBody.Part voter_front_part = null;
@@ -183,8 +184,10 @@ public class DrivingFragment extends Fragment implements View.OnClickListener {
 
                                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                         // getBankDetails(mContext,s.toString(),processId);
-                                        /*ApiCallSubmitOcr(name, fathername, dob, id, dlIdDetailId, filename, fileUrl);
-                                        ApiCallSubmitKYC(name, fathername, dob, id);*/
+                                        */
+/*ApiCallSubmitOcr(name, fathername, dob, id, dlIdDetailId, filename, fileUrl);
+                                        ApiCallSubmitKYC(name, fathername, dob, id);*//*
+
                                     } else {
                                         Constants.ShowNoInternet(getActivity());
                                     }
@@ -267,6 +270,7 @@ public class DrivingFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
+*/
 
     @Override
     public void onClick(View view) {

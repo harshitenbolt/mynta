@@ -232,7 +232,7 @@ public class ExecutiveVerifyOTPFragment extends Fragment implements View.OnClick
                     GetVerifyExecutiveResponse getVerifyExecutiveResponse = response.body();
                     if (getVerifyExecutiveResponse.getResponseCode() == 200) {
                         Toast.makeText(getActivity(), getVerifyExecutiveResponse.getResponse(), Toast.LENGTH_LONG).show();
-                        sessionManager.createLogin(sessionManager.getAgentID(), sessionManager.getToken(), sessionManager.getName(), sessionManager.getEmail(), "", sessionManager.getAgentID(), mobileNumnber, "", "1");
+                        sessionManager.createLogin(sessionManager.getAgentID(), sessionManager.getToken(), sessionManager.getName(), sessionManager.getEmail(), "", sessionManager.getAgentID(), mobileNumnber, ""/*, "1"*/);
                         Intent i = new Intent(getActivity(), DashboardActivity.class);
                         startActivity(i);
                         getActivity().finish();

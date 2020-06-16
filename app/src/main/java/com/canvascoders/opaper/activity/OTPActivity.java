@@ -276,7 +276,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
                         chqCount = mobileResponse.getData().get(0).getBank();
 
 
-                        goTOScreen(mobileResponse.getData().get(0).getScreen(), String.valueOf(mobileResponse.getPanmatchedkiranaprocessId()));
+                        goTOScreen(mobileResponse.getData().get(0).getScreen(), mobileResponse.getPanmatchedkiranaprocessId());
                     } else if (mobileResponse.getResponseCode() == 411) {
                         sessionManager.logoutUser(OTPActivity.this);
                     } else {
@@ -301,7 +301,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
         });
     }
 
-    private void goTOScreen(Integer screenID, String processID) {
+    private void goTOScreen(Integer screenID, int processID) {
         Integer screen = screenID;
 
         Log.e("Screen id", String.valueOf(screen));
@@ -855,11 +855,11 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
-    public void commanFragmentCallWithoutBackStackCheque(Fragment fragment, String processID) {
+    public void commanFragmentCallWithoutBackStackCheque(Fragment fragment, int processID) {
 
         Fragment cFragment = fragment;
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.PARAM_pan_matched_kiran_proccess_id, processID);
+        bundle.putInt(Constants.PARAM_pan_matched_kiran_proccess_id, processID);
 
         if (cFragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();

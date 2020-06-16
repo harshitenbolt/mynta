@@ -104,9 +104,9 @@ import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI
 public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etName, etFatherName, etPhoneNumber, etRoute, etDrivingNumber;
-    private ImageView ivProfile, ivDriving_Licence, ivBack;
-    private String profileImagepath = "", licenceImagePath = "";
-    private int PROFILEIMAGE = 200, LICENCEIMAGE = 300;
+    private ImageView ivProfile, ivDriving_Licence, ivDrivingLicenceBack, ivBack;
+    private String profileImagepath = "", licenceImagePath = "", licenceImagePathBack = "";
+    private int PROFILEIMAGE = 200, LICENCEIMAGE = 300, LICENCEIMAGEBACK = 400;
     private int mYear, mMonth, mDay, mHour, mMinute;
     private Button addDelBoy;
     private RelativeLayout rvLanguage, rvLanguageAdhar, rvLanguage1;
@@ -172,7 +172,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     boolean optional = false;
     EditText etDexter;
 
-    RelativeLayout rvSelctVoterDOB;
+    RelativeLayout rvSelctVoterDOB, rvSelctAdharDOB;
 
 
     @Override
@@ -210,6 +210,8 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
        */
 
         rvSelctVoterDOB = findViewById(R.id.rvSelctVoterDOB);
+        rvSelctAdharDOB = findViewById(R.id.rvSelctAdharDOB);
+        rvSelctAdharDOB.setOnClickListener(this);
         rvSelctVoterDOB.setOnClickListener(this);
         etName = findViewById(R.id.etName);
         view2 = findViewById(R.id.view2);
@@ -238,6 +240,8 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         spBloodGroupType = findViewById(R.id.spBloodGroup);
         ivProfile = findViewById(R.id.ivProfileImage);
         ivDriving_Licence = findViewById(R.id.ivDrivingLicence);
+        ivDrivingLicenceBack = findViewById(R.id.ivDrivingLicenceBack);
+        ivDrivingLicenceBack.setOnClickListener(this);
         ivDriving_Licence.setOnClickListener(this);
         rvLanguage = findViewById(R.id.rvSelectLanguage);
         rvLanguage.setOnClickListener(this);
@@ -314,6 +318,33 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                     if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                         // getBankDetails(mContext,s.toString(),processId);
                         addDC(s.toString());
+                    } else {
+                        Constants.ShowNoInternet(AddNewDeliveryBoy.this);
+                    }
+                    //addDC(s.toString());
+                }
+            }
+        });
+
+
+        etPerPincode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 6) {
+
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        // getBankDetails(mContext,s.toString(),processId);
+                        addDC1(s.toString());
                     } else {
                         Constants.ShowNoInternet(AddNewDeliveryBoy.this);
                     }
@@ -434,7 +465,8 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                     llAadharDetails.setVisibility(View.VISIBLE);
                     llVoterDetails.setVisibility(View.GONE);
                     kyc_type = "1";
-
+                    ivAdharFrontSelected.setVisibility(View.GONE);
+                    tvAdharBack.setVisibility(View.VISIBLE);
                     etDrivingNumber.setText("");
                     tvLicenceIssueDate.setText("Licence issue date");
                     tvLicenceValidDate.setText("Licence valid till date");
@@ -442,6 +474,10 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
                     licenceImagePath = "";
                     Glide.with(AddNewDeliveryBoy.this).load(licenceImagePath).placeholder(R.drawable.blfront).into(ivDriving_Licence);
+
+                    licenceImagePathBack = "";
+                    Glide.with(AddNewDeliveryBoy.this).load(licenceImagePathBack).placeholder(R.drawable.blfront).into(ivDrivingLicenceBack);
+
 
                     voterImagePathBack = "";
                     ivVoterBackSelected.setVisibility(View.GONE);
@@ -489,6 +525,9 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
                     licenceImagePath = "";
                     Glide.with(AddNewDeliveryBoy.this).load(licenceImagePath).placeholder(R.drawable.blfront).into(ivDriving_Licence);
+
+                    licenceImagePathBack = "";
+                    Glide.with(AddNewDeliveryBoy.this).load(licenceImagePathBack).placeholder(R.drawable.blfront).into(ivDrivingLicenceBack);
 
 
                 }
@@ -651,7 +690,6 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                             }
                             etCurrentState.setText(getUserDetails.getData().get(i).getState());
                             etCurrentCity.setText(getUserDetails.getData().get(i).getCity());
-
                         }
 
                         CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(AddNewDeliveryBoy.this, android.R.layout.simple_spinner_item, dcLists);
@@ -680,6 +718,62 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         });
 
     }
+
+
+    private void addDC1(String pcode) {
+        // state is DC and DC is state
+
+        //dcLists.clear();
+        mProgressDialog.show();
+
+        JsonObject user = new JsonObject();
+        user.addProperty(Constants.PARAM_TOKEN, sessionManager.getToken());
+        user.addProperty(Constants.PARAM_PINCODE, pcode);
+        ApiClient.getClient().create(ApiInterface.class).getDC("Bearer " + sessionManager.getToken(), user).enqueue(new Callback<GetDC>() {
+            @Override
+            public void onResponse(Call<GetDC> call, Response<GetDC> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetDC getUserDetails = response.body();
+
+                    if (getUserDetails.getResponseCode() == 200) {
+
+                        for (int i = 0; i < getUserDetails.getData().size(); i++) {
+                           /* for (DC dc : getUserDetails.getData().get(i).getDc()) {
+                                dcLists.add(dc.getDc());
+                            }*/
+                            etPerState.setText(getUserDetails.getData().get(i).getState());
+                            etPerCity.setText(getUserDetails.getData().get(i).getCity());
+
+                        }
+
+                       /* CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(AddNewDeliveryBoy.this, android.R.layout.simple_spinner_item, dcLists);
+                        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        dc.setAdapter(spinnerArrayAdapter);
+                        dc.setSelection(0);*/
+
+                    } else if (getUserDetails.getResponseCode() == 405) {
+                        sessionManager.logoutUser(AddNewDeliveryBoy.this);
+                    } else {
+                        Toast.makeText(AddNewDeliveryBoy.this, getUserDetails.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(AddNewDeliveryBoy.this, "#errorcode :- 2032 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetDC> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(AddNewDeliveryBoy.this, "#errorcode :- 2032 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                //  Toast.makeText(AddNewDeliveryBoy.this, t.getMessage().toLowerCase(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -734,6 +828,10 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                 captureImage(2);
                 break;
 
+            case R.id.ivDrivingLicenceBack:
+                captureImage(3);
+                break;
+
             case R.id.rvSelectLanguage:
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(this);
                 mBuilder.setTitle("Select Languagaes");
@@ -769,80 +867,6 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                 mDialog.show();
 
                 break;
-
-
-           /* case R.id.rvSelectLanguageAdhar:
-                AlertDialog.Builder mBuilder1 = new AlertDialog.Builder(this);
-                mBuilder1.setTitle("Select Languagaes");
-                mBuilder1.setMultiChoiceItems(select_language, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                        if (b) {
-                            listLanaguage.add(select_language[i]);
-                        } else {
-                            listLanaguage.remove(select_language[i]);
-                        }
-                    }
-                });
-                mBuilder1.setCancelable(false);
-                mBuilder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        String item = "";
-                        for (int i = 0; i < listLanaguage.size(); i++) {
-                            item = item + listLanaguage.get(i);
-                            if (i != listLanaguage.size() - 1) {
-                                item = item + ",";
-                            }
-                        }
-                        if (listLanaguage.size() == 0) {
-                            tvLanguageAdhar.setText("Select Language");
-                        } else {
-                            tvLanguageAdhar.setText(item);
-                        }
-                    }
-                });
-                AlertDialog mDialog1 = mBuilder1.create();
-                mDialog1.show();
-
-                break;*/
-
-
-          /*  case R.id.rvSelectLanguage1:
-                AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(this);
-                mBuilder2.setTitle("Select Languagaes");
-                mBuilder2.setMultiChoiceItems(select_language, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                        if (b) {
-                            listLanaguage.add(select_language[i]);
-                        } else {
-                            listLanaguage.remove(select_language[i]);
-                        }
-                    }
-                });
-                mBuilder2.setCancelable(false);
-                mBuilder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        String item = "";
-                        for (int i = 0; i < listLanaguage.size(); i++) {
-                            item = item + listLanaguage.get(i);
-                            if (i != listLanaguage.size() - 1) {
-                                item = item + ",";
-                            }
-                        }
-                        if (listLanaguage.size() == 0) {
-                            tvLanguage1.setText("Select Language");
-                        } else {
-                            tvLanguage1.setText(item);
-                        }
-                    }
-                });
-                AlertDialog mDialog2 = mBuilder2.create();
-                mDialog2.show();
-
-                break;*/
 
 
             case R.id.tvDateofBirth:
@@ -882,7 +906,6 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                         }, mYear, mMonth, mDay);
                 datePickerDialog.getDatePicker().setMaxDate(minDate);
                 datePickerDialog.show();
-
                 break;
 
 
@@ -1009,6 +1032,47 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                 break;
 
 
+            case R.id.rvSelctAdharDOB:
+                final Calendar c15 = Calendar.getInstance();
+                mYear = c15.get(Calendar.YEAR);
+                mMonth = c15.get(Calendar.MONTH);
+                mDay = c15.get(Calendar.DAY_OF_MONTH);
+
+                Date today15 = new Date();
+                Calendar c16 = Calendar.getInstance();
+                c15.setTime(today15);
+                c15.add(Calendar.YEAR, -18); // Subtract 18 year
+                long minDateVoter15 = c15.getTime().getTime(); //
+                DatePickerDialog datePickerDialogVoter15 = new DatePickerDialog(this,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+
+                                String monthString = String.valueOf(monthOfYear + 1);
+                                if (monthString.length() == 1) {
+                                    monthString = "0" + monthString;
+                                }
+
+
+                                //logic for add 0 in string if date digit is on 1 only
+                                String daysString = String.valueOf(dayOfMonth);
+                                if (daysString.length() == 1) {
+                                    daysString = "0" + daysString;
+                                }
+                                stringDob = year + "-" + monthString + "-" + daysString;
+                                tvAdharDOB.setText(daysString + "-" + monthString + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialogVoter15.getDatePicker().setMaxDate(minDateVoter15);
+                datePickerDialogVoter15.show();
+
+                break;
+
+
             case R.id.tvIssueDate:
                 final Calendar cIssue = Calendar.getInstance();
                 mYear = cIssue.get(Calendar.YEAR);
@@ -1039,8 +1103,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                                 if (daysString.length() == 1) {
                                     daysString = "0" + daysString;
                                 }
-                                stringDob = year + "-" + monthString + "-" + daysString;
-                                tvLicenceIssueDate.setText(daysString + "-" + monthString + "-" + year);
+                                tvLicenceIssueDate.setText(year + "-" + monthString + "-" + daysString);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -1079,8 +1142,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                                 if (daysString.length() == 1) {
                                     daysString = "0" + daysString;
                                 }
-                                stringDob = year + "-" + monthString + "-" + daysString;
-                                tvLicenceValidDate.setText(daysString + "-" + monthString + "-" + year);
+                                tvLicenceValidDate.setText(year + "-" + monthString + "-" + daysString);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -1429,12 +1491,13 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         mProgressDialog.setMessage("Please wait... We are adding your delivery boy");
         mProgressDialog.show();
         MultipartBody.Part prof_image = null;
-        MultipartBody.Part license_image = null;
+        MultipartBody.Part license_image = null, license_imageBack = null;
         MultipartBody.Part adhar_front_image = null, adhar_back_image = null, voter_front_image = null, voter_back_image = null;
 
         String image = "image";
         String driving_licence = "driving_licence_image";
 
+        String driving_licenceback = "driving_licence_back_image";
 
         Map<String, String> params = new HashMap<String, String>();
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
@@ -1446,6 +1509,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
         params.put(Constants.PARAM_BLOOD_GROUP, spBloodGroupType.getSelectedItem().toString());
         params.put(Constants.PARAM_KYC_TYPE, kyc_type);
+        params.put(Constants.PARAM_GENDER, radioSexButton.getText().toString());
         params.put("is_dc_dexter_present", String.valueOf(optinal));
         params.put("dexter", etDexter.getText().toString());
         params.put(Constants.PARAM_CURRENT_ADDRESS, etCurrentHouseNo.getText().toString().trim());
@@ -1486,12 +1550,17 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             params.put(Constants.PARAM_DL_VALID_TILL_DATE, tvLicenceValidDate.getText().toString().trim());
             params.put(Constants.PARAM_DL_ISSUE_DATE, tvLicenceIssueDate.getText().toString().trim());
             File imagefile2 = new File(licenceImagePath);
+            File dlBackImage = new File(licenceImagePathBack);
+
+
             license_image = MultipartBody.Part.createFormData(driving_licence, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(licenceImagePath)), imagefile2));
-            callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image);
+            license_imageBack = MultipartBody.Part.createFormData(driving_licenceback, dlBackImage.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(licenceImagePathBack)), dlBackImage));
+
+            callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image, license_imageBack);
         } else if (kyc_type.equalsIgnoreCase("1")) {
 
             params.put(Constants.PARAM_AADHAR_NO, etAdharNumber.getText().toString().trim());
-            params.put(Constants.PARAM_AADHAR_DOB, tvAdharDOB.getText().toString());
+            params.put(Constants.PARAM_AADHAR_DOB, stringDob);
             params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
             params.put(Constants.PARAM_AADHAR_NAME, etAdharName.getText().toString().trim());
 
@@ -1509,7 +1578,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             params.put(Constants.PARAM_VOTER_NO, etVoterIdNumber.getText().toString().trim());
             params.put(Constants.PARAM_VOTER_NAME, etVoterName.getText().toString());
             params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
-            params.put(Constants.PARAM_VOTER_DOB, tvVoterDOB.getText().toString().trim());
+            params.put(Constants.PARAM_VOTER_DOB, stringDob);
 
 
             File imagefile2 = new File(voterImagePathFront);
@@ -1727,6 +1796,11 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             Intent chooseImageIntent1 = ImagePicker.getCameraIntent(this);
             startActivityForResult(chooseImageIntent1, LICENCEIMAGE);
         }
+
+        if (i == 3) {
+            Intent chooseImageIntent1 = ImagePicker.getCameraIntent(this);
+            startActivityForResult(chooseImageIntent1, LICENCEIMAGEBACK);
+        }
     }
 
 
@@ -1897,6 +1971,10 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
                 if (licenceImagePath.equals("")) {
                     Toast.makeText(this, "Please Select Licence Image", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                if (licenceImagePathBack.equals("")) {
+                    Toast.makeText(this, "Please Select Licence back side image", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 if (TextUtils.isEmpty(etDrivingNumber.getText().toString())) {
@@ -2189,7 +2267,22 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                 ivDriving_Licence.setPadding(0, 0, 0, 0);
                 // ImageUtils.getInstant().getImageUri(EditPanCardActivity, photo);
                 Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
-                ApiCallGetDetailLicence(licenceImagePath);
+                //  ApiCallGetDetailLicence(licenceImagePath);
+                if (!licenceImagePathBack.equalsIgnoreCase("") && !licenceImagePath.equalsIgnoreCase(""))
+                    ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
+
+            }
+
+            if (requestCode == LICENCEIMAGEBACK) {
+                Bitmap bitmap = ImagePicker.getImageFromResult(AddNewDeliveryBoy.this, resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                licenceImagePathBack = ImagePicker.getBitmapPath(bitmap, AddNewDeliveryBoy.this);
+                ivDrivingLicenceBack.setPadding(0, 0, 0, 0);
+                // ImageUtils.getInstant().getImageUri(EditPanCardActivity, photo);
+                Glide.with(this).load(licenceImagePathBack).into(ivDrivingLicenceBack);
+                if (!licenceImagePathBack.equalsIgnoreCase("") && !licenceImagePath.equalsIgnoreCase("")) {
+                    ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
+                }
 
             }
             if (requestCode == PROFILEIMAGE) {
@@ -2237,6 +2330,12 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         if (casted_image.exists()) {
             casted_image.delete();
         }
+
+        File casted_image5 = new File(licenceImagePathBack);
+        if (casted_image5.exists()) {
+            casted_image5.delete();
+        }
+
         File casted_image6 = new File(profileImagepath);
         if (casted_image6.exists()) {
             casted_image6.delete();
@@ -2245,9 +2344,10 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     }
 
 
-    private void ApiCallGetDetailLicence(String drivingLicencePath) {
+    private void ApiCallGetDetailLicence(String drivingLicencePath, String drivinglicenceback) {
         // MultipartBody.Part voter_front_part = null;
         MultipartBody.Part driving_licence_part = null;
+        MultipartBody.Part driving_licence_partback = null;
 
         Mylogger.getInstance().Logit(TAG, "getUserInfo");
 
@@ -2261,11 +2361,15 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         File imagefile1 = new File(drivingLicencePath);
         driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
 
+        File imagefile2 = new File(drivinglicenceback);
+        driving_licence_partback = MultipartBody.Part.createFormData(Constants.PARAM_DL_BACK_IMAGE, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivinglicenceback)), imagefile2));
+
+
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
         mProgressDialog.setMessage("we are retrieving information, please wait!");
         mProgressDialog.show();
         // hideKeyboardwithoutPopulateFragment();
-        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);
+        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part, driving_licence_partback);
         call.enqueue(new Callback<DrivingLicenceDetailResponse>() {
             @Override
             public void onResponse(Call<DrivingLicenceDetailResponse> call, Response<DrivingLicenceDetailResponse> response) {
@@ -2279,6 +2383,13 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                             String outputDateStr = "Date of Birth";
                             etDrivingNumber.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber());
 
+                            if (!voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDateofExpiry().equals("")) {
+                                tvLicenceValidDate.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDateofExpiry());
+                            }
+                            if (!voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDateofissue().equals("")) {
+                                tvLicenceIssueDate.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDateofissue());
+                            }
+
                             //fathername = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFatherName();
                             stringDob = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate();
                             if (!stringDob.equalsIgnoreCase("")) {
@@ -2289,6 +2400,8 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                             }
 
                             dob.setText(outputDateStr);
+                            dob.setText(stringDob);
+
                            /* dlnumber = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber();
                             dlIdDetailId = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
@@ -2404,11 +2517,14 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
                 } else if (eventType == XmlPullParser.START_TAG && DataAttributes.AADHAAR_DATA_TAG.equals(parser.getName())) {
 
-                   /* udi = parser.getAttributeValue(null, DataAttributes.AADHAR_UID_ATTR);
+                    String udi = "", name = "", year = "", pincode = "";
+                    udi = parser.getAttributeValue(null, DataAttributes.AADHAR_UID_ATTR);
                     name = parser.getAttributeValue(null, DataAttributes.AADHAR_NAME_ATTR);
 
                     year = parser.getAttributeValue(null, DataAttributes.AADHAR_YOB_ATTR);
-                    pincode = parser.getAttributeValue(null, DataAttributes.AADHAR_PC_ATTR);*/
+                    pincode = parser.getAttributeValue(null, DataAttributes.AADHAR_PC_ATTR);
+                    etAdharName.setText(name);
+                    etAdharNumber.setText(udi);
 
 
                    /* sessionManager.saveData(Constants.KEY_UID, udi);
@@ -2497,6 +2613,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                     } else if (adharOCRResponse.getIsFrontOk() && adharOCRResponse.getIsBackOk()) {
                         //  showEditDialog(adharOCRResponse.getAadharCardDetail());
                         etAdharName.setText(adharOCRResponse.getAadharCardDetail().getName());
+                        stringDob = adharOCRResponse.getAadharCardDetail().getBirthDate();
                         tvAdharDOB.setText(adharOCRResponse.getAadharCardDetail().getBirthDate());
                         etAdharNumber.setText(adharOCRResponse.getAadharCardDetail().getAadharCardNumber());
                     } else if (!adharOCRResponse.getIsFrontOk() && !adharOCRResponse.getIsBackOk()) {
@@ -2569,9 +2686,11 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                             DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                             DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
                             if (!voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate().equalsIgnoreCase("")) {
+                                stringDob = voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate();
                                 Date date = inputFormat.parse(voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate());
                                 outputDateStr = outputFormat.format(date);
                                 tvVoterDOB.setText(outputDateStr);
+
                             }
 
                             etVoterName.setText(voterOCRGetDetaisResponse.getVoterIdDetail().getName());

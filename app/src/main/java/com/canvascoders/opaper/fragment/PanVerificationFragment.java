@@ -600,7 +600,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                             deleteImages();
                             str_process_id = panVerificationDetail.getData().get(0).getProccess_id();
                             DialogUtil.dismiss();
-                            showAlert(response.body().getResponse(),process_id);
+                            showAlert(response.body().getResponse(), process_id);
                         }
                         if (panVerificationDetail.getResponseCode() == 411) {
                             deleteImages();
@@ -702,7 +702,6 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
             File imagefile = new File(panImagepath);
             typedFile = MultipartBody.Part.createFormData("image", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
-
 
 
             Call<GetPanDetailsResponse> call = ApiClient.getClient2().create(ApiInterface.class).getPanDetails(params, typedFile);
@@ -1205,11 +1204,11 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     }
 
 
-    public void commanFragmentCallWithoutBackStackwithName(Fragment fragment,String process_id) {
+    public void commanFragmentCallWithoutBackStackwithName(Fragment fragment, int process_id) {
 
         Fragment cFragment = fragment;
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.PARAM_pan_matched_kiran_proccess_id,process_id);
+        bundle.putInt(Constants.PARAM_pan_matched_kiran_proccess_id, process_id);
         if (cFragment != null) {
 
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -1222,7 +1221,6 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
 
         }
     }
-
 
 
     public void commanFragmentCallWithoutBackStack2(Fragment fragment) {
@@ -1278,7 +1276,7 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
     }
 
 
-    private void showAlert(String msg,String proccessId) {
+    private void showAlert(String msg, String proccessId) {
         Button btSubmit;
         TextView tvMessage, tvTitle;
         if (dialog != null && dialog.isShowing()) {
@@ -1306,7 +1304,11 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                 if (isedit == true) {
                     commanFragmentCallWithoutBackStack(new InfoFragment());
                 } else {
-                    commanFragmentCallWithoutBackStackwithName(new ChequeUploadFragment(),proccessId);
+                    if (!proccessId.equalsIgnoreCase("")) {
+                        commanFragmentCallWithoutBackStackwithName(new ChequeUploadFragment(), Integer.parseInt(proccessId));
+                    } else {
+                        commanFragmentCallWithoutBackStackwithName(new ChequeUploadFragment(), 0);
+                    }
                 }
 
             }

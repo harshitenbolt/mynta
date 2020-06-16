@@ -40,10 +40,13 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:icon,android:allowBackup">
+        <activity android:name=".activity.EditDeliveryBoyTSActivity"></activity>
+        <activity android:name=".activity.EditDeliveryBoySSActivity" />
+        <activity android:name=".activity.EditDeliveryBoyFSActivity" />
         <activity
             android:name=".activity.ExecutiveMobileVerifyActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.EndTaskActivity"
             android:screenOrientation="portrait"

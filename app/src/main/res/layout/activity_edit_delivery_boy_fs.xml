@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightGrey"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivBack"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:src="@drawable/back" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_25sdp"
+                android:fontFamily="@font/montesemibold"
+                android:gravity="start|center"
+                android:text="Add Delivery Boys"
+                android:textColor="@color/colorBlack"
+                android:textSize="20dp" />
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar">
+
+        <!-- **** Place Your Content Here **** -->
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_3sdp"
+            android:background="@drawable/toolbarshadow" />
+
+    </FrameLayout>
+
+    <ScrollView
+        android:id="@+id/svMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/item_wrapper_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_10sdp">
+
+            <androidx.cardview.widget.CardView
+                style="@style/CustomCardView"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:orientation="vertical">
+
+
+
+                    <LinearLayout
+                        android:id="@+id/llOwnerInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <TextView
+                            style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/montesemibold"
+                            android:gravity="center"
+                            android:text="Delivery Boy Information"
+                            android:textSize="@dimen/_11sdp" />
+
+                        <TextView
+                            style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:text="Upload Delivery boy picture"
+                            android:textColor="@color/colorBlue" />
+
+
+                        <ImageView
+                            android:id="@+id/ivProfileImage"
+                            android:layout_width="@dimen/_95sdp"
+                            android:layout_height="@dimen/_95sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:background="@drawable/backgroundshapecircledotted"
+                            android:padding="@dimen/_25sdp"
+                            android:src="@drawable/photocamera" />
+
+                        <TextView
+                            style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:text="Name"
+                            android:textColor="@color/colorBlue" />
+
+                        <EditText
+                            android:id="@+id/etName"
+                            style="@style/App_EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:inputType="textCapSentences"
+                            android:nextFocusDown="@id/etFatherName"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_10sdp" />
+
+
+                        <RadioGroup
+                            android:id="@+id/radioSex"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radioMale"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorBlue"
+                                android:checked="true"
+                                android:text="Male" />
+
+                            <RadioButton
+                                android:id="@+id/radioFemale"
+
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:buttonTint="@color/colorBlue"
+                                android:text="Female" />
+
+                        </RadioGroup>
+
+                        <TextView
+                            style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="Father Name"
+                            android:textColor="@color/colorBlue" />
+
+                        <EditText
+                            android:id="@+id/etFatherName"
+                            style="@style/App_EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:inputType="textCapSentences"
+                            android:nextFocusDown="@id/etPhone"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_10sdp" />
+
+
+
+                        <TextView
+                            style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="Blood Group"
+                            android:textColor="@color/colorBlue" />
+
+                        <!-- <EditText
+                             android:id="@+id/etVehicleForDelivery"
+                             style="@style/App_EditTextStyle"
+                             android:layout_width="match_parent"
+                             android:layout_marginTop="@dimen/_3sdp"
+                             android:layout_marginBottom="@dimen/_10sdp"
+                             android:imeOptions="actionDone"
+                             android:inputType="text" />
+ -->
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@drawable/etfieldbackgroundgrey">
+
+                            <Spinner
+
+                                android:id="@+id/spBloodGroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:backgroundTint="@color/colorPrimary"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:textSize="@dimen/_10sdp" />
+                        </RelativeLayout>
+
+
+                        <TextView
+                            style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="Select Language"
+                            android:textColor="@color/colorBlue" />
+
+                        <RelativeLayout
+                            android:id="@+id/rvSelectLanguage"
+                            style="@style/App_EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_marginTop="@dimen/_5sdp">
+
+                            <TextView
+                                android:id="@+id/tvLanguage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/monteregular"
+                                android:singleLine="true"
+                                android:text="Select Language" />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="Phone "
+                            android:textColor="@color/colorBlue" />
+
+                        <EditText
+                            android:id="@+id/etPhone"
+                            style="@style/App_EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:inputType="phone"
+                            android:maxLength="10"
+
+                            android:nextFocusDown="@+id/etRouteNo"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_10sdp" />
+
+
+                        <Button
+                            android:id="@+id/btGetOtp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_20sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:background="@drawable/rounded_corner_view_grey_more"
+                            android:fontFamily="@font/montesemibold"
+                            android:text="Get OTP"
+                            android:textSize="@dimen/_8sdp" />
+
+                        <TextView
+                            style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="OTP"
+                            android:textColor="@color/colorBlue" />
+
+                        <EditText
+                            android:id="@+id/etOtp"
+                            style="@style/App_EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_marginBottom="@dimen/_35sdp"
+                            android:inputType="number"
+                            android:maxLength="10"
+                            android:nextFocusDown="@+id/etRouteNo"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_10sdp" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp">
+
+        <Button
+            android:id="@+id/btSubmit"
+            style="@style/Button_withGreen"
+            android:layout_weight="1"
+            android:background="@color/colorYellow"
+            android:text="SUBMIT" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

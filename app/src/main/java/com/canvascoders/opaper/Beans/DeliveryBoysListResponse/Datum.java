@@ -20,6 +20,18 @@ public class Datum implements Serializable {
     @SerializedName("image")
     @Expose
     private String image;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    @SerializedName("gender")
+    @Expose
+    private String gender;
     @SerializedName("name")
     @Expose
     private String name;
@@ -98,6 +110,18 @@ public class Datum implements Serializable {
     @SerializedName("driving_licence_image")
     @Expose
     private String drivingLicenceImage;
+
+    public String getDrivingLicenceImageback() {
+        return drivingLicenceImageback;
+    }
+
+    public void setDrivingLicenceImageback(String drivingLicenceImageback) {
+        this.drivingLicenceImageback = drivingLicenceImageback;
+    }
+
+    @SerializedName("driving_licence_back_image")
+    @Expose
+    private String drivingLicenceImageback;
     @SerializedName("vehicle_for_delivery")
     @Expose
     private String vehicleForDelivery;

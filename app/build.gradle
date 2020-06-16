@@ -22,8 +22,8 @@ android {
         applicationId "com.canvascoders.opaper"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 9
-        versionName "1.8"
+        versionCode 10
+        versionName "1.9"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
@@ -44,7 +44,7 @@ android {
         main.java.srcDirs += 'src/main/api9'
         main.java.srcDirs += 'src/main/api14'
         main.java.srcDirs += 'src/main/api21'
-        main.java.srcDirs += 'src/main/api23' 
+        main.java.srcDirs += 'src/main/api23'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -81,8 +81,6 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
     implementation project(path: ':aadhaarapi_gateway_sdk')
-
-
 
 
 }

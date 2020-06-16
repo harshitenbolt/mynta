@@ -350,7 +350,7 @@ public interface ApiInterface {
     @Multipart
     @POST("driving-licence-detail")
     Call<DrivingLicenceDetailResponse> getDrivingLicenceDetail(@PartMap() Map<String, String> data,
-                                                               @Part MultipartBody.Part voter_front);
+                                                               @Part MultipartBody.Part voter_front,@Part MultipartBody.Part dlback);
     //-----------------------------------------------------------------------------
 
     @Multipart
@@ -420,6 +420,28 @@ public interface ApiInterface {
     @POST("delivery-boys-store")
     Call<AddDelBoyResponse> addDelBoys(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                        @Part MultipartBody.Part image, @Part MultipartBody.Part frontImage,@Part MultipartBody.Part backImage);
+
+
+    @Multipart
+    @POST("delivery-boys-save-stage1")
+    Call<AddDelBoyResponse> edidelivery1(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                       @Part MultipartBody.Part image);
+
+    @FormUrlEncoded
+    @POST("delivery-boys-save-stage2")
+    Call<AddDelBoyResponse> edidelivery2(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
+    @Multipart
+    @POST("delivery-boys-save-stage3")
+    Call<AddDelBoyResponse> edidelivery3(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                        @Part MultipartBody.Part frontImage,@Part MultipartBody.Part backImage);
+
+
+    @Multipart
+    @POST("delivery-boys-save-stage3")
+    Call<AddDelBoyResponse> edidelivery3(@Header("Authorization") String token, @PartMap() Map<String, String> data,@Part MultipartBody.Part backImage);
+
 
 
     @Multipart

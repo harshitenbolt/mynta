@@ -101,9 +101,9 @@ import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI
 public class EditDeliveryBoyActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText etName, etFatherName, etPhoneNumber, etRoute, etDrivingNumber;
-    private ImageView ivProfile, ivDriving_Licence, ivBack;
-    private String profileImagepath = "", licenceImagePath = "";
-    private int PROFILEIMAGE = 200, LICENCEIMAGE = 300;
+    private ImageView ivProfile, ivDriving_Licence, ivDlImageBack, ivBack;
+    private String profileImagepath = "", licenceImagePath = "", licenceImagePathBack = "";
+    private int PROFILEIMAGE = 200, LICENCEIMAGE = 300, LICENCEIMAGEBACK = 400;
     String stringDob = "";
     private int mYear, mMonth, mDay, mHour, mMinute;
     private Button addDelBoy;
@@ -114,7 +114,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     private final static int REQUEST_SCANNER = 1000;
     Spinner dc;
     ScrollView svMain;
-    private ImageView ivAdharFrontSelected, ivAdharABackSelected, ivVoterFrontSelected, ivDlFrontSelected, ivVoterBackSelected, ivAdharIamgeFront, ivAdharImageBack, ivVoterImageFront, ivVoterImageBack, ivDlImageFront, ivDlImageBack;
+    private ImageView ivAdharFrontSelected, ivAdharABackSelected, ivVoterFrontSelected, ivDlFrontSelected, ivVoterBackSelected, ivAdharIamgeFront, ivAdharImageBack, ivVoterImageFront, ivVoterImageBack, ivDlImageFront;
 
     private String aadharImagepathBack = "";
     private RelativeLayout rvLanguageAdhar, rvLanguage1;
@@ -188,7 +188,13 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
 
         radioSexGroup = (RadioGroup) findViewById(R.id.radioSex);
-
+        if (!datum.getGender().equalsIgnoreCase("")) {
+            if (datum.getGender().equalsIgnoreCase("Female")) {
+                radioSexGroup.check(R.id.radioFemale);
+            } else {
+                radioSexGroup.check(R.id.radioMale);
+            }
+        }
         init();
     }
 
@@ -206,14 +212,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         ivBack = findViewById(R.id.ivBack);
         ivBack.setOnClickListener(this);
         sessionManager = new SessionManager(this);
-        //str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
 
-      /*  if(isUpdate.equalsIgnoreCase("1")){
-            str_process_id = getIntent().getStringExtra("process");
-        }*/
-       /* addDelBoy = findViewById(R.id.btSubmitDelBoy);
-        addDelBoy.setOnClickListener(this);
-       */
 
         etName = findViewById(R.id.etName);
         etName.setText(datum.getName());
@@ -314,7 +313,15 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
             Glide.with(this).load(Constants.BaseImageURL + datum.getDrivingLicenceImage()).into(ivDriving_Licence);
 
         }
+        ivDlImageBack = findViewById(R.id.ivDrivingLicenceBack);
+        if (datum.getDrivingLicenceImageback() != null && !datum.getDrivingLicenceImageback().equalsIgnoreCase("")) {
 
+            new getBitmapFromURL2().execute(Constants.BaseImageURL + datum.getDrivingLicenceImageback());
+
+            Glide.with(this).load(Constants.BaseImageURL + datum.getDrivingLicenceImageback()).into(ivDlImageBack);
+
+        }
+        ivDlImageBack.setOnClickListener(this);
         ivDriving_Licence.setOnClickListener(this);
         rvLanguage = findViewById(R.id.rvSelectLanguage);
         rvLanguage.setOnClickListener(this);
@@ -514,6 +521,9 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                     licenceImagePath = "";
                     Glide.with(EditDeliveryBoyActivity.this).load(licenceImagePath).placeholder(R.drawable.blfront).into(ivDriving_Licence);
 
+                    licenceImagePathBack = "";
+                    Glide.with(EditDeliveryBoyActivity.this).load(licenceImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
+
                     voterImagePathBack = "";
                     ivVoterBackSelected.setVisibility(View.GONE);
                     tvVoterBack.setVisibility(View.VISIBLE);
@@ -561,6 +571,8 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                     licenceImagePath = "";
                     Glide.with(EditDeliveryBoyActivity.this).load(licenceImagePath).placeholder(R.drawable.blfront).into(ivDriving_Licence);
 
+                    licenceImagePathBack = "";
+                    Glide.with(EditDeliveryBoyActivity.this).load(licenceImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
 
                 }
             }
@@ -701,6 +713,28 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
     }
 
+    private class getBitmapFromURL2 extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                licenceImagePathBack = ImagePicker.getBitmapPath(myBitmap, EditDeliveryBoyActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
 
     private class getBitmapFromURLAdharFront extends AsyncTask<String, String, Bitmap> {
         protected Bitmap doInBackground(String... urls) {
@@ -797,6 +831,10 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     public void onClick(View view) {
         switch (view.getId()) {
 
+            case R.id.ivDrivingLicenceBack:
+                captureImage(3);
+                break;
+
             case R.id.tvAdharFront:
                 capture_aadhar_front_and_back_image(1);
                 break;
@@ -844,81 +882,6 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                 captureImage(1);
                 break;
 
-
-            /*case R.id.rvSelectLanguageAdhar:
-                AlertDialog.Builder mBuilder1 = new AlertDialog.Builder(this);
-                mBuilder1.setTitle("Select Languagaes");
-                mBuilder1.setMultiChoiceItems(select_language, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                        if (b) {
-                            listLanaguage.add(select_language[i]);
-                        } else {
-                            listLanaguage.remove(select_language[i]);
-                        }
-                    }
-                });
-                mBuilder1.setCancelable(false);
-                mBuilder1.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        String item = "";
-                        for (int i = 0; i < listLanaguage.size(); i++) {
-                            item = item + listLanaguage.get(i);
-                            if (i != listLanaguage.size() - 1) {
-                                item = item + ",";
-                            }
-                        }
-                        if (listLanaguage.size() == 0) {
-                            tvLanguageAdhar.setText("Select Language");
-                        } else {
-                            tvLanguageAdhar.setText(item);
-                        }
-                    }
-                });
-                AlertDialog mDialog1 = mBuilder1.create();
-                mDialog1.show();
-
-                break;
-
-
-            case R.id.rvSelectLanguage1:
-                AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(this);
-                mBuilder2.setTitle("Select Languagaes");
-                mBuilder2.setMultiChoiceItems(select_language, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-                        if (b) {
-                            listLanaguage.add(select_language[i]);
-                        } else {
-                            listLanaguage.remove(select_language[i]);
-                        }
-                    }
-                });
-                mBuilder2.setCancelable(false);
-                mBuilder2.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int which) {
-                        String item = "";
-                        for (int i = 0; i < listLanaguage.size(); i++) {
-                            item = item + listLanaguage.get(i);
-                            if (i != listLanaguage.size() - 1) {
-                                item = item + ",";
-                            }
-                        }
-                        if (listLanaguage.size() == 0) {
-                            tvLanguage1.setText("Select Language");
-                        } else {
-                            tvLanguage1.setText(item);
-                        }
-                    }
-                });
-                AlertDialog mDialog2 = mBuilder2.create();
-                mDialog2.show();
-
-                break;*/
-
-
             case R.id.tvDateofBirth:
                 final Calendar c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
@@ -949,7 +912,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                 if (daysString.length() == 1) {
                                     daysString = "0" + daysString;
                                 }
-                                stringDob = year + "-" + monthString + "-" + daysString;
+                                stringdob = year + "-" + monthString + "-" + daysString;
                                 dob.setText(daysString + "-" + monthString + "-" + year);
 
                             }
@@ -990,7 +953,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                 if (daysString.length() == 1) {
                                     daysString = "0" + daysString;
                                 }
-                                stringDob = year + "-" + monthString + "-" + daysString;
+                                stringdob = year + "-" + monthString + "-" + daysString;
                                 tvAdharDOB.setText(daysString + "-" + monthString + "-" + year);
 
                             }
@@ -1031,7 +994,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                 if (daysString.length() == 1) {
                                     daysString = "0" + daysString;
                                 }
-                                stringDob = year + "-" + monthString + "-" + daysString;
+                                stringdob = year + "-" + monthString + "-" + daysString;
                                 tvVoterDOB.setText(daysString + "-" + monthString + "-" + year);
 
                             }
@@ -1072,7 +1035,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                 if (daysString.length() == 1) {
                                     daysString = "0" + daysString;
                                 }
-                                stringDob = year + "-" + monthString + "-" + daysString;
+                                stringdob = year + "-" + monthString + "-" + daysString;
                                 tvVoterDOB.setText(daysString + "-" + monthString + "-" + year);
 
                             }
@@ -1113,8 +1076,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                 if (daysString.length() == 1) {
                                     daysString = "0" + daysString;
                                 }
-                                stringDob = year + "-" + monthString + "-" + daysString;
-                                tvLicenceIssueDate.setText(daysString + "-" + monthString + "-" + year);
+                                tvLicenceIssueDate.setText(year + "-" + monthString + "-" + daysString);
 
                             }
                         }, mYear, mMonth, mDay);
@@ -1153,9 +1115,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                 if (daysString.length() == 1) {
                                     daysString = "0" + daysString;
                                 }
-                                stringDob = year + "-" + monthString + "-" + daysString;
-                                tvLicenceValidDate.setText(daysString + "-" + monthString + "-" + year);
-
+                                tvLicenceValidDate.setText(year + "-" + monthString + "-" + daysString);
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialogValid.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -1453,14 +1413,14 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                 // showMSG(false, "Provide Pincode");
                 return false;
             }
-            if (!optional) {
 
-                if (TextUtils.isEmpty(etRoute.getText().toString())) {
-                    etRoute.requestFocus();
-                    etRoute.setError("Provide Route");
-                    // showMSG(false, "Provide Pincode");
-                    return false;
-                }
+
+            if (TextUtils.isEmpty(etRoute.getText().toString())) {
+                etRoute.requestFocus();
+                etRoute.setError("Provide Route");
+                // showMSG(false, "Provide Pincode");
+                return false;
+
             }
 
 
@@ -1473,6 +1433,11 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
                 if (licenceImagePath.equals("")) {
                     Toast.makeText(this, "Please Select Licence Image", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+
+                if (licenceImagePathBack.equals("")) {
+                    Toast.makeText(this, "Please Select Licence back side Image", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 if (TextUtils.isEmpty(etDrivingNumber.getText().toString())) {
@@ -1732,13 +1697,13 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                                 llVoterDetails.setVisibility(View.VISIBLE);
                                 if (datum.getVoter_front_image() != null && !datum.getVoter_front_image().equalsIgnoreCase("")) {
 
-                                    new getBitmapFromURLAdharFront().execute(Constants.BaseImageURL + datum.getVoter_front_image());
+                                    new getBitmapFromURLVoterFront().execute(Constants.BaseImageURL + datum.getVoter_front_image());
 
                                     Glide.with(EditDeliveryBoyActivity.this).load(Constants.BaseImageURL + datum.getVoter_front_image()).into(ivVoterImageFront);
 
                                 }
                                 if (datum.getVoter_back_image() != null && !datum.getVoter_back_image().equalsIgnoreCase("")) {
-                                    new getBitmapFromURLAdharBack().execute(Constants.BaseImageURL + datum.getVoter_back_image());
+                                    new getBitmapFromURLVoterBack().execute(Constants.BaseImageURL + datum.getVoter_back_image());
                                     Glide.with(EditDeliveryBoyActivity.this).load(Constants.BaseImageURL + datum.getVoter_back_image()).into(ivVoterImageBack);
                                 }
                                 etVoterName.setText(datum.getVoter_name());
@@ -1978,7 +1943,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         MultipartBody.Part prof_image = null;
         MultipartBody.Part adhar_front_image = null, adhar_back_image = null, voter_front_image = null, voter_back_image = null;
 
-        MultipartBody.Part license_image = null;
+        MultipartBody.Part license_image = null, licence_back_image = null;
         String image = "image";
         String driving_licence = "driving_licence_image";
 
@@ -2011,7 +1976,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_STATE, etPerState.getText().toString());
         params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS_PINCODE, etPerPincode.getText().toString());
         params.put(Constants.PARAM_DELIVERY_BOY_ID, deliveryBoy);
-
+        params.put(Constants.PARAM_GENDER, radioSexButton.getText().toString());
 
         params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
         params.put(Constants.PARAM_DC, "" + dc.getSelectedItem());
@@ -2028,17 +1993,20 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         if (kyc_type.equalsIgnoreCase("3")) {
             params.put(Constants.PARAM_DRIVING_LICENCE_NUM, etDrivingNumber.getText().toString().trim());
             params.put(Constants.PARAM_DRIVING_LICENCE_DOB, stringdob);
-
             params.put(Constants.PARAM_DL_VALID_TILL_DATE, tvLicenceValidDate.getText().toString().trim());
             params.put(Constants.PARAM_DL_ISSUE_DATE, tvLicenceIssueDate.getText().toString().trim());
             File imagefile2 = new File(licenceImagePath);
             license_image = MultipartBody.Part.createFormData(driving_licence, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(licenceImagePath)), imagefile2));
-            callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image);
+
+            File imagefile3 = new File(licenceImagePathBack);
+            licence_back_image = MultipartBody.Part.createFormData(Constants.PARAM_DL_BACK_IMAGE, imagefile3.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(licenceImagePathBack)), imagefile3));
+
+
+            callUpload = ApiClient.getClient().create(ApiInterface.class).addDelBoys("Bearer " + sessionManager.getToken(), params, prof_image, license_image, licence_back_image);
         } else if (kyc_type.equalsIgnoreCase("1")) {
 
             params.put(Constants.PARAM_AADHAR_NO, etAdharNumber.getText().toString().trim());
-            params.put(Constants.PARAM_AADHAR_DOB, tvAdharDOB.getText().toString());
-            // params.put(Constants.PARAM_LANGUAGES, tvLanguageAdhar.getText().toString().trim());
+            params.put(Constants.PARAM_AADHAR_DOB, stringdob);
             params.put(Constants.PARAM_AADHAR_NAME, etAdharName.getText().toString().trim());
 
 
@@ -2054,8 +2022,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
             params.put(Constants.PARAM_VOTER_NO, etVoterIdNumber.getText().toString().trim());
             params.put(Constants.PARAM_VOTER_NAME, etVoterName.getText().toString());
-            params.put(Constants.PARAM_VOTER_DOB, tvVoterDOB.getText().toString().trim());
-
+            params.put(Constants.PARAM_VOTER_DOB, stringdob);
 
             File imagefile2 = new File(voterImagePathFront);
             voter_front_image = MultipartBody.Part.createFormData("voter_front_image", imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(voterImagePathFront)), imagefile2));
@@ -2268,6 +2235,10 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
             Intent chooseImageIntent1 = ImagePicker.getCameraIntent(this);
             startActivityForResult(chooseImageIntent1, LICENCEIMAGE);
         }
+        if (i == 3) {
+            Intent chooseImageIntent1 = ImagePicker.getCameraIntent(this);
+            startActivityForResult(chooseImageIntent1, LICENCEIMAGEBACK);
+        }
     }
 
     private void addDC(String pcode) {
@@ -2300,7 +2271,13 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                         CustomAdapter<String> spinnerArrayAdapter = new CustomAdapter<String>(EditDeliveryBoyActivity.this, android.R.layout.simple_spinner_item, dcLists);
                         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         dc.setAdapter(spinnerArrayAdapter);
-                        dc.setSelection(0);
+
+                        for (int i = 0; i < dcLists.size(); i++) {
+                            if (datum.getDc().equalsIgnoreCase(dcLists.get(i))) {
+                                dc.setSelection(i);
+                            }
+                        }
+                       // dc.setSelection(0);
 
                     } else if (getUserDetails.getResponseCode() == 405) {
                         sessionManager.logoutUser(EditDeliveryBoyActivity.this);
@@ -2346,6 +2323,11 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
             casted_image.delete();
         }
 
+        File casted_image5 = new File(licenceImagePathBack);
+        if (casted_image5.exists()) {
+            casted_image5.delete();
+        }
+
         File casted_image6 = new File(profileImagepath);
         if (casted_image6.exists()) {
             casted_image6.delete();
@@ -2354,10 +2336,10 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     }
 
 
-    private void ApiCallGetDetailLicence(String drivingLicencePath) {
+    private void ApiCallGetDetailLicence(String drivingLicencePath, String drivinglicenceback) {
         // MultipartBody.Part voter_front_part = null;
         MultipartBody.Part driving_licence_part = null;
-
+        MultipartBody.Part driving_licence_part_back = null;
         Mylogger.getInstance().Logit(TAG, "getUserInfo");
 
         Map<String, String> params = new HashMap<String, String>();
@@ -2370,11 +2352,15 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         File imagefile1 = new File(drivingLicencePath);
         driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
 
+
+        File imagefile2 = new File(drivinglicenceback);
+        driving_licence_part_back = MultipartBody.Part.createFormData(Constants.PARAM_DL_BACK_IMAGE, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivinglicenceback)), imagefile2));
+
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
         mProgressDialog.setMessage("we are retrieving information, please wait!");
         mProgressDialog.show();
         // hideKeyboardwithoutPopulateFragment();
-        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);
+        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part, driving_licence_part_back);
         call.enqueue(new Callback<DrivingLicenceDetailResponse>() {
             @Override
             public void onResponse(Call<DrivingLicenceDetailResponse> call, Response<DrivingLicenceDetailResponse> response) {
@@ -2394,6 +2380,14 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();*/
                             etDrivingNumber.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber());
+
+
+                            if (!voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDateofExpiry().equals("")) {
+                                tvLicenceValidDate.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDateofExpiry());
+                            }
+                            if (!voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDateofissue().equals("")) {
+                                tvLicenceIssueDate.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDateofissue());
+                            }
 
                             //fathername = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFatherName();
                             stringdob = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate();
@@ -2624,7 +2618,21 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                 ivDriving_Licence.setPadding(0, 0, 0, 0);
                 // ImageUtils.getInstant().getImageUri(getActivity(), photo);
                 Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
-                ApiCallGetDetailLicence(licenceImagePath);
+                if (!licenceImagePathBack.equalsIgnoreCase("") && !licenceImagePath.equalsIgnoreCase("")) {
+                    ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
+                }
+
+            }
+
+            if (requestCode == LICENCEIMAGEBACK) {
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                licenceImagePathBack = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
+                ivDlImageBack.setPadding(0, 0, 0, 0);
+                // ImageUtils.getInstant().getImageUri(EditPanCardActivity, photo);
+                Glide.with(this).load(licenceImagePathBack).into(ivDlImageBack);
+                ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
+
             }
             if (requestCode == PROFILEIMAGE) {
                 Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
@@ -2741,13 +2749,14 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                 if (eventType == XmlPullParser.START_DOCUMENT) {
 
                 } else if (eventType == XmlPullParser.START_TAG && DataAttributes.AADHAAR_DATA_TAG.equals(parser.getName())) {
-
-                   /* udi = parser.getAttributeValue(null, DataAttributes.AADHAR_UID_ATTR);
+                    String udi = "", name = "", year = "", pincode = "";
+                    udi = parser.getAttributeValue(null, DataAttributes.AADHAR_UID_ATTR);
                     name = parser.getAttributeValue(null, DataAttributes.AADHAR_NAME_ATTR);
 
                     year = parser.getAttributeValue(null, DataAttributes.AADHAR_YOB_ATTR);
-                    pincode = parser.getAttributeValue(null, DataAttributes.AADHAR_PC_ATTR);*/
-
+                    pincode = parser.getAttributeValue(null, DataAttributes.AADHAR_PC_ATTR);
+                    etAdharName.setText(name);
+                    etAdharNumber.setText(udi);
 
                    /* sessionManager.saveData(Constants.KEY_UID, udi);
                     sessionManager.saveData(Constants.KEY_AADHAR_NAME, name);

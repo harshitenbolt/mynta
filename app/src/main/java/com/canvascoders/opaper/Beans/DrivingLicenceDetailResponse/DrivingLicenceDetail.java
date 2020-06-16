@@ -12,6 +12,31 @@ public class DrivingLicenceDetail {
     @SerializedName("driving_licence_number")
     @Expose
     private String drivingLicenceNumber;
+    @SerializedName("date_of_issue")
+    @Expose
+    private String dateofissue;
+
+    public String getDateofissue() {
+        return dateofissue;
+    }
+
+    public void setDateofissue(String dateofissue) {
+        this.dateofissue = dateofissue;
+    }
+
+    public String getDateofExpiry() {
+        return dateofExpiry;
+    }
+
+    public void setDateofExpiry(String dateofExpiry) {
+        this.dateofExpiry = dateofExpiry;
+    }
+
+    @SerializedName("date_of_expiry")
+    @Expose
+    private String dateofExpiry;
+
+
     @SerializedName("name")
     @Expose
     private String name;

@@ -623,36 +623,6 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                     } else {
 
 
-                     /*   DialogUtil.VoterDetail(EditKycActivity.this, gotName, gotDocId, gotFatherName, gotDOB, new DialogListner() {
-                            @Override
-                            public void onClickPositive() {
-
-                            }
-
-                            @Override
-                            public void onClickNegative() {
-
-                            }
-
-                            @Override
-                            public void onClickDetails(String name, String fathername, String dob, String id) {
-                                //  ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
-                                ApiCallSubmitKYCwithoutImage(name, fathername, dob, id);
-                            }
-
-                            @Override
-                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
-
-                            }
-
-                            @Override
-                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
-
-                            }
-
-                        });*/
-
-
                         Toast.makeText(EditKycActivity.this, "Please upload Both Images.", Toast.LENGTH_SHORT).show();
                     }
 
@@ -664,7 +634,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                             ivVoterBackSelected.setVisibility(View.VISIBLE);
                             tvVoterBack.setVisibility(View.GONE);
                             if (!dlImageOathFront.equalsIgnoreCase("") && !dlImagePathBack.equalsIgnoreCase("")) {
-                                ApiCallGetDetailLicence(dlImageOathFront);
+                                ApiCallGetDetailLicence(dlImageOathFront,dlImagePathBack);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -1477,9 +1447,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    private void ApiCallGetDetailLicence(String drivingLicencePath) {
+    private void ApiCallGetDetailLicence(String drivingLicencePath,String drivingLicenceBackImage) {
         // MultipartBody.Part voter_front_part = null;
-        MultipartBody.Part driving_licence_part = null;
+        MultipartBody.Part driving_licence_part = null,drivinglicenceBackPart=null;
 
         Mylogger.getInstance().Logit(TAG, "getUserInfo");
 
@@ -1493,11 +1463,16 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
         File imagefile1 = new File(drivingLicencePath);
         driving_licence_part = MultipartBody.Part.createFormData(Constants.PARAM_IMAGE, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicencePath)), imagefile1));
 
+        File imagefile2 = new File(drivingLicenceBackImage);
+        drivinglicenceBackPart = MultipartBody.Part.createFormData(Constants.PARAM_DL_BACK_IMAGE, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicenceBackImage)), imagefile2));
+
+
+
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
         mProgressDialog.setMessage("we are retrieving information, please wait!");
         mProgressDialog.show();
         //hideKeyboardwithoutPopulateFragment();
-        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part);
+        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part,drivinglicenceBackPart);
         call.enqueue(new Callback<DrivingLicenceDetailResponse>() {
             @Override
             public void onResponse(Call<DrivingLicenceDetailResponse> call, Response<DrivingLicenceDetailResponse> response) {

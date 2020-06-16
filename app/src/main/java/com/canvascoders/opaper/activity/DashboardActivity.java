@@ -754,16 +754,16 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 //                            if (getnotificationdata.getCount() > 0) {
 //
 //                            }
-
+/*
                             if (getnotificationdata.getIsMobileVerify().equalsIgnoreCase("0")) {
                                 Intent i = new Intent(DashboardActivity.this, ExecutiveMobileVerifyActivity.class);
                                 startActivity(i);
                                 finish();
-                                sessionManager.createLogin(sessionManager.getAgentID(), sessionManager.getToken(), sessionManager.getName(), sessionManager.getEmail(), sessionManager.getRHID(), sessionManager.getEmpId(), getnotificationdata.getMobile(), "", getnotificationdata.getIsMobileVerify());
+                                sessionManager.createLogin(sessionManager.getAgentID(), sessionManager.getToken(), sessionManager.getName(), sessionManager.getEmail(), sessionManager.getRHID(), sessionManager.getEmpId(), getnotificationdata.getMobile(), ""*//*, getnotificationdata.getIsMobileVerify()*//*);
 
-                            } else {
-                                sessionManager.createLogin(sessionManager.getAgentID(), sessionManager.getToken(), sessionManager.getName(), sessionManager.getEmail(), sessionManager.getRHID(), sessionManager.getEmpId(), getnotificationdata.getMobile(), "", getnotificationdata.getIsMobileVerify());
-                            }
+                            } else {*/
+                            sessionManager.createLogin(sessionManager.getAgentID(), sessionManager.getToken(), sessionManager.getName(), sessionManager.getEmail(), sessionManager.getRHID(), sessionManager.getEmpId(), getnotificationdata.getMobile(), ""/*, getnotificationdata.getIsMobileVerify()*/);
+
                             if (getnotificationdata.getIsupdateavailable()) {
                                 Log.e("Update available", "Step done");
 

@@ -151,7 +151,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
         return mediaFile;
     }
 
-    String proccess_id = "";
+    int proccess_id = 0;
 
     String accountNumber1 = "", payeeName1 = "", ifsccode1 = "", bank_name1 = "", bank_branch1 = "", branch_address1 = "";
 
@@ -170,13 +170,13 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
         requestPermissionHandler = new RequestPermissionHandler();
 
-        proccess_id = getArguments().getString(Constants.PARAM_pan_matched_kiran_proccess_id);
+        proccess_id = getArguments().getInt(Constants.PARAM_pan_matched_kiran_proccess_id);
 
         initView();
 
-        if (!proccess_id.equalsIgnoreCase("")) {
+        if (!(proccess_id == 0)) {
             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                oldProccess_id = proccess_id;
+                oldProccess_id = String.valueOf(proccess_id);
                 getUserBankDetailsUpdated();
 
             } else {
@@ -390,7 +390,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
             getUserBankDetailsUpdated();
         } else if (v.getId() == R.id.tvClickCheque) {
-            if (proccess_id.equalsIgnoreCase("")) {
+            if (proccess_id == 0) {
                 capture_cheque_image();
             } else {
                 DialogUtil.NoticeforFChequeChange(getActivity(), storName, new DialogListner() {
@@ -405,7 +405,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                         llBottom.setVisibility(View.GONE);
                         lineardata.setVisibility(View.GONE);
                         btExtract.setVisibility(View.VISIBLE);
-                        proccess_id = "";
+                        proccess_id = 0;
                         btn_cheque_card.setVisibility(View.VISIBLE);
                         btn_cheque_card_select.setVisibility(View.GONE);
                         DialogUtil.dismiss();
@@ -434,7 +434,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             }
 
         } else if (v.getId() == R.id.tvClickChequeSelected) {
-            if (proccess_id.equalsIgnoreCase("")) {
+            if (proccess_id==0) {
                 capture_cheque_image();
             } else {
                 DialogUtil.NoticeforFChequeChange(getActivity(), storName, new DialogListner() {
@@ -450,7 +450,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                         llBottom.setVisibility(View.GONE);
                         lineardata.setVisibility(View.GONE);
                         btExtract.setVisibility(View.VISIBLE);
-                        proccess_id = "";
+                        proccess_id = 0;
                         btn_cheque_card.setVisibility(View.VISIBLE);
                         btn_cheque_card_select.setVisibility(View.GONE);
                         DialogUtil.dismiss();
@@ -502,7 +502,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                     btExtract.setVisibility(View.VISIBLE);
                     btn_cheque_card.setVisibility(View.VISIBLE);
                     btn_cheque_card_select.setVisibility(View.GONE);
-                    proccess_id = "";
+                    proccess_id = 0;
                     changecheque = true;
                     tvBack.setVisibility(View.VISIBLE);
                     DialogUtil.dismiss();

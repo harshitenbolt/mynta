@@ -345,19 +345,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         rh_id = String.valueOf(getUserDetails.getData().get(0).getRhId());
                         emp_id = getUserDetails.getData().get(0).getEmpId();
                         mobile = getUserDetails.getData().get(0).getMobile();
-                        isMobileVerify = getUserDetails.getData().get(0).getIsMobileVerify();
+                        //isMobileVerify = getUserDetails.getData().get(0).getIsMobileVerify();
                         city = getUserDetails.getData().get(0).getCity();
-                        sessionManager.createLogin(agent_id, token, name, email, rh_id, emp_id, mobile, city, isMobileVerify);
+                        sessionManager.createLogin(agent_id, token, name, email, rh_id, emp_id, mobile, city/*, isMobileVerify*/);
 
-                        if (isMobileVerify.equalsIgnoreCase("1")) {
-                            Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
-                            startActivity(i);
-                            finish();
-                        } else {
+                        // if (isMobileVerify.equalsIgnoreCase("1")) {
+                        Intent i = new Intent(LoginActivity.this, DashboardActivity.class);
+                        startActivity(i);
+                        finish();
+                       /* } else {
                             Intent i = new Intent(LoginActivity.this, ExecutiveMobileVerifyActivity.class);
                             startActivity(i);
                             finish();
-                        }
+                        }*/
                     } else {
                         showAlert(v, response.body().getResponse(), false);
                         tvForgot.setVisibility(View.VISIBLE);

@@ -318,9 +318,22 @@ public class AddDelBoyResponse {
             this.languages = languages;
         }
 
+        public String getGender() {
+            return Gender;
+        }
+
+        public void setGender(String gender) {
+            Gender = gender;
+        }
+
         @SerializedName("driving_licence_num")
         @Expose
         private String driving_licence_num;
+
+
+        @SerializedName("gender")
+        @Expose
+        private String Gender;
 
         @SerializedName("voter_id_num")
         @Expose
