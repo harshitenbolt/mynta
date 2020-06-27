@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.aadhaarapi.sdk.gateway_lib.qtActivity.AadhaarAPIActivity;
 import com.canvascoders.opaper.Beans.TransactionIDResponse.TransactionIdResponse;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.EditKYCfromProfileActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditKycActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
@@ -60,48 +61,58 @@ public class EditNameDialogFragment extends DialogFragment {
     private AadharVerificationFragment aadharVerificationFragment;
 
     private EditKycActivity editKycActivity;
+    private EditKYCfromProfileActivity editKYCfromProfileActivity;
     String str_name, str_uid, str_year, str_pincode;
     GPSTracker gps;
     String proccessId = "";
     ProgressDialog progressDialog;
     private String lattitude = "", longitude = "";
     SessionManager sessionManager;
+
     boolean fromedit = false;
     int withoutimagee = 0;
-    String adharNumber="",name="",year="";
+    String adharNumber = "", name = "", year = "", fromScreen = "";
 
     public EditNameDialogFragment() {
 
     }
 
-    public static EditNameDialogFragment newInstance(AadharVerificationFragment aadharVerificationFragment,String adharNumber,String name,String Year, String ProcessId, boolean fromEdit) {
+    public static EditNameDialogFragment newInstance(AadharVerificationFragment aadharVerificationFragment, String adharNumber, String name, String Year, String ProcessId, boolean fromEdit, String fromscreen) {
         EditNameDialogFragment frag = new EditNameDialogFragment();
         frag.aadharVerificationFragment = aadharVerificationFragment;
         frag.proccessId = ProcessId;
         frag.fromedit = fromEdit;
         frag.adharNumber = adharNumber;
         frag.name = name;
-
-
+        frag.fromScreen = fromscreen;
         return frag;
     }
 
-    public static EditNameDialogFragment newInstance2(EditKycActivity aadharVerificationFragment, String ProcessId, boolean fromEdit, int withoutimage) {
+    public static EditNameDialogFragment newInstance2(EditKycActivity aadharVerificationFragment, String ProcessId, boolean fromEdit, int withoutimage, String fromscreen) {
         EditNameDialogFragment frag = new EditNameDialogFragment();
         frag.editKycActivity = aadharVerificationFragment;
         frag.proccessId = ProcessId;
         frag.fromedit = fromEdit;
         frag.withoutimagee = withoutimage;
+        frag.fromScreen = fromscreen;
         return frag;
     }
+
+    public static EditNameDialogFragment newInstance2(EditKYCfromProfileActivity aadharVerificationFragment, String ProcessId, boolean fromEdit, int withoutimage, String fromscreen) {
+        EditNameDialogFragment frag = new EditNameDialogFragment();
+        frag.editKYCfromProfileActivity = aadharVerificationFragment;
+        frag.proccessId = ProcessId;
+        frag.fromedit = fromEdit;
+        frag.withoutimagee = withoutimage;
+        frag.fromScreen = fromscreen;
+        return frag;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_edit_name, container);
-
-
     }
 
     @Override
@@ -159,10 +170,18 @@ public class EditNameDialogFragment extends DialogFragment {
                         } else {
 
                             if (fromedit) {
-                                if (withoutimagee == 0) {
-                                    editKycActivity.storeAadhar();
-                                } else {
-                                    editKycActivity.storeAadharwithoutImage();
+                                if (fromScreen.equalsIgnoreCase("1")) {
+                                    if (withoutimagee == 0) {
+                                        editKycActivity.storeAadhar();
+                                    } else {
+                                        editKycActivity.storeAadharwithoutImage();
+                                    }
+                                } else if (fromScreen.equalsIgnoreCase("2")) {
+                                    if (withoutimagee == 0) {
+                                        editKYCfromProfileActivity.storeAadhar();
+                                    } else {
+                                        editKYCfromProfileActivity.storeAadharwithoutImage();
+                                    }
                                 }
                             } else {
                                 aadharVerificationFragment.storeAadhar();
@@ -274,8 +293,6 @@ public class EditNameDialogFragment extends DialogFragment {
         edit_anumber.setText(str_uid);
         edit_ayear.setText(str_year);
         edit_apincode.setText(str_pincode);
-
-
 
 
     }

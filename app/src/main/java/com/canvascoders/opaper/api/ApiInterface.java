@@ -26,6 +26,7 @@ import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGstListing.GetGstListing;
 import com.canvascoders.opaper.Beans.GetGstPanEditResponse.GetGstPanEditResponse;
 import com.canvascoders.opaper.Beans.GetOTPfrStoreExeResponse.GetOTPfrStoreExeResponse;
+import com.canvascoders.opaper.Beans.GetOldKYCResponse.GetOldKYCResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
 import com.canvascoders.opaper.Beans.GetPanExistResponse.GetPanAlreadyExistResponse;
 import com.canvascoders.opaper.Beans.GetTaskEndResponse.GetTaskEndResponse;
@@ -263,6 +264,12 @@ public interface ApiInterface {
     @POST("support-subject")
     Call<SupportSubjectResponse> getSubject(@Header("Authorization") String token, @FieldMap Map<String, String> param);
 
+
+
+    @FormUrlEncoded
+    @POST("get-profile-kyc")
+    Call<GetOldKYCResponse> getOldKYC(@Header("Authorization") String token, @FieldMap Map<String, String> param);
+
     @POST("task-type-list")
     Call<GetTasksTypeListing> getTaskTypeListing(@Header("Authorization") String token);
 
@@ -316,6 +323,17 @@ public interface ApiInterface {
     Call<CommonResponse> getstoreAadharEdit(@Header("Authorization") String token, @PartMap() Map<String, String> data,
                                             @Part MultipartBody.Part aadharcard_front,
                                             @Part MultipartBody.Part aadharcard_back);
+
+    @Multipart
+    @POST("verify-profile-kyc")
+    Call<CommonResponse> getstoreAadharProfileEdit(@Header("Authorization") String token, @PartMap() Map<String, String> data,
+                                            @Part MultipartBody.Part aadharcard_front,
+                                            @Part MultipartBody.Part aadharcard_back);
+    @FormUrlEncoded
+    @POST("verify-profile-kyc")
+    Call<CommonResponse> getstoreAadharProfileEditwithoutImage(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
+
 
     @FormUrlEncoded
     @POST("edit-verify-kyc")

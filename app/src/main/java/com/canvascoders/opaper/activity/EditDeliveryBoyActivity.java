@@ -104,7 +104,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     private ImageView ivProfile, ivDriving_Licence, ivDlImageBack, ivBack;
     private String profileImagepath = "", licenceImagePath = "", licenceImagePathBack = "";
     private int PROFILEIMAGE = 200, LICENCEIMAGE = 300, LICENCEIMAGEBACK = 400;
-    String stringDob = "";
+
     private int mYear, mMonth, mDay, mHour, mMinute;
     private Button addDelBoy;
     private RelativeLayout rvLanguage;
@@ -170,6 +170,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     RadioGroup radioSexGroup;
     private RadioButton radioSexButton;
     boolean optional = false;
+    String ocrid="";
     EditText etDexter;
     RelativeLayout rvSelctVoterDOB;
 
@@ -1198,6 +1199,14 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
 
                     if (validation(3)) {
+
+                        if (kyc_type.equalsIgnoreCase("3")) {
+                            ApiCallSubmitOcr("", "", stringdob, etDrivingNumber.getText().toString(), ocrid, filename, fileUrl);
+                        }
+                        if (kyc_type.equalsIgnoreCase("2")) {
+                            ApiCallSubmitOcr("", "", stringdob, etVoterIdNumber.getText().toString(), ocrid, filename, fileUrl);
+
+                        }
                         ApiCallSubmit();
                     }
                 }
@@ -2379,6 +2388,8 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                             dlIdDetailId = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();*/
+
+                            ocrid=String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
                             etDrivingNumber.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber());
 
 
@@ -2834,6 +2845,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                         VoterOCRGetDetaisResponse voterOCRGetDetaisResponse = response.body();
                         if (voterOCRGetDetaisResponse.getStatus().equalsIgnoreCase("success")) {
                             voterDetailsId = String.valueOf(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdDetailId());
+                            ocrid=voterDetailsId;
                             filename = voterOCRGetDetaisResponse.getVoterIdDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getVoterIdDetail().getFileUrl();
                             String outputDateStr = "";
@@ -2851,7 +2863,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                             //etVoterFatherName.setText(voterOCRGetDetaisResponse.getVoterIdDetail().);
                             etVoterIdNumber.setText(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber());
 
-                            ApiCallSubmitOcr(voterOCRGetDetaisResponse.getVoterIdDetail().getName(), "", tvVoterDOB.getText().toString(), etVoterIdNumber.getText().toString(), voterDetailsId, filename, fileUrl);
+                            //ApiCallSubmitOcr(voterOCRGetDetaisResponse.getVoterIdDetail().getName(), "", tvVoterDOB.getText().toString(), etVoterIdNumber.getText().toString(), voterDetailsId, filename, fileUrl);
 
                            /* DialogUtil.VoterDetail(EditDeliveryBoyActivity.this, voterOCRGetDetaisResponse.getVoterIdDetail().getName(), voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber(), voterOCRGetDetaisResponse.getVoterIdDetail().getFatherName(), outputDateStr, new DialogListner() {
                                 @Override

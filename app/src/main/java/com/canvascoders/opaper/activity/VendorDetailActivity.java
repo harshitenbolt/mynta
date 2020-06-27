@@ -53,6 +53,7 @@ import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.Screenshot.DragRectView;
 import com.canvascoders.opaper.Screenshot.Screenshot;
+import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditKycActivity;
 import com.canvascoders.opaper.adapters.DocumentListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
@@ -115,7 +116,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     AppCompatSpinner spYear;
     ProgressBar pbBar;
     LinearLayout llDisable, llDelBoy;
-    CardView cvGST;
+    CardView cvGST,cvKYC;
     LinearLayout llEnable;
     private TextView tvStoreName, tvAddress, tvNoData;
     boolean expand = false;
@@ -400,6 +401,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         cvCheque = findViewById(R.id.cvCheque);
         cvRate = findViewById(R.id.cvRate);
         cvGST = findViewById(R.id.cvGST);
+        cvKYC = findViewById(R.id.cvKYC);
         cvResignAgreement = findViewById(R.id.cvResign);
         cvDelBoy = findViewById(R.id.cvDelBoy);
         cvAddGSTIMAGE = findViewById(R.id.cvGSTImage);
@@ -625,12 +627,25 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             }
         });
 
+
+
+        cvKYC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                commanFragmentCallWithBackStack(new ChequedataUpdateFragment(),vendor);
+                Intent i = new Intent(VendorDetailActivity.this, EditKYCfromProfileActivity.class);
+                i.putExtra(Constants.KEY_PROCESS_ID, String.valueOf(vendor.getProccessId()));
+                startActivity(i);
+                finish();
+            }
+        });
+
         Log.e("datagot",vendor.getPanNo());
         String letter = Character.toString(vendor.getPanNo().charAt(3));
         if (letter.equalsIgnoreCase("F") || letter.equalsIgnoreCase("C")) {
             cvPan.setVisibility(View.GONE);
         } else {
-            cvPan.setVisibility(View.VISIBLE);
+            cvPan.setVisibility(View.GONE);
         }
         cvPan.setOnClickListener(new View.OnClickListener() {
             @Override

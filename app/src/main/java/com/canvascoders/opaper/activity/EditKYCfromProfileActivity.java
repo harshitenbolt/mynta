@@ -1,20 +1,20 @@
-package com.canvascoders.opaper.activity.EditWhileOnBoarding;
+package com.canvascoders.opaper.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-
 import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteConstraintException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,20 +36,15 @@ import com.canvascoders.opaper.Beans.AdharocrResponse.AadharCardDetail;
 import com.canvascoders.opaper.Beans.AdharocrResponse.AdharOCRResponse;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
+import com.canvascoders.opaper.Beans.GetOldKYCResponse.GetOldKYCResponse;
 import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
 import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
 import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.R;
-import com.canvascoders.opaper.activity.AppApplication;
-import com.canvascoders.opaper.activity.CropImage2Activity;
-import com.canvascoders.opaper.activity.ScannerActivity;
-
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
-import com.canvascoders.opaper.fragment.AadharVerificationFragment;
 import com.canvascoders.opaper.fragment.EditNameDialogFragment;
-import com.canvascoders.opaper.fragment.PanVerificationFragment;
 import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.DataAttributes;
@@ -69,7 +64,9 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
+import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -88,7 +85,7 @@ import retrofit2.Response;
 
 import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
 
-public class EditKycActivity extends AppCompatActivity implements View.OnClickListener {
+public class EditKYCfromProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int IMAGE_AADHAR_FRONT = 1021;
     private static final int IMAGE_AADHAR_BACK = 1022, IMAGE_VOTER_FRONT = 1023, IMAGE_VOTER_BACK = 1024, IMAGE_DL_FRONT = 1025, IMAGE_DL_BACK = 1026;
@@ -154,7 +151,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_kyc);
+        setContentView(R.layout.activity_edit_kycfrom_profile);
         sessionManager = new SessionManager(this);
         requestPermissionHandler = new RequestPermissionHandler();
         str_process_id = getIntent().getStringExtra(Constants.KEY_PROCESS_ID);
@@ -164,6 +161,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
         init();
 
     }
+
 
     private void init() {
         ivBack = findViewById(R.id.ivBack);
@@ -244,22 +242,22 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                     dlImagePathBack = "";
                     ivDlBackSelected.setVisibility(View.GONE);
                     tvDlBack.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(dlImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
+                    Glide.with(EditKYCfromProfileActivity.this).load(dlImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
 
                     dlImageOathFront = "";
                     ivDlFrontSelected.setVisibility(View.GONE);
                     tvDlBack.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(dlImageOathFront).placeholder(R.drawable.blfront).into(ivDlImageFront);
+                    Glide.with(EditKYCfromProfileActivity.this).load(dlImageOathFront).placeholder(R.drawable.blfront).into(ivDlImageFront);
 
                     voterImagePathBack = "";
                     ivVoterBackSelected.setVisibility(View.GONE);
                     tvVoterBack.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
+                    Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
 
                     voterImagePathFront = "";
                     ivVoterFrontSelected.setVisibility(View.GONE);
                     tvVoterFront.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
+                    Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
                     // new ReportFragment.GetReports(object.toString(), "?report_type=daily").execute();
 
                 }
@@ -276,22 +274,22 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                     voterImagePathBack = "";
                     ivVoterBackSelected.setVisibility(View.GONE);
                     tvVoterBack.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
+                    Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
 
                     voterImagePathFront = "";
                     ivVoterFrontSelected.setVisibility(View.GONE);
                     tvVoterFront.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
+                    Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
 
                     aadharImagepathFront = "";
                     ivAdharFrontSelected.setVisibility(View.GONE);
                     tvAdharBack.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+                    Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
 
                     aadharImagepathBack = "";
                     ivAdharABackSelected.setVisibility(View.GONE);
                     tvAdharBack.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                    Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
                     // new ReportFragment.GetReports(object.toString(), "?report_type=monthly").execute();
 
                 }
@@ -308,22 +306,22 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                     dlImagePathBack = "";
                     ivDlBackSelected.setVisibility(View.GONE);
                     tvDlBack.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(dlImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
+                    Glide.with(EditKYCfromProfileActivity.this).load(dlImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
 
                     dlImageOathFront = "";
                     ivDlFrontSelected.setVisibility(View.GONE);
                     tvDlBack.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(dlImageOathFront).placeholder(R.drawable.blfront).into(ivDlImageFront);
+                    Glide.with(EditKYCfromProfileActivity.this).load(dlImageOathFront).placeholder(R.drawable.blfront).into(ivDlImageFront);
 
                     aadharImagepathFront = "";
                     ivAdharFrontSelected.setVisibility(View.GONE);
                     tvAdharBack.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+                    Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
 
                     aadharImagepathBack = "";
                     ivAdharABackSelected.setVisibility(View.GONE);
                     tvAdharBack.setVisibility(View.VISIBLE);
-                    Glide.with(EditKycActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                    Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
                     //new ReportFragment.GetReports(object.toString(), "").execute();
                 }
             }
@@ -352,27 +350,28 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
         Map<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
-        ApiClient.getClient().create(ApiInterface.class).geTrackingDetails("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<GetTrackDetailsResponse>() {
+        ApiClient.getClient().create(ApiInterface.class).getOldKYC("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<GetOldKYCResponse>() {
             @Override
-            public void onResponse(Call<GetTrackDetailsResponse> call, Response<GetTrackDetailsResponse> response) {
+            public void onResponse(Call<GetOldKYCResponse> call, Response<GetOldKYCResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    GetTrackDetailsResponse getTrackDetailsResponse = response.body();
+                    GetOldKYCResponse getTrackDetailsResponse = response.body();
                     if (getTrackDetailsResponse.getResponseCode() == 200) {
-                        //  Toast.makeText(EditKycActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(EditKYCfromProfileActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         //locatioon data
 
 
-                        if (getTrackDetailsResponse.getData().get(0).getProccessDetail().getKycType().equalsIgnoreCase("1")) {
-                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getAdharCardFront()).into(ivAdharIamgeFront);
-                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getAdharCardBack()).into(ivAdharImageBack);
+                        if (getTrackDetailsResponse.getData().get(0).getKycType().equalsIgnoreCase("1")) {
 
-                            gotName = getTrackDetailsResponse.getData().get(0).getProccessDetail().getAadhaarName();
-                            gotDocId = getTrackDetailsResponse.getData().get(0).getProccessDetail().getAadhaarNo();
-                            gotDOB = getTrackDetailsResponse.getData().get(0).getProccessDetail().getAadhaarDob();
+                            Glide.with(EditKYCfromProfileActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getAdharCardFront()).into(ivAdharIamgeFront);
+                            Glide.with(EditKYCfromProfileActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getAdharCardBack()).into(ivAdharImageBack);
+
+                            gotName = getTrackDetailsResponse.getData().get(0).getAadhaarName();
+                            gotDocId = getTrackDetailsResponse.getData().get(0).getAadhaarNo();
+                            gotDOB = getTrackDetailsResponse.getData().get(0).getAadhaarDob();
 
                             // just taking this father name as pincoode because not to need another variable
-                            gotFatherName = getTrackDetailsResponse.getData().get(0).getProccessDetail().getAadhaarPincode();
+                            gotFatherName = getTrackDetailsResponse.getData().get(0).getAadhaarPincode();
 
                             Log.e("Done", "Adhar");
 
@@ -387,34 +386,35 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                             dlImagePathBack = "";
                             ivDlBackSelected.setVisibility(View.GONE);
                             tvDlBack.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(dlImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
+                            Glide.with(EditKYCfromProfileActivity.this).load(dlImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
 
                             dlImageOathFront = "";
                             ivDlFrontSelected.setVisibility(View.GONE);
                             tvDlBack.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(dlImageOathFront).placeholder(R.drawable.blfront).into(ivDlImageFront);
+                            Glide.with(EditKYCfromProfileActivity.this).load(dlImageOathFront).placeholder(R.drawable.blfront).into(ivDlImageFront);
 
                             voterImagePathBack = "";
                             ivVoterBackSelected.setVisibility(View.GONE);
                             tvVoterBack.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
+                            Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
 
                             voterImagePathFront = "";
                             ivVoterFrontSelected.setVisibility(View.GONE);
                             tvVoterFront.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
+                            Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
                             RadioButton b = (RadioButton) findViewById(R.id.rbAdharCard);
                             b.setChecked(true);
+                            new getBitmapAdharFront().execute(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getAdharCardFront());
+                            new getBitmapAdharBack().execute(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getAdharCardBack());
+                        } else if (getTrackDetailsResponse.getData().get(0).getKycType().equalsIgnoreCase("2")) {
 
+                            Glide.with(EditKYCfromProfileActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getVoterCardFront()).into(ivVoterImageFront);
+                            Glide.with(EditKYCfromProfileActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getVoterCardBack()).into(ivVoterImageBack);
 
-                        } else if (getTrackDetailsResponse.getData().get(0).getProccessDetail().getKycType().equalsIgnoreCase("2")) {
-                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getVoterCardFront()).into(ivVoterImageFront);
-                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getVoterCardBack()).into(ivVoterImageBack);
-
-                            gotName = getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterName();
-                            gotDocId = getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterIdNum();
-                            gotDOB = getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterDob();
-                            gotFatherName = getTrackDetailsResponse.getData().get(0).getProccessDetail().getVoterFatherName();
+                            gotName = getTrackDetailsResponse.getData().get(0).getVoterName();
+                            gotDocId = getTrackDetailsResponse.getData().get(0).getVoterIdNum();
+                            gotDOB = getTrackDetailsResponse.getData().get(0).getVoterDob();
+                            gotFatherName = getTrackDetailsResponse.getData().get(0).getVoterFatherName();
 
                             Log.e("Done", "Voter");
                             cdAdhar.setVisibility(View.GONE);
@@ -426,34 +426,38 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                             dlImagePathBack = "";
                             ivDlBackSelected.setVisibility(View.GONE);
                             tvDlBack.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(dlImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
+                            Glide.with(EditKYCfromProfileActivity.this).load(dlImagePathBack).placeholder(R.drawable.dlback).into(ivDlImageBack);
 
                             dlImageOathFront = "";
                             ivDlFrontSelected.setVisibility(View.GONE);
                             tvDlBack.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(dlImageOathFront).placeholder(R.drawable.blfront).into(ivDlImageFront);
+                            Glide.with(EditKYCfromProfileActivity.this).load(dlImageOathFront).placeholder(R.drawable.blfront).into(ivDlImageFront);
 
                             aadharImagepathFront = "";
                             ivAdharFrontSelected.setVisibility(View.GONE);
                             tvAdharBack.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+                            Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
 
                             aadharImagepathBack = "";
                             ivAdharABackSelected.setVisibility(View.GONE);
                             tvAdharBack.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                            Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
                             //new ReportFragment.GetReports(object.toString(), "").execute();
                             RadioButton b = (RadioButton) findViewById(R.id.rbVoter);
                             b.setChecked(true);
+                            new getBitmapvoterFront().execute(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getVoterCardFront());
+                            new getBitmapVoterBack().execute(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getVoterCardBack());
 
                         } else {
-                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getDlCardFront()).into(ivDlImageFront);
-                            Glide.with(EditKycActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getDlCardBack()).into(ivDlImageBack);
 
-                            gotName = getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlName();
-                            gotDocId = getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlNumber();
-                            gotDOB = getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlDob();
-                            gotFatherName = getTrackDetailsResponse.getData().get(0).getProccessDetail().getDlFatherName();
+
+                            Glide.with(EditKYCfromProfileActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDlCardFront()).into(ivDlImageFront);
+                            Glide.with(EditKYCfromProfileActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDlCardBack()).into(ivDlImageBack);
+
+                            gotName = getTrackDetailsResponse.getData().get(0).getDlName();
+                            gotDocId = getTrackDetailsResponse.getData().get(0).getDlNumber();
+                            gotDOB = getTrackDetailsResponse.getData().get(0).getDlDob();
+                            gotFatherName = getTrackDetailsResponse.getData().get(0).getDlFatherName();
 
                             kyc_type = "3";
 
@@ -467,45 +471,48 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                             voterImagePathBack = "";
                             ivVoterBackSelected.setVisibility(View.GONE);
                             tvVoterBack.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
+                            Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathBack).placeholder(R.drawable.voterback).into(ivVoterImageBack);
 
                             voterImagePathFront = "";
                             ivVoterFrontSelected.setVisibility(View.GONE);
                             tvVoterFront.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
+                            Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathFront).placeholder(R.drawable.voterfront).into(ivVoterImageFront);
 
                             aadharImagepathFront = "";
                             ivAdharFrontSelected.setVisibility(View.GONE);
                             tvAdharBack.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+                            Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
 
                             aadharImagepathBack = "";
                             ivAdharABackSelected.setVisibility(View.GONE);
                             tvAdharBack.setVisibility(View.VISIBLE);
-                            Glide.with(EditKycActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                            Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
                             // new ReportFragment.GetReports(object.toString(), "?report_type=monthly").execute();
 
 
                             RadioButton dl = (RadioButton) findViewById(R.id.rbDriving);
 
                             dl.setChecked(true);
+                            new getBitmapDLFront().execute(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDlCardFront());
+                            new getBitmapDlBack().execute(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDlCardBack());
+
 
                         }
 
 
                     } else {
-                        Toast.makeText(EditKycActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
 
                     }
                 } else {
-                    Toast.makeText(EditKycActivity.this, "#errorcode 2091 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode 2091 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<GetTrackDetailsResponse> call, Throwable t) {
+            public void onFailure(Call<GetOldKYCResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(EditKycActivity.this, "#errorcode 2091 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode 2091 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -536,7 +543,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
                     capture_aadhar_front_and_back_image(3);
                 } else {
-                    Toast.makeText(EditKycActivity.this, "Please Upload Both Images First", Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKYCfromProfileActivity.this, "Please Upload Both Images First", Toast.LENGTH_LONG).show();
                 }
 
                 break;
@@ -581,7 +588,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                     }
 
                 } else {
-                    Constants.ShowNoInternet(EditKycActivity.this);
+                    Constants.ShowNoInternet(EditKYCfromProfileActivity.this);
                 }
                 break;
 
@@ -600,7 +607,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
                     } else {
                         //showEditDialog(1);
-                        Toast.makeText(EditKycActivity.this, "Please upload Both Images.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, "Please upload Both Images.", Toast.LENGTH_SHORT).show();
                     }
 
 
@@ -608,7 +615,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                     if (!voterImagePathFront.equals("") && !voterImagePathBack.equalsIgnoreCase("")) {
 
                         try {
-                            Glide.with(EditKycActivity.this).load(voterImagePathBack).into(ivVoterImageBack);
+                            Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathBack).into(ivVoterImageBack);
                             ivVoterBackSelected.setVisibility(View.VISIBLE);
                             tvVoterBack.setVisibility(View.GONE);
                             if (!voterImagePathFront.equals("") && !voterImagePathBack.equalsIgnoreCase("")) {
@@ -623,25 +630,25 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                     } else {
 
 
-                        Toast.makeText(EditKycActivity.this, "Please upload Both Images.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, "Please upload Both Images.", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
                     if (!dlImageOathFront.equals("") && !dlImagePathBack.equalsIgnoreCase("")) {
 
                         try {
-                            Glide.with(EditKycActivity.this).load(voterImagePathBack).into(ivVoterImageBack);
+                            Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathBack).into(ivVoterImageBack);
                             ivVoterBackSelected.setVisibility(View.VISIBLE);
                             tvVoterBack.setVisibility(View.GONE);
                             if (!dlImageOathFront.equalsIgnoreCase("") && !dlImagePathBack.equalsIgnoreCase("")) {
-                                ApiCallGetDetailLicence(dlImageOathFront,dlImagePathBack);
+                                ApiCallGetDetailLicence(dlImageOathFront, dlImagePathBack);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     } else {
 
-                       /* DialogUtil.DrivingDetail(EditKycActivity.this, gotName, gotFatherName, gotDOB, gotDocId, new DialogListner() {
+                       /* DialogUtil.DrivingDetail(EditKYCfromProfileActivity.this, gotName, gotFatherName, gotDOB, gotDocId, new DialogListner() {
                             @Override
                             public void onClickPositive() {
 
@@ -673,7 +680,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                         });*/
 
 
-                        Toast.makeText(EditKycActivity.this, "Please upload Both Images.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, "Please upload Both Images.", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -683,7 +690,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
 
                /* GatewayId = this.getString(R.string.gateway_id);
-                Intent gatewayIntent = new Intent(EditKycActivity.this, AadhaarAPIActivity.class);
+                Intent gatewayIntent = new Intent(EditKYCfromProfileActivity.this, AadhaarAPIActivity.class);
                 gatewayIntent.putExtra(QT_TRANSACTION_ID, GatewayId);
                 gatewayIntent.putExtra(QT_REQUEST_TYPE, OFFLINE_AADHAAR.getRequest());
                 startActivityForResult(gatewayIntent, REQUEST_AADHAARAPI);*/
@@ -696,7 +703,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void capture_aadhar_front_and_back_image(int imageSide) {
-        requestPermissionHandler.requestPermission(EditKycActivity.this, new String[]{
+        requestPermissionHandler.requestPermission(EditKYCfromProfileActivity.this, new String[]{
                 Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION
         }, 123, new RequestPermissionHandler.RequestPermissionListener() {
@@ -705,7 +712,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
                 if (imageSide == 1) {
                     IMAGE_SELCTION_CODE = IMAGE_AADHAR_FRONT;
-                    Intent intent1 = ImagePicker.getCameraIntent(EditKycActivity.this);
+                    Intent intent1 = ImagePicker.getCameraIntent(EditKYCfromProfileActivity.this);
                     startActivityForResult(intent1, IMAGE_AADHAR_FRONT);
 
                 }
@@ -713,27 +720,27 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
                     IMAGE_SELCTION_CODE = IMAGE_AADHAR_BACK;
 
-                    Intent intent2 = ImagePicker.getCameraIntent(EditKycActivity.this);
+                    Intent intent2 = ImagePicker.getCameraIntent(EditKYCfromProfileActivity.this);
                     startActivityForResult(intent2, IMAGE_AADHAR_BACK);
                 }
 
                 if (imageSide == 3) {
 
-                    Intent intent3 = new Intent(EditKycActivity.this, ScannerActivity.class);
+                    Intent intent3 = new Intent(EditKYCfromProfileActivity.this, ScannerActivity.class);
                     startActivityForResult(intent3, REQUEST_SCANNER);
                 }
                 if (imageSide == 4) {
 
                     IMAGE_SELCTION_CODE = IMAGE_DL_FRONT;
 
-                    Intent intent4 = ImagePicker.getCameraIntent(EditKycActivity.this);
+                    Intent intent4 = ImagePicker.getCameraIntent(EditKYCfromProfileActivity.this);
                     startActivityForResult(intent4, IMAGE_DL_FRONT);
                 }
                 if (imageSide == 5) {
 
                     IMAGE_SELCTION_CODE = IMAGE_DL_BACK;
 
-                    Intent intent5 = ImagePicker.getCameraIntent(EditKycActivity.this);
+                    Intent intent5 = ImagePicker.getCameraIntent(EditKYCfromProfileActivity.this);
                     startActivityForResult(intent5, IMAGE_DL_BACK);
                 }
 
@@ -741,14 +748,14 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
                     IMAGE_SELCTION_CODE = IMAGE_VOTER_FRONT;
 
-                    Intent intent6 = ImagePicker.getCameraIntent(EditKycActivity.this);
+                    Intent intent6 = ImagePicker.getCameraIntent(EditKYCfromProfileActivity.this);
                     startActivityForResult(intent6, IMAGE_VOTER_FRONT);
                 }
 
                 if (imageSide == 7) {
 
                     IMAGE_SELCTION_CODE = IMAGE_VOTER_BACK;
-                    Intent intent7 = ImagePicker.getCameraIntent(EditKycActivity.this);
+                    Intent intent7 = ImagePicker.getCameraIntent(EditKYCfromProfileActivity.this);
                     startActivityForResult(intent7, IMAGE_VOTER_BACK);
                 }
 
@@ -757,7 +764,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onFailed() {
-                Toast.makeText(EditKycActivity.this, "request permission failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "request permission failed", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -788,26 +795,26 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 return false;
             }
             if (TextUtils.isEmpty(tvVoterDOB.getText().toString())) {
-                Toast.makeText(EditKycActivity.this, "Provide Date of Birth", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "Provide Date of Birth", Toast.LENGTH_SHORT).show();
 
                 return false;
             }
 
 
             if (TextUtils.isEmpty(tvVoterDOB.getText().toString())) {
-                Toast.makeText(EditKycActivity.this, "Provide Date of Birth", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "Provide Date of Birth", Toast.LENGTH_SHORT).show();
 
                 return false;
             }
 
             if (voterImagePathFront.equalsIgnoreCase("")) {
-                Toast.makeText(EditKycActivity.this, "Select Voter ID", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "Select Voter ID", Toast.LENGTH_SHORT).show();
 
                 return false;
             }
 
             if (voterImagePathBack.equalsIgnoreCase("")) {
-                Toast.makeText(EditKycActivity.this, "Select Back Side of Voter ID", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "Select Back Side of Voter ID", Toast.LENGTH_SHORT).show();
 
                 return false;
             }
@@ -839,12 +846,12 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 return false;
             }
             if (dlImageOathFront.equalsIgnoreCase("")) {
-                Toast.makeText(EditKycActivity.this, "Please Select Driving Licence Image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "Please Select Driving Licence Image", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
             if (dlImagePathBack.equalsIgnoreCase("")) {
-                Toast.makeText(EditKycActivity.this, "Please Select Driving Licence Back Image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "Please Select Driving Licence Back Image", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -855,7 +862,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void ApiCallSubmitKYC(String name, String fathername, String dob, String id) {
-        gps = new GPSTracker(EditKycActivity.this);
+        gps = new GPSTracker(EditKYCfromProfileActivity.this);
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
             Double lng = gps.getLongitude();
@@ -926,7 +933,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             mProgressDialog.setMessage("we are retrieving information, please wait!");
             mProgressDialog.show();
             // hideKeyboardwithoutPopulateFragment();
-            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadharEdit("Bearer " + sessionManager.getToken(), params, aadharcard_front_part, aadharcard_back_part);
+            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadharProfileEdit("Bearer " + sessionManager.getToken(), params, aadharcard_front_part, aadharcard_back_part);
             callUpload.enqueue(new Callback<CommonResponse>() {
                 @Override
                 public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
@@ -948,10 +955,10 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
                         } else {
                             if (getaadhardetail.getResponseCode() == 405) {
-                                sessionManager.logoutUser(EditKycActivity.this);
+                                sessionManager.logoutUser(EditKYCfromProfileActivity.this);
                             }
                             if (getaadhardetail.getResponseCode() == 411) {
-                                sessionManager.logoutUser(EditKycActivity.this);
+                                sessionManager.logoutUser(EditKYCfromProfileActivity.this);
                             }
 
                             if (getaadhardetail.getResponseCode() == 400) {
@@ -966,6 +973,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                     if (validation.getVoterDob() != null && validation.getVoterDob().length() > 0) {
                                         //  showAlertValidation(validation.getVoterDob());
                                         DialogUtil.etVoterDateofBirth.setError(validation.getVoterDob());
+                                        DialogUtil.etVoterDateofBirth.requestFocus();
                                     }
                                     if (validation.getVoterName() != null && validation.getVoterName().length() > 0) {
                                         DialogUtil.etVotername.setError(validation.getVoterName());
@@ -973,13 +981,12 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                     if (validation.getVoterFatherName() != null && validation.getVoterFatherName().length() > 0) {
                                         // showAlertValidation(validation.getVoterFatherName());
                                         DialogUtil.etVoterFatherName.setError(validation.getFatherName());
-
+                                        DialogUtil.etVoterFatherName.requestFocus();
                                     }
                                     if (validation.getVoterIdNum() != null && validation.getVoterIdNum().length() > 0) {
-
-
                                         // showAlertValidation(validation.getVoterIdNum());
                                         DialogUtil.etVoterIdNumber.setError(validation.getVoterIdNum());
+                                        DialogUtil.etVoterIdNumber.requestFocus();
                                     }
                                     if (validation.getDlCardFront() != null && validation.getDlCardFront().length() > 0) {
                                         /*DialogUtil.etDlNumber.setError(validation.getVoterIdNum());
@@ -994,31 +1001,34 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                     }
                                     if (validation.getDlDob() != null && validation.getDlDob().length() > 0) {
                                         DialogUtil.etDlDob.setError(validation.getDlDob());
+                                        DialogUtil.etDlDob.requestFocus();
                                     }
                                     if (validation.getDlFatherName() != null && validation.getDlFatherName().length() > 0) {
-                                        //  Toast.makeText(EditKycActivity.this, validation.getDlFatherName(), Toast.LENGTH_SHORT).show();
+                                        //  Toast.makeText(EditKYCfromProfileActivity.this, validation.getDlFatherName(), Toast.LENGTH_SHORT).show();
                                         DialogUtil.etFathername.setError(validation.getDlFatherName());
+                                        DialogUtil.etFathername.requestFocus();
                                     }
                                     if (validation.getDlNumber() != null && validation.getDlNumber().length() > 0) {
                                         DialogUtil.etDlNumber.setError(validation.getDlNumber());
-
+                                        DialogUtil.etDlNumber.requestFocus();
                                     }
                                     if (validation.getDlName() != null && validation.getDlName().length() > 0) {
                                         DialogUtil.etDlName.setError(validation.getDlName());
+                                        DialogUtil.etDlName.requestFocus();
 
                                     }
                                 } else {
                                     //  showAlert2(getaadhardetail.getResponse());
                                 }
                             }
-                            Toast.makeText(EditKycActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditKYCfromProfileActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
 
                         }
 
                     } else {
-                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
-                        //   Toast.makeText(EditKycActivity.this, "Contact administrator immediately", Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(EditKYCfromProfileActivity.this, "Contact administrator immediately", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -1026,7 +1036,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });
@@ -1037,7 +1047,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void ApiCallSubmitKYCwithoutImage(String name, String fathername, String dob, String id) {
-        gps = new GPSTracker(EditKycActivity.this);
+        gps = new GPSTracker(EditKYCfromProfileActivity.this);
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
             Double lng = gps.getLongitude();
@@ -1108,7 +1118,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             mProgressDialog.setMessage("Please wait......");
             mProgressDialog.show();
             // hideKeyboardwithoutPopulateFragment();
-            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadharEditwithoutImage("Bearer " + sessionManager.getToken(), params);
+            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadharProfileEditwithoutImage("Bearer " + sessionManager.getToken(), params);
             callUpload.enqueue(new Callback<CommonResponse>() {
                 @Override
                 public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
@@ -1130,10 +1140,10 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
                         } else {
                             if (getaadhardetail.getResponseCode() == 405) {
-                                sessionManager.logoutUser(EditKycActivity.this);
+                                sessionManager.logoutUser(EditKYCfromProfileActivity.this);
                             }
                             if (getaadhardetail.getResponseCode() == 411) {
-                                sessionManager.logoutUser(EditKycActivity.this);
+                                sessionManager.logoutUser(EditKYCfromProfileActivity.this);
                             }
 
                             if (getaadhardetail.getResponseCode() == 400) {
@@ -1141,12 +1151,12 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                     Validation validation = getaadhardetail.getValidation();
                                     if (validation.getVoterCardFront() != null && validation.getVoterCardFront().length() > 0) {
                                         //showAlertValidation(validation.getVoterCardFront());
-                                        Toast.makeText(EditKycActivity.this, validation.getVoterCardFront(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getVoterCardFront(), Toast.LENGTH_SHORT).show();
 
                                     }
                                     if (validation.getVoterCardBack() != null && validation.getVoterCardBack().length() > 0) {
                                         //   showAlertValidation(validation.getVoterCardBack());
-                                        Toast.makeText(EditKycActivity.this, validation.getVoterCardBack(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getVoterCardBack(), Toast.LENGTH_SHORT).show();
 
                                     }
                                     if (validation.getVoterDob() != null && validation.getVoterDob().length() > 0) {
@@ -1174,13 +1184,13 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                     if (validation.getDlCardFront() != null && validation.getDlCardFront().length() > 0) {
                                         /*DialogUtil.etDlNumber.setError(validation.getVoterIdNum());
                                         showAlertValidation(validation.getDlCardFront());*/
-                                        Toast.makeText(EditKycActivity.this, validation.getDlCardBack(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getDlCardBack(), Toast.LENGTH_SHORT).show();
 
 
                                     }
                                     if (validation.getDlCardBack() != null && validation.getDlCardBack().length() > 0) {
 
-                                        Toast.makeText(EditKycActivity.this, validation.getDlCardBack(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getDlCardBack(), Toast.LENGTH_SHORT).show();
                                         //  showAlertValidation(validation.getDlCardBack());
 
 
@@ -1189,7 +1199,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                         DialogUtil.etDlDob.setError(validation.getDlDob());
                                     }
                                     if (validation.getDlFatherName() != null && validation.getDlFatherName().length() > 0) {
-                                        //  Toast.makeText(EditKycActivity.this, validation.getDlFatherName(), Toast.LENGTH_SHORT).show();
+                                        //  Toast.makeText(EditKYCfromProfileActivity.this, validation.getDlFatherName(), Toast.LENGTH_SHORT).show();
                                         DialogUtil.etFathername.setError(validation.getDlFatherName());
                                     }
                                     if (validation.getDlNumber() != null && validation.getDlNumber().length() > 0) {
@@ -1204,14 +1214,14 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                     //  showAlert2(getaadhardetail.getResponse());
                                 }
                             }
-                            Toast.makeText(EditKycActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditKYCfromProfileActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
 
                         }
 
                     } else {
-                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
-                        //   Toast.makeText(EditKycActivity.this, "Contact administrator immediately", Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(EditKYCfromProfileActivity.this, "Contact administrator immediately", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -1219,7 +1229,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });
@@ -1271,40 +1281,40 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                         aadharImagepathFront = "";
                         ivAdharFrontSelected.setVisibility(View.GONE);
                         tvAdharFront.setVisibility(View.VISIBLE);
-                        Glide.with(EditKycActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
-                        Toast.makeText(EditKycActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
+                        Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+                        Toast.makeText(EditKYCfromProfileActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
                     } else if (!adharOCRResponse.getIsBackOk() && adharOCRResponse.getIsFrontOk()) {
                         aadharImagepathBack = "";
                         ivAdharABackSelected.setVisibility(View.GONE);
                         tvAdharBack.setVisibility(View.VISIBLE);
-                        Glide.with(EditKycActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
-                        Toast.makeText(EditKycActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
+                        Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                        Toast.makeText(EditKYCfromProfileActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
                     } else if (adharOCRResponse.getIsFrontOk() && adharOCRResponse.getIsBackOk()) {
                         showEditDialog(adharOCRResponse.getAadharCardDetail(), 0);
                     } else if (!adharOCRResponse.getIsFrontOk() && !adharOCRResponse.getIsBackOk()) {
                         aadharImagepathFront = "";
                         ivAdharFrontSelected.setVisibility(View.GONE);
                         tvAdharFront.setVisibility(View.VISIBLE);
-                        Glide.with(EditKycActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
-                        Toast.makeText(EditKycActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
+                        Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathFront).placeholder(R.drawable.aadharcardfront).into(ivAdharIamgeFront);
+                        Toast.makeText(EditKYCfromProfileActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
                         aadharImagepathBack = "";
                         ivAdharABackSelected.setVisibility(View.GONE);
                         tvAdharBack.setVisibility(View.VISIBLE);
-                        Glide.with(EditKycActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
+                        Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
 
                     } else {
-                        Toast.makeText(EditKycActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
                     }
 
                 } else {
-                    Toast.makeText(EditKycActivity.this, "#errorcode 2089 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode 2089 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<AdharOCRResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(EditKycActivity.this, "#errorcode 2089 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode 2089 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -1349,18 +1359,17 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                             voterDetailsId = String.valueOf(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdDetailId());
                             filename = voterOCRGetDetaisResponse.getVoterIdDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getVoterIdDetail().getFileUrl();
-                            String outputDateStr="";
+                            String outputDateStr = "";
 
                             DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                             DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
-                            if(!voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate().equalsIgnoreCase("")) {
+                            if (!voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate().equalsIgnoreCase("")) {
                                 Date date = inputFormat.parse(voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate());
                                 outputDateStr = outputFormat.format(date);
                             }
 
 
-
-                            DialogUtil.VoterDetail(EditKycActivity.this, voterOCRGetDetaisResponse.getVoterIdDetail().getName(), voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber(), voterOCRGetDetaisResponse.getVoterIdDetail().getFatherName(),outputDateStr, new DialogListner() {
+                            DialogUtil.VoterDetail(EditKYCfromProfileActivity.this, voterOCRGetDetaisResponse.getVoterIdDetail().getName(), voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber(), voterOCRGetDetaisResponse.getVoterIdDetail().getFatherName(), outputDateStr, new DialogListner() {
                                 @Override
                                 public void onClickPositive() {
 
@@ -1393,7 +1402,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                         } else {
 
 
-                            DialogUtil.VoterDetail(EditKycActivity.this, "", "", "", "", new DialogListner() {
+                            DialogUtil.VoterDetail(EditKYCfromProfileActivity.this, "", "", "", "", new DialogListner() {
                                 @Override
                                 public void onClickPositive() {
 
@@ -1421,35 +1430,35 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
                             });
 
-                            Toast.makeText(EditKycActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditKYCfromProfileActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                     mProgressDialog.dismiss();
-                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
-                    //  Toast.makeText(EditKycActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    //  Toast.makeText(EditKYCfromProfileActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<VoterOCRGetDetaisResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(EditKycActivity.this, "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2035 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
-                //   Toast.makeText(EditKycActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                //   Toast.makeText(EditKYCfromProfileActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
 
 
-    private void ApiCallGetDetailLicence(String drivingLicencePath,String drivingLicenceBackImage) {
+    private void ApiCallGetDetailLicence(String drivingLicencePath, String drivingLicenceBackImage) {
         // MultipartBody.Part voter_front_part = null;
-        MultipartBody.Part driving_licence_part = null,drivinglicenceBackPart=null;
+        MultipartBody.Part driving_licence_part = null, drivinglicenceBackPart = null;
 
         Mylogger.getInstance().Logit(TAG, "getUserInfo");
 
@@ -1467,12 +1476,11 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
         drivinglicenceBackPart = MultipartBody.Part.createFormData(Constants.PARAM_DL_BACK_IMAGE, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivingLicenceBackImage)), imagefile2));
 
 
-
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
         mProgressDialog.setMessage("we are retrieving information, please wait!");
         mProgressDialog.show();
         //hideKeyboardwithoutPopulateFragment();
-        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part,drivinglicenceBackPart);
+        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part, drivinglicenceBackPart);
         call.enqueue(new Callback<DrivingLicenceDetailResponse>() {
             @Override
             public void onResponse(Call<DrivingLicenceDetailResponse> call, Response<DrivingLicenceDetailResponse> response) {
@@ -1481,7 +1489,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                     if (response.isSuccessful()) {
                         DrivingLicenceDetailResponse voterOCRGetDetaisResponse = response.body();
                         if (voterOCRGetDetaisResponse.getStatus().equalsIgnoreCase("success")) {
-                            Toast.makeText(EditKycActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditKYCfromProfileActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
                             name = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getName();
                             fathername = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFatherName();
@@ -1491,17 +1499,17 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();
 
-                            String outputDateStr="";
+                            String outputDateStr = "";
 
                             DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                             DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
-                            if(!voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate().equalsIgnoreCase("")) {
+                            if (!voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate().equalsIgnoreCase("")) {
                                 Date date = inputFormat.parse(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
                                 outputDateStr = outputFormat.format(date);
                             }
 
 
-                            DialogUtil.DrivingDetail(EditKycActivity.this, name, fathername, outputDateStr, dlnumber, new DialogListner() {
+                            DialogUtil.DrivingDetail(EditKYCfromProfileActivity.this, name, fathername, outputDateStr, dlnumber, new DialogListner() {
                                 @Override
                                 public void onClickPositive() {
 
@@ -1534,8 +1542,8 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
 
                         } else {
-                            Toast.makeText(EditKycActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            DialogUtil.DrivingDetail(EditKycActivity.this, name, fathername, dob, dlnumber, new DialogListner() {
+                            Toast.makeText(EditKYCfromProfileActivity.this, voterOCRGetDetaisResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            DialogUtil.DrivingDetail(EditKYCfromProfileActivity.this, name, fathername, dob, dlnumber, new DialogListner() {
                                 @Override
                                 public void onClickPositive() {
 
@@ -1568,23 +1576,23 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
                         }
                     } else {
-                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                     mProgressDialog.dismiss();
-                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
-                    //  Toast.makeText(EditKycActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                    //  Toast.makeText(EditKYCfromProfileActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<DrivingLicenceDetailResponse> call, Throwable t) {
                 mProgressDialog.dismiss();
-                Toast.makeText(EditKycActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2036 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
-                //      Toast.makeText(EditKycActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                //      Toast.makeText(EditKYCfromProfileActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -1598,8 +1606,8 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             dialog = null;
         }
 
-        dialog = new Dialog(EditKycActivity.this);
-        dialog = new Dialog(EditKycActivity.this, R.style.DialogLSideBelow);
+        dialog = new Dialog(EditKYCfromProfileActivity.this);
+        dialog = new Dialog(EditKYCfromProfileActivity.this, R.style.DialogLSideBelow);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialogue_success);
         dialog.setCanceledOnTouchOutside(false);
@@ -1628,7 +1636,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
     private void showAlert2(String msg) {
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(EditKycActivity.this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(EditKYCfromProfileActivity.this);
         alertDialog.setTitle("Aadhaarcard Verification");
         alertDialog.setMessage(msg);
         alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -1647,7 +1655,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                editNameDialogFragment = EditNameDialogFragment.newInstance2(EditKycActivity.this, str_process_id, true, withoutimage,"1");
+                editNameDialogFragment = EditNameDialogFragment.newInstance2(EditKYCfromProfileActivity.this, str_process_id, true, withoutimage, "2");
                 editNameDialogFragment.setCancelable(false);
                 editNameDialogFragment.show(getSupportFragmentManager(), "fragment_edit_name");
             }
@@ -1743,18 +1751,18 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                     if (response.isSuccessful()) {
 
                     } else {
-                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     }
                 } catch (Exception e) {
-                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
-                    //  Toast.makeText(EditKycActivity.this, " Contact administartor immediately", Toast.LENGTH_LONG).show();
+                    //  Toast.makeText(EditKYCfromProfileActivity.this, " Contact administartor immediately", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ApiSubmitOCRPanVoterDlResponse> call, Throwable t) {
-                Toast.makeText(EditKycActivity.this, "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2028 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
             }
         });
@@ -1769,10 +1777,10 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
             if (requestCode == IMAGE_AADHAR_FRONT) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
 
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
-                Intent intent = new Intent(EditKycActivity.this, CropImage2Activity.class);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
+                Intent intent = new Intent(EditKYCfromProfileActivity.this, CropImage2Activity.class);
                 Log.e("datadata", imagecamera);
                 intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
@@ -1781,9 +1789,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             }
             if (requestCode == CROPPED_IMAGE_ADHAR_FRONT) {
                 imgURI = Uri.parse(data.getStringExtra("uri"));
-                aadharImagepathFront = RealPathUtil.getPath(EditKycActivity.this, imgURI);
+                aadharImagepathFront = RealPathUtil.getPath(EditKYCfromProfileActivity.this, imgURI);
                 try {
-                    Glide.with(EditKycActivity.this).load(aadharImagepathFront).into(ivAdharIamgeFront);
+                    Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathFront).into(ivAdharIamgeFront);
                     isAadhaarFrontSelected = true;
                     ivAdharFrontSelected.setVisibility(View.VISIBLE);
                     tvAdharFront.setVisibility(View.GONE);
@@ -1797,9 +1805,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
             }
             if (requestCode == IMAGE_AADHAR_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
-                Intent intent = new Intent(EditKycActivity.this, CropImage2Activity.class);
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
+                Intent intent = new Intent(EditKYCfromProfileActivity.this, CropImage2Activity.class);
                 intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_BACK);
                /* File casted_image = new File(aadharImagepathFront);
@@ -1811,9 +1819,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
             if (requestCode == CROPPED_IMAGE_ADHAR_BACK) {
                 imgURI = Uri.parse(data.getStringExtra("uri"));
-                aadharImagepathBack = RealPathUtil.getPath(EditKycActivity.this, imgURI);
+                aadharImagepathBack = RealPathUtil.getPath(EditKYCfromProfileActivity.this, imgURI);
                 try {
-                    Glide.with(EditKycActivity.this).load(aadharImagepathBack).into(ivAdharImageBack);
+                    Glide.with(EditKYCfromProfileActivity.this).load(aadharImagepathBack).into(ivAdharImageBack);
                     isAadhaarBackSelected = true;
                     tvAdharBack.setVisibility(View.GONE);
                     ivAdharABackSelected.setVisibility(View.VISIBLE);
@@ -1832,24 +1840,24 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                     processScannedData(data.getStringExtra(Constants.CONTENT));
                 } else {
-                    Constants.ShowNoInternet(EditKycActivity.this);
+                    Constants.ShowNoInternet(EditKYCfromProfileActivity.this);
                 }
 
             }
             if (requestCode == IMAGE_VOTER_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
-                Intent intent = new Intent(EditKycActivity.this, CropImage2Activity.class);
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
+                Intent intent = new Intent(EditKYCfromProfileActivity.this, CropImage2Activity.class);
                 intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_FRONT);
 
             }
             if (requestCode == CROPPED_IMAGE_VOTER_FRONT) {
                 imgURI = Uri.parse(data.getStringExtra("uri"));
-                voterImagePathFront = RealPathUtil.getPath(EditKycActivity.this, imgURI);
+                voterImagePathFront = RealPathUtil.getPath(EditKYCfromProfileActivity.this, imgURI);
 
                 try {
-                    Glide.with(EditKycActivity.this).load(voterImagePathFront).into(ivVoterImageFront);
+                    Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathFront).into(ivVoterImageFront);
                     ivVoterFrontSelected.setVisibility(View.VISIBLE);
                     tvVoterFront.setVisibility(View.GONE);
                     File casted_image = new File(imagecamera);
@@ -1864,10 +1872,10 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
             if (requestCode == IMAGE_VOTER_BACK) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
 
-                Intent intent = new Intent(EditKycActivity.this, CropImage2Activity.class);
+                Intent intent = new Intent(EditKYCfromProfileActivity.this, CropImage2Activity.class);
                 intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_BACK);
 
@@ -1875,9 +1883,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             if (requestCode == CROPPED_IMAGE_VOTER_BACK) {
 
                 imgURI = Uri.parse(data.getStringExtra("uri"));
-                voterImagePathBack = RealPathUtil.getPath(EditKycActivity.this, imgURI);
+                voterImagePathBack = RealPathUtil.getPath(EditKYCfromProfileActivity.this, imgURI);
                 try {
-                    Glide.with(EditKycActivity.this).load(voterImagePathBack).into(ivVoterImageBack);
+                    Glide.with(EditKYCfromProfileActivity.this).load(voterImagePathBack).into(ivVoterImageBack);
                     ivVoterBackSelected.setVisibility(View.VISIBLE);
                     tvVoterBack.setVisibility(View.GONE);
                     File casted_image = new File(imagecamera);
@@ -1890,9 +1898,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             if (requestCode == IMAGE_DL_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
-                Intent intent = new Intent(EditKycActivity.this, CropImage2Activity.class);
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
+                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
+                Intent intent = new Intent(EditKYCfromProfileActivity.this, CropImage2Activity.class);
                 intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
                 startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
             }
@@ -1900,9 +1908,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
             if (requestCode == CROPPED_IMAGE_DL_FRONT) {
                 imgURI = Uri.parse(data.getStringExtra("uri"));
-                dlImageOathFront = RealPathUtil.getPath(EditKycActivity.this, imgURI);
+                dlImageOathFront = RealPathUtil.getPath(EditKYCfromProfileActivity.this, imgURI);
                 try {
-                    Glide.with(EditKycActivity.this).load(dlImageOathFront).into(ivDlImageFront);
+                    Glide.with(EditKYCfromProfileActivity.this).load(dlImageOathFront).into(ivDlImageFront);
                     ivDlFrontSelected.setVisibility(View.VISIBLE);
                     tvDlFront.setVisibility(View.GONE);
                     File casted_image = new File(imagecamera);
@@ -1916,9 +1924,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
 
             if (requestCode == IMAGE_DL_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
-                dlImagePathBack = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
-                Glide.with(EditKycActivity.this).load(dlImagePathBack).into(ivDlImageBack);
+                Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
+                dlImagePathBack = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
+                Glide.with(EditKYCfromProfileActivity.this).load(dlImagePathBack).into(ivDlImageBack);
                 ivDlBackSelected.setVisibility(View.VISIBLE);
                 tvDlBack.setVisibility(View.GONE);
 
@@ -1989,11 +1997,11 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                     ApiCallOCRAdhar();
                 } else {
-                    Constants.ShowNoInternet(EditKycActivity.this);
+                    Constants.ShowNoInternet(EditKYCfromProfileActivity.this);
                 }
                 //showEditDialog();
             } else {
-                Toast.makeText(EditKycActivity.this, "Please upload Both Images.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditKYCfromProfileActivity.this, "Please upload Both Images.", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -2001,7 +2009,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
 
     public void storeAadhar() {
-        gps = new GPSTracker(EditKycActivity.this);
+        gps = new GPSTracker(EditKYCfromProfileActivity.this);
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
             Double lng = gps.getLongitude();
@@ -2054,7 +2062,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             mProgressDialog.setMessage("we are retrieving information, please wait!");
             mProgressDialog.show();
 
-            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadharEdit("Bearer " + sessionManager.getToken(), params, aadharcard_front_part, aadharcard_back_part);
+            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadharProfileEdit("Bearer " + sessionManager.getToken(), params, aadharcard_front_part, aadharcard_back_part);
             callUpload.enqueue(new Callback<CommonResponse>() {
                 @Override
                 public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
@@ -2083,10 +2091,10 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                             deleteImages();
 
                             if (aadharImagepathFront != null) {
-                                //deleteFileFromMediaManager(EditKycActivity.this, aadharImagepathFront);
+                                //deleteFileFromMediaManager(EditKYCfromProfileActivity.this, aadharImagepathFront);
                             }
                             if (aadharImagepathBack != null) {
-                                //deleteFileFromMediaManager(EditKycActivity.this, aadharImagepathBack);
+                                //deleteFileFromMediaManager(EditKYCfromProfileActivity.this, aadharImagepathBack);
                             }
 
                             showAlert(getaadhardetail.getResponse());
@@ -2104,41 +2112,41 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                 if (getaadhardetail.getValidation() != null) {
                                     Validation validation = getaadhardetail.getValidation();
                                     if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
-                                        Toast.makeText(EditKycActivity.this, validation.getProccessId(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getProccessId(), Toast.LENGTH_SHORT).show();
                                         // return false;
                                     } else if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
-                                        Toast.makeText(EditKycActivity.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
                                     } else if (validation.getAdharCardFront() != null && validation.getAdharCardFront().length() > 0) {
-                                        Toast.makeText(EditKycActivity.this, validation.getAdharCardFront(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getAdharCardFront(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getAdharCardBack() != null && validation.getAdharCardBack().length() > 0) {
-                                        Toast.makeText(EditKycActivity.this, validation.getAdharCardBack(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getAdharCardBack(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getUid() != null && validation.getUid().length() > 0) {
                                         editNameDialogFragment.edit_anumber.setError(validation.getUid());
                                         editNameDialogFragment.edit_anumber.requestFocus();
-                                        // Toast.makeText(EditKycActivity.this, validation.getUid(), Toast.LENGTH_LONG).show();
+                                        // Toast.makeText(EditKYCfromProfileActivity.this, validation.getUid(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getName() != null && validation.getName().length() > 0) {
                                         editNameDialogFragment.edit_aname.setError(validation.getName());
                                         editNameDialogFragment.edit_aname.requestFocus();
-                                        //Toast.makeText(EditKycActivity.this, validation.getName(), Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(EditKYCfromProfileActivity.this, validation.getName(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getYob() != null && validation.getYob().length() > 0) {
                                         editNameDialogFragment.edit_ayear.setError(validation.getYob());
                                         editNameDialogFragment.edit_ayear.requestFocus();
-                                        //Toast.makeText(EditKycActivity.this, validation.getYob(), Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(EditKYCfromProfileActivity.this, validation.getYob(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getPincode() != null && validation.getPincode().length() > 0) {
                                         editNameDialogFragment.edit_apincode.setError(validation.getPincode());
                                         editNameDialogFragment.edit_apincode.requestFocus();
-                                        // Toast.makeText(EditKycActivity.this, validation.getPincode(), Toast.LENGTH_LONG).show();
+                                        // Toast.makeText(EditKYCfromProfileActivity.this, validation.getPincode(), Toast.LENGTH_LONG).show();
                                     } else {
-                                        Toast.makeText(EditKycActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
-                                    Toast.makeText(EditKycActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EditKYCfromProfileActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
 
                                 }
                             } else if (getaadhardetail.getResponseCode() == 405) {
-                                sessionManager.logoutUser(EditKycActivity.this);
+                                sessionManager.logoutUser(EditKYCfromProfileActivity.this);
                             } else if (getaadhardetail.getResponseCode() == 411) {
-                                sessionManager.logoutUser(EditKycActivity.this);
+                                sessionManager.logoutUser(EditKYCfromProfileActivity.this);
                             } else {
                                 showAlert2(getaadhardetail.getResponse());
                             }
@@ -2146,9 +2154,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                         }
 
                     } else {
-                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
-                        //   Toast.makeText(EditKycActivity.this, "No response", Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(EditKYCfromProfileActivity.this, "No response", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -2156,18 +2164,18 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });
         } else {
-            Constants.ShowNoInternet(EditKycActivity.this);
+            Constants.ShowNoInternet(EditKYCfromProfileActivity.this);
         }
 
     }
 
     public void storeAadharwithoutImage() {
-        gps = new GPSTracker(EditKycActivity.this);
+        gps = new GPSTracker(EditKYCfromProfileActivity.this);
         if (gps.canGetLocation()) {
             Double lat = gps.getLatitude();
             Double lng = gps.getLongitude();
@@ -2220,7 +2228,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             mProgressDialog.setMessage("we are retrieving information, please wait!");
             mProgressDialog.show();
 
-            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadharEditwithoutImage("Bearer " + sessionManager.getToken(), params);
+            Call<CommonResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getstoreAadharProfileEditwithoutImage("Bearer " + sessionManager.getToken(), params);
             callUpload.enqueue(new Callback<CommonResponse>() {
                 @Override
                 public void onResponse(Call<CommonResponse> call, retrofit2.Response<CommonResponse> response) {
@@ -2249,10 +2257,10 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                             deleteImages();*/
 
                             if (aadharImagepathFront != null) {
-                                //deleteFileFromMediaManager(EditKycActivity.this, aadharImagepathFront);
+                                //deleteFileFromMediaManager(EditKYCfromProfileActivity.this, aadharImagepathFront);
                             }
                             if (aadharImagepathBack != null) {
-                                //deleteFileFromMediaManager(EditKycActivity.this, aadharImagepathBack);
+                                //deleteFileFromMediaManager(EditKYCfromProfileActivity.this, aadharImagepathBack);
                             }
 
                             showAlert(getaadhardetail.getResponse());
@@ -2270,41 +2278,41 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                 if (getaadhardetail.getValidation() != null) {
                                     Validation validation = getaadhardetail.getValidation();
                                     if (validation.getProccessId() != null && validation.getProccessId().length() > 0) {
-                                        Toast.makeText(EditKycActivity.this, validation.getProccessId(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getProccessId(), Toast.LENGTH_SHORT).show();
                                         // return false;
                                     } else if (validation.getAgentId() != null && validation.getAgentId().length() > 0) {
-                                        Toast.makeText(EditKycActivity.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getAgentId(), Toast.LENGTH_SHORT).show();
                                     } else if (validation.getAdharCardFront() != null && validation.getAdharCardFront().length() > 0) {
-                                        Toast.makeText(EditKycActivity.this, validation.getAdharCardFront(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getAdharCardFront(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getAdharCardBack() != null && validation.getAdharCardBack().length() > 0) {
-                                        Toast.makeText(EditKycActivity.this, validation.getAdharCardBack(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, validation.getAdharCardBack(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getUid() != null && validation.getUid().length() > 0) {
                                         editNameDialogFragment.edit_anumber.setError(validation.getUid());
                                         editNameDialogFragment.edit_anumber.requestFocus();
-                                        // Toast.makeText(EditKycActivity.this, validation.getUid(), Toast.LENGTH_LONG).show();
+                                        // Toast.makeText(EditKYCfromProfileActivity.this, validation.getUid(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getName() != null && validation.getName().length() > 0) {
                                         editNameDialogFragment.edit_aname.setError(validation.getName());
                                         editNameDialogFragment.edit_aname.requestFocus();
-                                        //Toast.makeText(EditKycActivity.this, validation.getName(), Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(EditKYCfromProfileActivity.this, validation.getName(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getYob() != null && validation.getYob().length() > 0) {
                                         editNameDialogFragment.edit_ayear.setError(validation.getYob());
                                         editNameDialogFragment.edit_ayear.requestFocus();
-                                        //Toast.makeText(EditKycActivity.this, validation.getYob(), Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(EditKYCfromProfileActivity.this, validation.getYob(), Toast.LENGTH_LONG).show();
                                     } else if (validation.getPincode() != null && validation.getPincode().length() > 0) {
                                         editNameDialogFragment.edit_apincode.setError(validation.getPincode());
                                         editNameDialogFragment.edit_apincode.requestFocus();
-                                        // Toast.makeText(EditKycActivity.this, validation.getPincode(), Toast.LENGTH_LONG).show();
+                                        // Toast.makeText(EditKYCfromProfileActivity.this, validation.getPincode(), Toast.LENGTH_LONG).show();
                                     } else {
-                                        Toast.makeText(EditKycActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(EditKYCfromProfileActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
-                                    Toast.makeText(EditKycActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(EditKYCfromProfileActivity.this, getaadhardetail.getResponse(), Toast.LENGTH_SHORT).show();
 
                                 }
                             } else if (getaadhardetail.getResponseCode() == 405) {
-                                sessionManager.logoutUser(EditKycActivity.this);
+                                sessionManager.logoutUser(EditKYCfromProfileActivity.this);
                             } else if (getaadhardetail.getResponseCode() == 411) {
-                                sessionManager.logoutUser(EditKycActivity.this);
+                                sessionManager.logoutUser(EditKYCfromProfileActivity.this);
                             } else {
                                 showAlert2(getaadhardetail.getResponse());
                             }
@@ -2312,9 +2320,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                         }
 
                     } else {
-                        Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
-                        //   Toast.makeText(EditKycActivity.this, "No response", Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(EditKYCfromProfileActivity.this, "No response", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -2322,15 +2330,150 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     mProgressDialog.dismiss();
-                    Toast.makeText(EditKycActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(EditKYCfromProfileActivity.this, "#errorcode :- 2092 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                 }
             });
         } else {
-            Constants.ShowNoInternet(EditKycActivity.this);
+            Constants.ShowNoInternet(EditKYCfromProfileActivity.this);
+        }
+
+    }
+
+
+    private class getBitmapAdharFront extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                aadharImagepathFront = ImagePicker.getBitmapPath(myBitmap, EditKYCfromProfileActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
+    private class getBitmapAdharBack extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                aadharImagepathBack = ImagePicker.getBitmapPath(myBitmap, EditKYCfromProfileActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
+    private class getBitmapDLFront extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                dlImageOathFront = ImagePicker.getBitmapPath(myBitmap, EditKYCfromProfileActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
+    private class getBitmapDlBack extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                dlImagePathBack = ImagePicker.getBitmapPath(myBitmap, EditKYCfromProfileActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
+    private class getBitmapvoterFront extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                voterImagePathFront = ImagePicker.getBitmapPath(myBitmap, EditKYCfromProfileActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+    }
+
+    private class getBitmapVoterBack extends AsyncTask<String, String, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+
+            try {
+                String s = urls[0];
+                java.net.URL url = new java.net.URL(s);
+                HttpURLConnection connection = (HttpURLConnection) url
+                        .openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream input = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(input);
+                voterImagePathBack = ImagePicker.getBitmapPath(myBitmap, EditKYCfromProfileActivity.this);
+                return myBitmap;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
         }
 
     }
 
 
 }
+
+

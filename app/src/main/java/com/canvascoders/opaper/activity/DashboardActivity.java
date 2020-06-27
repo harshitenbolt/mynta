@@ -104,7 +104,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     private Integer newAppVesion = 0;
     private String attachment = "";
     private TextView tv_current_version;
-    static TextView tv_title, tvUsername;
+    public static TextView tv_title, tvUsername;
     DrawerLayout drawer;
     ImageView ivSupport, imageView, ivHome;
     View v, vHeader;

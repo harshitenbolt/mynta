@@ -127,6 +127,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     View view2, view3;
     String VoteridDetailId, filename, fileUrl, backsideFileUrl, backsidefilename, dlIdDetailId;
     int i = 0;
+    String ocrid = "";
     private String kyc_type = "3";
 
     private String lattitude = "", longitude = "", currentAdress = "", permAddress = "";
@@ -1166,8 +1167,6 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                         } else {
                             Constants.ShowNoInternet(AddNewDeliveryBoy.this);
                         }
-
-
                     }
                 } else if (i == 1) {
                     if (validation(2)) {
@@ -1182,6 +1181,15 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                     }
                 } else {
                     if (validation(3)) {
+                        if (kyc_type.equalsIgnoreCase("3")) {
+                            ApiCallSubmitOcr("", "", stringDob, etDrivingNumber.getText().toString(), ocrid, filename, fileUrl);
+                        }
+                        if (kyc_type.equalsIgnoreCase("2")) {
+                            ApiCallSubmitOcr("", "", stringDob, etVoterIdNumber.getText().toString(), ocrid, filename, fileUrl);
+
+                        }
+                        // ApiCallSubmitOcr(voterOCRGetDetaisResponse.getVoterIdDetail().getName(), "", tvVoterDOB.getText().toString(), etVoterIdNumber.getText().toString(), voterDetailsId, filename, fileUrl);
+
                         ApiCallSubmit();
                     }
                 }
@@ -2390,6 +2398,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                                 tvLicenceIssueDate.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDateofissue());
                             }
 
+
                             //fathername = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFatherName();
                             stringDob = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate();
                             if (!stringDob.equalsIgnoreCase("")) {
@@ -2401,7 +2410,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
                             dob.setText(outputDateStr);
                             dob.setText(stringDob);
-
+                            ocrid = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
                            /* dlnumber = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber();
                             dlIdDetailId = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
@@ -2679,6 +2688,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                         VoterOCRGetDetaisResponse voterOCRGetDetaisResponse = response.body();
                         if (voterOCRGetDetaisResponse.getStatus().equalsIgnoreCase("success")) {
                             voterDetailsId = String.valueOf(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdDetailId());
+                            ocrid = voterDetailsId;
                             filename = voterOCRGetDetaisResponse.getVoterIdDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getVoterIdDetail().getFileUrl();
                             String outputDateStr = "";
@@ -2697,7 +2707,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                             //etVoterFatherName.setText(voterOCRGetDetaisResponse.getVoterIdDetail().);
                             etVoterIdNumber.setText(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber());
 
-                            ApiCallSubmitOcr(voterOCRGetDetaisResponse.getVoterIdDetail().getName(), "", tvVoterDOB.getText().toString(), etVoterIdNumber.getText().toString(), voterDetailsId, filename, fileUrl);
+                            // ApiCallSubmitOcr(voterOCRGetDetaisResponse.getVoterIdDetail().getName(), "", tvVoterDOB.getText().toString(), etVoterIdNumber.getText().toString(), voterDetailsId, filename, fileUrl);
 
                            /* DialogUtil.VoterDetail(AddNewDeliveryBoy.this, voterOCRGetDetaisResponse.getVoterIdDetail().getName(), voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber(), voterOCRGetDetaisResponse.getVoterIdDetail().getFatherName(), outputDateStr, new DialogListner() {
                                 @Override

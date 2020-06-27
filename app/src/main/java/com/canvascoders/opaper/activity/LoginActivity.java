@@ -160,10 +160,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Geocoder geocoder = new Geocoder(LoginActivity.this, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
-            Address obj = addresses.get(0);
-            String add = obj.getAddressLine(0);
-            address = add;
-            Log.v("IGA", "Address" + add);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address obj = addresses.get(0);
+                String add = obj.getAddressLine(0);
+                address = add;
+                Log.v("IGA", "Address" + add);
+            }
             // Toast.makeText(this, "Address=>" + add,
             // Toast.LENGTH_SHORT).show();
 

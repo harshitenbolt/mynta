@@ -119,6 +119,7 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
     private static int IMAGE_SELCTION_CODE = 0;
     private EditText etAdharName, etDObAdhar, etAdharNumber, etVoterName, etVoterFatherName, etVoterDOB, etVoterIdNumber;
     private Button btSubmit;
+    String ocrid="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -783,6 +784,14 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
 
             case R.id.btSubmit:
                 if (validation()) {
+
+                    if (kyc_type.equalsIgnoreCase("3")) {
+                        ApiCallSubmitOcr("", "", stringDob, etDrivingNumber.getText().toString(), ocrid, filename, fileUrl);
+                    }
+                    if (kyc_type.equalsIgnoreCase("2")) {
+                        ApiCallSubmitOcr("", "", stringDob, etVoterIdNumber.getText().toString(), ocrid, filename, fileUrl);
+
+                    }
                     ApiCallSubmit();
                 }
                 break;
@@ -1358,6 +1367,7 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
                         VoterOCRGetDetaisResponse voterOCRGetDetaisResponse = response.body();
                         if (voterOCRGetDetaisResponse.getStatus().equalsIgnoreCase("success")) {
                             voterDetailsId = String.valueOf(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdDetailId());
+                            ocrid=voterDetailsId;
                             filename = voterOCRGetDetaisResponse.getVoterIdDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getVoterIdDetail().getFileUrl();
                             String outputDateStr = "";
@@ -1375,7 +1385,7 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
                             //etVoterFatherName.setText(voterOCRGetDetaisResponse.getVoterIdDetail().);
                             etVoterIdNumber.setText(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber());
 
-                            ApiCallSubmitOcr(voterOCRGetDetaisResponse.getVoterIdDetail().getName(), "", tvVoterDOB.getText().toString(), etVoterIdNumber.getText().toString(), voterDetailsId, filename, fileUrl);
+                            //ApiCallSubmitOcr(voterOCRGetDetaisResponse.getVoterIdDetail().getName(), "", tvVoterDOB.getText().toString(), etVoterIdNumber.getText().toString(), voterDetailsId, filename, fileUrl);
 
                            /* DialogUtil.VoterDetail(EditDeliveryBoyTSActivity.this, voterOCRGetDetaisResponse.getVoterIdDetail().getName(), voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber(), voterOCRGetDetaisResponse.getVoterIdDetail().getFatherName(), outputDateStr, new DialogListner() {
                                 @Override
@@ -1573,7 +1583,9 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
 
                             //fathername = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFatherName();
                             dob.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
-                           /* dlnumber = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber();
+
+                            ocrid= String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
+                            /* dlnumber = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber();
                             dlIdDetailId = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();*/

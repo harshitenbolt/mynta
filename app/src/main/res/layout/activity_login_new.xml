@@ -40,8 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_5sdp"
-            android:text="Sign In"
             android:fontFamily="@font/montesemibold"
+            android:text="Sign In"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold" />
@@ -95,13 +95,13 @@
 
                             <EditText
                                 android:id="@+id/etEmail"
-                                android:layout_width="match_parent"
                                 style="@style/App_EditTextStyle"
+                                android:layout_width="match_parent"
+                                android:gravity="start|center_vertical"
                                 android:hint="@string/email_id"
                                 android:inputType="textEmailAddress"
-                                android:textColor="@color/colorBlack"
-                                android:gravity="start|center_vertical"
-                                android:nextFocusDown="@+id/etPassword" />
+                                android:nextFocusDown="@+id/etPassword"
+                                android:textColor="@color/colorBlack" />
                         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -136,11 +136,11 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:inputType="textPassword"
-                                    android:fontFamily="@font/monteregular"
-                                    android:imeOptions="actionDone"
                                     android:background="@android:color/transparent"
-                                    android:hint="Password" />
+                                    android:fontFamily="@font/monteregular"
+                                    android:hint="Password"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="textPassword" />
 
                                 <ImageView
                                     android:id="@+id/ivShowPw"
@@ -155,13 +155,13 @@
 
                         <TextView
                             android:id="@+id/tvForgot"
-                            android:layout_marginTop="@dimen/_10sdp"
                             style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/montesemibold"
                             android:gravity="end"
-                            android:textSize="@dimen/_10sdp"
                             android:text="forgot passoword"
                             android:textColor="@color/colorYellow"
-                            android:fontFamily="@font/montesemibold"/>
+                            android:textSize="@dimen/_10sdp" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -186,10 +186,10 @@
 
                     <Button
                         android:id="@+id/btLogin"
+                        style="@style/Button_withGreen"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/_30sdp"
                         android:layout_marginBottom="@dimen/_20sdp"
-                        style="@style/Button_withGreen"
                         android:text="@string/sign_in" />
                 </LinearLayout>
 

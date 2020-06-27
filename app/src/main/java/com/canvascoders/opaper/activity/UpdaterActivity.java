@@ -130,6 +130,7 @@ public class UpdaterActivity extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(intent);*/
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
                     Uri apkUri = FileProvider.getUriForFile(UpdaterActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", file);
                     intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
                     intent.setData(apkUri);

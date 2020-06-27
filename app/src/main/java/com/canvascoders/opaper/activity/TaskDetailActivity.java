@@ -410,8 +410,7 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     i.putExtra("delivery_boy_id", delivery_boy_id);
                     startActivity(i);
 
-                }
-                else if (screenNumber.equalsIgnoreCase("14")) {
+                } else if (screenNumber.equalsIgnoreCase("14")) {
                     String proccess_id = "";
                     String delivery_boy_id = "";
                     for (int i = 0; i < keyList.size(); i++) {
@@ -426,6 +425,17 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     Intent i = new Intent(TaskDetailActivity.this, EditDeliveryBoyTSActivity.class);
                     i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                     i.putExtra("delivery_boy_id", delivery_boy_id);
+                    startActivity(i);
+                } else if (screenNumber.equalsIgnoreCase("15")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+
+                    }
+                    Intent i = new Intent(TaskDetailActivity.this, EditKYCfromProfileActivity.class);
+                    i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                     startActivity(i);
 
                 }
