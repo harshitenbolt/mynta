@@ -43,7 +43,9 @@
         <activity
             android:name=".activity.EditKYCfromProfileActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
         <activity
             android:name=".activity.EditDeliveryBoyTSActivity"
             android:screenOrientation="portrait"

@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/aadhaarapi_gateway_sdk/aadhaarapi_gateway_sdk.iml" filepath="$PROJECT_DIR$/aadhaarapi_gateway_sdk/aadhaarapi_gateway_sdk.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/digio-esign2/digio-esign2.iml" filepath="$PROJECT_DIR$/digio-esign2/digio-esign2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
-      <module fileurl="file://$PROJECT_DIR$/opaper-my.iml" filepath="$PROJECT_DIR$/opaper-my.iml" />
-      <module fileurl="file://$PROJECT_DIR$/openCVLibrary343/openCVLibrary343.iml" filepath="$PROJECT_DIR$/openCVLibrary343/openCVLibrary343.iml" />
+      <module fileurl="file://$PROJECT_DIR$/aadhaarapi_gateway_sdk/aadhaarapi_gateway_sdk.iml" filepath="$PROJECT_DIR$/aadhaarapi_gateway_sdk/aadhaarapi_gateway_sdk.iml" group="opaper-my/aadhaarapi_gateway_sdk" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="opaper-my/app" />
+      <module fileurl="file://$PROJECT_DIR$/digio-esign2/digio-esign2.iml" filepath="$PROJECT_DIR$/digio-esign2/digio-esign2.iml" group="opaper-my/digio-esign2" />
+      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" group="opaper-my/library" />
+      <module fileurl="file://$PROJECT_DIR$/opaper-my.iml" filepath="$PROJECT_DIR$/opaper-my.iml" group="opaper-my" />
+      <module fileurl="file://$PROJECT_DIR$/openCVLibrary343/openCVLibrary343.iml" filepath="$PROJECT_DIR$/openCVLibrary343/openCVLibrary343.iml" group="opaper-my/openCVLibrary343" />
     </modules>
   </component>
 </project>

@@ -372,7 +372,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onFailure(Call<GetUserDetails> call, Throwable t) {
                 mProgressDialog.dismiss();
-                showAlert(v, "#errorcode :- 2011 " + getString(R.string.something_went_wrong), false);
+                showAlert(v, "#errorcode   :- 2011 " + getString(R.string.something_went_wrong), false);
                 // Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG).show();
             }
         });

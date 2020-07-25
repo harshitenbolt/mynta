@@ -518,7 +518,6 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
                         //api OCR
 
-
                         ApiCallOCRAdhar();
 
 
