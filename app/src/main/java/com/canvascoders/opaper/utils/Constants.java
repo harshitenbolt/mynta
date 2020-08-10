@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 public class Constants {
 
     //-------------------------------------------------------------------------
-    public final static int APP_VERSION = 31; // need to set +1 here befor apk sent on last update before 942018 @ 12 version
+    public final static int APP_VERSION = 32; // need to set +1 here befor apk sent on last update before 942018 @ 12 version
     //-------------------------------------------------------------------------
     public final static String FORMAT = "format";
     public final static String CONTENT = "content";
@@ -43,12 +43,12 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
 
-    //public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+   // public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
     public static String BaseURL = "https://mystaging.opaper.in/api3/";
     // test server 20
 
     public final static String APP_NAME = "my_stage"; //stage
-    // public final static String APP_NAME = "my_live"; //live
+   //  public final static String APP_NAME = "my_live"; //live
      //public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
     public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
@@ -280,6 +280,7 @@ public class Constants {
     public static String PARAM_DL_CARD_FRONT = "dl_card_front";
     public static String PARAM_DL_CARD_BACK = "dl_card_back";
     public static String PARAM_DRIVING_LICENCE_DETAIL = "driving_licence_detail";
+    public static String PARAM_AADHAR_LICENCE_DETAIL = "aadhar_card_detail";
     public static String PARAM_VOTERID_DETAIL = "voter_id_detail";
     public static String PARAM_SUPPORT_ID = "support_id";
     public static String PARAM_NAME = "name";

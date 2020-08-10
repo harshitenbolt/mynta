@@ -97,6 +97,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
     private final static int REQUEST_SCANNER = 1000;
     public String udi = "";
     private static Dialog dialog;
+    String voterDetailsId="", fileUrl="", filename="";
     public String name = "", fathername = "";
     String gotName = "", gotFatherName = "", gotDocId = "", gotDOB = "";
     String dob = "", dlnumber = "";
@@ -131,7 +132,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
     NetworkConnectivity networkConnectivity;
     View view;
-    String VoteridDetailId, filename, fileUrl, backsideFileUrl, backsidefilename, dlIdDetailId;
+    String VoteridDetailId, backsideFileUrl, backsidefilename, dlIdDetailId;
     ProgressDialog mProgressDialog;
     private TextView tv_review;
 
@@ -1239,6 +1240,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
 
     private void ApiCallOCRAdhar() {
+
         mProgressDialog.setMessage("Please wait...");
         mProgressDialog.show();
         MultipartBody.Part attachment_adharFront = null;
@@ -1280,6 +1282,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                         Glide.with(EditKycActivity.this).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
                         Toast.makeText(EditKycActivity.this, adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
                     } else if (adharOCRResponse.getIsFrontOk() && adharOCRResponse.getIsBackOk()) {
+                        ApiCallSubmitOcr(adharOCRResponse.getAadharCardDetail().getName(),"",adharOCRResponse.getAadharCardDetail().getBirthDate(),adharOCRResponse.getAadharCardDetail().getAadharCardNumber(),String.valueOf(adharOCRResponse.getAadharCardDetail().getAadharCardDetailId()),adharOCRResponse.getAadharCardDetail().getFileName(),adharOCRResponse.getAadharCardDetail().getFileUrl());
                         showEditDialog(adharOCRResponse.getAadharCardDetail(), 0);
                     } else if (!adharOCRResponse.getIsFrontOk() && !adharOCRResponse.getIsBackOk()) {
                         aadharImagepathFront = "";
@@ -1340,7 +1343,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
         call.enqueue(new Callback<VoterOCRGetDetaisResponse>() {
             @Override
             public void onResponse(Call<VoterOCRGetDetaisResponse> call, Response<VoterOCRGetDetaisResponse> response) {
-                String voterDetailsId, fileUrl, filename;
+
                 mProgressDialog.dismiss();
                 try {
                     if (response.isSuccessful()) {
@@ -1406,6 +1409,8 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
                                 @Override
                                 public void onClickDetails(String name, String fathername, String dob, String id) {
+                                    ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
+
                                     ApiCallSubmitKYC(name, fathername, dob, id);
                                 }
 
@@ -1549,7 +1554,7 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                 @Override
                                 public void onClickDetails(String name, String fathername, String dob, String id) {
 
-                                    //ApiCallSubmitOcr(name,fathername,dob,id,dlIdDetailId,filename,fileUrl);
+                                    ApiCallSubmitOcr(name,fathername,dob,id,dlIdDetailId,filename,fileUrl);
                                     ApiCallSubmitKYC(name, fathername, dob, id);
 
 
@@ -1690,7 +1695,6 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
     private void ApiCallSubmitOcr(String name, String fathername, String dob, String id, String detailsId, String filename, String fileUrl) {
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         JSONObject jsonObject = new JSONObject();
         if (kyc_type.equalsIgnoreCase("2")) {
@@ -1712,6 +1716,27 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             params.put(Constants.PARAM_VOTERID_DETAIL, jsonObject.toString());
+
+        }
+        if (kyc_type.equalsIgnoreCase("1")) {
+
+            try {
+                jsonObject.put(Constants.PARAM_AADHAR_ID,id);
+                jsonObject.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+                jsonObject.put(Constants.PARAM_AADHAR_NO, id);
+                jsonObject.put(Constants.PARAM_NAME, name);
+                jsonObject.put(Constants.PARAM_FATHER_NAME, "");
+                jsonObject.put(Constants.PARAM_BIRTH_DATE, dob);
+                jsonObject.put(Constants.PARAM_FILE_NAME, filename);
+                jsonObject.put(Constants.PARAM_FILE_URL, fileUrl);
+                jsonObject.put(Constants.PARAM_BACKSIDE_FILE_NAME, "");
+                jsonObject.put(Constants.PARAM_BACKSIDE_FILE_URL, "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("error", e.getLocalizedMessage());
+            }
+
+            params.put(Constants.PARAM_AADHAR_LICENCE_DETAIL, jsonObject.toString());
 
         }
         if (kyc_type.equalsIgnoreCase("3")) {

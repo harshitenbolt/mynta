@@ -46,6 +46,7 @@ import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
 import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGSTVerify.StoreAddress;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
+import com.canvascoders.opaper.Beans.PanCardOcrResponse.PanCardSubmitResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.Beans.VerifyGstImageResponse.VerifyGSTImageRespone;
@@ -122,6 +123,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
     private GoogleMap mMap;
     boolean isPanSelected = false;
     private Spinner dc;
+    private String file_name, file_url, pan_card_detail_id, birth_date = "";
     NetworkConnectivity networkConnectivity;
     public static final int CROPPED_IMAGE = 5333, CROPPED_IMAGE_2 = 5335, CROPPED_IMAGE_3 = 5336;
     private static final int IMAGE_SHOP_IMG = 105, IMAGE_OWNER_IMG = 106;
@@ -1890,37 +1892,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             File imagefile = new File(panImagepath);
             typedFile = MultipartBody.Part.createFormData("image", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
 
-           /* Call<PanImageResponse> callUpload = ApiClient.getClient().create(ApiInterface.class).getPancardOcrUrl("Bearer "+sessionManager.getToken(),sessionManager.getToken(), str_process_id, typedFile);
 
-            callUpload.enqueue(new Callback<PanImageResponse>() {
-                @Override
-                public void onResponse(Call<PanImageResponse> call, retrofit2.Response<PanImageResponse> response) {
-                    mProgressDialog.dismiss();
-
-                    if (response.isSuccessful()) {
-                        PanImageResponse panImageResponse = response.body();
-                        if (panImageResponse.getResponseCode() == 200) {
-                            String imagePath = panImageResponse.getData().get(0).getPan_url();
-                            if (!TextUtils.isEmpty(imagePath)) {
-                                ExtractPanDetail extractPanDetail = new ExtractPanDetail();
-                                extractPanDetail.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, imagePath);
-                            } else {
-
-                            }
-                        } else if (panImageResponse.getResponseCode() == 405) {
-                            sessionManager.logoutUser(mcontext);
-                        } else {
-                            Toast.makeText(mcontext, panImageResponse.getResponse(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<PanImageResponse> call, Throwable t) {
-                    mProgressDialog.dismiss();
-                    Toast.makeText(mcontext, t.getMessage().toString(), Toast.LENGTH_LONG).show();
-                }
-            });*/
 
 
             Call<GetPanDetailsResponse> call = ApiClient.getClient2().create(ApiInterface.class).getPanDetails(params, typedFile);
@@ -1934,7 +1906,10 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                             GetPanDetailsResponse getPanDetailsResponse = response.body();
                             if (getPanDetailsResponse.getStatus().equalsIgnoreCase("success")) {
                                 Toast.makeText(EditGSTActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
+                                pan_card_detail_id = String.valueOf(getPanDetailsResponse.getPanCardDetail().getPanCardDetailId());
+                                file_name = getPanDetailsResponse.getPanCardDetail().getFileName();
+                                file_url = getPanDetailsResponse.getPanCardDetail().getFileUrl();
+                                birth_date = getPanDetailsResponse.getPanCardDetail().getBirthDate();
 
                                 DialogUtil.PanDetailGST(EditGSTActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), new DialogListner() {
                                     @Override
@@ -1961,6 +1936,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                                 rvPanDetails.setVisibility(View.GONE);
                                                 rvChequeDetails.setVisibility(View.VISIBLE);
                                                 view4.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                                storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
                                                 DialogUtil.dismiss();
 
 
@@ -1973,6 +1949,8 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                             //      Constants.hideKeyboardwithoutPopulate(EditGSTActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                                 //  UpadatePan(name, fathername, id, storename);
+                                                storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+
                                             } else {
                                                 Constants.ShowNoInternet(EditGSTActivity.this);
                                             }
@@ -2025,6 +2003,8 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                             rvPanDetails.setVisibility(View.GONE);
                                             rvChequeDetails.setVisibility(View.VISIBLE);
                                             view4.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                            storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+
                                             DialogUtil.dismiss();
 
                                         }
@@ -2052,10 +2032,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                 @Override
                 public void onFailure(Call<GetPanDetailsResponse> call, Throwable t) {
                     progressDialog.dismiss();
-                    //  Toast.makeText(EditGSTActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                     Toast.makeText(EditGSTActivity.this, "#errorcode :- 2020 NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
-
-                    // Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -2120,5 +2097,44 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             }
         });
     }
+
+
+
+    private void storePanwithOCR(String name, String fathername, String pannumber, String pancardDetailId, String filename, String FileUrl, String Birthdate) {
+        HashMap<String, String> param = new HashMap<>();
+        param.put(Constants.PARAM_PAN_CARD_DETAIL_ID, pancardDetailId);
+        param.put(Constants.PARAM_PAN_CARD_NUMBER, pannumber);
+        param.put(Constants.PARAM_NAME, name);
+        param.put(Constants.PARAM_FATHER_NAME, fathername);
+        param.put(Constants.PARAM_FILE_NAME, filename);
+        param.put(Constants.PARAM_FILE_URL, FileUrl);
+        param.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        param.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        Call<PanCardSubmitResponse> call = ApiClient.getClient2().create(ApiInterface.class).SubmitPancardOCR(param);
+        call.enqueue(new Callback<PanCardSubmitResponse>() {
+            @Override
+            public void onResponse(Call<PanCardSubmitResponse> call, retrofit2.Response<PanCardSubmitResponse> response) {
+                if (response.isSuccessful()) {
+                    PanCardSubmitResponse panCardDetail = response.body();
+                    if (panCardDetail.getStatus().equalsIgnoreCase("success")) {
+                        // Toast.makeText(EditPanCardActivity.this, panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(EditGSTActivity.this, panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(EditGSTActivity.this, "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PanCardSubmitResponse> call, Throwable t) {
+                //    Toast.makeText(EditPanCardActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditGSTActivity.this, "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
 
 }

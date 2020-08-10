@@ -33,6 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class InvoiceDetailsActivity extends AppCompatActivity {
+
     SessionManager sessionManager;
     VendorInvoiceList vendorInvoiceList;
     ProgressDialog mProgress;
@@ -140,15 +141,11 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
                             noOFBillPeriodListAdapter = new NoOFBillPeriodListAdapter(list1, InvoiceDetailsActivity.this);
 
                             LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(InvoiceDetailsActivity.this, LinearLayoutManager.VERTICAL, false);
-
                             rvBillPeriod.setLayoutManager(horizontalLayoutManager1);
                             rvBillPeriod.setAdapter(noOFBillPeriodListAdapter);
                         }
-
-
                     } else {
                         Toast.makeText(InvoiceDetailsActivity.this, champions.getResponse(), Toast.LENGTH_LONG).show();
-
                     }
                 }
                 else{

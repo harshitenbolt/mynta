@@ -1207,6 +1207,10 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                             ApiCallSubmitOcr("", "", stringdob, etVoterIdNumber.getText().toString(), ocrid, filename, fileUrl);
 
                         }
+                        if (kyc_type.equalsIgnoreCase("1")) {
+                            ApiCallSubmitOcr(etAdharName.getText().toString(),"","",etAdharNumber.getText().toString(),etAdharNumber.getText().toString(),"","");
+
+                        }
                         ApiCallSubmit();
                     }
                 }
@@ -2995,6 +2999,27 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                 Log.e("error", e.getLocalizedMessage());
             }
             params.put(Constants.PARAM_DRIVING_LICENCE_DETAIL, jsonObject.toString());
+
+        }
+        if (kyc_type.equalsIgnoreCase("1")) {
+
+            try {
+                jsonObject.put(Constants.PARAM_AADHAR_ID,id);
+                jsonObject.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+                jsonObject.put(Constants.PARAM_AADHAR_NO, id);
+                jsonObject.put(Constants.PARAM_NAME, name);
+                jsonObject.put(Constants.PARAM_FATHER_NAME, "");
+                jsonObject.put(Constants.PARAM_BIRTH_DATE, dob);
+                jsonObject.put(Constants.PARAM_FILE_NAME, filename);
+                jsonObject.put(Constants.PARAM_FILE_URL, fileUrl);
+                jsonObject.put(Constants.PARAM_BACKSIDE_FILE_NAME, "");
+                jsonObject.put(Constants.PARAM_BACKSIDE_FILE_URL, "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("error", e.getLocalizedMessage());
+            }
+
+            params.put(Constants.PARAM_AADHAR_LICENCE_DETAIL, jsonObject.toString());
 
         }
 

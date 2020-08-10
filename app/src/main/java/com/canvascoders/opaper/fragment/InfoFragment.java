@@ -545,7 +545,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         }
 
 
-        checkedItems = new boolean[select_language.length];
+
 
     }
 

@@ -31,6 +31,7 @@ import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGSTVerify.StoreAddress;
 import com.canvascoders.opaper.Beans.GetGstPanEditResponse.GetGstPanEditResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
+import com.canvascoders.opaper.Beans.PanCardOcrResponse.PanCardSubmitResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.Beans.UpdatePanResponse.UpdatePancardResponse;
 import com.canvascoders.opaper.Beans.VendorList;
@@ -74,7 +75,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
     private ImageView ivStoreImage, ivPanImage, ivBack, ivPanImageSelected;
     VendorList vendor;
     private TextView tvPanClick, tvPanName, tvPanFatherName, tvPanNo;
-
+    private String file_name, file_url, pan_card_detail_id, birth_date = "";
     private static final int IMAGE_PAN = 101;
     private Uri imgURI;
     private String lattitude = "", longitude = "";
@@ -662,7 +663,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 //                Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                 Bitmap bitmap = ImagePicker.getImageFromResult(EditPanCardActivity.this, resultCode, data);
                 cameraimage = ImagePicker.getBitmapPath(bitmap, EditPanCardActivity.this);
-               /* Glide.with(getActivity()).load(panImagepath).into(btn_pan_card);
+               /* Glide.with(EditPanCardActivity.this).load(panImagepath).into(btn_pan_card);
                 isPanSelected = true;
                 btn_pan_card_select.setVisibility(View.VISIBLE);
                 Log.e("Pan image path", panImagepath);*/
@@ -742,7 +743,10 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                             if (getPanDetailsResponse.getStatus().equalsIgnoreCase("success")) {
                                 Toast.makeText(EditPanCardActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
-
+                                pan_card_detail_id = String.valueOf(getPanDetailsResponse.getPanCardDetail().getPanCardDetailId());
+                                file_name = getPanDetailsResponse.getPanCardDetail().getFileName();
+                                file_url = getPanDetailsResponse.getPanCardDetail().getFileUrl();
+                                birth_date = getPanDetailsResponse.getPanCardDetail().getBirthDate();
                                 DialogUtil.PanDetail2(EditPanCardActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual, str_process_id,new DialogListner() {
                                     @Override
                                     public void onClickPositive() {
@@ -760,6 +764,8 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                         if (storename.equalsIgnoreCase("")) {
 //                                            Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+
                                                 UpadatePan(name, fathername, id, "");
                                                // DialogUtil.dismiss();
                                             } else {
@@ -770,6 +776,8 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                                             //  Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+
                                                 UpadatePan(name, fathername, id, storename);
                                              //   DialogUtil.dismiss();
                                             } else {
@@ -783,6 +791,8 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                     @Override
                                     public void onClickChequeDetails(String accName, String payeename, String proccessId, String storeanem, String BranchName, String bankAdress) {
                                         old_process_id=proccessId;
+                                        storePanwithOCR(accName, payeename, proccessId, pan_card_detail_id, file_name, file_url, birth_date);
+
                                         UpadatePan1(accName,payeename,str_process_id,storeanem);
                                     }
 
@@ -822,6 +832,8 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                             if (storename.equalsIgnoreCase("")) {
                                                 Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                                                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                    storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+
                                                     UpadatePan(name, fathername, id, "");
                                                   //  DialogUtil.dismiss();
                                                 } else {
@@ -832,6 +844,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                                                 Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
                                                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                    storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
                                                     UpadatePan(name, fathername, id, storename);
                                                   //  DialogUtil.dismiss();
                                                 } else {
@@ -845,6 +858,7 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                         @Override
                                         public void onClickChequeDetails(String accName, String payeename, String proccessId, String storeanem, String BranchName, String bankAdress) {
                                             old_process_id=proccessId;
+                                            storePanwithOCR(accName, payeename, proccessId, pan_card_detail_id, file_name, file_url, birth_date);
                                             UpadatePan1(accName,payeename,str_process_id,storeanem);
                                         }
                                         @Override
@@ -1266,6 +1280,44 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
         });
 
 
+    }
+
+
+
+    private void storePanwithOCR(String name, String fathername, String pannumber, String pancardDetailId, String filename, String FileUrl, String Birthdate) {
+        HashMap<String, String> param = new HashMap<>();
+        param.put(Constants.PARAM_PAN_CARD_DETAIL_ID, pancardDetailId);
+        param.put(Constants.PARAM_PAN_CARD_NUMBER, pannumber);
+        param.put(Constants.PARAM_NAME, name);
+        param.put(Constants.PARAM_FATHER_NAME, fathername);
+        param.put(Constants.PARAM_FILE_NAME, filename);
+        param.put(Constants.PARAM_FILE_URL, FileUrl);
+        param.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        param.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        Call<PanCardSubmitResponse> call = ApiClient.getClient2().create(ApiInterface.class).SubmitPancardOCR(param);
+        call.enqueue(new Callback<PanCardSubmitResponse>() {
+            @Override
+            public void onResponse(Call<PanCardSubmitResponse> call, retrofit2.Response<PanCardSubmitResponse> response) {
+                if (response.isSuccessful()) {
+                    PanCardSubmitResponse panCardDetail = response.body();
+                    if (panCardDetail.getStatus().equalsIgnoreCase("success")) {
+                        // Toast.makeText(EditPanCardActivity.this, panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(EditPanCardActivity.this, panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(EditPanCardActivity.this, "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PanCardSubmitResponse> call, Throwable t) {
+                //    Toast.makeText(EditPanCardActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditPanCardActivity.this, "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 
 }

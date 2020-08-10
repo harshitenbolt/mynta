@@ -27,6 +27,7 @@ import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGSTVerify.StoreAddress;
 import com.canvascoders.opaper.Beans.GetGstPanEditResponse.GetGstPanEditResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
+import com.canvascoders.opaper.Beans.PanCardOcrResponse.PanCardSubmitResponse;
 import com.canvascoders.opaper.Beans.UpdatePanDetailResponse.UpdatePanDetailResponse;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.Beans.VerifyGstResponse.VerifyGst;
@@ -81,7 +82,7 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
     Button btSubmit;
     String final_dc = "";
     String store_address, store_address1, store_address_landmark, store_city, store_state, store_pincode, store_full_address;
-
+    private String file_name, file_url, pan_card_detail_id, birth_date = "";
     private EditText etGST, etStoreNAme, etStoreAddress;
     String gstImg = "", imagecamera = "";
     RelativeLayout rvBottomPan;
@@ -895,7 +896,10 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
                             GetPanDetailsResponse getPanDetailsResponse = response.body();
                             if (getPanDetailsResponse.getStatus().equalsIgnoreCase("success")) {
                                 Toast.makeText(EditGstDetailsActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
+                                pan_card_detail_id = String.valueOf(getPanDetailsResponse.getPanCardDetail().getPanCardDetailId());
+                                file_name = getPanDetailsResponse.getPanCardDetail().getFileName();
+                                file_url = getPanDetailsResponse.getPanCardDetail().getFileUrl();
+                                birth_date = getPanDetailsResponse.getPanCardDetail().getBirthDate();
 
                                 DialogUtil.PanDetail2(EditGstDetailsActivity.this, getPanDetailsResponse.getPanCardDetail().getName(), getPanDetailsResponse.getPanCardDetail().getFatherName(), getPanDetailsResponse.getPanCardDetail().getPanCardNumber(), individual,str_process_id, new DialogListner() {
                                     @Override
@@ -914,6 +918,8 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
                                         if (storename.equalsIgnoreCase("")) {
 //                                            Constants.hideKeyboardwithoutPopulate(EditGstDetailsActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+
                                                 ApiCallSubmitDataTogather(name, fathername, id, "");
                                             } else {
                                                 Constants.ShowNoInternet(EditGstDetailsActivity.this);
@@ -923,6 +929,8 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
 
                                             //  Constants.hideKeyboardwithoutPopulate(EditGstDetailsActivity.this);
                                             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+
                                                 ApiCallSubmitDataTogather(name, fathername, id, storename);
                                             } else {
                                                 Constants.ShowNoInternet(EditGstDetailsActivity.this);
@@ -973,6 +981,8 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
                                             if (storename.equalsIgnoreCase("")) {
                                                 Constants.hideKeyboardwithoutPopulate(EditGstDetailsActivity.this);
                                                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                    storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+
                                                     ApiCallSubmitDataTogather(name, fathername, id, "");
                                                 } else {
                                                     Constants.ShowNoInternet(EditGstDetailsActivity.this);
@@ -982,6 +992,8 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
 
                                                 Constants.hideKeyboardwithoutPopulate(EditGstDetailsActivity.this);
                                                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                                                    storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
+
                                                     ApiCallSubmitDataTogather(name, fathername, id, storename);
                                                 } else {
                                                     Constants.ShowNoInternet(EditGstDetailsActivity.this);
@@ -1023,6 +1035,45 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
 
         }
     }
+
+
+    private void storePanwithOCR(String name, String fathername, String pannumber, String pancardDetailId, String filename, String FileUrl, String Birthdate) {
+        HashMap<String, String> param = new HashMap<>();
+        param.put(Constants.PARAM_PAN_CARD_DETAIL_ID, pancardDetailId);
+        param.put(Constants.PARAM_PAN_CARD_NUMBER, pannumber);
+        param.put(Constants.PARAM_NAME, name);
+        param.put(Constants.PARAM_FATHER_NAME, fathername);
+        param.put(Constants.PARAM_FILE_NAME, filename);
+        param.put(Constants.PARAM_FILE_URL, FileUrl);
+        param.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        param.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        Call<PanCardSubmitResponse> call = ApiClient.getClient2().create(ApiInterface.class).SubmitPancardOCR(param);
+        call.enqueue(new Callback<PanCardSubmitResponse>() {
+            @Override
+            public void onResponse(Call<PanCardSubmitResponse> call, retrofit2.Response<PanCardSubmitResponse> response) {
+                if (response.isSuccessful()) {
+                    PanCardSubmitResponse panCardDetail = response.body();
+                    if (panCardDetail.getStatus().equalsIgnoreCase("success")) {
+                        // Toast.makeText(EditPanCardActivity.this, panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(EditGstDetailsActivity.this, panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(EditGstDetailsActivity.this, "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PanCardSubmitResponse> call, Throwable t) {
+                //    Toast.makeText(EditPanCardActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditGstDetailsActivity.this, "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
+
 
 
 }

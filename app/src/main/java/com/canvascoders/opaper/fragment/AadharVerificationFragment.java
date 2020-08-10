@@ -143,7 +143,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
     EditNameDialogFragment editNameDialogFragment;
 
     private Spinner snDocType;
-
+    String voterDetailsId;
 
     View view;
     String VoteridDetailId, filename, fileUrl, backsideFileUrl, backsidefilename, dlIdDetailId;
@@ -625,6 +625,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                         Glide.with(getActivity()).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
                         Toast.makeText(getActivity(), adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
                     } else if (adharOCRResponse.getIsFrontOk() && adharOCRResponse.getIsBackOk()) {
+                        ApiCallSubmitOcr(adharOCRResponse.getAadharCardDetail().getName(),"","",adharOCRResponse.getAadharCardDetail().getAadharCardNumber(),String.valueOf(adharOCRResponse.getAadharCardDetail().getAadharCardDetailId()),adharOCRResponse.getAadharCardDetail().getFileName(),adharOCRResponse.getAadharCardDetail().getFileUrl());
                         showEditDialog(adharOCRResponse.getAadharCardDetail());
                     } else if (!adharOCRResponse.getIsFrontOk() && !adharOCRResponse.getIsBackOk()) {
                         aadharImagepathFront = "";
@@ -720,7 +721,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
     private void ApiCallSubmitOcr(String name, String fathername, String dob, String id, String detailsId, String filename, String fileUrl) {
         Map<String, String> params = new HashMap<String, String>();
-        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+       // params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         JSONObject jsonObject = new JSONObject();
         if (kyc_type.equalsIgnoreCase("2")) {
@@ -744,6 +745,26 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             params.put(Constants.PARAM_VOTERID_DETAIL, jsonObject.toString());
 
         }
+        if (kyc_type.equalsIgnoreCase("1")) {
+
+            try {
+                jsonObject.put(Constants.PARAM_AADHAR_ID,id);
+                jsonObject.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+                jsonObject.put(Constants.PARAM_AADHAR_NO, id);
+                jsonObject.put(Constants.PARAM_NAME, name);
+                jsonObject.put(Constants.PARAM_FATHER_NAME, "");
+                jsonObject.put(Constants.PARAM_BIRTH_DATE, dob);
+                jsonObject.put(Constants.PARAM_FILE_NAME, filename);
+                jsonObject.put(Constants.PARAM_FILE_URL, fileUrl);
+                jsonObject.put(Constants.PARAM_BACKSIDE_FILE_NAME, "");
+                jsonObject.put(Constants.PARAM_BACKSIDE_FILE_URL, "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("error", e.getLocalizedMessage());
+            }
+            params.put(Constants.PARAM_AADHAR_LICENCE_DETAIL, jsonObject.toString());
+        }
+
         if (kyc_type.equalsIgnoreCase("3")) {
 
             try {
@@ -1002,7 +1023,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         call.enqueue(new Callback<VoterOCRGetDetaisResponse>() {
             @Override
             public void onResponse(Call<VoterOCRGetDetaisResponse> call, Response<VoterOCRGetDetaisResponse> response) {
-                String voterDetailsId, fileUrl, filename;
+
                 mProgressDialog.dismiss();
                 try {
                     if (response.isSuccessful()) {
@@ -1067,6 +1088,8 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
                                 @Override
                                 public void onClickDetails(String name, String fathername, String dob, String id) {
+                                    ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
+
                                     ApiCallSubmitKYC(name, fathername, dob, id);
                                 }
 
@@ -1215,7 +1238,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                 @Override
                                 public void onClickDetails(String name, String fathername, String dob, String id) {
 
-                                    //ApiCallSubmitOcr(name,fathername,dob,id,dlIdDetailId,filename,fileUrl);
+                                    ApiCallSubmitOcr(name,fathername,dob,id,dlIdDetailId,filename,fileUrl);
                                     ApiCallSubmitKYC(name, fathername, dob, id);
 
 

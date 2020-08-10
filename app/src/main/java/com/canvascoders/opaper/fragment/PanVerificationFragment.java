@@ -872,6 +872,9 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
         }
     }
 
+
+
+
     public class ResizeAsync extends AsyncTask<Void, Void, File> {
 
         @Override
