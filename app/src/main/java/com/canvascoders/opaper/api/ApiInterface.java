@@ -22,6 +22,7 @@ import com.canvascoders.opaper.Beans.EditUserResponse.EditUserResponse;
 import com.canvascoders.opaper.Beans.GeneralSupportResponse.GeneralSupportResponse;
 import com.canvascoders.opaper.Beans.GenerateResetPWResponse.GenerateResetPWResponse;
 import com.canvascoders.opaper.Beans.GetAgentDetailResponse.GetAgentDetailResponse;
+import com.canvascoders.opaper.Beans.GetChequeOCRDetails.GetOCRChequeDetails;
 import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGstListing.GetGstListing;
 import com.canvascoders.opaper.Beans.GetGstPanEditResponse.GetGstPanEditResponse;
@@ -150,6 +151,10 @@ public interface ApiInterface {
     @POST("pan-card-detail")
     Call<GetPanDetailsResponse> getPanDetails(@PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
 
+    @Multipart
+    @POST("cheque-detail")
+    Call<GetOCRChequeDetails> getChequeDetails(@PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
+
 
     @Multipart
     @POST("gst-certificate-image")
@@ -206,6 +211,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("pan-card-detail/from-user-side")
     Call<PanCardSubmitResponse> SubmitPancardOCR(@FieldMap Map<String, String> apiVersionMap);
+
+    @FormUrlEncoded
+    @POST("cheque-detail/from-user-side")
+    Call<PanCardSubmitResponse> SubmitChequeOCR(@FieldMap Map<String, String> apiVersionMap);
 
 
     @FormUrlEncoded

@@ -36,6 +36,8 @@ import com.bumptech.glide.Glide;
 
 import com.canvascoders.opaper.Beans.BankDetailsResponse.BankDetailsResponse;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
+import com.canvascoders.opaper.Beans.GetChequeOCRDetails.GetOCRChequeDetails;
+import com.canvascoders.opaper.Beans.PanCardOcrResponse.PanCardSubmitResponse;
 import com.canvascoders.opaper.Beans.VendorBankDetail;
 import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
@@ -652,8 +654,9 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                 }
 
                 captured = true;
+                ChequeOCR();
 
-                HashMap<String, String> fileMap = new HashMap<>();
+             /*   HashMap<String, String> fileMap = new HashMap<>();
                 fileMap.put("image", cancelChequeImagepath);
                 final ProgressDialog pd = new ProgressDialog(getActivity());
                 pd.setCancelable(false);
@@ -708,7 +711,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                             Toast.makeText(getActivity(), "There is some issue retrieving data from cheque image, Reselect image or enter manually", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }).execute();
+                }).execute();*/
 
 //                OCRGetDetails(imgURI);
                 Glide.with(getActivity()).load(cancelChequeImagepath).placeholder(R.drawable.placeholder)
@@ -900,6 +903,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                submitocr(accountNumber, payeeName, ifscCode);
                 commanFragmentCallWithoutBackStack(new ChequeDataListingFragment(), vendor);
 
             }
@@ -909,6 +913,42 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
 
         dialog.show();
     }
+
+
+    private void submitocr(String accNumber, String name, String ifsc) {
+        HashMap<String, String> param = new HashMap<>();
+        param.put(Constants.PARAM_BACK_ACCOUNT_NUMBER, accNumber);
+        param.put(Constants.PARAM_BACK_ACCOUNT_HOLDER_NAME, name);
+        param.put(Constants.PARAM_BACK_ACCOUNT_IFSC_CODE, ifsc);
+        param.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        param.put(Constants.PARAM_PROCESS_ID, str_process_id);
+
+        Call<PanCardSubmitResponse> call = ApiClient.getClient2().create(ApiInterface.class).SubmitChequeOCR(param);
+        call.enqueue(new Callback<PanCardSubmitResponse>() {
+            @Override
+            public void onResponse(Call<PanCardSubmitResponse> call, retrofit2.Response<PanCardSubmitResponse> response) {
+                if (response.isSuccessful()) {
+                    PanCardSubmitResponse panCardDetail = response.body();
+                    if (panCardDetail.getStatus().equalsIgnoreCase("success")) {
+                        // Toast.makeText(getActivity(), panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PanCardSubmitResponse> call, Throwable t) {
+                //    Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
 
     public void getBankDetails(String ifsc) {
         Map<String, String> params = new HashMap<String, String>();
@@ -1066,4 +1106,56 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
 
     }
 
+
+    private void ChequeOCR() {
+        progressDialog.setMessage("Please wait we are fetching details...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        MultipartBody.Part typedFile = null;
+        HashMap<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        File imagefile = new File(cancelChequeImagepath);
+        typedFile = MultipartBody.Part.createFormData("image", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(cancelChequeImagepath)), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
+
+        Call<GetOCRChequeDetails> call = ApiClient.getClient2().create(ApiInterface.class).getChequeDetails(params, typedFile);
+        call.enqueue(new Callback<GetOCRChequeDetails>() {
+            @Override
+            public void onResponse(Call<GetOCRChequeDetails> call, Response<GetOCRChequeDetails> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetOCRChequeDetails getOCRChequeDetails = response.body();
+                    if (getOCRChequeDetails.getReSelectImage().equalsIgnoreCase("0")) {
+                        ifscCode = getOCRChequeDetails.getChequeDetail().getIfscCode();
+                        accountNumber = getOCRChequeDetails.getChequeDetail().getBankAccountNumber();
+
+                        payeeName = getOCRChequeDetails.getChequeDetail().getBankAccountHolderName();
+                    } else if (getOCRChequeDetails.getReSelectImage().equalsIgnoreCase("1")) {
+                        Toast.makeText(getActivity(), getOCRChequeDetails.getMessage(), Toast.LENGTH_SHORT).show();
+                        cancelChequeImagepath = "";
+                        Glide.with(getActivity()).load(cancelChequeImagepath).placeholder(R.drawable.placeholder)
+                                .into(ivChequeImage);
+                        isPanSelected = false;
+                        btn_cheque_card.setVisibility(View.VISIBLE);
+                        btn_cheque_card_select.setVisibility(View.GONE);
+                    } else {
+                        Toast.makeText(getActivity(), getOCRChequeDetails.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode 2989 " + getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetOCRChequeDetails> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(getActivity(), "#errorcode 2989 " + getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
 }

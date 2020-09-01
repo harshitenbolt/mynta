@@ -159,7 +159,6 @@ public class InvoiceDetailsActivity extends AppCompatActivity {
             public void onFailure(Call<GetVendorInvoiceDetails> call, Throwable t) {
                 mProgress.dismiss();
                 Toast.makeText(InvoiceDetailsActivity.this, "#errorcode 2078 "+getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-
             }
         });
 

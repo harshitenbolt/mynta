@@ -43,6 +43,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.Beans.CheckGSTStatus.CheckGstStatus;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
+import com.canvascoders.opaper.Beans.GetChequeOCRDetails.GetOCRChequeDetails;
 import com.canvascoders.opaper.Beans.GetGSTVerify.GetGSTVerify;
 import com.canvascoders.opaper.Beans.GetGSTVerify.StoreAddress;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
@@ -749,8 +750,12 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             case R.id.btExtract:
                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
 
-                    if (validationCheque())
-                        CallMerekApi();
+                    if (validationCheque()){
+                       // CallMerekApi();
+                        ChequeOCR();
+
+
+                    }
 
                     /*storeCheque()*/
                     ;/*{
@@ -791,6 +796,132 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         }
 
     }
+
+
+    private void ChequeOCR() {
+        progressDialog.setMessage("Please wait we are fetching details...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
+        MultipartBody.Part typedFile = null;
+        HashMap<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+        File imagefile = new File(cancelChequeImagepath);
+        typedFile = MultipartBody.Part.createFormData("image", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(cancelChequeImagepath)), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
+
+        Call<GetOCRChequeDetails> call = ApiClient.getClient2().create(ApiInterface.class).getChequeDetails(params, typedFile);
+        call.enqueue(new Callback<GetOCRChequeDetails>() {
+            @Override
+            public void onResponse(Call<GetOCRChequeDetails> call, Response<GetOCRChequeDetails> response) {
+                progressDialog.dismiss();
+                if(response.isSuccessful()){
+                    GetOCRChequeDetails getOCRChequeDetails = response.body();
+                    if(getOCRChequeDetails.getReSelectImage().equalsIgnoreCase("0")){
+                        DialogUtil.chequeDetail(EditGSTActivity.this, getOCRChequeDetails.getChequeDetail().getBankAccountNumber(), getOCRChequeDetails.getChequeDetail().getBankAccountHolderName(), getOCRChequeDetails.getChequeDetail().getIfscCode(), str_process_id, bank_name, bank_branch, branch_address, new DialogListner() {
+                            @Override
+                            public void onClickPositive() {
+
+                            }
+
+                            @Override
+                            public void onClickNegative() {
+
+                            }
+
+                            @Override
+                            public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                                bankName = bankname;
+                                bank_branch_name = BranchName;
+                                Ifsc = ifsc;
+                                bank_ac = accName;
+                                payee_name = payeename;
+                                bank_address = bankAdress;
+                                if (isPanScreen == true) {
+                                    ApiCallWithChequewithPan();
+
+                                } else {
+                                    ApiCallWithChequewithoutPan();
+                                }
+
+
+                                submitocr(accName,payeename,ifsc);
+
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                            }
+                        });
+                    }
+                    else if(getOCRChequeDetails.getReSelectImage().equalsIgnoreCase("1")){
+                        Toast.makeText(EditGSTActivity.this, getOCRChequeDetails.getMessage(), Toast.LENGTH_SHORT).show();
+                        cancelChequeImagepath="";
+                        Glide.with(EditGSTActivity.this).load(cancelChequeImagepath).placeholder(R.drawable.placeholder)
+                                .into(ivChequeImage);
+                        isPanSelected = false;
+                        btn_cheque_card.setVisibility(View.VISIBLE);
+                        btn_cheque_card_select.setVisibility(View.GONE);
+                    }
+                    else{
+                        Toast.makeText(EditGSTActivity.this, getOCRChequeDetails.getMessage(), Toast.LENGTH_SHORT).show();
+                        DialogUtil.chequeDetail(EditGSTActivity.this, getOCRChequeDetails.getChequeDetail().getBankAccountNumber(), getOCRChequeDetails.getChequeDetail().getBankAccountHolderName(), getOCRChequeDetails.getChequeDetail().getIfscCode(), str_process_id, bank_name, bank_branch, branch_address, new DialogListner() {
+                            @Override
+                            public void onClickPositive() {
+
+                            }
+
+                            @Override
+                            public void onClickNegative() {
+
+                            }
+
+                            @Override
+                            public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+                                if (isPanScreen == true) {
+                                    ApiCallWithChequewithPan();
+
+                                } else {
+                                    ApiCallWithChequewithoutPan();
+                                }
+                                submitocr(accName,payeename,ifsc);
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                            }
+                        });
+                    }
+                }
+                else{
+                    Toast.makeText(EditGSTActivity.this, "#errorcode 2989 "+getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetOCRChequeDetails> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(EditGSTActivity.this, "#errorcode 2989 "+getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
+
 
     private void ApiCallVerifyGstImage() {
         progressDialog.show();
@@ -2135,6 +2266,42 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             }
         });
     }
+
+
+    private void submitocr(String accNumber, String name, String ifsc) {
+        HashMap<String, String> param = new HashMap<>();
+        param.put(Constants.PARAM_BACK_ACCOUNT_NUMBER, accNumber);
+        param.put(Constants.PARAM_BACK_ACCOUNT_HOLDER_NAME, name);
+        param.put(Constants.PARAM_BACK_ACCOUNT_IFSC_CODE, ifsc);
+        param.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        param.put(Constants.PARAM_PROCESS_ID, str_process_id);
+
+        Call<PanCardSubmitResponse> call = ApiClient.getClient2().create(ApiInterface.class).SubmitChequeOCR(param);
+        call.enqueue(new Callback<PanCardSubmitResponse>() {
+            @Override
+            public void onResponse(Call<PanCardSubmitResponse> call, retrofit2.Response<PanCardSubmitResponse> response) {
+                if (response.isSuccessful()) {
+                    PanCardSubmitResponse panCardDetail = response.body();
+                    if (panCardDetail.getStatus().equalsIgnoreCase("success")) {
+                        // Toast.makeText(getActivity(), panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(EditGSTActivity.this, panCardDetail.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(EditGSTActivity.this, "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PanCardSubmitResponse> call, Throwable t) {
+                //    Toast.makeText(EditGSTActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditGSTActivity.this, "#errorcode :- 2027 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
 
 
 }

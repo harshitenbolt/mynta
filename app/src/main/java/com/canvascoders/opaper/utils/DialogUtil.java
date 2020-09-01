@@ -1269,6 +1269,16 @@ public class DialogUtil {
         etBankName.setText(bank_name);
         etBranchName.setText(branch_name);
         etBankAddress.setText(branch_address);
+        if (ifsccode.length() > 5) {
+
+            if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                getBankDetails(mContext, ifsccode, processId);
+            } else {
+                Constants.ShowNoInternet(mContext);
+            }
+
+
+        }
         etIfscCode.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
