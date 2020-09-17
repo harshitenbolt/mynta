@@ -52,6 +52,7 @@ public class DeliveryBoysAdapter extends RecyclerView.Adapter<DeliveryBoysAdapte
         holder.tvName.setText(moreitemList.get(position).getName());
         holder.tvAddress.setText(moreitemList.get(position).getRouteNumber());
         holder.tvMobile.setText(moreitemList.get(position).getPhoneNumber());
+        holder.tvStoreType.setText(moreitemList.get(position).getStore_type());
         Log.e("URL", "" + Constants.BaseImageURL + moreitemList.get(position).getImage());
         Glide.with(context).load(Constants.BaseImageURL + moreitemList.get(position).getImage()).placeholder(R.drawable.image_placeholder).into(holder.image_icon);
         holder.tvDelete.setOnClickListener(new View.OnClickListener() {
@@ -64,7 +65,7 @@ public class DeliveryBoysAdapter extends RecyclerView.Adapter<DeliveryBoysAdapte
         holder.tvEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                recyclerViewClickListener.onLongClick(view, position,"");
+                recyclerViewClickListener.onLongClick(view, position, "");
             }
         });
         holder.tvStatus.setText(moreitemList.get(position).getBoystatus());
@@ -79,7 +80,7 @@ public class DeliveryBoysAdapter extends RecyclerView.Adapter<DeliveryBoysAdapte
 
     public class RecordHolder extends RecyclerView.ViewHolder {
         ImageView image_icon;
-        TextView tvName, tvAddress, tvMobile, tvDelete, tvEdit, tvStatus;
+        TextView tvName, tvAddress, tvStoreType, tvMobile, tvDelete, tvEdit, tvStatus;
         LinearLayout linear_item;
 
         public RecordHolder(View view) {
@@ -89,6 +90,7 @@ public class DeliveryBoysAdapter extends RecyclerView.Adapter<DeliveryBoysAdapte
             tvMobile = view.findViewById(R.id.tvMobile);
             tvAddress = view.findViewById(R.id.tvRoute);
             tvDelete = view.findViewById(R.id.tvDelete);
+            tvStoreType = view.findViewById(R.id.tvStoreType);
             tvEdit = view.findViewById(R.id.tvEdit);
             tvStatus = view.findViewById(R.id.tvStatus);
         }

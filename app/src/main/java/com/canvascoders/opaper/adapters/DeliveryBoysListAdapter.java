@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +27,10 @@ public class DeliveryBoysListAdapter extends RecyclerView.Adapter<DeliveryBoysLi
 
     private List<Datum> moreitemList;
     Context context;
-    String value = "1",flag;
+    String value = "1", flag;
 
 
-    public DeliveryBoysListAdapter(List<Datum> moreitemList, Context context,String flag) {
+    public DeliveryBoysListAdapter(List<Datum> moreitemList, Context context, String flag) {
         this.moreitemList = moreitemList;
         this.context = context;
         this.flag = flag;
@@ -49,14 +50,13 @@ public class DeliveryBoysListAdapter extends RecyclerView.Adapter<DeliveryBoysLi
         holder.tvMobile.setText(moreitemList.get(position).getPhoneNumber());
         holder.tvRoute.setText(moreitemList.get(position).getRouteNumber());
         //holder.tvVehicle.setText(moreitemList.get(position).getVehicleForDelivery());
-
+        holder.tvStoreType.setText(moreitemList.get(position).getStore_type());
         Log.e("URL", "" + Constants.BaseImageURL + moreitemList.get(position).getImage());
-        Glide.with(context).load(Constants.BaseImageURL+moreitemList.get(position).getImage()).placeholder(R.drawable.image_placeholder).into(holder.ivProfile);
+        Glide.with(context).load(Constants.BaseImageURL + moreitemList.get(position).getImage()).placeholder(R.drawable.image_placeholder).into(holder.ivProfile);
 
-        if(flag.equalsIgnoreCase("1")){
+        if (flag.equalsIgnoreCase("1")) {
             holder.ivDelete.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             holder.ivDelete.setVisibility(View.GONE);
         }
 
@@ -68,8 +68,8 @@ public class DeliveryBoysListAdapter extends RecyclerView.Adapter<DeliveryBoysLi
     }
 
     public class RecordHolder extends RecyclerView.ViewHolder {
-        ImageView ivProfile,ivDelete;
-        TextView tvName, tvMobile,tvRoute,tvVehicle;
+        ImageView ivProfile, ivDelete;
+        TextView tvName, tvMobile, tvRoute, tvStoreType;
         LinearLayout linear_item;
 
         public RecordHolder(View view) {
@@ -78,8 +78,9 @@ public class DeliveryBoysListAdapter extends RecyclerView.Adapter<DeliveryBoysLi
             tvName = view.findViewById(R.id.tvName);
             tvMobile = view.findViewById(R.id.tvMobile);
             tvRoute = view.findViewById(R.id.tvRoute);
+            tvStoreType = view.findViewById(R.id.tvStoreType);
             ivDelete = view.findViewById(R.id.ivDelete);
-       //     tvVehicle = view.findViewById(R.id.tvVehicle);
+            //     tvVehicle = view.findViewById(R.id.tvVehicle);
         }
     }
 }

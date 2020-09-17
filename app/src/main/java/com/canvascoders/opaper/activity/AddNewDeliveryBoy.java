@@ -51,6 +51,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 import com.canvascoders.opaper.Beans.AdharocrResponse.AdharOCRResponse;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
+import com.canvascoders.opaper.Beans.GetStoreTypeResponse;
 import com.canvascoders.opaper.Beans.GetVehicleTypes;
 import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
 import com.canvascoders.opaper.Beans.TaskDetailResponse.SubTaskReason;
@@ -159,7 +160,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     Button btGetOtp;
     String otp = "", mobile_number = "";
     private String TAG = "sfdfdg";
-    Spinner spVehicleForDelivery, spBloodGroupType;
+    Spinner spVehicleForDelivery, spBloodGroupType, spStoreType;
     RadioGroup rg;
     LinearLayout llDrivingLicenceDetails, llAadharDetails, llVoterDetails;
     private TextView tvAdharFront, tvAdharBack, tvVoterFront, tvVoterBack, tvDlFront, tvDlBack, tvScan;
@@ -172,6 +173,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     private RadioButton radioSexButton;
     boolean optional = false;
     EditText etDexter;
+    List<String> storeList = new ArrayList<>();
 
     RelativeLayout rvSelctVoterDOB, rvSelctAdharDOB;
 
@@ -239,6 +241,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         tvLicenceValidDate.setOnClickListener(this);
         spVehicleForDelivery = findViewById(R.id.spVehicleForDelivery);
         spBloodGroupType = findViewById(R.id.spBloodGroup);
+        spStoreType = findViewById(R.id.spStoreType);
         ivProfile = findViewById(R.id.ivProfileImage);
         ivDriving_Licence = findViewById(R.id.ivDrivingLicence);
         ivDrivingLicenceBack = findViewById(R.id.ivDrivingLicenceBack);
@@ -377,6 +380,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
             APiCallgetvehicleNames();
+            ApiCallgetSToreType();
         } else {
             Constants.ShowNoInternet(AddNewDeliveryBoy.this);
         }
@@ -536,6 +540,39 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         });
 
 
+    }
+
+    private void ApiCallgetSToreType() {
+        mProgressDialog.show();
+        Call<GetStoreTypeResponse> call = ApiClient.getClient().create(ApiInterface.class).getStoreTypeListforDl("Bearer " + sessionManager.getToken());
+        call.enqueue(new Callback<GetStoreTypeResponse>() {
+            @Override
+            public void onResponse(Call<GetStoreTypeResponse> call, Response<GetStoreTypeResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetStoreTypeResponse getVehicleTypes = response.body();
+                    if (getVehicleTypes.getResponseCode() == 200) {
+                        storeList = getVehicleTypes.getData();
+                        CustomAdapter<String> spinnnerArrayAdapter = new CustomAdapter<String>(AddNewDeliveryBoy.this, android.R.layout.simple_spinner_item, storeList);
+                        spinnnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spStoreType.setAdapter(spinnnerArrayAdapter);
+                        spStoreType.setSelection(0);
+                    } else {
+                        Toast.makeText(AddNewDeliveryBoy.this, getVehicleTypes.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(AddNewDeliveryBoy.this, "#errorcode 2126" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetStoreTypeResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(AddNewDeliveryBoy.this, "#errorcode 2126" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     private void APiCallgetvehicleNames() {
@@ -1188,8 +1225,8 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                             ApiCallSubmitOcr("", "", stringDob, etVoterIdNumber.getText().toString(), ocrid, filename, fileUrl);
 
                         }
-                        if(kyc_type.equalsIgnoreCase("1")){
-                            ApiCallSubmitOcr(etAdharName.getText().toString(),"","",etAdharNumber.getText().toString(),etAdharNumber.getText().toString(),"","");
+                        if (kyc_type.equalsIgnoreCase("1")) {
+                            ApiCallSubmitOcr(etAdharName.getText().toString(), "", "", etAdharNumber.getText().toString(), etAdharNumber.getText().toString(), "", "");
                         }
                         // ApiCallSubmitOcr(voterOCRGetDetaisResponse.getVoterIdDetail().getName(), "", tvVoterDOB.getText().toString(), etVoterIdNumber.getText().toString(), voterDetailsId, filename, fileUrl);
 
@@ -1232,6 +1269,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             params.put(Constants.PARAM_GENDER, radioSexButton.getText().toString());
             params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
             params.put(Constants.PARAM_BLOOD_GROUP, spBloodGroupType.getSelectedItem().toString());
+            params.put(Constants.PARAM_STORE_TYPE, spStoreType.getSelectedItem().toString());
 
             call = ApiClient.getClient().create(ApiInterface.class).DeliveryBoysDetailsValid1("Bearer " + sessionManager.getToken(), validationapiUrl, params, prof_image);
 
@@ -1519,6 +1557,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         params.put(Constants.PARAM_CURRENT_RESIDENTIAL, currentAdress);
         params.put(Constants.PARAM_PERMANENT_ADDRESS, permAddress);
         params.put(Constants.PARAM_BLOOD_GROUP, spBloodGroupType.getSelectedItem().toString());
+        params.put(Constants.PARAM_STORE_TYPE, spStoreType.getSelectedItem().toString());
         params.put(Constants.PARAM_KYC_TYPE, kyc_type);
         params.put(Constants.PARAM_GENDER, radioSexButton.getText().toString());
         params.put("is_dc_dexter_present", String.valueOf(optinal));
@@ -2826,7 +2865,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
         }
         if (kyc_type.equalsIgnoreCase("1")) {
             try {
-                jsonObject.put(Constants.PARAM_AADHAR_ID,id);
+                jsonObject.put(Constants.PARAM_AADHAR_ID, id);
                 jsonObject.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
                 jsonObject.put(Constants.PARAM_AADHAR_NO, id);
                 jsonObject.put(Constants.PARAM_NAME, name);

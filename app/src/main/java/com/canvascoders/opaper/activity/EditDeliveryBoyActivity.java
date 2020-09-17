@@ -48,6 +48,7 @@ import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 import com.canvascoders.opaper.Beans.AdharocrResponse.AdharOCRResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.Datum;
 import com.canvascoders.opaper.Beans.DrivingLicenceDetailResponse.DrivingLicenceDetailResponse;
+import com.canvascoders.opaper.Beans.GetStoreTypeResponse;
 import com.canvascoders.opaper.Beans.GetVehicleTypes;
 import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
 import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVoterDlResponse;
@@ -155,9 +156,9 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     Button btGetOtp;
     String kyc_old = "3";
     private TextView tvLicenceIssueDate, tvLicenceValidDate;
-
+    List<String> storeList = new ArrayList<>();
     private String TAG = "akfdsbksbhdf";
-    Spinner spVehicleForDelivery, spBloodGroupType;
+    Spinner spVehicleForDelivery, spBloodGroupType,spStoreType;
     private TextView tvAdharFront, tvAdharBack, tvVoterFront, tvVoterBack, tvDlFront, tvDlBack, tvScan;
     private EditText etAdharName, etDObAdhar, etAdharNumber, etVoterName, etVoterFatherName, etVoterDOB, etVoterIdNumber;
     TextView tvAdharDOB, tvVoterDOB;
@@ -219,6 +220,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         etName.setText(datum.getName());
         view2 = findViewById(R.id.view2);
         spBloodGroupType = findViewById(R.id.spBloodGroup);
+        spStoreType=findViewById(R.id.spStoreType);
         view3 = findViewById(R.id.view3);
         svMain = findViewById(R.id.svMain);
         etFatherName = findViewById(R.id.etFatherName);
@@ -433,6 +435,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
             APiCallgetvehicleNames();
+            ApiCallgetSToreType();
         } else {
             Constants.ShowNoInternet(EditDeliveryBoyActivity.this);
         }
@@ -1557,6 +1560,44 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
     }
 
 
+
+
+    private void ApiCallgetSToreType() {
+        mProgressDialog.show();
+        Call<GetStoreTypeResponse> call = ApiClient.getClient().create(ApiInterface.class).getStoreTypeListforDl("Bearer " + sessionManager.getToken());
+        call.enqueue(new Callback<GetStoreTypeResponse>() {
+            @Override
+            public void onResponse(Call<GetStoreTypeResponse> call, Response<GetStoreTypeResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetStoreTypeResponse getVehicleTypes = response.body();
+                    if (getVehicleTypes.getResponseCode() == 200) {
+                        storeList = getVehicleTypes.getData();
+                        CustomAdapter<String> spinnnerArrayAdapter = new CustomAdapter<String>(EditDeliveryBoyActivity.this, android.R.layout.simple_spinner_item, storeList);
+                        spinnnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spStoreType.setAdapter(spinnnerArrayAdapter);
+                        spStoreType.setSelection(0);
+                    } else {
+                        Toast.makeText(EditDeliveryBoyActivity.this, getVehicleTypes.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode 2126" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetStoreTypeResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditDeliveryBoyActivity.this, "#errorcode 2126" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+
+
     private void APiCallgetvehicleNames() {
         mProgressDialog.show();
         Call<GetVehicleTypes> call = ApiClient.getClient().create(ApiInterface.class).getVehicleListing("Bearer " + sessionManager.getToken());
@@ -1627,6 +1668,8 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
             params.put(Constants.PARAM_DELIVERY_BOY_ID, deliveryBoy);
             params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
             params.put(Constants.PARAM_BLOOD_GROUP, spBloodGroupType.getSelectedItem().toString());
+            params.put(Constants.PARAM_STORE_TYPE, spStoreType.getSelectedItem().toString());
+
             call = ApiClient.getClient().create(ApiInterface.class).DeliveryBoysDetailsValid1("Bearer " + sessionManager.getToken(), validationapiUrl, params, prof_image);
 
 
@@ -1980,6 +2023,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
         params.put(Constants.PARAM_KYC_TYPE, kyc_type);
         params.put("dexter", etDexter.getText().toString());
         params.put(Constants.PARAM_BLOOD_GROUP, spBloodGroupType.getSelectedItem().toString());
+        params.put(Constants.PARAM_STORE_TYPE, spStoreType.getSelectedItem().toString());
         params.put(Constants.PARAM_CURRENT_ADDRESS_STATE, etCurrentState.getText().toString());
         params.put(Constants.PARAM_CURRENT_ADDRESS_PINCODE, etCurrentPincode.getText().toString());
         params.put(Constants.PARAM_PERMANENT_RESIDENTIAL_ADDRESS, etPerHouseNo.getText().toString());

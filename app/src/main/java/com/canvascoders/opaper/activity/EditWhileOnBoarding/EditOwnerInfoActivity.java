@@ -17,6 +17,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -88,7 +89,7 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
     Button btSubmit;
 
     private EditText etOwnerName, etEmail, etDOB, etCurrentShopNo, etCurrentStreet, etCurrentLandmark, etCurrentPincode, etCurrentCity, etCurrentState, etPerShopNo, etPerStreet, etPerLandmark, etPerPincode, etPerCity, etPerState, edit_gstn;
-    private AppCompatCheckBox cbSame;
+    private CheckBox cbSame;
     TextView tvLanguage;
     ArrayList<String> listLanaguage = new ArrayList<>();
     private int mYear, mMonth, mDay, mHour, mMinute;

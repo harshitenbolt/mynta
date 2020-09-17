@@ -445,6 +445,12 @@ public class EditDeliveryBoySSActivity extends AppCompatActivity implements View
         }
     }
 
+
+
+
+
+
+
     private void APiCallgetvehicleNames() {
         mProgressDialog.show();
         Call<GetVehicleTypes> call = ApiClient.getClient().create(ApiInterface.class).getVehicleListing("Bearer " + sessionManager.getToken());

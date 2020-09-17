@@ -78,17 +78,23 @@ import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.OTPActivity;
 import com.google.gson.JsonObject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -274,9 +280,93 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
 
         }
+        getUserInfo();
         return view;
     }
 
+
+
+
+    private void getUserInfo() {
+        Mylogger.getInstance().Logit(TAG, "getUserInfo");
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+
+            Map<String, String> params = new HashMap<String, String>();
+            params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+            params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+            Mylogger.getInstance().Logit(TAG, "getUserInfo");
+            mProgressDialog.setMessage("we are retrieving information, please wait!");
+            mProgressDialog.show();
+
+            Call<ResponseBody> callUpload = ApiClient.getClient().create(ApiInterface.class).getDetails("Bearer "+sessionManager.getToken(),params);
+            callUpload.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                    mProgressDialog.dismiss();
+                    Mylogger.getInstance().Logit(TAG, response.raw().toString());
+                    if (response.isSuccessful()) {
+                        try {
+                            String res = response.body().toString();
+                            Mylogger.getInstance().Logit(TAG, res);
+                            if (!TextUtils.isEmpty(res)) {
+                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                if (jsonObject.has("responseCode")) {
+                                    if (jsonObject.getInt("responseCode") == 200) {
+                                        JSONObject result = jsonObject.getJSONArray("data").getJSONObject(0);
+                                        //name.setText(result.getString("name").toString());
+
+                                        String pan = result.getString("pan_no").toString();
+                                        String first = String.valueOf(pan.charAt(3));
+                                        if (!first.equalsIgnoreCase("C") && !first.equalsIgnoreCase("F")) {
+                                             etOwnerName.setText(result.getString("name").toString());
+                                        }
+                                        else{
+                                            etOwnerName.setText("");
+                                        }
+
+
+
+
+                                    } else if (jsonObject.getInt("responseCode") == 405) {
+                                        sessionManager.logoutUser(mcontext);
+                                    } else {
+                                        Toast.makeText(mcontext, jsonObject.getString("response").toString(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            } else {
+                                Toast.makeText(mcontext, "Server not responding", Toast.LENGTH_LONG).show();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                    else{
+                        Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    mProgressDialog.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+        } else {
+            Constants.ShowNoInternet(mcontext);
+        }
+
+    }
 
     private void initView() {
 

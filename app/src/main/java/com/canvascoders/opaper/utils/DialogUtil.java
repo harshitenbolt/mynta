@@ -681,11 +681,7 @@ public class DialogUtil {
                     etPanName.requestFocus();
                     return false;
                 }
-                if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
-                    etPanFatherName.setError("Provide Father name");
-                    etPanFatherName.requestFocus();
-                    return false;
-                }
+
                 Matcher matcher = Constants.PAN_PATTERN.matcher(etPanNumber.getText().toString());
                 if (TextUtils.isEmpty(etPanNumber.getText().toString()) || etPanNumber.getText().toString().length() < 5) {
                     etPanNumber.setError("Provide Number");
@@ -697,6 +693,17 @@ public class DialogUtil {
 
                     return false;
                 }
+
+                String pan = etPanNumber.getText().toString();
+                String first = String.valueOf(pan.charAt(3));
+                if (!first.equalsIgnoreCase("C") && !first.equalsIgnoreCase("F")) {
+                    if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
+                        etPanFatherName.setError("Provide Father name");
+                        etPanFatherName.requestFocus();
+                        return false;
+                    }
+                }
+
                 if (!cbMain.isChecked()) {
                     cbMain.setError("Please verify all details with physical evidence.");
                     //showMSG(false, "Please verify all details with physical evidence.");
@@ -726,11 +733,7 @@ public class DialogUtil {
                                                 etPanName.requestFocus();
                                                 return false;
                                             }
-                                            if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
-                                                etPanFatherName.setError("Provide Father name");
-                                                etPanFatherName.requestFocus();
-                                                return false;
-                                            }
+
                                             Matcher matcher = Constants.PAN_PATTERN.matcher(etPanNumber.getText().toString());
                                             if (TextUtils.isEmpty(etPanNumber.getText().toString()) || etPanNumber.getText().toString().length() < 5) {
                                                 etPanNumber.setError("Provide Number");
@@ -741,6 +744,15 @@ public class DialogUtil {
                                                 etPanNumber.requestFocus();
 
                                                 return false;
+                                            }
+                                            String pan = etPanNumber.getText().toString();
+                                            String first = String.valueOf(pan.charAt(3));
+                                            if (!first.equalsIgnoreCase("C") && !first.equalsIgnoreCase("F")) {
+                                                if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
+                                                    etPanFatherName.setError("Provide Father name");
+                                                    etPanFatherName.requestFocus();
+                                                    return false;
+                                                }
                                             }
                                             if (!cbMain.isChecked()) {
                                                 cbMain.setError("Please verify all details with physical evidence.");
@@ -1070,11 +1082,7 @@ public class DialogUtil {
                     etPanName.requestFocus();
                     return false;
                 }
-                if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
-                    etPanFatherName.setError("Provide Father name");
-                    etPanFatherName.requestFocus();
-                    return false;
-                }
+
                 Matcher matcher = Constants.PAN_PATTERN.matcher(etPanNumber.getText().toString());
                 if (TextUtils.isEmpty(etPanNumber.getText().toString()) || etPanNumber.getText().toString().length() < 5) {
                     etPanNumber.setError("Provide Number");
@@ -1086,6 +1094,17 @@ public class DialogUtil {
 
                     return false;
                 }
+
+                String pan = etPanNumber.getText().toString();
+                String first = String.valueOf(pan.charAt(3));
+                if (!first.equalsIgnoreCase("C") && !first.equalsIgnoreCase("F")) {
+                    if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
+                        etPanFatherName.setError("Provide Father name");
+                        etPanFatherName.requestFocus();
+                        return false;
+                    }
+                }
+
                 if (!cbMain.isChecked()) {
                     cbMain.setError("Please verify all details with physical evidence.");
                     //showMSG(false, "Please verify all details with physical evidence.");
@@ -1122,11 +1141,7 @@ public class DialogUtil {
                                                 etPanName.requestFocus();
                                                 return false;
                                             }
-                                            if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
-                                                etPanFatherName.setError("Provide Father name");
-                                                etPanFatherName.requestFocus();
-                                                return false;
-                                            }
+
                                             Matcher matcher = Constants.PAN_PATTERN.matcher(etPanNumber.getText().toString());
                                             if (TextUtils.isEmpty(etPanNumber.getText().toString()) || etPanNumber.getText().toString().length() < 5) {
                                                 etPanNumber.setError("Provide Number");
@@ -1136,6 +1151,16 @@ public class DialogUtil {
                                                 etPanNumber.setError("Provide Valid Pan Number");
                                                 etPanNumber.requestFocus();
                                                 return false;
+                                            }
+
+                                            String pan = etPanNumber.getText().toString();
+                                            String first = String.valueOf(pan.charAt(3));
+                                            if (!first.equalsIgnoreCase("C") && !first.equalsIgnoreCase("F")) {
+                                                if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
+                                                    etPanFatherName.setError("Provide Father name");
+                                                    etPanFatherName.requestFocus();
+                                                    return false;
+                                                }
                                             }
                                             if (!cbMain.isChecked()) {
                                                 cbMain.setError("Please verify all details with physical evidence.");
@@ -1207,11 +1232,7 @@ public class DialogUtil {
                                                 etPanName.requestFocus();
                                                 return false;
                                             }
-                                            if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
-                                                etPanFatherName.setError("Provide Father name");
-                                                etPanFatherName.requestFocus();
-                                                return false;
-                                            }
+
                                             Matcher matcher = Constants.PAN_PATTERN.matcher(etPanNumber.getText().toString());
                                             if (TextUtils.isEmpty(etPanNumber.getText().toString()) || etPanNumber.getText().toString().length() < 5) {
                                                 etPanNumber.setError("Provide Number");
@@ -1221,6 +1242,15 @@ public class DialogUtil {
                                                 etPanNumber.setError("Provide Valid Pan Number");
                                                 etPanNumber.requestFocus();
                                                 return false;
+                                            }
+                                            String pan = etPanNumber.getText().toString();
+                                            String first = String.valueOf(pan.charAt(3));
+                                            if (!first.equalsIgnoreCase("C") && !first.equalsIgnoreCase("F")) {
+                                                if (etPanFatherName.getText().toString().equalsIgnoreCase("")) {
+                                                    etPanFatherName.setError("Provide Father name");
+                                                    etPanFatherName.requestFocus();
+                                                    return false;
+                                                }
                                             }
                                             if (!cbMain.isChecked()) {
                                                 cbMain.setError("Please verify all details with physical evidence.");

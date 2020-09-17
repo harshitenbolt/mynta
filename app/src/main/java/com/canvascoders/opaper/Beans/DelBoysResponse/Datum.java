@@ -48,6 +48,19 @@ public class Datum {
     @SerializedName("driving_licence_image")
     @Expose
     private String drivingLicenceImage;
+
+    public String getStore_type() {
+        return store_type;
+    }
+
+    public void setStore_type(String store_type) {
+        this.store_type = store_type;
+    }
+
+    @SerializedName("store_type")
+    @Expose
+    private String store_type;
+
     @SerializedName("vehicle_for_delivery")
     @Expose
     private String vehicleForDelivery;

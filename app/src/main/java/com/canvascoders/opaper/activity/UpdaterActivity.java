@@ -32,6 +32,7 @@ import com.canvascoders.opaper.utils.RealPathUtil;
 import java.io.File;
 
 public class UpdaterActivity extends AppCompatActivity {
+
     private AppCompatButton btn_update;
     private ProgressBar progressBar;
     private AppCompatTextView txt_note;
@@ -109,7 +110,7 @@ public class UpdaterActivity extends AppCompatActivity {
         BroadcastReceiver onComplete = new BroadcastReceiver() {
             public void onReceive(Context ctxt, Intent intent) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N/* && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P*/) {
 
                     Intent install = new Intent(Intent.ACTION_VIEW);
                     install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -124,12 +125,14 @@ public class UpdaterActivity extends AppCompatActivity {
                     unregisterReceiver(this);
                     finish();
 
+
+
                     /*Uri apkUri = FileProvider.getUriForFile(UpdaterActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", file);
                     intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
                     intent.setData(apkUri);
                     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(intent);*/
-                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                } /*else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
                     Uri apkUri = FileProvider.getUriForFile(UpdaterActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", file);
                     intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
@@ -137,7 +140,7 @@ public class UpdaterActivity extends AppCompatActivity {
                     intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     startActivity(intent);
 
-                } else {
+                }*/ else {
                     Intent install = new Intent(Intent.ACTION_VIEW);
                     install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     //intent.setDataAndType(uri, "application/vnd.android.package-archive");

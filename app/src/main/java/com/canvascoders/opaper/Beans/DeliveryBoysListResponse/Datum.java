@@ -101,6 +101,19 @@ public class Datum implements Serializable {
     @SerializedName("route_number")
     @Expose
     private String routeNumber;
+
+    public String getStore_type() {
+        return store_type;
+    }
+
+    public void setStore_type(String store_type) {
+        this.store_type = store_type;
+    }
+
+    @SerializedName("store_type")
+    @Expose
+    private String store_type;
+
     @SerializedName("driving_licence_num")
     @Expose
     private String drivingLicenceNum;

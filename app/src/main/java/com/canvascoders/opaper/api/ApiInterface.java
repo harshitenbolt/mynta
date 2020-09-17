@@ -30,6 +30,7 @@ import com.canvascoders.opaper.Beans.GetOTPfrStoreExeResponse.GetOTPfrStoreExeRe
 import com.canvascoders.opaper.Beans.GetOldKYCResponse.GetOldKYCResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
 import com.canvascoders.opaper.Beans.GetPanExistResponse.GetPanAlreadyExistResponse;
+import com.canvascoders.opaper.Beans.GetStoreTypeResponse;
 import com.canvascoders.opaper.Beans.GetTaskEndResponse.GetTaskEndResponse;
 import com.canvascoders.opaper.Beans.GetTasksTypeListing;
 import com.canvascoders.opaper.Beans.GetTrackingDetailResponse.GetTrackDetailsResponse;
@@ -873,6 +874,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("report-pancard")
     Call<MakeReportResponse> makeResportResponse(@Header("Authorization") String token, @FieldMap Map<String, String> params);
+
+
+    @POST("get-store-type-delivery-boys")
+    Call<GetStoreTypeResponse> getStoreTypeListforDl(@Header("Authorization") String token);
+
 
 
 

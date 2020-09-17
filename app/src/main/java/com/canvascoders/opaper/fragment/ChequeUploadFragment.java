@@ -214,7 +214,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                         if (checkEsignResponse.getResponseCode() == 200) {
                             progressDialog.dismiss();
                             Glide.with(getActivity()).load(checkEsignResponse.getData().get(0).getCancelledCheque()).skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .into(ivChequeImage);
+                                    .placeholder(R.drawable.checkimage).into(ivChequeImage);
 
                            /* final File file = new File(Environment.getExternalStorageDirectory(), checkEsignResponse.getData().get(0).getCancelledCheque());
                           //  Uri uri = Uri.fromFile(file);
@@ -243,7 +243,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                             btExtract.setVisibility(View.GONE);
 
                             btn_cheque_card.setVisibility(View.GONE);
-                            btn_cheque_card_select.setVisibility(View.GONE);
+                            btn_cheque_card_select.setVisibility(View.VISIBLE);
                             tvBack.setVisibility(View.GONE);
 
                         } else if (checkEsignResponse.getResponseCode() == 405) {

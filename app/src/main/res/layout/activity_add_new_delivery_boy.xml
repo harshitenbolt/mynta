@@ -215,16 +215,6 @@
                             android:text="Blood Group"
                             android:textColor="@color/colorBlue" />
 
-                        <!-- <EditText
-                             android:id="@+id/etVehicleForDelivery"
-                             style="@style/App_EditTextStyle"
-                             android:layout_width="match_parent"
-                             android:layout_marginTop="@dimen/_3sdp"
-                             android:layout_marginBottom="@dimen/_10sdp"
-                             android:imeOptions="actionDone"
-                             android:inputType="text" />
- -->
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_35sdp"
@@ -234,6 +224,29 @@
                             <Spinner
 
                                 android:id="@+id/spBloodGroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:backgroundTint="@color/colorPrimary"
+                                android:gravity="center"
+                                android:paddingLeft="@dimen/_10sdp"
+                                android:textSize="@dimen/_10sdp" />
+                        </RelativeLayout>
+
+
+                        <TextView
+                            style="@style/App_TextViewSmall"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="Store Type"
+                            android:textColor="@color/colorBlue" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_35sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@drawable/etfieldbackgroundgrey">
+
+                            <Spinner
+                                android:id="@+id/spStoreType"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:backgroundTint="@color/colorPrimary"

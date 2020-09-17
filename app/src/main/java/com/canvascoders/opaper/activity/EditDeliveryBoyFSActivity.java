@@ -36,6 +36,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.AddDelBoysReponse.AddDelBoyResponse;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.Datum;
 import com.canvascoders.opaper.Beans.DeliveryBoysListResponse.DeliveryboyListResponse;
+import com.canvascoders.opaper.Beans.GetStoreTypeResponse;
 import com.canvascoders.opaper.Beans.SendOTPDelBoyResponse.SendOtpDelBoyresponse;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.api.ApiClient;
@@ -79,13 +80,14 @@ public class EditDeliveryBoyFSActivity extends AppCompatActivity implements View
     private String profileImagepath = "";
     private SessionManager sessionManager;
     private String lattitude = "", longitude = "", currentAdress = "", permAddress = "";
-    Spinner spVehicleForDelivery, spBloodGroupType;
+    Spinner spVehicleForDelivery, spBloodGroupType,spStoreType;
     EditText etName, etFatherName, etPhoneNumber, etOtp;
     private RelativeLayout rvLanguage;
     ArrayList<String> listLanaguage = new ArrayList<>();
     boolean[] checkedItems;
     Button btSubmit;
     Button btGetOtp;
+    List<String> storeList = new ArrayList<>();
     private int PROFILEIMAGE = 200, LICENCEIMAGE = 300;
     CustomAdapter<String> spinnerArrayAdapter;
     private TextView tvLanguage;
@@ -106,14 +108,51 @@ public class EditDeliveryBoyFSActivity extends AppCompatActivity implements View
         sessionManager = new SessionManager(this);
         str_process_id = getIntent().getStringExtra(Constants.KEY_PROCESS_ID);
         delivery_boy_id = getIntent().getStringExtra("delivery_boy_id");
+        init();
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
             APiCallGetDeliveryBoyDeetails();
+            ApiCallgetSToreType();
         } else {
             Constants.ShowNoInternet(EditDeliveryBoyFSActivity.this);
         }
 
-        init();
+
     }
+
+
+    private void ApiCallgetSToreType() {
+        mProgressDialog.show();
+        Call<GetStoreTypeResponse> call = ApiClient.getClient().create(ApiInterface.class).getStoreTypeListforDl("Bearer " + sessionManager.getToken());
+        call.enqueue(new Callback<GetStoreTypeResponse>() {
+            @Override
+            public void onResponse(Call<GetStoreTypeResponse> call, Response<GetStoreTypeResponse> response) {
+                mProgressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetStoreTypeResponse getVehicleTypes = response.body();
+                    if (getVehicleTypes.getResponseCode() == 200) {
+                        storeList = getVehicleTypes.getData();
+                        CustomAdapter<String> spinnnerArrayAdapter = new CustomAdapter<String>(EditDeliveryBoyFSActivity.this, android.R.layout.simple_spinner_item, storeList);
+                        spinnnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spStoreType.setAdapter(spinnnerArrayAdapter);
+                        spStoreType.setSelection(0);
+                    } else {
+                        Toast.makeText(EditDeliveryBoyFSActivity.this, getVehicleTypes.getResponse(), Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+                    Toast.makeText(EditDeliveryBoyFSActivity.this, "#errorcode 2126" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetStoreTypeResponse> call, Throwable t) {
+                mProgressDialog.dismiss();
+                Toast.makeText(EditDeliveryBoyFSActivity.this, "#errorcode 2126" + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
 
     private void APiCallGetDeliveryBoyDeetails() {
 
@@ -205,6 +244,7 @@ public class EditDeliveryBoyFSActivity extends AppCompatActivity implements View
         etName = findViewById(R.id.etName);
         etFatherName = findViewById(R.id.etFatherName);
         spBloodGroupType = findViewById(R.id.spBloodGroup);
+        spStoreType = findViewById(R.id.spStoreType);
         List<String> stringList = new ArrayList<String>(Arrays.asList(selectBloodGroupType));
 
         spinnerArrayAdapter = new CustomAdapter<String>(EditDeliveryBoyFSActivity.this, android.R.layout.simple_spinner_item, stringList);
@@ -492,6 +532,7 @@ public class EditDeliveryBoyFSActivity extends AppCompatActivity implements View
         params.put(Constants.PARAM_FATHER_NAME, etFatherName.getText().toString().trim());
         params.put(Constants.PHONE_NUMBER, etPhoneNumber.getText().toString().trim());
         params.put(Constants.PARAM_BLOOD_GROUP, spBloodGroupType.getSelectedItem().toString());
+        params.put(Constants.PARAM_STORE_TYPE, spStoreType.getSelectedItem().toString());
         params.put(Constants.PARAM_DELIVERY_BOY_ID, delivery_boy_id);
         params.put(Constants.PARAM_LANGUAGES, tvLanguage.getText().toString().trim());
         params.put(Constants.PARAM_LATITUDE, lattitude);
