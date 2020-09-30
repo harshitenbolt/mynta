@@ -212,7 +212,7 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
                                 if (jsonObject.getString("responseCode").equalsIgnoreCase("200")) {
                                     JSONArray rateJsonArray = jsonObject.getJSONArray("data");
                                     JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
-
+                                    String msg =jsonObject.getString("Marvel DC 2.0 MSG");
                                        /* for (int i = 0; i < result.length(); i++) {
                                             JSONObject o = result.getJSONObject(i);
                                             MensaAlteration mensalist = gson.fromJson(o.toString(), MensaAlteration.class);
@@ -264,7 +264,7 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
 //                                    }
 
 
-                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, getContext(), RateFragment.this);
+                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, getContext(), RateFragment.this,msg);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));
@@ -342,8 +342,10 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
             if (rateTypeBeans.get(i).isSelected() && !rateTypeBeans.get(i).getIsApproved().equalsIgnoreCase("1")) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
+
+
                 if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE) && !rateTypeBeans.get(i).getStoreType().contains(Constants.ASSISTED)) {
-                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration")) {
+                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration") && rateTypeBeans.get(i).getStoreTypeId() != 8) {
                         if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
                             if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
                                 try {
@@ -374,7 +376,11 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
 
                     } else {
                         jsonObject.addProperty("rate", "0");
-                        jsonObject.addProperty("sub_store_type", alterationselected);
+                        if (rateTypeBeans.get(i).getStoreTypeId() == 8) {
+                            //jsonObject.addProperty("sub_store_type", alterationselected);
+                        } else {
+                            jsonObject.addProperty("sub_store_type", alterationselected);
+                        }
                     }
                 } else {
                     jsonObject.addProperty("rate", "0");
@@ -684,7 +690,7 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
     }
 
     @Override
-    public void onLongClick(View view, int position,String data) {
+    public void onLongClick(View view, int position, String data) {
 
     }
 

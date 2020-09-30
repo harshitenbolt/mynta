@@ -215,7 +215,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
                 jsonObject.addProperty("store_type", neutralStoreList.get(i).getStoreTypeId());
                 if (!neutralStoreList.get(i).getStoreType().contains(Constants.CAC_STORE) && !neutralStoreList.get(i).getStoreType().contains(Constants.ASSISTED)) {
 
-                    if (!neutralStoreList.get(i).getStoreType().contains("Mensa - Alteration")) {
+                    if (!neutralStoreList.get(i).getStoreType().contains("Mensa - Alteration")&& neutralStoreList.get(i).getStoreTypeId() != 8) {
 
                         if (neutralStoreList.get(i).getRate() != null && neutralStoreList.get(i).getRate().length() > 0) {
                             try {
@@ -245,7 +245,11 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
 
                     } else {
                         jsonObject.addProperty("rate", "0");
-                        jsonObject.addProperty("sub_store_type", alterationselected);
+                        if (neutralStoreList.get(i).getStoreTypeId() == 8) {
+                            //jsonObject.addProperty("sub_store_type", alterationselected);
+                        } else {
+                            jsonObject.addProperty("sub_store_type", alterationselected);
+                        }
                     }
                 } else {  // ITS s CAC store send rate "0"
                     jsonObject.addProperty("rate", "0");
@@ -487,6 +491,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
                                     } else {
                                         JSONArray storeJsonArray = jsonObject.getJSONArray("data");
                                         JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
+                                        String msg = jsonObject.getString("Marvel DC 2.0 MSG");
 
                                        /* for (int i = 0; i < result.length(); i++) {
                                             JSONObject o = result.getJSONObject(i);
@@ -519,7 +524,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
 
                                         if (neutralStoreList.size() > 0) {
                                             llNeutral.setVisibility(View.VISIBLE);
-                                            storeReListingAdapter = new StoreReListingAdapter(neutralStoreList, yourHashMap, StoreTypeListingActivity.this, StoreTypeListingActivity.this);
+                                            storeReListingAdapter = new StoreReListingAdapter(neutralStoreList, yourHashMap, StoreTypeListingActivity.this, StoreTypeListingActivity.this,msg);
                                             rv_neutral.setAdapter(storeReListingAdapter);
                                         }
 //                                    if (rejectedStoreList.size() > 0) {

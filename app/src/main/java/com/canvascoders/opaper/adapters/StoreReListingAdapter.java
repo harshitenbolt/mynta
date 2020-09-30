@@ -59,17 +59,18 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
     RecyclerViewClickListener recyclerViewClickListener;
     List<String> keysname = new ArrayList<>();
     List<String> valueName = new ArrayList<>();
-
+    String Message="";
     boolean[] checkedStoreType;
 
 
-    public StoreReListingAdapter(List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener) {
+    public StoreReListingAdapter(List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener,String Message) {
         this.dataViews = dataViews;
         this.mContext = mContext;
         this.recyclerViewClickListener = recyclerViewClickListener;
         this.mensaAlterationList = mensaAlterationList;
         keysname.addAll(mensaAlterationList.keySet());
         valueName.addAll(mensaAlterationList.values());
+        this.Message=Message;
     }
 
     @NonNull
@@ -88,6 +89,19 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
 
         holder.check_box_store.setEnabled(true);
         holder.check_box_store.setChecked(false);
+
+        if (store.getStoreTypeId() == 8) {
+            holder.tv_store_name.setText("Marvel - DC 2.0");
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
+        if (store.getStoreTypeId() == 4) {
+            holder.edt_store_amount.setEnabled(true);
+            holder.rvSeperateRight.setVisibility(View.VISIBLE);
+            holder.vSeperate.setVisibility(View.VISIBLE);
+        }
 
         if (store.getStoreType().contains(Constants.ASSISTED)) {
             holder.edt_store_amount.setHint("");
@@ -264,6 +278,76 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                         }
                 }
 
+
+
+
+                if (store.getStoreTypeId() == 8) {
+                    if (holder.check_box_store.isChecked()) {
+                        TextView tvMessage;
+                        Button btSubmit1;
+                        Dialog dialog;
+
+                        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialog.setContentView(R.layout.dialogue_message);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setCancelable(true);
+
+                        tvMessage = dialog.findViewById(R.id.tvMessage);
+                        tvMessage.setText(Message);
+                        btSubmit1 = dialog.findViewById(R.id.btSubmit);
+                        btSubmit1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // tvVendorTypeDetail.setText(selectedString);
+                                for (int i = 0; i < dataViews.size(); i++) {
+                                    if (dataViews.get(i).getStoreTypeId() == 4) {
+                                        dataViews.get(i).setSelected(false);
+                                        dataViews.get(i).setRate("0");
+                                        // holder.check_box_store.setChecked(false);
+                                    } else {
+
+                                    }
+                                }
+                                int notifyPosition = 0;
+                                for (int i = 0; i < dataViews.size(); i++) {
+
+                                    if (dataViews.get(i).getStoreTypeId() == 4) {
+                                        notifyPosition = i;
+                                    }
+                                }
+                                notifyItemChanged(notifyPosition);
+                                dialog.dismiss();
+                            }
+                        });
+
+                        dialog.show();
+
+                    }
+
+                }
+                if (store.getStoreTypeId() == 4) {
+                    for (int i = 0; i < dataViews.size(); i++) {
+                        if (dataViews.get(i).getStoreTypeId() == 8) {
+                            dataViews.get(i).setSelected(false);
+                            dataViews.get(i).setRate("0");
+                            // holder.check_box_store.setChecked(false);
+                        } else {
+
+                        }
+                    }
+                    int notifyPosition = 0;
+                    for (int i = 0; i < dataViews.size(); i++) {
+
+                        if (dataViews.get(i).getStoreTypeId() == 8) {
+                            notifyPosition = i;
+                        }
+                    }
+                    notifyItemChanged(notifyPosition);
+
+
+            }
+
             }
         });
         holder.check_box_store.setEnabled(true);
@@ -308,7 +392,11 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                 }
 
             }
-        });
+        }
+
+
+
+        );
 
 //        if (store.getIsApproved().equalsIgnoreCase("0"))  //  Not added now/ or pending
 //

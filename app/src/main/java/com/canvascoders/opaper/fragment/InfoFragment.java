@@ -1102,6 +1102,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                         if (b) {
+
                             listStoreType.add(select_Store_type.get(i));
                         } else {
                             listStoreType.remove(select_Store_type.get(i));
@@ -1738,6 +1739,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             spTypeofVendor.setAdapter(spinnerArrayAdapter);
                             spTypeofVendor.setSelection(0);
                            */
+
+
                             select_Store_type = getVendorTypeDetails.getStoreTypeConfig();
                             checkedStoreType = new boolean[select_Store_type.size()];
                         } else if (getVendorTypeDetails.getResponseCode() == 411) {

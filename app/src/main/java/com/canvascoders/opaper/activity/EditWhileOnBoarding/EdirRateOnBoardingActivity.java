@@ -85,7 +85,7 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               finish();
+                finish();
 
             }
         });
@@ -149,7 +149,7 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
                 if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE) && !rateTypeBeans.get(i).getStoreType().contains(Constants.ASSISTED)) {
-                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration")) {
+                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration") && rateTypeBeans.get(i).getStoreTypeId() != 8) {
                         if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
                             if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
                                 try {
@@ -179,8 +179,15 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
                         }
 
                     } else {
+
                         jsonObject.addProperty("rate", "0");
-                        jsonObject.addProperty("sub_store_type", alterationselected);
+                        if (rateTypeBeans.get(i).getStoreTypeId() == 8) {
+                            //jsonObject.addProperty("sub_store_type", alterationselected);
+                        } else {
+                            jsonObject.addProperty("sub_store_type", alterationselected);
+                        }
+
+
                     }
                 } else {
                     jsonObject.addProperty("rate", "0");
@@ -236,8 +243,8 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
 
-              //  Log.e("REsponse code", "" + response.code());
-               // Log.e("REspomse msg", "" + response.body().toString());
+                //  Log.e("REsponse code", "" + response.code());
+                // Log.e("REspomse msg", "" + response.body().toString());
                 if (response.isSuccessful()) {
                     mProgressDialog.dismiss();
                     try {
@@ -443,6 +450,7 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
 
 
                                     JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
+                                    String msg = jsonObject.getString("Marvel DC 2.0 MSG");
 
                                  /* for (int i = 0; i < result.length(); i++) {
                                             JSONObject o = result.getJSONObject(i);
@@ -495,7 +503,7 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
 //                                    }
 
 
-                                    rateListAdapter = new RateListonBoardingAdapter(rateTypeBeans, yourHashMap, EdirRateOnBoardingActivity.this, EdirRateOnBoardingActivity.this);
+                                    rateListAdapter = new RateListonBoardingAdapter(rateTypeBeans, yourHashMap, EdirRateOnBoardingActivity.this, EdirRateOnBoardingActivity.this, msg);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));
@@ -551,7 +559,7 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
     }
 
     @Override
-    public void onLongClick(View view, int position,String data) {
+    public void onLongClick(View view, int position, String data) {
 
     }
 

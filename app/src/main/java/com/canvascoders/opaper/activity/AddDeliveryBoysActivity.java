@@ -737,7 +737,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_PROFILE) {
                 Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
-                profImage = ImagePicker.getBitmapPath(bitmap, this);
+                    profImage = ImagePicker.getBitmapPath(bitmap, this);
                 Glide.with(this).load(profImage).asBitmap().centerCrop().into(new BitmapImageViewTarget(iv_image) {
                     @Override
                     protected void setResource(Bitmap resource) {

@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.canvascoders.opaper.utils.Constants.billList;
 import static com.canvascoders.opaper.utils.Constants.dataRate;
 
 public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHolder> {
@@ -47,14 +48,16 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
     List<String> valueName = new ArrayList<>();
     Context mContext;
     CustomPopupRateStoreTypeAdapter customPopupStoreTypeAdapter;
+    String Message = "";
 
-    public RateListAdapter(List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener) {
+    public RateListAdapter(List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener, String Message) {
         this.dataViews = dataViews;
         this.mContext = mContext;
         this.mensaAlterationList = mensaAlterationList;
         this.recyclerViewClickListener = recyclerViewClickListener;
         keysname.addAll(mensaAlterationList.keySet());
         valueName.addAll(mensaAlterationList.values());
+        this.Message = Message;
     }
 
     @NonNull
@@ -72,6 +75,21 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
         holder.edt_store_amount.setText(store.getRate());
         holder.check_box_store.setEnabled(true);
         holder.check_box_store.setChecked(false);
+
+        if (store.getStoreTypeId() == 8) {
+            holder.tv_store_name.setText("Marvel - DC 2.0");
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
+        if (store.getStoreTypeId() == 4) {
+            holder.edt_store_amount.setEnabled(true);
+            holder.rvSeperateRight.setVisibility(View.VISIBLE);
+            holder.vSeperate.setVisibility(View.VISIBLE);
+        }
+
+
         if (store.getStoreType().contains(Constants.ASSISTED)) {
             holder.edt_store_amount.setHint("");
             holder.edt_store_amount.setText("     ");
@@ -157,6 +175,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                     holder.rvSeperateRight.setVisibility(View.GONE);
                     holder.vSeperate.setVisibility(View.GONE);
                 }
+
 
                 if (store.getStoreType().contains("Mensa - Alteration")) {
                     holder.edt_store_amount.setHint("");
@@ -258,11 +277,12 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                 if (holder.check_box_store.isChecked()) {
                     if (!store.getStoreType().contains(Constants.CAC_STORE))
                         holder.edt_store_amount.setEnabled(true);
-                         dataViews.get(position).setSelected(true);
+                    dataViews.get(position).setSelected(true);
                 } else {
                     holder.edt_store_amount.setEnabled(false);
                     dataViews.get(position).setSelected(false);
                 }
+
 
 // If the last one is selected
 //                    if (dataViews.size() > 5 && position != 5 && dataViews.get(5).isSelected()) {
@@ -289,6 +309,75 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
 //                        }
 //                        }
                     }*/
+
+
+                if (store.getStoreTypeId() == 8) {
+                    if (holder.check_box_store.isChecked()) {
+                        TextView tvMessage;
+                        Button btSubmit1;
+                        Dialog dialog;
+
+                        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialog.setContentView(R.layout.dialogue_message);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setCancelable(true);
+
+                        tvMessage = dialog.findViewById(R.id.tvMessage);
+                        tvMessage.setText(Message);
+                        btSubmit1 = dialog.findViewById(R.id.btSubmit);
+                        btSubmit1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // tvVendorTypeDetail.setText(selectedString);
+                                for (int i = 0; i < dataViews.size(); i++) {
+                                    if (dataViews.get(i).getStoreTypeId() == 4) {
+                                        dataViews.get(i).setSelected(false);
+                                        dataViews.get(i).setRate("0");
+                                        // holder.check_box_store.setChecked(false);
+                                    } else {
+
+                                    }
+                                }
+                                int notifyPosition = 0;
+                                for (int i = 0; i < dataViews.size(); i++) {
+
+                                    if (dataViews.get(i).getStoreTypeId() == 4) {
+                                        notifyPosition = i;
+                                    }
+                                }
+                                notifyItemChanged(notifyPosition);
+                                dialog.dismiss();
+                            }
+                        });
+
+                        dialog.show();
+
+                    }
+
+                }
+                if (store.getStoreTypeId() == 4) {
+                    for (int i = 0; i < dataViews.size(); i++) {
+                        if (dataViews.get(i).getStoreTypeId() == 8) {
+                            dataViews.get(i).setSelected(false);
+                            dataViews.get(i).setRate("0");
+                            // holder.check_box_store.setChecked(false);
+                        } else {
+
+                        }
+                    }
+
+                    int notifyPosition = 0;
+                    for (int i = 0; i < dataViews.size(); i++) {
+
+                        if (dataViews.get(i).getStoreTypeId() == 8) {
+                            notifyPosition = i;
+                        }
+                    }
+                    notifyItemChanged(notifyPosition);
+                   // notifyItemChanged(notifyPosition);
+                }
+
             }
         });
 

@@ -48,9 +48,9 @@ public class Constants {
     // test server 20
 
     public final static String APP_NAME = "my_stage"; //stage
-  //   public final static String APP_NAME = "my_live"; //live
-   //  public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
-    public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
+ //    public final static String APP_NAME = "my_live"; //live
+   // public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+   public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
 
