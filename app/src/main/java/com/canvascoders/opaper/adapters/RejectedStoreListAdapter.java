@@ -93,7 +93,6 @@ public class RejectedStoreListAdapter extends RecyclerView.Adapter<RejectedStore
                     e.printStackTrace();
                     Toast.makeText(mContext, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 

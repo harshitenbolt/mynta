@@ -90,18 +90,15 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
         holder.check_box_store.setEnabled(true);
         holder.check_box_store.setChecked(false);
 
-        if (store.getStoreTypeId() == 8) {
-            holder.tv_store_name.setText("Marvel - DC 2.0");
-            holder.edt_store_amount.setText("     ");
-            holder.edt_store_amount.setEnabled(false);
-            holder.rvSeperateRight.setVisibility(View.GONE);
-            holder.vSeperate.setVisibility(View.GONE);
-        }
+
+
+
         if (store.getStoreTypeId() == 4) {
             holder.edt_store_amount.setEnabled(true);
             holder.rvSeperateRight.setVisibility(View.VISIBLE);
             holder.vSeperate.setVisibility(View.VISIBLE);
         }
+
 
         if (store.getStoreType().contains(Constants.ASSISTED)) {
             holder.edt_store_amount.setHint("");
@@ -121,7 +118,15 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
             holder.edt_store_amount.setEnabled(false);
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
-        } else {
+        }
+       else if (store.getStoreTypeId() == 8) {
+            holder.tv_store_name.setText("Marvel - DC 2.0");
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
+        else {
             holder.rvSeperateRight.setVisibility(View.VISIBLE);
             holder.vSeperate.setVisibility(View.VISIBLE);
         }
@@ -245,9 +250,6 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                     }
 
 
-                } else {
-                    holder.rvSeperateRight.setVisibility(View.VISIBLE);
-                    holder.vSeperate.setVisibility(View.VISIBLE);
                 }
 
 
