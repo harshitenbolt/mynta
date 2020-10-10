@@ -116,7 +116,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     AppCompatSpinner spYear;
     ProgressBar pbBar;
     LinearLayout llDisable, llDelBoy;
-    CardView cvGST,cvKYC;
+    CardView cvGST, cvKYC;
     LinearLayout llEnable;
     private TextView tvStoreName, tvAddress, tvNoData;
     boolean expand = false;
@@ -378,7 +378,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
 
         super.onResume();
         ApiCallGetDetailofVendor();
-       // init();
+        // init();
     }
 
     private void init() {
@@ -512,10 +512,13 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             tvStoreName.setText(vendor.getStoreName());
             tv_Name.setText(vendor.getName());
             tv_Mobile.setText(vendor.getMobileNo());
-            if (!vendor.getLatitude().equalsIgnoreCase(null)) {
+            if (vendor.getLatitude().equalsIgnoreCase("")) {
+
+            } else {
                 mDefaultLatitude = Double.valueOf(vendor.getLatitude());
                 mDefaultLongitude = Double.valueOf(vendor.getLongitude());
             }
+
             tvAgreementExpirationDate.setText(vendor.getExpirationDate());
             process_id = String.valueOf(vendor.getProccessId());
             tvProcessId.setText("Id:" + vendor.getProccessId());
@@ -528,6 +531,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             } else {
                 cvResignAgreement.setVisibility(View.GONE);
             }
+
             allowDEdit = vendor.getAllowedit();
             allowEditDelBoy = vendor.getIsAddDeliveryBoy();
             allowGSTIMAGE = vendor.getGSTImageRequire();
@@ -569,6 +573,13 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                 cvAddGSTIMAGE.setVisibility(View.GONE);
                 // llDelBoy.setVisibility(View.GONE);
             }
+
+            if (vendor.getIsDisableRate().equalsIgnoreCase("1")) {
+                cvRate.setVisibility(View.GONE);
+            } else {
+                cvRate.setVisibility(View.VISIBLE);
+            }
+
 
             Glide.with(this).load(Constants.BaseImageURL + vendor.getShopImage())
                     .placeholder(R.drawable.store_place).into(ivVendorImage);
@@ -628,7 +639,6 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         });
 
 
-
         cvKYC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -640,7 +650,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             }
         });
 
-        Log.e("datagot",vendor.getPanNo());
+        Log.e("datagot", vendor.getPanNo());
         String letter = Character.toString(vendor.getPanNo().charAt(3));
         if (letter.equalsIgnoreCase("F") || letter.equalsIgnoreCase("C")) {
             cvPan.setVisibility(View.GONE);

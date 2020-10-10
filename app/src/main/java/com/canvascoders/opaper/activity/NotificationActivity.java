@@ -98,8 +98,6 @@ public class NotificationActivity extends AppCompatActivity implements View.OnCl
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
 
                 // this condition  is for pagination in both with Search and without search
-
-
                 if (!apiName.equalsIgnoreCase("")) {
                     new GetNotificationList(object.toString(), apiName).execute();
                 }

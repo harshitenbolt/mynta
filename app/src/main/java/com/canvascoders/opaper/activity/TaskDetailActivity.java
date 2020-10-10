@@ -440,6 +440,25 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
 
                 }
 
+                else if (screenNumber.equalsIgnoreCase("16")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+
+                    }
+                    if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+                        ApiCallResendReactiveLink(proccess_id);
+                    } else {
+                        Constants.ShowNoInternet(TaskDetailActivity.this);
+                    }
+                 /*   Intent i = new Intent(TaskDetailActivity.this, TaskProccessDetailActivity.class);
+                    i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+                    startActivity(i);
+*/
+                }
+
 
             }
         });
@@ -457,6 +476,44 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
         params.put(Constants.PARAM_PROCESS_ID, proccessId);
 
         ApiClient.getClient().create(ApiInterface.class).linkGenerate("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<GetAgreementLinkSend>() {
+            @Override
+            public void onResponse(Call<GetAgreementLinkSend> call, Response<GetAgreementLinkSend> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+                    GetAgreementLinkSend getAgreementLinkSend = response.body();
+                    if (getAgreementLinkSend.getResponseCode() == 200) {
+                        Toast.makeText(TaskDetailActivity.this, getAgreementLinkSend.getResponse(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(TaskDetailActivity.this, getAgreementLinkSend.getResponse(), Toast.LENGTH_SHORT).show();
+
+                    }
+                } else {
+                    Toast.makeText(TaskDetailActivity.this, "#errorcode 2188 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetAgreementLinkSend> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(TaskDetailActivity.this, "#errorcode 2188 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+    }
+
+
+    private void ApiCallResendReactiveLink(String proccessId) {
+        progressDialog.show();
+
+        Map<String, String> params = new HashMap<>();
+
+        params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
+        //params.put(Constants.PARAM_TASK_ID, String.valueOf(taskid));
+        params.put(Constants.PARAM_PROCESS_ID, proccessId);
+
+        ApiClient.getClient().create(ApiInterface.class).resendReactiveLink("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<GetAgreementLinkSend>() {
             @Override
             public void onResponse(Call<GetAgreementLinkSend> call, Response<GetAgreementLinkSend> response) {
                 progressDialog.dismiss();

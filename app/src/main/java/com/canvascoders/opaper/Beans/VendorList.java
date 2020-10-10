@@ -23,6 +23,20 @@ public class VendorList implements Serializable {
     @SerializedName("mobile_no")
     @Expose
     private String mobileNo;
+
+    public String getIsDisableRate() {
+        return isDisableRate;
+    }
+
+    public void setIsDisableRate(String isDisableRate) {
+        this.isDisableRate = isDisableRate;
+    }
+
+    @SerializedName("is_disable_rate")
+    @Expose
+    private String isDisableRate;
+
+
     @SerializedName("longitude")
     @Expose
     private String longitude;

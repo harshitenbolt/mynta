@@ -554,6 +554,9 @@ public interface ApiInterface {
 
 
 
+    @FormUrlEncoded
+    @POST("resend-reactive-link")
+    Call<GetAgreementLinkSend> resendReactiveLink(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
 
 
     @FormUrlEncoded
