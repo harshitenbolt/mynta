@@ -70,7 +70,11 @@ public class DeliveryBoysAdapter extends RecyclerView.Adapter<DeliveryBoysAdapte
         });
         holder.tvStatus.setText(moreitemList.get(position).getBoystatus());
 
-
+        if (moreitemList.get(position).getIsEditable().equalsIgnoreCase("1")) {
+            holder.llEditableOptions.setVisibility(View.VISIBLE);
+        } else {
+            holder.llEditableOptions.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -81,7 +85,7 @@ public class DeliveryBoysAdapter extends RecyclerView.Adapter<DeliveryBoysAdapte
     public class RecordHolder extends RecyclerView.ViewHolder {
         ImageView image_icon;
         TextView tvName, tvAddress, tvStoreType, tvMobile, tvDelete, tvEdit, tvStatus;
-        LinearLayout linear_item;
+        LinearLayout llEditableOptions;
 
         public RecordHolder(View view) {
             super(view);
@@ -93,6 +97,7 @@ public class DeliveryBoysAdapter extends RecyclerView.Adapter<DeliveryBoysAdapte
             tvStoreType = view.findViewById(R.id.tvStoreType);
             tvEdit = view.findViewById(R.id.tvEdit);
             tvStatus = view.findViewById(R.id.tvStatus);
+            llEditableOptions = view.findViewById(R.id.llEditableOptions);
         }
     }
 

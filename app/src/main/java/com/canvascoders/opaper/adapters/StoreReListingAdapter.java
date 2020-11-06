@@ -126,6 +126,12 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
         }
+        else if (store.getStoreTypeId() == 9) {
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
         else {
             holder.rvSeperateRight.setVisibility(View.VISIBLE);
             holder.vSeperate.setVisibility(View.VISIBLE);

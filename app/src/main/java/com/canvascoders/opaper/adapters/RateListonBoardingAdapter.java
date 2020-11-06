@@ -80,6 +80,12 @@ public class RateListonBoardingAdapter extends RecyclerView.Adapter<RateListonBo
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
         }
+        if (store.getStoreTypeId() == 9) {
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
         if (store.getStoreTypeId() == 4) {
             holder.edt_store_amount.setEnabled(true);
             holder.rvSeperateRight.setVisibility(View.VISIBLE);

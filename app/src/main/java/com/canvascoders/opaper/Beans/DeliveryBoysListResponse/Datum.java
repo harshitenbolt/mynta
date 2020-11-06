@@ -21,6 +21,21 @@ public class Datum implements Serializable {
     @Expose
     private String image;
 
+    public String getIsEditable() {
+        return isEditable;
+    }
+
+    public void setIsEditable(String isEditable) {
+        this.isEditable = isEditable;
+    }
+
+    @SerializedName("is_editable")
+    @Expose
+    private String isEditable;
+
+
+
+
     public String getGender() {
         return gender;
     }

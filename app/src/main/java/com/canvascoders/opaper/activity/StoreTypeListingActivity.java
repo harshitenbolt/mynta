@@ -216,36 +216,46 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
                 if (!neutralStoreList.get(i).getStoreType().contains(Constants.CAC_STORE) && !neutralStoreList.get(i).getStoreType().contains(Constants.ASSISTED)) {
 
                     if (!neutralStoreList.get(i).getStoreType().contains("Mensa - Alteration")&& neutralStoreList.get(i).getStoreTypeId() != 8) {
-
-                        if (neutralStoreList.get(i).getRate() != null && neutralStoreList.get(i).getRate().length() > 0) {
-                            try {
+                        if (neutralStoreList.get(i).getStoreTypeId() != 9) {
+                            if (neutralStoreList.get(i).getRate() != null && neutralStoreList.get(i).getRate().length() > 0) {
+                                try {
 //                        float rate = Float.parseFloat(neutralStoreList.get(i).getRate());
 //                        if (rate > 0)
-                                if (neutralStoreList.get(i).getRate().equalsIgnoreCase("0") || neutralStoreList.get(i).getRate().equalsIgnoreCase("0.0")) {
-                                    Toast.makeText(this, "Please enter valid rate", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    jsonObject.addProperty("rate", "" + neutralStoreList.get(i).getRate());
-                                }
+                                    if (neutralStoreList.get(i).getRate().equalsIgnoreCase("0") || neutralStoreList.get(i).getRate().equalsIgnoreCase("0.0")) {
+                                        Toast.makeText(this, "Please enter valid rate", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        jsonObject.addProperty("rate", "" + neutralStoreList.get(i).getRate());
+                                    }
 
 //                        else {
 //                            Toast.makeText(StoreTypeListingActivity.this, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
 //                            return;
 //                        }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Toast.makeText(StoreTypeListingActivity.this, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(StoreTypeListingActivity.this, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
 //                    jsonObject.addProperty("rate", neutralStoreList.get(i).getRate());
-                        } else {
-                            Toast.makeText(StoreTypeListingActivity.this, "Issue with rate:" + neutralStoreList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
-                            return;
+                            } else {
+                                Toast.makeText(StoreTypeListingActivity.this, "Issue with rate:" + neutralStoreList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                return;
+
+                            }
 
                         }
-
-                    } else {
+                        else{
+                            jsonObject.addProperty("rate", "0");
+                            if (neutralStoreList.get(i).getStoreTypeId() == 9) {
+                                //jsonObject.addProperty("sub_store_type", alterationselected);
+                            }
+                        }
+                    }else {
                         jsonObject.addProperty("rate", "0");
                         if (neutralStoreList.get(i).getStoreTypeId() == 8) {
+                            //jsonObject.addProperty("sub_store_type", alterationselected);
+                        }
+                        else if (neutralStoreList.get(i).getStoreTypeId() == 9) {
                             //jsonObject.addProperty("sub_store_type", alterationselected);
                         } else {
                             jsonObject.addProperty("sub_store_type", alterationselected);

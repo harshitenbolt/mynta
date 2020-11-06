@@ -212,7 +212,7 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
                                 if (jsonObject.getString("responseCode").equalsIgnoreCase("200")) {
                                     JSONArray rateJsonArray = jsonObject.getJSONArray("data");
                                     JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
-                                    String msg =jsonObject.getString("Marvel DC 2.0 MSG");
+                                    String msg = jsonObject.getString("Marvel DC 2.0 MSG");
                                        /* for (int i = 0; i < result.length(); i++) {
                                             JSONObject o = result.getJSONObject(i);
                                             MensaAlteration mensalist = gson.fromJson(o.toString(), MensaAlteration.class);
@@ -264,7 +264,7 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
 //                                    }
 
 
-                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, getContext(), RateFragment.this,msg);
+                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, getContext(), RateFragment.this, msg);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));
@@ -346,39 +346,50 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
 
                 if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE) && !rateTypeBeans.get(i).getStoreType().contains(Constants.ASSISTED)) {
                     if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration") && rateTypeBeans.get(i).getStoreTypeId() != 8) {
-                        if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
-                            if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
-                                try {
+                        if (rateTypeBeans.get(i).getStoreTypeId() != 9) {
+                            if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
+                                if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
+                                    try {
 //                        float rate = Float.parseFloat(rateTypeBeans.get(i).getRate());
 //                        if(rate>0)
-                                    jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
-                                    //  mProgressDialog.dismiss();
+                                        jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
+                                        //  mProgressDialog.dismiss();
 
 //                        else
 //                        {
 //                            Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
 //                            return;
 //                        }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } else {
+                                    mProgressDialog.dismiss();
+                                    Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                                     return;
                                 }
                             } else {
-                                mProgressDialog.dismiss();
                                 Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                                 return;
                             }
-                        } else {
-                            Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
-                            return;
-                        }
 
+                        }
+                        else{
+                            jsonObject.addProperty("rate", "0");
+                            if (rateTypeBeans.get(i).getStoreTypeId() == 9) {
+                                //jsonObject.addProperty("sub_store_type", alterationselected);
+                            }
+                        }
                     } else {
                         jsonObject.addProperty("rate", "0");
                         if (rateTypeBeans.get(i).getStoreTypeId() == 8) {
                             //jsonObject.addProperty("sub_store_type", alterationselected);
-                        } else {
+                        }
+                        else if (rateTypeBeans.get(i).getStoreTypeId() == 9) {
+                            //jsonObject.addProperty("sub_store_type", alterationselected);
+                        }else {
                             jsonObject.addProperty("sub_store_type", alterationselected);
                         }
                     }

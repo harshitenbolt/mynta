@@ -89,6 +89,13 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
             holder.vSeperate.setVisibility(View.VISIBLE);
         }
 
+        if (store.getStoreTypeId() == 9) {
+            holder.edt_store_amount.setText("     ");
+            holder.edt_store_amount.setEnabled(false);
+            holder.rvSeperateRight.setVisibility(View.GONE);
+            holder.vSeperate.setVisibility(View.GONE);
+        }
+
 
         if (store.getStoreType().contains(Constants.ASSISTED)) {
             holder.edt_store_amount.setHint("");
@@ -109,6 +116,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
         }
+
 
 
         if (store.getStoreType().contains(Constants.RENTAL)) {

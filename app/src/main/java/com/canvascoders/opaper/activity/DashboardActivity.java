@@ -837,9 +837,9 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
             fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right);
 
             fragmentTransaction.replace(R.id.rvContentMain, cFragment);
+
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-
         }
     }
 

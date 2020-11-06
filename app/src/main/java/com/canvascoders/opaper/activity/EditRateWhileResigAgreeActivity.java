@@ -183,7 +183,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
 
 
                                     JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
-                                    String msg =jsonObject.getString("Marvel DC 2.0 MSG");
+                                    String msg = jsonObject.getString("Marvel DC 2.0 MSG");
 
                                  /* for (int i = 0; i < result.length(); i++) {
                                             JSONObject o = result.getJSONObject(i);
@@ -236,7 +236,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
 //                                    }
 
 
-                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, EditRateWhileResigAgreeActivity.this, EditRateWhileResigAgreeActivity.this,msg);
+                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, EditRateWhileResigAgreeActivity.this, EditRateWhileResigAgreeActivity.this, msg);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));
@@ -297,38 +297,49 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
                 if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE) && !rateTypeBeans.get(i).getStoreType().contains(Constants.ASSISTED)) {
-                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration")&& rateTypeBeans.get(i).getStoreTypeId() != 8) {
-                        if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
-                            if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
-                                try {
+                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration") && rateTypeBeans.get(i).getStoreTypeId() != 8) {
+                        if (rateTypeBeans.get(i).getStoreTypeId() != 9) {
+                            if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
+                                if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
+                                    try {
 //                        float rate = Float.parseFloat(rateTypeBeans.get(i).getRate());
 //                        if(rate>0)
-                                    jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
-                                    //  mProgressDialog.dismiss();
+                                        jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
+                                        //  mProgressDialog.dismiss();
 
 //                        else
 //                        {
 //                            Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
 //                            return;
 //                        }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                    Toast.makeText(this, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(this, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } else {
+                                    mProgressDialog.dismiss();
+                                    Toast.makeText(this, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                                     return;
                                 }
                             } else {
-                                mProgressDialog.dismiss();
                                 Toast.makeText(this, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                                 return;
                             }
-                        } else {
-                            Toast.makeText(this, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
-                            return;
+
+                        }
+                        else{
+                            jsonObject.addProperty("rate", "0");
+                            if (rateTypeBeans.get(i).getStoreTypeId() == 9) {
+                                //jsonObject.addProperty("sub_store_type", alterationselected);
+                            }
                         }
 
                     } else {
                         jsonObject.addProperty("rate", "0");
                         if (rateTypeBeans.get(i).getStoreTypeId() == 8) {
+                            //jsonObject.addProperty("sub_store_type", alterationselected);
+                        } else if (rateTypeBeans.get(i).getStoreTypeId() == 9) {
                             //jsonObject.addProperty("sub_store_type", alterationselected);
                         } else {
                             jsonObject.addProperty("sub_store_type", alterationselected);
@@ -591,7 +602,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void onLongClick(View view, int position,String data) {
+    public void onLongClick(View view, int position, String data) {
 
     }
 

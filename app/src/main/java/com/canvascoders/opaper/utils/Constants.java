@@ -43,21 +43,21 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
 
-   public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
- //   public static String BaseURL = "https://mystaging.opaper.in/api3/";
+    //public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+        public static String BaseURL = "https://mystaging.opaper.in/api3/";
     // test server 20
 
-   // public final static String APP_NAME = "my_stage"; //stage
-   public final static String APP_NAME = "my_live"; //live
-    public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
-   //public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
+      public final static String APP_NAME = "my_stage"; //stage
+    //public final static String APP_NAME = "my_live"; //live
+   // public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+    public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
 
     // public static String BaseURL = "http://139.59.94.135/api3/";  // test server 2
 
 
-  //  public static String APKROOT = "https://myntraopaper.opaper.in/";
+    //public static String APKROOT = "https://myntraopaper.opaper.in/";
 
     //staging apk root
     public static String APKROOT = "https://myntraopaper.opaper.in/";
@@ -355,7 +355,6 @@ public class Constants {
     public static String PARAM_BACK_ACCOUNT_NUMBER = "bank_account_number";
     public static String PARAM_BACK_ACCOUNT_HOLDER_NAME = "bank_account_holder_name";
     public static String PARAM_BACK_ACCOUNT_IFSC_CODE = "ifsc_code";
-
 
 
     public static String PARAM_IDENTIFIRE = "identifier";
