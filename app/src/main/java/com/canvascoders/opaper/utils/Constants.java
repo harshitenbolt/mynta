@@ -8,6 +8,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 
+import com.canvascoders.opaper.Beans.StoreTypeBean;
+import com.canvascoders.opaper.Beans.SubStoreType;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.core.content.ContextCompat;
@@ -23,6 +25,10 @@ import com.canvascoders.opaper.Beans.BillList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
 
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -154,6 +160,8 @@ public class Constants {
 
 
     public static String dataRate[] = null;
+    public static List<StoreTypeBean> subStoreTypeList=null;
+    public static JSONArray jsonArray;
     //-------------------------
 
     //For Vendor Mobile info

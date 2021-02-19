@@ -179,9 +179,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
                                 Log.e("in JSON", "" + jsonObject.toString());
 
                                 if (jsonObject.getString("responseCode").equalsIgnoreCase("200")) {
-                                    JSONArray rateJsonArray = jsonObject.getJSONArray("data");
-
-
+                                    JSONArray rateJsonArray = jsonObject.getJSONArray("service");
                                     JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
                                     String msg = jsonObject.getString("Marvel DC 2.0 MSG");
 
@@ -236,7 +234,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
 //                                    }
 
 
-                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, EditRateWhileResigAgreeActivity.this, EditRateWhileResigAgreeActivity.this, msg);
+                                    rateListAdapter = new RateListAdapter(EditRateWhileResigAgreeActivity.this,rateTypeBeans, yourHashMap, EditRateWhileResigAgreeActivity.this, EditRateWhileResigAgreeActivity.this, msg);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));

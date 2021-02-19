@@ -13,6 +13,8 @@ import android.os.Handler;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.Html;
@@ -37,12 +39,14 @@ import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.GetPanExistResponse.GetPanAlreadyExistResponse;
 import com.canvascoders.opaper.Beans.MakeReportResponse.MakeReportResponse;
+import com.canvascoders.opaper.Beans.MensaAlteration;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.EditGSTActivity;
+import com.canvascoders.opaper.adapters.CustomPopupRateStoreTypeAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.InfoFragment;
@@ -69,6 +73,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.canvascoders.opaper.utils.Constants.dataRate;
 
 public class DialogUtil {
     private static Dialog dialog;
@@ -138,6 +144,9 @@ public class DialogUtil {
 
         dialog.show();
     }
+
+
+
 
 
     public static void VoterDetail(Context mContext, String name, String id, String fathername, String birthdate, final DialogListner dialogInterface) {
@@ -268,6 +277,139 @@ public class DialogUtil {
         });
         dialog.show();
     }
+
+
+
+
+    public static void SubStoreType(Context mContext, String name, String id, String fathername, String birthdate, final DialogListner dialogInterface) {
+
+        Button btSubmit;
+        ImageView ivClose;
+
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialoguevoter_detail);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
+        etVotername = dialog.findViewById(R.id.etVotername);
+        etVoterFatherName = dialog.findViewById(R.id.etVoterFathername);
+        etVoterDateofBirth = dialog.findViewById(R.id.etDateofBorthvoter);
+        etVoterIdNumber = dialog.findViewById(R.id.etVoterNumber);
+        etVotername.setText(name);
+        etVoterFatherName.setText(fathername);
+        etVoterIdNumber.setText(id);
+        stringdob = birthdate;
+        etVoterDateofBirth.setText(birthdate);
+        ivClose = dialog.findViewById(R.id.ivClose);
+
+        etVoterDateofBirth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int mYear, mMonth, mDay, mHour, mMinute;
+                final Calendar c2 = Calendar.getInstance();
+                mYear = c2.get(Calendar.YEAR);
+                mMonth = c2.get(Calendar.MONTH);
+                mDay = c2.get(Calendar.DAY_OF_MONTH);
+
+                Date today1 = new Date();
+                Calendar c3 = Calendar.getInstance();
+                c3.setTime(today1);
+                c3.add(Calendar.YEAR, -18); // Subtract 18 year
+                long minDate1 = c3.getTime().getTime(); //
+                DatePickerDialog datePickerDialog1 = new DatePickerDialog(mContext,
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+                                datePicker = new DatePicker(mContext);
+                                datePicker.init(year, monthOfYear + 1, dayOfMonth, null);
+
+
+                                String monthString = String.valueOf(monthOfYear + 1);
+                                if (monthString.length() == 1) {
+                                    monthString = "0" + monthString;
+                                }
+
+
+                                //logic for add 0 in string if date digit is on 1 only
+                                String daysString = String.valueOf(dayOfMonth);
+                                if (daysString.length() == 1) {
+                                    daysString = "0" + daysString;
+                                }
+                                stringdob = year + "-" + monthString + "-" + daysString;
+                                etVoterDateofBirth.setText(daysString + "-" + monthString + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog1.getDatePicker().setMaxDate(minDate1);
+                if (datePicker != null) {
+                    datePickerDialog1.updateDate(datePicker.getYear(), datePicker.getMonth() - 1, datePicker.getDayOfMonth());
+
+                }
+                datePickerDialog1.show();
+
+            }
+        });
+
+
+        btSubmit = dialog.findViewById(R.id.btSubmitVoterdetail);
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //dialogInterface.cancel();
+                if (isValid(v)) {
+                    DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = null;
+                    try {
+                        date = inputFormat.parse(etVoterDateofBirth.getText().toString());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String outputDateStr = outputFormat.format(date);
+
+                    dialogInterface.onClickDetails(etVotername.getText().toString(), etVoterFatherName.getText().toString(), outputDateStr, etVoterIdNumber.getText().toString());
+                }
+            }
+
+            private boolean isValid(View v) {
+                if (etVotername.getText().toString().equalsIgnoreCase("")) {
+                    etVotername.setError("Provide name");
+                    return false;
+                }
+                if (etVoterFatherName.getText().toString().equalsIgnoreCase("")) {
+                    etVoterFatherName.setError("Provide father name");
+                    return false;
+                }
+                if (etVoterDateofBirth.getText().toString().equalsIgnoreCase("")) {
+                    etVoterDateofBirth.setError("Provide Date of Birth");
+                    return false;
+                }
+                if (etVoterIdNumber.getText().toString().equalsIgnoreCase("")) {
+                    etVoterIdNumber.setError("Provide Voter ID Number");
+                    return false;
+                }
+                return true;
+            }
+        });
+
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
 
 
     public static void GSTDetails(Context mContext, String name, String id, String fathername, String birthdate, final DialogListner dialogInterface) {

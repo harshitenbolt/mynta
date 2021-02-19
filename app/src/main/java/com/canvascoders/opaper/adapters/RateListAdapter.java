@@ -25,12 +25,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.MensaAlteration;
 import com.canvascoders.opaper.Beans.StoreTypeBean;
+import com.canvascoders.opaper.Beans.SubStoreType;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.DialogUtil;
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +47,7 @@ import java.util.Map;
 
 import static com.canvascoders.opaper.utils.Constants.billList;
 import static com.canvascoders.opaper.utils.Constants.dataRate;
+import static com.canvascoders.opaper.utils.Constants.subStoreTypeList;
 
 public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHolder> {
 
@@ -48,16 +58,19 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
     List<String> valueName = new ArrayList<>();
     Context mContext;
     CustomPopupRateStoreTypeAdapter customPopupStoreTypeAdapter;
+    CustomPopupRateSubStoreTypeAdapter customPopupSubStoreTypeAdapter;
     String Message = "";
+    Activity activity;
 
-    public RateListAdapter(List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener, String Message) {
-        this.dataViews = dataViews;
+    public RateListAdapter(Activity activity, List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener, String Message) {
+        this.dataViews = subStoreTypeList;
         this.mContext = mContext;
         this.mensaAlterationList = mensaAlterationList;
         this.recyclerViewClickListener = recyclerViewClickListener;
         keysname.addAll(mensaAlterationList.keySet());
         valueName.addAll(mensaAlterationList.values());
         this.Message = Message;
+        this.activity = activity;
     }
 
     @NonNull
@@ -118,7 +131,6 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
         }
 
 
-
         if (store.getStoreType().contains(Constants.RENTAL)) {
             holder.check_box_store.setEnabled(false);
         }
@@ -167,7 +179,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
             @Override
             public void onClick(View v) {
 
-
+/*
                 if (store.getStoreType().contains(Constants.ASSISTED)) {
                     holder.edt_store_amount.setHint("");
                     holder.edt_store_amount.setText("     ");
@@ -182,14 +194,14 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                     holder.edt_store_amount.setEnabled(false);
                     holder.rvSeperateRight.setVisibility(View.GONE);
                     holder.vSeperate.setVisibility(View.GONE);
-                }
+                }*/
 
 
-                if (store.getStoreType().contains("Mensa - Alteration")) {
+                if (store.getStoreTypeId() == 3) {
                     holder.edt_store_amount.setHint("");
                     holder.edt_store_amount.setText("     ");
                     holder.edt_store_amount.setEnabled(false);
-                    holder.edt_store_amount.setFocusable(false);
+                    //holder.edt_store_amount.setFocusable(false);
                     holder.rvSeperateRight.setVisibility(View.GONE);
                     holder.vSeperate.setVisibility(View.GONE);
                     //dialogbox opeb
@@ -200,7 +212,6 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                         Dialog dialog;
                         ImageView ivClose1;
                         AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(mContext, R.style.CustomDialog);
-
 
                         dialog = new Dialog(mContext, R.style.DialogSlideAnim);
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -216,9 +227,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                         for (int i = 0; i < keysname.size(); i++) {
                             MensaAlteration mensaAlteration = new MensaAlteration(false, keysname.get(i), valueName.get(i));
                             mensaAlterations.add(mensaAlteration);
-
                         }
-
                         customPopupStoreTypeAdapter = new CustomPopupRateStoreTypeAdapter(mensaAlterations, mContext, "StoreType", this);
 
                         LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
@@ -237,20 +246,103 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                                     str = TextUtils.join(",", dataRate);
                                     Log.e("itemlist", str);
                                     dialog.dismiss();
-                                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
-//Hide:
-                                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                                } else {
+                                    holder.check_box_store.setChecked(false);
+                                    dataViews.get(position).setSelected(false);
+                                    str = "";
+                                    dialog.dismiss();
+                                }
+                                recyclerViewClickListener.SingleClick(str, position);
+                                hideKeyboard(activity);
+                            }
+                        });
+                        ivClose1 = dialog.findViewById(R.id.ivClose);
+                        ivClose1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String str = "";
+                                if (dataRate != null) {
+                                    Log.e("suaave", dataRate.toString());
+                                    str = TextUtils.join(",", dataRate);
+                                    Log.e("itemlist", str);
+                                    dialog.dismiss();
+                                } else {
+                                    holder.check_box_store.setChecked(false);
+                                    str = "";
+                                    dataViews.get(position).setSelected(false);
+                                    dialog.dismiss();
+                                }
+                                holder.check_box_store.setChecked(false);
+                                dataViews.get(position).setSelected(false);
+                            }
+                        });
+                        dialog.show();
+                    }
+
+                } else if (store.getStoreTypeId() == 101) {
+
+
+                    if (holder.check_box_store.isChecked()) {
+                        TextView tvtitleStoreType;
+                        RecyclerView rvItems1;
+                        Button btSubmit1;
+                        Dialog dialog;
+                        ImageView ivClose1;
+                        AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(mContext, R.style.CustomDialog);
+
+                        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialog.setContentView(R.layout.dialogue_popup_list);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setCancelable(true);
+
+                        tvtitleStoreType = dialog.findViewById(R.id.tvTitleListPopup);
+                        tvtitleStoreType.setText("Sub Store");
+                        rvItems1 = dialog.findViewById(R.id.rvListPopup);
+                        btSubmit1 = dialog.findViewById(R.id.btSubmitDetail);
+
+
+                        List<SubStoreType> subStoreTypeList=new ArrayList<>();
+                        JSONArray jArray = (JSONArray) store.getJsonArray();
+                        if (jArray != null) {
+                            for (int i = 0; i < jArray.length(); i++) {
+                                try {
+                                    Gson gson = new Gson();
+                                    SubStoreType obj = gson.fromJson(jArray.getJSONObject(i).toString(), SubStoreType.class);
+                                    subStoreTypeList.add(obj);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        customPopupSubStoreTypeAdapter = new CustomPopupRateSubStoreTypeAdapter(subStoreTypeList, mContext, "StoreType", this, "allchecked");
+
+                        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+
+                        rvItems1.setLayoutManager(horizontalLayoutManager1);
+
+                        rvItems1.setAdapter(customPopupSubStoreTypeAdapter);
+
+                        btSubmit1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // tvVendorTypeDetail.setText(selectedString);
+                                String str = "";
+                                if (dataRate != null) {
+                                    String showData = "";
+                                    Log.e("suaave", dataRate.toString());
+                                    str = TextUtils.join(",", dataRate);
+                                    Log.e("itemlist", str);
 
                                 } else {
                                     holder.check_box_store.setChecked(false);
                                     dataViews.get(position).setSelected(false);
                                     str = "";
                                     dialog.dismiss();
-                                    InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Activity.INPUT_METHOD_SERVICE);
-//Hide:
-                                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
                                 }
                                 recyclerViewClickListener.SingleClick(str, position);
+                                hideKeyboard(activity);
                             }
                         });
                         ivClose1 = dialog.findViewById(R.id.ivClose);
@@ -279,17 +371,106 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                         dialog.show();
                     }
 
+                } else {
+
+                    if (holder.check_box_store.isChecked()) {
+                        TextView tvtitleStoreType;
+                        RecyclerView rvItems1;
+                        Button btSubmit1;
+                        Dialog dialog;
+                        ImageView ivClose1;
+                        AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(mContext, R.style.CustomDialog);
+
+
+                        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialog.setContentView(R.layout.dialogue_popup_list);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setCancelable(true);
+
+                        tvtitleStoreType = dialog.findViewById(R.id.tvTitleListPopup);
+                        tvtitleStoreType.setText("Sub Store");
+                        rvItems1 = dialog.findViewById(R.id.rvListPopup);
+                        btSubmit1 = dialog.findViewById(R.id.btSubmitDetail);
+
+
+                        ArrayList<JSONObject> listdata = new ArrayList<JSONObject>();
+                        JSONArray jArray = (JSONArray) store.getJsonArray();
+                        if (jArray != null) {
+                            for (int i = 0; i < jArray.length(); i++) {
+                                try {
+                                    listdata.add(jArray.getJSONObject(i));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+
+                      /*  customPopupSubStoreTypeAdapter = new CustomPopupRateSubStoreTypeAdapter(listdata, mContext, "StoreType", this, "");
+
+                        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+
+                        rvItems1.setLayoutManager(horizontalLayoutManager1);
+
+                        rvItems1.setAdapter(customPopupSubStoreTypeAdapter);
+
+                        btSubmit1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // tvVendorTypeDetail.setText(selectedString);
+                                String str = "";
+                                if (dataRate != null) {
+                                    Log.e("suaave", dataRate.toString());
+                                    str = TextUtils.join(",", dataRate);
+                                    Log.e("itemlist", str);
+                                    dialog.dismiss();
+
+                                } else {
+                                    holder.check_box_store.setChecked(false);
+                                    dataViews.get(position).setSelected(false);
+                                    str = "";
+                                    dialog.dismiss();
+                                }
+                                recyclerViewClickListener.SingleClick(str, position);
+                                hideKeyboard(activity);
+                            }
+                        });*/
+                        ivClose1 = dialog.findViewById(R.id.ivClose);
+                        ivClose1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String str = "";
+                                if (dataRate != null) {
+                                    Log.e("suaave", dataRate.toString());
+                                    str = TextUtils.join(",", dataRate);
+                                    Log.e("itemlist", str);
+                                    dialog.dismiss();
+                                } else {
+                                    holder.check_box_store.setChecked(false);
+                                    str = "";
+                                    dataViews.get(position).setSelected(false);
+                                    dialog.dismiss();
+                                }
+                                holder.check_box_store.setChecked(false);
+                                dataViews.get(position).setSelected(false);
+
+                            }
+                        });
+
+
+                        dialog.show();
+                    }
                 }
 
-
-                if (holder.check_box_store.isChecked()) {
+             /*   if (holder.check_box_store.isChecked()) {
                     if (!store.getStoreType().contains(Constants.CAC_STORE))
                         holder.edt_store_amount.setEnabled(true);
                     dataViews.get(position).setSelected(true);
                 } else {
                     holder.edt_store_amount.setEnabled(false);
                     dataViews.get(position).setSelected(false);
-                }
+                }*/
 
 
 // If the last one is selected
@@ -318,7 +499,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
 //                        }
                     }*/
 
-
+/*
                 if (store.getStoreTypeId() == 8) {
                     if (holder.check_box_store.isChecked()) {
                         TextView tvMessage;
@@ -384,7 +565,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                     }
                     notifyItemChanged(notifyPosition);
                    // notifyItemChanged(notifyPosition);
-                }
+                }*/
 
             }
         });
@@ -429,9 +610,11 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
         public AppCompatEditText edt_store_amount;
         public RelativeLayout rvSeperateRight;
         public View vSeperate;
+        TextView tvSubType;
 
         public ItemHolder(View itemView) {
             super(itemView);
+            tvSubType = itemView.findViewById(R.id.tvSubType);
             check_box_store = itemView.findViewById(R.id.check_box_store);
             tv_store_name = itemView.findViewById(R.id.tv_store_name);
             edt_store_amount = itemView.findViewById(R.id.edt_store_amount);
@@ -439,5 +622,17 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
             rvSeperateRight = itemView.findViewById(R.id.rvRightMain);
             edt_store_amount.setEnabled(false);
         }
+    }
+
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

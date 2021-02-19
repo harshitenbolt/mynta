@@ -6,6 +6,14 @@ import com.google.gson.annotations.SerializedName;
 public class MensaAlteration {
 
 
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
     boolean isSelected;
     String rate="";
 
@@ -42,13 +50,7 @@ public class MensaAlteration {
     }
 
     private String idType;
-    public boolean isSelected() {
-        return isSelected;
-    }
 
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
 
 
 
