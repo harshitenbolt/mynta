@@ -240,6 +240,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                             etBranchName.setText(bank_branch1);
                             etBankAddress.setText(branch_address1);
                             llBottom.setVisibility(View.VISIBLE);
+                            btCHangeCHeque.setVisibility(View.GONE);
                             btExtract.setVisibility(View.GONE);
 
                             btn_cheque_card.setVisibility(View.GONE);
@@ -383,7 +384,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
         if (v.getId() == R.id.btExtract) {
             Constants.hideKeyboardwithoutPopulate(getActivity());
             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
-                if (validation()){
+                if (validation()) {
                     // CallMerekApi();
                     ChequeOCR();
                 }
@@ -440,7 +441,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             }
 
         } else if (v.getId() == R.id.tvClickChequeSelected) {
-            if (proccess_id==0) {
+            if (proccess_id == 0) {
                 capture_cheque_image();
             } else {
                 DialogUtil.NoticeforFChequeChange(getActivity(), storName, new DialogListner() {
@@ -558,86 +559,83 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             @Override
             public void onResponse(Call<GetOCRChequeDetails> call, Response<GetOCRChequeDetails> response) {
                 progressDialog.dismiss();
-                if(response.isSuccessful()){
-                   GetOCRChequeDetails getOCRChequeDetails = response.body();
-                   if(getOCRChequeDetails.getReSelectImage().equalsIgnoreCase("0")){
-                       DialogUtil.chequeDetail(getActivity(), getOCRChequeDetails.getChequeDetail().getBankAccountNumber(), getOCRChequeDetails.getChequeDetail().getBankAccountHolderName(), getOCRChequeDetails.getChequeDetail().getIfscCode(), str_process_id, bank_name, bank_branch, branch_address, new DialogListner() {
-                           @Override
-                           public void onClickPositive() {
+                if (response.isSuccessful()) {
+                    GetOCRChequeDetails getOCRChequeDetails = response.body();
+                    if (getOCRChequeDetails.getReSelectImage().equalsIgnoreCase("0")) {
+                        DialogUtil.chequeDetail(getActivity(), getOCRChequeDetails.getChequeDetail().getBankAccountNumber(), getOCRChequeDetails.getChequeDetail().getBankAccountHolderName(), getOCRChequeDetails.getChequeDetail().getIfscCode(), str_process_id, bank_name, bank_branch, branch_address, new DialogListner() {
+                            @Override
+                            public void onClickPositive() {
 
-                           }
+                            }
 
-                           @Override
-                           public void onClickNegative() {
+                            @Override
+                            public void onClickNegative() {
 
-                           }
+                            }
 
-                           @Override
-                           public void onClickDetails(String name, String fathername, String dob, String id) {
+                            @Override
+                            public void onClickDetails(String name, String fathername, String dob, String id) {
 
-                           }
+                            }
 
-                           @Override
-                           public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
-                               storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
-                                submitocr(accName,payeename,ifsc);
-                           }
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+                                storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
+                                submitocr(accName, payeename, ifsc);
+                            }
 
-                           @Override
-                           public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
 
-                           }
-                       });
-                   }
-                   else if(getOCRChequeDetails.getReSelectImage().equalsIgnoreCase("1")){
-                       Toast.makeText(getActivity(), getOCRChequeDetails.getMessage(), Toast.LENGTH_SHORT).show();
-                        cancelChequeImagepath="";
-                       Glide.with(getActivity()).load(cancelChequeImagepath).placeholder(R.drawable.placeholder)
-                               .into(ivChequeImage);
-                       isPanSelected = false;
-                       btn_cheque_card.setVisibility(View.VISIBLE);
-                       btn_cheque_card_select.setVisibility(View.GONE);
-                   }
-                   else{
-                       Toast.makeText(getActivity(), getOCRChequeDetails.getMessage(), Toast.LENGTH_SHORT).show();
-                       DialogUtil.chequeDetail(getActivity(), getOCRChequeDetails.getChequeDetail().getBankAccountNumber(), getOCRChequeDetails.getChequeDetail().getBankAccountHolderName(), getOCRChequeDetails.getChequeDetail().getIfscCode(), str_process_id, bank_name, bank_branch, branch_address, new DialogListner() {
-                           @Override
-                           public void onClickPositive() {
+                            }
+                        });
+                    } else if (getOCRChequeDetails.getReSelectImage().equalsIgnoreCase("1")) {
+                        Toast.makeText(getActivity(), getOCRChequeDetails.getMessage(), Toast.LENGTH_SHORT).show();
+                        cancelChequeImagepath = "";
+                        Glide.with(getActivity()).load(cancelChequeImagepath).placeholder(R.drawable.placeholder)
+                                .into(ivChequeImage);
+                        isPanSelected = false;
+                        btn_cheque_card.setVisibility(View.VISIBLE);
+                        btn_cheque_card_select.setVisibility(View.GONE);
+                    } else {
+                        Toast.makeText(getActivity(), getOCRChequeDetails.getMessage(), Toast.LENGTH_SHORT).show();
+                        DialogUtil.chequeDetail(getActivity(), getOCRChequeDetails.getChequeDetail().getBankAccountNumber(), getOCRChequeDetails.getChequeDetail().getBankAccountHolderName(), getOCRChequeDetails.getChequeDetail().getIfscCode(), str_process_id, bank_name, bank_branch, branch_address, new DialogListner() {
+                            @Override
+                            public void onClickPositive() {
 
-                           }
+                            }
 
-                           @Override
-                           public void onClickNegative() {
+                            @Override
+                            public void onClickNegative() {
 
-                           }
+                            }
 
-                           @Override
-                           public void onClickDetails(String name, String fathername, String dob, String id) {
+                            @Override
+                            public void onClickDetails(String name, String fathername, String dob, String id) {
 
-                           }
+                            }
 
-                           @Override
-                           public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
-                               storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
-                               submitocr(accName,payeename,ifsc);
-                           }
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+                                storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
+                                submitocr(accName, payeename, ifsc);
+                            }
 
-                           @Override
-                           public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
 
-                           }
-                       });
-                   }
-                }
-                else{
-                    Toast.makeText(getActivity(), "#errorcode 2989 "+getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "#errorcode 2989 " + getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<GetOCRChequeDetails> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(getActivity(), "#errorcode 2989 "+getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "#errorcode 2989 " + getResources().getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -1358,8 +1356,6 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
             }
         });
     }
-
-
 
 
 }

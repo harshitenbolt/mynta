@@ -564,6 +564,12 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             }
 
 
+            if (vendor.getIsDisableCheque().equalsIgnoreCase("1")) {
+                cvCheque.setVisibility(View.GONE);
+            } else {
+                cvCheque.setVisibility(View.VISIBLE);
+            }
+
             if (allowGSTIMAGE.equalsIgnoreCase("1")) {
                 cdEdit.setVisibility(View.VISIBLE);
                 llDelBoy.setVisibility(View.VISIBLE);

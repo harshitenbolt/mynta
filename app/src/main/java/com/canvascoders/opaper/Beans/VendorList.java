@@ -14,6 +14,7 @@ public class VendorList implements Serializable {
     @SerializedName("lms_id")
     @Expose
     private String lmsId;
+
     @SerializedName("vendor_id")
     @Expose
     private String vendorId;
@@ -35,6 +36,22 @@ public class VendorList implements Serializable {
     @SerializedName("is_disable_rate")
     @Expose
     private String isDisableRate;
+
+    public String getIsDisableCheque() {
+        return isDisableCheque;
+    }
+
+    public void setIsDisableCheque(String isDisableCheque) {
+        this.isDisableCheque = isDisableCheque;
+    }
+
+    @SerializedName("is_disable_cheque")
+    @Expose
+    private String isDisableCheque;
+
+
+
+
 
 
     @SerializedName("longitude")

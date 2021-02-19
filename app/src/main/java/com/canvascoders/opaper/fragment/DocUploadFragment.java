@@ -109,9 +109,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
     ProgressDialog progressDialog;
     private RequestPermissionHandler requestPermissionHandler;
     String str_process_id, delBoyScreen;
-
     ImageView ivShopImageSingle, ivAddressProofSelected, ivStoreImage, ivOwnerImage, ivOwnerImageSelected, ivStoreImageSelected, ivShopImage;
-
     Button btSubmit;
     int side = 1;
 

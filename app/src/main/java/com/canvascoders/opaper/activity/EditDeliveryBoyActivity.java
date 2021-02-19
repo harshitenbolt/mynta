@@ -299,8 +299,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
             Glide.with(this).load(Constants.BaseImageURL + datum.getImage()).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivProfile) {
                 @Override
                 protected void setResource(Bitmap resource) {
-                    RoundedBitmapDrawable circularBitmapDrawable =
-                            RoundedBitmapDrawableFactory.create(EditDeliveryBoyActivity.this.getResources(), resource);
+                    RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(EditDeliveryBoyActivity.this.getResources(), resource);
                     circularBitmapDrawable.setCircular(true);
                     ivProfile.setImageDrawable(circularBitmapDrawable);
                 }

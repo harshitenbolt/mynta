@@ -34,8 +34,6 @@ public class Datum implements Serializable {
     private String isEditable;
 
 
-
-
     public String getGender() {
         return gender;
     }
