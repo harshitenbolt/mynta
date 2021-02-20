@@ -248,9 +248,9 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
                                     }
                                     rateTypeBeans.clear();
                                     rateTypeBeans.addAll(tempList);
-                                    Constants.subStoreTypeList=rateTypeBeans;
+                                    Constants.subStoreTypeList = rateTypeBeans;
 
-                                    rateListAdapter = new RateListAdapter(getActivity(),rateTypeBeans, yourHashMap, getContext(), RateFragment.this, msg);
+                                    rateListAdapter = new RateListAdapter(getActivity(), rateTypeBeans, yourHashMap, getContext(), RateFragment.this, msg);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));
@@ -311,6 +311,8 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
 
             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                 checkAndPrepareObj();
+
+
             } else {
                 Constants.ShowNoInternet(mcontext);
             }
@@ -325,7 +327,30 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
         // checking from neutral stores to get updated data.
         for (int i = 0; i < rateTypeBeans.size(); i++) {
 
-            if (rateTypeBeans.get(i).isSelected() && !rateTypeBeans.get(i).getIsApproved().equalsIgnoreCase("1")) {
+
+            if (rateTypeBeans.get(i).isSelected()) {
+                //  jsonArray.
+
+                if (rateTypeBeans.get(i).getStoreTypeId() == 3) {
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
+                    jsonObject.addProperty("rate", "0");
+                    jsonObject.addProperty("sub_store_type", alterationselected);
+                    jsonArray.add(jsonObject);
+                } else {
+                    for (int i1 = 0; i1 < rateTypeBeans.get(i).getList().size(); i1++) {
+                        if (rateTypeBeans.get(i).getList().get(i1).isSelected()) {
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("store_type", rateTypeBeans.get(i).getList().get(i1).getStoreTypeId());
+                            jsonObject.addProperty("rate", rateTypeBeans.get(i).getList().get(i1).getRate() + "");
+                            jsonArray.add(jsonObject);
+                        }
+                    }
+                }
+
+            }
+
+     /*       if (rateTypeBeans.get(i).isSelected() && !rateTypeBeans.get(i).getIsApproved().equalsIgnoreCase("1")) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
 
@@ -384,7 +409,10 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
                 }
                 jsonArray.add(jsonObject);
             }
+     */
         }
+        Log.e("hamadigyu", jsonArray.toString());
+
 
         if (jsonArray.size() <= 0) {
             Toast.makeText(mcontext, "Nothing to Update or press Skip to sign addendum", Toast.LENGTH_LONG).show();

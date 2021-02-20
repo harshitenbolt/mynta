@@ -32,7 +32,6 @@
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/check_box_store"
                 android:layout_width="@dimen/_25sdp"
-
                 android:layout_height="wrap_content" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -40,11 +39,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:maxLines="1"
+                android:gravity="start"
                 android:padding="5dp"
                 android:textColor="@color/colorBlack"
-                android:textSize="15dp" />
+                android:textSize="@dimen/_10sdp" />
 
             <View
                 android:id="@+id/viewSeperate"
@@ -59,7 +57,8 @@
                 android:textSize="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_3sdp"
                 android:fontFamily="@font/montemedium"
-                android:layout_marginTop="@dimen/_5sdp"></TextView>
+                android:layout_marginTop="@dimen/_5sdp">
+            </TextView>
 
 
             <RelativeLayout

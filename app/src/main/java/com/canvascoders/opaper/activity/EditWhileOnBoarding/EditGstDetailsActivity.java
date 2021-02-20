@@ -49,6 +49,8 @@ import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -766,6 +768,11 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
                             }
 
                             @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                            }
+
+                            @Override
                             public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                             }
@@ -941,6 +948,11 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
                                     }
 
                                     @Override
+                                    public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                                    }
+
+                                    @Override
                                     public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                     }
@@ -1000,6 +1012,11 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
                                                 }
                                             }
 
+
+                                        }
+
+                                        @Override
+                                        public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                                         }
 

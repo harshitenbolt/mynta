@@ -41,6 +41,27 @@ public class StoreTypeBean {
     private Integer storeTypeId;
     private boolean selected = false;
 
+
+    public List<SubStoreType> getList() {
+        return list;
+    }
+
+    public void setList(List<SubStoreType> list) {
+        this.list = list;
+    }
+
+    List<SubStoreType> list = new ArrayList<>();
+
+    public JSONObject getJsonObject() {
+        return jsonObject;
+    }
+
+    public void setJsonObject(JSONObject jsonObject) {
+        this.jsonObject = jsonObject;
+    }
+
+    private JSONObject jsonObject=null;
+
     public StoreTypeBean(JSONObject o) {
 
         try {

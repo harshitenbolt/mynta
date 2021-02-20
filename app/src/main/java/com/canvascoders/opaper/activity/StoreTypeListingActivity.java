@@ -499,7 +499,7 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
                                         Toast.makeText(StoreTypeListingActivity.this, jsonObject.getString("response"), Toast.LENGTH_LONG).show();
                                         startAddendum();
                                     } else {
-                                        JSONArray storeJsonArray = jsonObject.getJSONArray("data");
+                                        JSONArray storeJsonArray = jsonObject.getJSONArray("service");
                                         JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
                                         String msg = jsonObject.getString("Marvel DC 2.0 MSG");
 

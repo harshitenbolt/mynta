@@ -835,6 +835,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                             }
 
                             @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                            }
+
+                            @Override
                             public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                 bankName = bankname;
@@ -885,6 +890,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
                             @Override
                             public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                            }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                             }
 
@@ -1038,6 +1048,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                 }
 
                                 @Override
+                                public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                                }
+
+                                @Override
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
                                     //aiya karvanu
                                     //    storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
@@ -1086,6 +1101,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
 
                             @Override
                             public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                            }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                             }
 
@@ -1681,6 +1701,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                             }
 
                             @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                            }
+
+                            @Override
                             public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                             }
@@ -2091,6 +2116,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                     }
 
                                     @Override
+                                    public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                                    }
+
+                                    @Override
                                     public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                     }
@@ -2137,6 +2167,11 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                                             storePanwithOCR(name, fathername, id, pan_card_detail_id, file_name, file_url, birth_date);
 
                                             DialogUtil.dismiss();
+
+                                        }
+
+                                        @Override
+                                        public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                                         }
 

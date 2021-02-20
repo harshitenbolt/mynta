@@ -61,8 +61,9 @@ public class CustomPopupRateSubStoreTypeAdapter extends RecyclerView.Adapter<Cus
     String Type;
     Context mContext;
     String allchecked = "";
+    Integer storeSelcetd = 0;
 
-    public CustomPopupRateSubStoreTypeAdapter(List<SubStoreType> vendorTypeList, Context context, String type, View.OnClickListener recyclerViewClickListener, String allchecked) {
+    public CustomPopupRateSubStoreTypeAdapter(List<SubStoreType> vendorTypeList, Context context, String type, String allchecked) {
         this.vendorTypeList = vendorTypeList;
         this.context = context;
         this.onTaskCompleted = onTaskCompleted;
@@ -90,6 +91,22 @@ public class CustomPopupRateSubStoreTypeAdapter extends RecyclerView.Adapter<Cus
             holder.cbSelect.setClickable(false);
             holder.cbSelect.setEnabled(false);
             vendorTypeList.get(position).setSelected(true);
+        }
+
+        if (vendorTypeList.get(position).getStoreTypeId() == 10) {
+            holder.edt_store_amount.setVisibility(View.GONE);
+        } else if (vendorTypeList.get(position).getStoreTypeId() == 11) {
+            holder.edt_store_amount.setVisibility(View.GONE);
+
+        } else if (vendorTypeList.get(position).getStoreTypeId() == 9) {
+            holder.edt_store_amount.setVisibility(View.GONE);
+
+        } else if (vendorTypeList.get(position).getStoreTypeId() == 7) {
+            holder.edt_store_amount.setVisibility(View.GONE);
+        } else if (vendorTypeList.get(position).getStoreTypeId() == 8) {
+            holder.edt_store_amount.setVisibility(View.GONE);
+        } else {
+            holder.edt_store_amount.setVisibility(View.VISIBLE);
         }
         // holder.edt_store_amount.setText(store.getRate());
 
@@ -155,14 +172,24 @@ public class CustomPopupRateSubStoreTypeAdapter extends RecyclerView.Adapter<Cus
 
                 } else {
                     if (holder.cbSelect.isChecked()) {
+                        if (vendorTypeList.get(position).getStoreTypeId() == 8) {
+                            vendorTypeList.get(0).setSelected(false);
+                            notifyDataSetChanged();
+                        }
+                        if (vendorTypeList.get(position).getStoreTypeId() == 4) {
+                            vendorTypeList.get(1).setSelected(false);
+                            notifyDataSetChanged();
+                        }
                         holder.edt_store_amount.setEnabled(true);
                         vendorTypeList.get(position).setSelected(true);
+
                     } else {
                         holder.edt_store_amount.setEnabled(false);
                         vendorTypeList.get(position).setSelected(false);
-                        vendorTypeList.get(position).setSelected(false);
                         holder.edt_store_amount.setText("0");
                     }
+
+
                     ArrayList<String> stringArrayList = new ArrayList<String>();
                     for (int i = 0; i < vendorTypeList.size(); i++) {
                         if (vendorTypeList.get(position).isSelected()) {
@@ -180,83 +207,9 @@ public class CustomPopupRateSubStoreTypeAdapter extends RecyclerView.Adapter<Cus
                     String[] stringArray = stringArrayList.toArray(new String[stringArrayList.size()]);
                     dataRate = stringArray;
 
-/*
-            for (int i = 0; i < vendorTypeList.size(); i++) {
-                if (i != position)
-                    if (vendorTypeList.get(i).isSelected()) {
-                        vendorTypeList.get(i).setSelected(false);
-                        vendorTypeList.get(i).setRate("0.0");
-                        notifyItemChanged(i);
-                    }
-            }*/
-
-
-/*
-            CheckBox cb = (CheckBox) v;
-            int clickedPos = ((Integer) cb.getTag()).intValue();
-
-            if (cb.isChecked()) {
-                holder.edt_store_amount.setEnabled(true);
-                if (lastChecked != null) {
-                    // lastChecked.setChecked(false);
-                    vendorTypeList.get(lastCheckedPos).setSelected(false);
-                }
-
-                lastChecked = cb;
-                lastCheckedPos = clickedPos;
-                //   holder.edt_store_amount
-                itemidlist.add(vendorTypeList.get(clickedPos));
-
-                String data = "";
-                titlelist = new ArrayList<>();
-                for (int i = 0; i < itemidlist.size(); i++) {
-                    data = itemidlist.get(i).getSubStoreType() + "," + data;
-                    String value = "";
-                    if (TextUtils.isEmpty(holder.edt_store_amount.getText())) {
-                        value = "0";
-                    } else {
-                        value = holder.edt_store_amount.getText().toString();
-                    }
 
                 }
-                Log.e("itemid+select", vendorTypeList.get(clickedPos).getSubStoreType());
 
-
-            } else {
-                holder.edt_store_amount.setText("");
-                holder.edt_store_amount.setEnabled(false);
-                lastChecked = null;
-                itemidlist.remove(vendorTypeList.get(clickedPos));
-                titlelist.remove(vendorTypeList.get(clickedPos));
-                vendorTypeList.get(clickedPos).setSelected(cb.isChecked());
-                titlelist = new ArrayList<>();
-                for (int i = 0; i < itemidlist.size(); i++) {
-                    //   data = itemidlist.get(i).getSubStoreType()+","+data ;
-                    titlelist.add(itemidlist.get(i).getSubStoreType());
-
-                }
-                Log.e("itemid+deselect", vendorTypeList.get(clickedPos).getSubStoreType());
-            }
-
-
-            if (titlelist.size() > 0) {
-
-            } else {
-                dataRate = null;
-            }
-
-
-            for (
-                    int i = 0; i < vendorTypeList.size(); i++) {
-                if (i != position)
-                    if (vendorTypeList.get(i).isSelected()) {
-                        vendorTypeList.get(i).setSelected(false);
-                        vendorTypeList.get(i).setRate("0.0");
-                        notifyItemChanged(i);
-                    }
-            }
-        }*/
-                }
             }
         });
 
@@ -304,7 +257,7 @@ public class CustomPopupRateSubStoreTypeAdapter extends RecyclerView.Adapter<Cus
                                                                    @Override
                                                                    public void afterTextChanged(Editable editable) {
 
-                                                                      // SubStoreType.setRate(holder.edt_store_amount.getText() + "");
+                                                                       // SubStoreType.setRate(holder.edt_store_amount.getText() + "");
 
                                                                        try {
                                                                            float rate = Float.parseFloat(editable.toString());
@@ -318,7 +271,6 @@ public class CustomPopupRateSubStoreTypeAdapter extends RecyclerView.Adapter<Cus
                                                                                    String rate1 = "";
                                                                                    if (vendorTypeList.get(position).getRate().equalsIgnoreCase("")) {
                                                                                        rate1 = "0";
-
                                                                                    } else {
                                                                                        rate1 = vendorTypeList.get(position).getRate();
                                                                                    }
@@ -331,6 +283,10 @@ public class CustomPopupRateSubStoreTypeAdapter extends RecyclerView.Adapter<Cus
                                                                            dataRate = stringArray;
                                                                        } catch (Exception e) {
                                                                            e.printStackTrace();
+                                                                           Log.e("dataset", e.getMessage());
+                                                                           if (e.getMessage().equalsIgnoreCase("empty String")) {
+                                                                               vendorTypeList.get(position).setRate("");
+                                                                           }
 //                                                                           Toast.makeText(mContext, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
                                                                        }
 
@@ -404,8 +360,9 @@ public class CustomPopupRateSubStoreTypeAdapter extends RecyclerView.Adapter<Cus
 //                    holder.edt_store_amount.setEnabled(true);
 //                }
 
-
+            holder.cbSelect.setChecked(true);
         } else {
+            // vendorTypeList.get(position).setSelected(false);
             holder.cbSelect.setChecked(false);
         }
 

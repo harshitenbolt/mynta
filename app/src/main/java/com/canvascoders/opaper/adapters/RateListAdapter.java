@@ -31,7 +31,9 @@ import com.canvascoders.opaper.Beans.MensaAlteration;
 import com.canvascoders.opaper.Beans.StoreTypeBean;
 import com.canvascoders.opaper.Beans.SubStoreType;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.EditKYCfromProfileActivity;
 import com.canvascoders.opaper.helper.DialogListner;
+import com.canvascoders.opaper.helper.DialogListnerSubSTore;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.DialogUtil;
@@ -108,7 +110,6 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
         }
-
 
         if (store.getStoreType().contains(Constants.ASSISTED)) {
             holder.edt_store_amount.setHint("");
@@ -195,92 +196,141 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                     holder.rvSeperateRight.setVisibility(View.GONE);
                     holder.vSeperate.setVisibility(View.GONE);
                 }*/
+                if(holder.check_box_store.isChecked()) {
 
+                    if (store.getStoreTypeId() == 3) {
+                        holder.edt_store_amount.setHint("");
+                        holder.edt_store_amount.setText("     ");
+                        holder.edt_store_amount.setEnabled(false);
+                        //holder.edt_store_amount.setFocusable(false);
+                        holder.rvSeperateRight.setVisibility(View.GONE);
+                        holder.vSeperate.setVisibility(View.GONE);
+                        //dialogbox opeb
+                        if (holder.check_box_store.isChecked()) {
+                            TextView tvtitleStoreType;
+                            RecyclerView rvItems1;
+                            Button btSubmit1;
+                            Dialog dialog;
+                            ImageView ivClose1;
+                            AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(mContext, R.style.CustomDialog);
 
-                if (store.getStoreTypeId() == 3) {
-                    holder.edt_store_amount.setHint("");
-                    holder.edt_store_amount.setText("     ");
-                    holder.edt_store_amount.setEnabled(false);
-                    //holder.edt_store_amount.setFocusable(false);
-                    holder.rvSeperateRight.setVisibility(View.GONE);
-                    holder.vSeperate.setVisibility(View.GONE);
-                    //dialogbox opeb
-                    if (holder.check_box_store.isChecked()) {
-                        TextView tvtitleStoreType;
-                        RecyclerView rvItems1;
-                        Button btSubmit1;
-                        Dialog dialog;
-                        ImageView ivClose1;
-                        AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(mContext, R.style.CustomDialog);
+                            dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                            dialog.setContentView(R.layout.dialogue_popup_list);
+                            dialog.setCanceledOnTouchOutside(false);
+                            dialog.setCancelable(true);
 
-                        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
-                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                        dialog.setContentView(R.layout.dialogue_popup_list);
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.setCancelable(true);
+                            tvtitleStoreType = dialog.findViewById(R.id.tvTitleListPopup);
+                            tvtitleStoreType.setText("Mensa Alteration Type");
+                            rvItems1 = dialog.findViewById(R.id.rvListPopup);
+                            btSubmit1 = dialog.findViewById(R.id.btSubmitDetail);
+                            List<MensaAlteration> mensaAlterations = new ArrayList<>();
+                            for (int i = 0; i < keysname.size(); i++) {
+                                MensaAlteration mensaAlteration = new MensaAlteration(false, keysname.get(i), valueName.get(i));
+                                mensaAlterations.add(mensaAlteration);
+                            }
+                            customPopupStoreTypeAdapter = new CustomPopupRateStoreTypeAdapter(mensaAlterations, mContext, "StoreType", this);
 
-                        tvtitleStoreType = dialog.findViewById(R.id.tvTitleListPopup);
-                        tvtitleStoreType.setText("Mensa Alteration Type");
-                        rvItems1 = dialog.findViewById(R.id.rvListPopup);
-                        btSubmit1 = dialog.findViewById(R.id.btSubmitDetail);
-                        List<MensaAlteration> mensaAlterations = new ArrayList<>();
-                        for (int i = 0; i < keysname.size(); i++) {
-                            MensaAlteration mensaAlteration = new MensaAlteration(false, keysname.get(i), valueName.get(i));
-                            mensaAlterations.add(mensaAlteration);
+                            LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+
+                            rvItems1.setLayoutManager(horizontalLayoutManager1);
+
+                            rvItems1.setAdapter(customPopupStoreTypeAdapter);
+
+                            btSubmit1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    // tvVendorTypeDetail.setText(selectedString);
+                                    String str = "";
+                                    if (dataRate != null) {
+                                        Log.e("suaave", dataRate.toString());
+                                        str = TextUtils.join(",", dataRate);
+                                        Log.e("itemlist", str);
+                                        dialog.dismiss();
+                                    } else {
+                                        holder.check_box_store.setChecked(false);
+                                        dataViews.get(position).setSelected(false);
+                                        str = "";
+                                        dialog.dismiss();
+                                    }
+                                    recyclerViewClickListener.SingleClick(str, position);
+                                    hideKeyboard(activity);
+                                }
+                            });
+                            ivClose1 = dialog.findViewById(R.id.ivClose);
+                            ivClose1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    String str = "";
+                                    if (dataRate != null) {
+                                        Log.e("suaave", dataRate.toString());
+                                        str = TextUtils.join(",", dataRate);
+                                        Log.e("itemlist", str);
+                                        dialog.dismiss();
+                                    } else {
+                                        holder.check_box_store.setChecked(false);
+                                        str = "";
+                                        dataViews.get(position).setSelected(false);
+                                        dialog.dismiss();
+                                    }
+                                    holder.check_box_store.setChecked(false);
+                                    dataViews.get(position).setSelected(false);
+                                }
+                            });
+                            dialog.show();
                         }
-                        customPopupStoreTypeAdapter = new CustomPopupRateStoreTypeAdapter(mensaAlterations, mContext, "StoreType", this);
 
-                        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+                    } else if (store.getStoreTypeId() == 101) {
 
-                        rvItems1.setLayoutManager(horizontalLayoutManager1);
 
-                        rvItems1.setAdapter(customPopupStoreTypeAdapter);
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position, new DialogListnerSubSTore() {
 
-                        btSubmit1.setOnClickListener(new View.OnClickListener() {
+
                             @Override
-                            public void onClick(View view) {
-                                // tvVendorTypeDetail.setText(selectedString);
-                                String str = "";
-                                if (dataRate != null) {
-                                    Log.e("suaave", dataRate.toString());
-                                    str = TextUtils.join(",", dataRate);
-                                    Log.e("itemlist", str);
-                                    dialog.dismiss();
-                                } else {
-                                    holder.check_box_store.setChecked(false);
-                                    dataViews.get(position).setSelected(false);
-                                    str = "";
-                                    dialog.dismiss();
-                                }
-                                recyclerViewClickListener.SingleClick(str, position);
-                                hideKeyboard(activity);
-                            }
-                        });
-                        ivClose1 = dialog.findViewById(R.id.ivClose);
-                        ivClose1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                String str = "";
-                                if (dataRate != null) {
-                                    Log.e("suaave", dataRate.toString());
-                                    str = TextUtils.join(",", dataRate);
-                                    Log.e("itemlist", str);
-                                    dialog.dismiss();
-                                } else {
-                                    holder.check_box_store.setChecked(false);
-                                    str = "";
-                                    dataViews.get(position).setSelected(false);
-                                    dialog.dismiss();
-                                }
+                            public void onClickDetails(String position, String fathername, String dob, String id) {
+                          /*  ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
+
+                            ApiCallSubmitKYC(name, fathername, dob, id);*/
+
+
                                 holder.check_box_store.setChecked(false);
-                                dataViews.get(position).setSelected(false);
+                                dataViews.get(Integer.parseInt(position)).setSelected(false);
+                                DialogUtil.dismiss();
                             }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+
+                            }
+
+                            @Override
+                            public void onStoreType1(Integer positin, JSONObject jsonObject, List<SubStoreType> subStoreTypeList) {
+
+                                String datashow = "";
+                                for (int i = 0; i < subStoreTypeList.size(); i++) {
+                                    datashow = datashow + subStoreTypeList.get(i).getStoreType() + ":" + subStoreTypeList.get(i).getRate() + "\n";
+                                }
+                                holder.tvSubType.setText(datashow);
+                                dataViews.get(position).setSelected(true);
+                                dataViews.get(position).setList(subStoreTypeList);
+                                DialogUtil.dismiss();
+
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                            }
+
                         });
-                        dialog.show();
-                    }
 
-                } else if (store.getStoreTypeId() == 101) {
-
+/*
 
                     if (holder.check_box_store.isChecked()) {
                         TextView tvtitleStoreType;
@@ -368,109 +418,121 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                         });
 
 
-                        dialog.show();
-                    }
-
-                } else {
-
-                    if (holder.check_box_store.isChecked()) {
-                        TextView tvtitleStoreType;
-                        RecyclerView rvItems1;
-                        Button btSubmit1;
-                        Dialog dialog;
-                        ImageView ivClose1;
-                        AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(mContext, R.style.CustomDialog);
+                        dialog.show();*/
 
 
-                        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
-                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                        dialog.setContentView(R.layout.dialogue_popup_list);
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.setCancelable(true);
-
-                        tvtitleStoreType = dialog.findViewById(R.id.tvTitleListPopup);
-                        tvtitleStoreType.setText("Sub Store");
-                        rvItems1 = dialog.findViewById(R.id.rvListPopup);
-                        btSubmit1 = dialog.findViewById(R.id.btSubmitDetail);
+                    } else if (store.getStoreTypeId() == 102) {
 
 
-                        ArrayList<JSONObject> listdata = new ArrayList<JSONObject>();
-                        JSONArray jArray = (JSONArray) store.getJsonArray();
-                        if (jArray != null) {
-                            for (int i = 0; i < jArray.length(); i++) {
-                                try {
-                                    listdata.add(jArray.getJSONObject(i));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position, new DialogListnerSubSTore() {
 
 
-                      /*  customPopupSubStoreTypeAdapter = new CustomPopupRateSubStoreTypeAdapter(listdata, mContext, "StoreType", this, "");
-
-                        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
-
-                        rvItems1.setLayoutManager(horizontalLayoutManager1);
-
-                        rvItems1.setAdapter(customPopupSubStoreTypeAdapter);
-
-                        btSubmit1.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onClick(View view) {
-                                // tvVendorTypeDetail.setText(selectedString);
-                                String str = "";
-                                if (dataRate != null) {
-                                    Log.e("suaave", dataRate.toString());
-                                    str = TextUtils.join(",", dataRate);
-                                    Log.e("itemlist", str);
-                                    dialog.dismiss();
+                            public void onClickDetails(String position, String fathername, String dob, String id) {
+                          /*  ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
 
-                                } else {
-                                    holder.check_box_store.setChecked(false);
-                                    dataViews.get(position).setSelected(false);
-                                    str = "";
-                                    dialog.dismiss();
-                                }
-                                recyclerViewClickListener.SingleClick(str, position);
-                                hideKeyboard(activity);
-                            }
-                        });*/
-                        ivClose1 = dialog.findViewById(R.id.ivClose);
-                        ivClose1.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                String str = "";
-                                if (dataRate != null) {
-                                    Log.e("suaave", dataRate.toString());
-                                    str = TextUtils.join(",", dataRate);
-                                    Log.e("itemlist", str);
-                                    dialog.dismiss();
-                                } else {
-                                    holder.check_box_store.setChecked(false);
-                                    str = "";
-                                    dataViews.get(position).setSelected(false);
-                                    dialog.dismiss();
-                                }
+                            ApiCallSubmitKYC(name, fathername, dob, id);*/
+
+
                                 holder.check_box_store.setChecked(false);
-                                dataViews.get(position).setSelected(false);
+                                dataViews.get(Integer.parseInt(position)).setSelected(false);
+                                DialogUtil.dismiss();
+                            }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+
 
                             }
+
+                            @Override
+                            public void onStoreType1(Integer positin, JSONObject jsonObject, List<SubStoreType> subStoreTypeList) {
+
+                                String datashow = "";
+                                for (int i = 0; i < subStoreTypeList.size(); i++) {
+                                    datashow = datashow + subStoreTypeList.get(i).getStoreType() + ":" + subStoreTypeList.get(i).getRate() + "\n";
+                                }
+                                holder.tvSubType.setText(datashow);
+                                dataViews.get(position).setSelected(true);
+                                dataViews.get(position).setList(subStoreTypeList);
+                                DialogUtil.dismiss();
+
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                            }
+
+                        });
+                    } else {
+
+
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "", position, new DialogListnerSubSTore() {
+
+
+                            @Override
+                            public void onClickDetails(String positon, String fathername, String dob, String id) {
+                          /*  ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
+
+                            ApiCallSubmitKYC(name, fathername, dob, id);*/
+                         /*   holder.check_box_store.setChecked(false);
+                            dataViews.get(Integer.parseInt(positon)).setSelected(false);
+                            DialogUtil.dismiss();*/
+                            }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+                                // Log.e("finallyinRate", jsonObject.toString());
+                                dataViews.get(position).setSelected(false);
+                                holder.check_box_store.setChecked(false);
+                                DialogUtil.dismiss();
+                            }
+
+                            @Override
+                            public void onStoreType1(Integer positin, JSONObject jsonObject, List<SubStoreType> subStoreTypeList) {
+
+                                String datashow = "";
+                                for (int i = 0; i < subStoreTypeList.size(); i++) {
+                                    if (subStoreTypeList.get(i).isSelected()) {
+                                        datashow = datashow + subStoreTypeList.get(i).getStoreType() + ":" + subStoreTypeList.get(i).getRate() + "\n";
+                                        dataViews.get(position).setSelected(true);
+                                    }
+                                }
+                                holder.tvSubType.setText(datashow);
+                                dataViews.get(position).setList(subStoreTypeList);
+                                DialogUtil.dismiss();
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                            }
+
                         });
 
-
-                        dialog.show();
                     }
                 }
 
-             /*   if (holder.check_box_store.isChecked()) {
-                    if (!store.getStoreType().contains(Constants.CAC_STORE))
-                        holder.edt_store_amount.setEnabled(true);
+                if (holder.check_box_store.isChecked()) {
+                   /* if (!store.getStoreType().contains(Constants.CAC_STORE))
+                        holder.edt_store_amount.setEnabled(true);*/
                     dataViews.get(position).setSelected(true);
                 } else {
-                    holder.edt_store_amount.setEnabled(false);
+                 //   holder.edt_store_amount.setEnabled(false);
                     dataViews.get(position).setSelected(false);
-                }*/
+                    holder.tvSubType.setText("");
+                }
 
 
 // If the last one is selected

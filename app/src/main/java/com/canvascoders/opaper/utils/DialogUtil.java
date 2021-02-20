@@ -40,6 +40,7 @@ import android.widget.Toast;
 import com.canvascoders.opaper.Beans.GetPanExistResponse.GetPanAlreadyExistResponse;
 import com.canvascoders.opaper.Beans.MakeReportResponse.MakeReportResponse;
 import com.canvascoders.opaper.Beans.MensaAlteration;
+import com.canvascoders.opaper.Beans.SubStoreType;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
@@ -47,15 +48,22 @@ import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.EditGSTActivity;
 import com.canvascoders.opaper.adapters.CustomPopupRateStoreTypeAdapter;
+import com.canvascoders.opaper.adapters.CustomPopupRateSubStoreTypeAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.InfoFragment;
 import com.canvascoders.opaper.fragment.PanVerificationFragment;
 import com.canvascoders.opaper.helper.DialogListner;
+import com.canvascoders.opaper.helper.DialogListnerSubSTore;
+import com.canvascoders.opaper.helper.RecyclerViewClickListener;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -76,7 +84,7 @@ import retrofit2.Response;
 
 import static com.canvascoders.opaper.utils.Constants.dataRate;
 
-public class DialogUtil {
+public class DialogUtil implements RecyclerViewClickListener {
     private static Dialog dialog;
     static Boolean selected = false;
     public static EditText etDlName, etFathername, etDlDob, etDlNumber, etCity, etState;
@@ -90,6 +98,8 @@ public class DialogUtil {
     public static LinearLayout llStoreDetails;
     Button btSubmit;
     static Context context;
+    static boolean validation = false;
+    static String flag = "";
     static ProgressDialog progressDialog;
     ImageView ivClose;
     public static Spinner dc;
@@ -144,9 +154,6 @@ public class DialogUtil {
 
         dialog.show();
     }
-
-
-
 
 
     public static void VoterDetail(Context mContext, String name, String id, String fathername, String birthdate, final DialogListner dialogInterface) {
@@ -279,137 +286,193 @@ public class DialogUtil {
     }
 
 
-
-
-    public static void SubStoreType(Context mContext, String name, String id, String fathername, String birthdate, final DialogListner dialogInterface) {
+    public static void SubStoreType(Context mContext, JSONArray store, String allChecked, Integer position, final DialogListnerSubSTore dialogInterface) {
 
         Button btSubmit;
         ImageView ivClose;
+        TextView tvtitleStoreType;
+        RecyclerView rvItems1;
+        Button btSubmit1;
 
+        ImageView ivClose1;
+        CustomPopupRateSubStoreTypeAdapter customPopupSubStoreTypeAdapter;
 
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
             dialog = null;
         }
 
+
         dialog = new Dialog(mContext, R.style.DialogSlideAnim);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.setContentView(R.layout.dialoguevoter_detail);
+        dialog.setContentView(R.layout.dialogue_popup_list);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(true);
-        etVotername = dialog.findViewById(R.id.etVotername);
-        etVoterFatherName = dialog.findViewById(R.id.etVoterFathername);
-        etVoterDateofBirth = dialog.findViewById(R.id.etDateofBorthvoter);
-        etVoterIdNumber = dialog.findViewById(R.id.etVoterNumber);
-        etVotername.setText(name);
-        etVoterFatherName.setText(fathername);
-        etVoterIdNumber.setText(id);
-        stringdob = birthdate;
-        etVoterDateofBirth.setText(birthdate);
-        ivClose = dialog.findViewById(R.id.ivClose);
 
-        etVoterDateofBirth.setOnClickListener(new View.OnClickListener() {
+        tvtitleStoreType = dialog.findViewById(R.id.tvTitleListPopup);
+        tvtitleStoreType.setText("Sub Store");
+        rvItems1 = dialog.findViewById(R.id.rvListPopup);
+        btSubmit1 = dialog.findViewById(R.id.btSubmitDetail);
+
+
+        List<SubStoreType> subStoreTypeList = new ArrayList<>();
+        JSONArray jArray = (JSONArray) store;
+        if (jArray != null) {
+            for (int i = 0; i < jArray.length(); i++) {
+                try {
+                    Gson gson = new Gson();
+                    SubStoreType obj = gson.fromJson(jArray.getJSONObject(i).toString(), SubStoreType.class);
+                    subStoreTypeList.add(obj);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        customPopupSubStoreTypeAdapter = new CustomPopupRateSubStoreTypeAdapter(subStoreTypeList, mContext, "StoreType", allChecked);
+
+        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+
+        rvItems1.setLayoutManager(horizontalLayoutManager1);
+
+        rvItems1.setAdapter(customPopupSubStoreTypeAdapter);
+
+        btSubmit1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int mYear, mMonth, mDay, mHour, mMinute;
-                final Calendar c2 = Calendar.getInstance();
-                mYear = c2.get(Calendar.YEAR);
-                mMonth = c2.get(Calendar.MONTH);
-                mDay = c2.get(Calendar.DAY_OF_MONTH);
 
-                Date today1 = new Date();
-                Calendar c3 = Calendar.getInstance();
-                c3.setTime(today1);
-                c3.add(Calendar.YEAR, -18); // Subtract 18 year
-                long minDate1 = c3.getTime().getTime(); //
-                DatePickerDialog datePickerDialog1 = new DatePickerDialog(mContext,
-                        new DatePickerDialog.OnDateSetListener() {
-
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-
-                                datePicker = new DatePicker(mContext);
-                                datePicker.init(year, monthOfYear + 1, dayOfMonth, null);
+                JSONObject jsonObject = new JSONObject();
 
 
-                                String monthString = String.valueOf(monthOfYear + 1);
-                                if (monthString.length() == 1) {
-                                    monthString = "0" + monthString;
+                if (!allChecked.equalsIgnoreCase("")) {
+                    for (int i = 0; i < subStoreTypeList.size(); i++) {
+                        if (subStoreTypeList.get(i).getStoreTypeId() != 10) {
+                            if (subStoreTypeList.get(i).getStoreTypeId() != 7) {
+                                if (subStoreTypeList.get(i).getStoreTypeId() != 11) {
+                                    if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("0.0") || subStoreTypeList.get(i).getRate().equalsIgnoreCase("0")) {
+                                        Toast.makeText(mContext, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        validation = false;
+                                        return;
+                                    } else if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("")) {
+                                        Toast.makeText(mContext, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        validation = false;
+                                        return;
+                                    } else {
+                                        validation = true;
+                                        try {
+                                            jsonObject.put(subStoreTypeList.get(i).getStoreTypeId() + "", subStoreTypeList.get(i).getRate());
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        //
+                                    }
+                                } else {
+                                    try {
+                                        subStoreTypeList.get(i).setRate("0");
+                                        jsonObject.put(subStoreTypeList.get(i).getStoreTypeId() + "", "0");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-
-
-                                //logic for add 0 in string if date digit is on 1 only
-                                String daysString = String.valueOf(dayOfMonth);
-                                if (daysString.length() == 1) {
-                                    daysString = "0" + daysString;
+                            } else {
+                                try {
+                                    subStoreTypeList.get(i).setRate("0");
+                                    jsonObject.put(subStoreTypeList.get(i).getStoreTypeId() + "", "0");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
-                                stringdob = year + "-" + monthString + "-" + daysString;
-                                etVoterDateofBirth.setText(daysString + "-" + monthString + "-" + year);
-
                             }
-                        }, mYear, mMonth, mDay);
-                datePickerDialog1.getDatePicker().setMaxDate(minDate1);
-                if (datePicker != null) {
-                    datePickerDialog1.updateDate(datePicker.getYear(), datePicker.getMonth() - 1, datePicker.getDayOfMonth());
 
-                }
-                datePickerDialog1.show();
-
-            }
-        });
-
-
-        btSubmit = dialog.findViewById(R.id.btSubmitVoterdetail);
-        btSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //dialogInterface.cancel();
-                if (isValid(v)) {
-                    DateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy");
-                    DateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date date = null;
-                    try {
-                        date = inputFormat.parse(etVoterDateofBirth.getText().toString());
-                    } catch (ParseException e) {
-                        e.printStackTrace();
+                        } else {
+                            subStoreTypeList.get(i).setRate("0");
+                            try {
+                                jsonObject.put(subStoreTypeList.get(i).getStoreTypeId() + "", "0");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
-                    String outputDateStr = outputFormat.format(date);
 
-                    dialogInterface.onClickDetails(etVotername.getText().toString(), etVoterFatherName.getText().toString(), outputDateStr, etVoterIdNumber.getText().toString());
-                }
-            }
 
-            private boolean isValid(View v) {
-                if (etVotername.getText().toString().equalsIgnoreCase("")) {
-                    etVotername.setError("Provide name");
-                    return false;
+                    if (validation == true) {
+                        dialogInterface.onStoreType1(position, jsonObject, subStoreTypeList);
+                    }
+
+
+                } else {
+
+                    for (int i = 0; i < subStoreTypeList.size(); i++) {
+                        if (subStoreTypeList.get(i).isSelected()) {
+                            if (subStoreTypeList.get((i)).getStoreTypeId() != 8) {
+                                if (subStoreTypeList.get(i).getStoreTypeId() != 9) {
+                                    flag = "selected";
+                                    if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("0.0") || subStoreTypeList.get(i).getRate().equalsIgnoreCase("0")) {
+                                        Toast.makeText(mContext, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        break;
+                                    } else if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("")) {
+                                        Toast.makeText(mContext, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        break;
+                                    } else {
+                                        flag = "done";
+                                    }
+                                } else {
+                                    subStoreTypeList.get(i).setRate("0");
+                                    flag = "done";
+                                }
+                            } else {
+                                subStoreTypeList.get(i).setRate("0");
+                                flag = "done";
+                            }
+                        }
+                    }
+
+                    if (flag.equalsIgnoreCase("")) {
+                        dialogInterface.onStoreType(position, jsonObject);
+                    }
+
+                    if (flag.equalsIgnoreCase("done")) {
+                        dialogInterface.onStoreType1(position, jsonObject, subStoreTypeList);
+                        flag = "";
+                    }
+
+
                 }
-                if (etVoterFatherName.getText().toString().equalsIgnoreCase("")) {
-                    etVoterFatherName.setError("Provide father name");
-                    return false;
-                }
-                if (etVoterDateofBirth.getText().toString().equalsIgnoreCase("")) {
-                    etVoterDateofBirth.setError("Provide Date of Birth");
-                    return false;
-                }
-                if (etVoterIdNumber.getText().toString().equalsIgnoreCase("")) {
-                    etVoterIdNumber.setError("Provide Voter ID Number");
-                    return false;
-                }
-                return true;
+
+
+                //  recyclerViewClickListener.SingleClick(str, position);
+                // hideKeyboard(activity);
             }
         });
-
-        ivClose.setOnClickListener(new View.OnClickListener() {
+        ivClose1 = dialog.findViewById(R.id.ivClose);
+        ivClose1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String str = "";
+                if (dataRate != null) {
+                    Log.e("suaave", dataRate.toString());
+                    str = TextUtils.join(",", dataRate);
+                    Log.e("itemlist", str);
+                    dialog.dismiss();
+                } else {
+//                    holder.check_box_store.setChecked(false);
+//                    str = "";
+//                    dataViews.get(position).setSelected(false);
+//                    dialog.dismiss();
+                    // dialogInterface.onClickNegative();
+                }
+                dialogInterface.onClickDetails(position + "", "", "", "");
+
                 dialog.dismiss();
+//                holder.check_box_store.setChecked(false);
+//                dataViews.get(position).setSelected(false);
+                dialogInterface.onStoreType(position, null);
+
             }
         });
+
+
         dialog.show();
     }
-
 
 
     public static void GSTDetails(Context mContext, String name, String id, String fathername, String birthdate, final DialogListner dialogInterface) {
@@ -1817,6 +1880,21 @@ public class DialogUtil {
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onLongClick(View view, int position, String data) {
+
+    }
+
+    @Override
+    public void SingleClick(String popup, int position) {
+
     }
 
 

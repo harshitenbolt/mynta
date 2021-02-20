@@ -286,7 +286,38 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
 
 
     private void checkAndPrepareObj() {
+
         // mProgressDialog.show();
+        JsonArray jsonArray = new JsonArray();
+        // checking from neutral stores to get updated data.
+        for (int i = 0; i < rateTypeBeans.size(); i++) {
+
+
+            if (rateTypeBeans.get(i).isSelected()) {
+                //  jsonArray.
+
+                if (rateTypeBeans.get(i).getStoreTypeId() == 3) {
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
+                    jsonObject.addProperty("rate", "0");
+                    jsonObject.addProperty("sub_store_type", alterationselected);
+                    jsonArray.add(jsonObject);
+                } else {
+                    for (int i1 = 0; i1 < rateTypeBeans.get(i).getList().size(); i1++) {
+                        if (rateTypeBeans.get(i).getList().get(i1).isSelected()) {
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("store_type", rateTypeBeans.get(i).getList().get(i1).getStoreTypeId());
+                            jsonObject.addProperty("rate", rateTypeBeans.get(i).getList().get(i1).getRate() + "");
+                            jsonArray.add(jsonObject);
+                        }
+                    }
+                }
+
+            }
+        }
+
+
+   /*         // mProgressDialog.show();
         JsonArray jsonArray = new JsonArray();
         // checking from neutral stores to get updated data.
         for (int i = 0; i < rateTypeBeans.size(); i++) {
@@ -349,7 +380,7 @@ public class EditRateWhileResigAgreeActivity extends AppCompatActivity implement
                 jsonArray.add(jsonObject);
             }
         }
-
+*/
         if (jsonArray.size() <= 0) {
             Toast.makeText(this, "Nothing to Update or press Skip to sign addendum", Toast.LENGTH_LONG).show();
             return;

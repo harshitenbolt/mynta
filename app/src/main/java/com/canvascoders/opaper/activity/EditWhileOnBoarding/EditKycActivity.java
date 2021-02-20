@@ -1381,6 +1381,11 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                 }
 
                                 @Override
+                                public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                                }
+
+                                @Override
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                 }
@@ -1412,6 +1417,11 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                     ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
 
                                     ApiCallSubmitKYC(name, fathername, dob, id);
+                                }
+
+                                @Override
+                                public void onStoreType(Integer positin, JSONObject jsonObject) {
+
                                 }
 
                                 @Override
@@ -1527,6 +1537,11 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                 }
 
                                 @Override
+                                public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                                }
+
+                                @Override
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                 }
@@ -1557,6 +1572,11 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
                                     ApiCallSubmitOcr(name,fathername,dob,id,dlIdDetailId,filename,fileUrl);
                                     ApiCallSubmitKYC(name, fathername, dob, id);
 
+
+                                }
+
+                                @Override
+                                public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                                 }
 

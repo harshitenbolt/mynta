@@ -43,6 +43,8 @@ import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -242,6 +244,11 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
 
                             @Override
                             public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                            }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                             }
 
@@ -547,6 +554,11 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                     }
 
                                     @Override
+                                    public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                                    }
+
+                                    @Override
                                     public void onClickChequeDetails(String accName, String payeename, String proccessId, String storeanem, String BranchName, String bankAdress) {
                                         old_process_id = proccessId;
                                         UpadatePan1(accName, payeename, str_process_id, storeanem);
@@ -607,6 +619,11 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
                                                 }
                                             }
 
+
+                                        }
+
+                                        @Override
+                                        public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                                         }
 

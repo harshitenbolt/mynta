@@ -112,9 +112,9 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     private Toolbar toolbar;
     private String selectedString = "";
     private static Dialog dialog;
-    private TextView tvTypeofVendor, tvStoreType, tvVendorTypeDetail, tvLocality, tvApproach, tvShipment;
+    private TextView tvTypeofVendor, tvVendorTypeDetail, tvLocality, tvApproach, tvShipment;
     private TextView tvLanguage;
-    private Switch switchGst, switchPartner;
+    private Switch switchGst, switchPartner, switchStore;
     private String TAG = "InfoFragment";
     private ProgressDialog mProgressDialog;
     String validationapiUrl = "";
@@ -135,7 +135,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     Button btNext;
     Switch ifgst;
     private String gstPath = "";
-    RelativeLayout rvVendorType, rvStoreType, rvLocality, rvApproach, rvShipmentTransfer, rvVendorTypeDetail;
+    RelativeLayout rvVendorType,  rvLocality, rvApproach, rvShipmentTransfer, rvVendorTypeDetail;
     int i = 0;
     boolean[] checkedItems;
     private String same_address = "0", pincode;
@@ -169,7 +169,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     private String isgsttn = "no";
     private static int IMAGE_SELCTION_CODE = 0;
     private static final int IMAGE_GST = 101;
-    private String isPartnered = "no";
+    private String isPartnered = "no", isStore = "";
     private RelativeLayout rvSelectLanguage, rvSelectStoretype;
     private ArrayList<String> dcLists = new ArrayList<>();
     String[] select_language = {
@@ -285,8 +285,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     }
 
 
-
-
     private void getUserInfo() {
         Mylogger.getInstance().Logit(TAG, "getUserInfo");
         if (AppApplication.networkConnectivity.isNetworkAvailable()) {
@@ -298,7 +296,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             mProgressDialog.setMessage("we are retrieving information, please wait!");
             mProgressDialog.show();
 
-            Call<ResponseBody> callUpload = ApiClient.getClient().create(ApiInterface.class).getDetails("Bearer "+sessionManager.getToken(),params);
+            Call<ResponseBody> callUpload = ApiClient.getClient().create(ApiInterface.class).getDetails("Bearer " + sessionManager.getToken(), params);
             callUpload.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -319,13 +317,10 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                                         String pan = result.getString("pan_no").toString();
                                         String first = String.valueOf(pan.charAt(3));
                                         if (!first.equalsIgnoreCase("C") && !first.equalsIgnoreCase("F")) {
-                                             etOwnerName.setText(result.getString("name").toString());
-                                        }
-                                        else{
+                                            etOwnerName.setText(result.getString("name").toString());
+                                        } else {
                                             etOwnerName.setText("");
                                         }
-
-
 
 
                                     } else if (jsonObject.getInt("responseCode") == 405) {
@@ -347,8 +342,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
                         }
-                    }
-                    else{
+                    } else {
                         Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
                     }
@@ -382,7 +376,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         scMain = view.findViewById(R.id.scMain);
         rvVendorType = view.findViewById(R.id.rvTypeVendor);
         rvVendorType.setOnClickListener(this);
-        rvStoreType = view.findViewById(R.id.rvStoreType);
+      //  rvStoreType = view.findViewById(R.id.rvStoreType);
         rvVendorTypeDetail = view.findViewById(R.id.rvVendorTypeDetail);
         rvApproach = view.findViewById(R.id.rvApproach);
         rvLocality = view.findViewById(R.id.rvLocality);
@@ -398,11 +392,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         btChangePan = view.findViewById(R.id.btChangePan);
         btChangePan.setOnClickListener(this);
         rvVendorType.setOnClickListener(this);
-        rvStoreType.setOnClickListener(this);
+       // rvStoreType.setOnClickListener(this);
         rvVendorTypeDetail.setOnClickListener(this);
         btNext.setOnClickListener(this);
         tvTypeofVendor = view.findViewById(R.id.tvTypeofVendor);
-        tvStoreType = view.findViewById(R.id.tvStoreType);
+        // tvStoreType = view.findViewById(R.id.tvStoreType);
         tvVendorTypeDetail = view.findViewById(R.id.tvVendorTypeDetail);
         tvApproach = view.findViewById(R.id.tvApproach);
         tvShipment = view.findViewById(R.id.tvShipment);
@@ -531,7 +525,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         etPerCity = view.findViewById(R.id.etPerCity);
         etPerState = view.findViewById(R.id.etPerState);
         switchPartner = view.findViewById(R.id.sw_partner);
-
+        switchStore = view.findViewById(R.id.sw_store);
         cbSame.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -619,6 +613,21 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             }
         });
 
+
+        switchStore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Mylogger.getInstance().Logit(TAG, "" + isChecked);
+                // tvPartner.setEnabled(isChecked);
+                if (isChecked) {
+                    isStore = "yes";
+                } else {
+                    isStore = "no";
+
+                }
+            }
+        });
+
         ivGst = view.findViewById(R.id.ivGSTImage);
         // iv_image = dialogView.findViewById(R.id.iv_prof_boy);
         ivGst.setOnClickListener(new View.OnClickListener() {
@@ -633,8 +642,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         } else {
             Constants.ShowNoInternet(getActivity());
         }
-
-
 
 
     }
@@ -1091,7 +1098,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 break;
 
 
-            case R.id.rvStoreType:
+           /* case R.id.rvStoreType:
                 String[] arr = new String[select_Store_type.size()];
                 for (int i = 0; i < select_Store_type.size(); i++) {
                     arr[i] = select_Store_type.get(i);
@@ -1129,7 +1136,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 });
                 AlertDialog mDialogStoreType = mBuilderStoreType.create();
                 mDialogStoreType.show();
-                break;
+                break;*/
             case R.id.btChangePan:
                 commanFragmentCallWithoutBackStack2(new PanVerificationFragment());
                 break;
@@ -1644,16 +1651,16 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 Toast.makeText(getActivity(), "Select Vendor type Detail", Toast.LENGTH_LONG).show();
                 return false;
             }
-            if (TextUtils.isEmpty(tvStoreType.getText().toString())) {
-              /*  tvStoreType.requestFocus();
-                tvStoreType.setError("Provide Store Type");*/
+            /* if (TextUtils.isEmpty(tvStoreType.getText().toString())) {
+             *//*  tvStoreType.requestFocus();
+                tvStoreType.setError("Provide Store Type");*//*
                 Toast.makeText(getActivity(), "Please Select Store Type", Toast.LENGTH_LONG).show();
                 return false;
             }
             if (tvStoreType.getText().toString().equalsIgnoreCase("Select Store Type")) {
                 Toast.makeText(getActivity(), "Please Select Store Type", Toast.LENGTH_LONG).show();
                 return false;
-            }
+            }*/
             if (tvLocality.getText().equals("")) {
                 //  tvLocality.requestFocus();
                 Toast.makeText(getActivity(), "Select Locality", Toast.LENGTH_LONG).show();
@@ -1844,7 +1851,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         user.put(Constants.PARAM_LANGUAGES, "" + tvLanguage.getText());
         user.put(Constants.PARAM_SHIPMENT_TRANS, "" + tvShipment.getText());
         user.put(Constants.PARAM_PARTNER_WITH_OTHER, "" + isPartnered);
-        user.put(Constants.PARAM_STORE_TYPE_CONFIG, "" + tvStoreType.getText());
+        user.put(Constants.PARAM_STORE_TYPE_CONFIG, "" + isStore);
 
 
         Log.e("User Date", "Edit info" + user);

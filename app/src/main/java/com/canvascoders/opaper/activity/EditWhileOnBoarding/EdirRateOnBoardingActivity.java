@@ -457,7 +457,7 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
                                 Log.e("in JSON", "" + jsonObject.toString());
 
                                 if (jsonObject.getString("responseCode").equalsIgnoreCase("200")) {
-                                    JSONArray rateJsonArray = jsonObject.getJSONArray("data");
+                                    JSONArray rateJsonArray = jsonObject.getJSONArray("service");
 
 
                                     JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
@@ -514,7 +514,7 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
 //                                    }
 
 
-                                    rateListAdapter = new RateListonBoardingAdapter(rateTypeBeans, yourHashMap, EdirRateOnBoardingActivity.this, EdirRateOnBoardingActivity.this, msg);
+                                    rateListAdapter = new RateListonBoardingAdapter(EdirRateOnBoardingActivity.this,rateTypeBeans, yourHashMap, EdirRateOnBoardingActivity.this, EdirRateOnBoardingActivity.this, msg);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));

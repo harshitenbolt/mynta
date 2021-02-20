@@ -25,7 +25,7 @@ public class SubStoreType {
     @SerializedName("store_type_id")
     @Expose
     private Integer storeTypeId;
-    boolean isSelected;
+    private boolean isSelected= false;
 
 
     public String getStoreType() {
