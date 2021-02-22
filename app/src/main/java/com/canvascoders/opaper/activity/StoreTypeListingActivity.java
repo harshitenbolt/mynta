@@ -209,7 +209,97 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
         JsonArray jsonArray = new JsonArray();
 
         // checking from neutral stores to get updated data.
+
         for (int i = 0; i < neutralStoreList.size(); i++) {
+
+
+            if (neutralStoreList.get(i).isSelected()) {
+                //  jsonArray.
+
+                if (neutralStoreList.get(i).getStoreTypeId() == 3) {
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("store_type", neutralStoreList.get(i).getStoreTypeId());
+                    jsonObject.addProperty("rate", "0");
+                    jsonObject.addProperty("sub_store_type", alterationselected);
+                    jsonArray.add(jsonObject);
+                } else {
+                    for (int i1 = 0; i1 < neutralStoreList.get(i).getList().size(); i1++) {
+                        if (neutralStoreList.get(i).getList().get(i1).isSelected()) {
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("store_type", neutralStoreList.get(i).getList().get(i1).getStoreTypeId());
+                            jsonObject.addProperty("rate", neutralStoreList.get(i).getList().get(i1).getRate() + "");
+                            jsonArray.add(jsonObject);
+                        }
+                    }
+                }
+
+            }
+
+     /*       if (rateTypeBeans.get(i).isSelected() && !rateTypeBeans.get(i).getIsApproved().equalsIgnoreCase("1")) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
+
+
+                if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE) && !rateTypeBeans.get(i).getStoreType().contains(Constants.ASSISTED)) {
+                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration") && rateTypeBeans.get(i).getStoreTypeId() != 8) {
+                        if (rateTypeBeans.get(i).getStoreTypeId() != 9) {
+                            if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
+                                if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
+                                    try {
+//                        float rate = Float.parseFloat(rateTypeBeans.get(i).getRate());
+//                        if(rate>0)
+                                        jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
+                                        //  mProgressDialog.dismiss();
+
+//                        else
+//                        {
+//                            Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } else {
+                                    mProgressDialog.dismiss();
+                                    Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                            } else {
+                                Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                return;
+                            }
+
+                        }
+                        else{
+                            jsonObject.addProperty("rate", "0");
+                            if (rateTypeBeans.get(i).getStoreTypeId() == 9) {
+                                //jsonObject.addProperty("sub_store_type", alterationselected);
+                            }
+                        }
+                    } else {
+                        jsonObject.addProperty("rate", "0");
+                        if (rateTypeBeans.get(i).getStoreTypeId() == 8) {
+                            //jsonObject.addProperty("sub_store_type", alterationselected);
+                        }
+                        else if (rateTypeBeans.get(i).getStoreTypeId() == 9) {
+                            //jsonObject.addProperty("sub_store_type", alterationselected);
+                        }else {
+                            jsonObject.addProperty("sub_store_type", alterationselected);
+                        }
+                    }
+                } else {
+                    jsonObject.addProperty("rate", "0");
+                }
+                jsonArray.add(jsonObject);
+            }
+     */
+        }
+        Log.e("hamadigyu", jsonArray.toString());
+
+
+      /*  for (int i = 0; i < neutralStoreList.size(); i++) {
             if (neutralStoreList.get(i).isSelected()) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", neutralStoreList.get(i).getStoreTypeId());
@@ -266,11 +356,11 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
                 }
                 jsonArray.add(jsonObject);
             }
-        }
+        }*/
 
         // checking from rejected stores to get updated data.
         for (int i = 0; i < rejectedStoreList.size(); i++) {
-            if (rejectedStoreList.get(i).isSelected()) {
+           /* if (rejectedStoreList.get(i).isSelected()) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rejectedStoreList.get(i).getStoreTypeId());
                 if (rejectedStoreList.get(i).getRate() != null && rejectedStoreList.get(i).getRate().length() > 0) {
@@ -284,10 +374,31 @@ public class StoreTypeListingActivity extends AppCompatActivity implements Recyc
                     return;
                 }
                 jsonArray.add(jsonObject);
+            }*/
+
+            if (rejectedStoreList.get(i).isSelected()) {
+                //  jsonArray.
+
+                if (rejectedStoreList.get(i).getStoreTypeId() == 3) {
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("store_type", neutralStoreList.get(i).getStoreTypeId());
+                    jsonObject.addProperty("rate", "0");
+                    jsonObject.addProperty("sub_store_type", alterationselected);
+                    jsonArray.add(jsonObject);
+                } else {
+                    for (int i1 = 0; i1 < rejectedStoreList.get(i).getList().size(); i1++) {
+                        if (rejectedStoreList.get(i).getList().get(i1).isSelected()) {
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("store_type", rejectedStoreList.get(i).getList().get(i1).getStoreTypeId());
+                            jsonObject.addProperty("rate", rejectedStoreList.get(i).getList().get(i1).getRate() + "");
+                            jsonArray.add(jsonObject);
+                        }
+                    }
+                }
+
             }
 
         }
-
 
         if (jsonArray.size() <= 0) {
             Toast.makeText(this, "Nothing to Update or press Skip to sign adendum", Toast.LENGTH_LONG).show();

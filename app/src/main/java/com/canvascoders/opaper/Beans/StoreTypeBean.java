@@ -39,7 +39,7 @@ public class StoreTypeBean {
     @SerializedName("store_type_id")
     @Expose
     private Integer storeTypeId;
-    private boolean selected = false;
+    private boolean selected;
 
 
     public List<SubStoreType> getList() {

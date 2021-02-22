@@ -62,9 +62,8 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
     CustomPopupRateStoreTypeAdapter customPopupStoreTypeAdapter;
     CustomPopupRateSubStoreTypeAdapter customPopupSubStoreTypeAdapter;
     String Message = "";
-    Activity activity;
 
-    public RateListAdapter(Activity activity, List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener, String Message) {
+    public RateListAdapter(List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener, String Message) {
         this.dataViews = subStoreTypeList;
         this.mContext = mContext;
         this.mensaAlterationList = mensaAlterationList;
@@ -72,7 +71,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
         keysname.addAll(mensaAlterationList.keySet());
         valueName.addAll(mensaAlterationList.values());
         this.Message = Message;
-        this.activity = activity;
+  //      this.activity = activity;
     }
 
     @NonNull
@@ -254,7 +253,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                                         dialog.dismiss();
                                     }
                                     recyclerViewClickListener.SingleClick(str, position);
-                                    hideKeyboard(activity);
+                                   // hideKeyboard(activity);
                                 }
                             });
                             ivClose1 = dialog.findViewById(R.id.ivClose);

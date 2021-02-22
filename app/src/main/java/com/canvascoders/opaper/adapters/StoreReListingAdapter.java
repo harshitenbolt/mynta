@@ -64,18 +64,19 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
     RecyclerViewClickListener recyclerViewClickListener;
     List<String> keysname = new ArrayList<>();
     List<String> valueName = new ArrayList<>();
-    String Message="";
+    String Message = "";
+    String flag ="";
     boolean[] checkedStoreType;
 
 
-    public StoreReListingAdapter(List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener,String Message) {
+    public StoreReListingAdapter(List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener, String Message) {
         this.dataViews = dataViews;
         this.mContext = mContext;
         this.recyclerViewClickListener = recyclerViewClickListener;
         this.mensaAlterationList = mensaAlterationList;
         keysname.addAll(mensaAlterationList.keySet());
         valueName.addAll(mensaAlterationList.values());
-        this.Message=Message;
+        this.Message = Message;
     }
 
     @NonNull
@@ -96,11 +97,9 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
         holder.check_box_store.setChecked(false);
 
 
-
-
         if (store.getStoreTypeId() == 4) {
             holder.edt_store_amount.setEnabled(true);
-            holder.rvSeperateRight.setVisibility(View.VISIBLE);
+            //  holder.rvSeperateRight.setVisibility(View.VISIBLE);
             holder.vSeperate.setVisibility(View.VISIBLE);
         }
 
@@ -123,23 +122,20 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
             holder.edt_store_amount.setEnabled(false);
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
-        }
-       else if (store.getStoreTypeId() == 8) {
+        } else if (store.getStoreTypeId() == 8) {
             holder.tv_store_name.setText("Marvel - DC 2.0");
             holder.edt_store_amount.setText("     ");
             holder.edt_store_amount.setEnabled(false);
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
-        }
-        else if (store.getStoreTypeId() == 9) {
+        } else if (store.getStoreTypeId() == 9) {
             holder.edt_store_amount.setText("     ");
             holder.edt_store_amount.setEnabled(false);
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
-        }
-        else {
-            holder.rvSeperateRight.setVisibility(View.VISIBLE);
-            holder.vSeperate.setVisibility(View.VISIBLE);
+        } else {
+            // holder.rvSeperateRight.setVisibility(View.VISIBLE);
+            // holder.vSeperate.setVisibility(View.VISIBLE);
         }
 
 
@@ -168,8 +164,8 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                     holder.edt_store_amount.setEnabled(false);
                     holder.rvSeperateRight.setVisibility(View.GONE);
                     holder.vSeperate.setVisibility(View.GONE);
-                }*/
-                if(holder.check_box_store.isChecked()) {
+                }*/         flag="";
+                if (holder.check_box_store.isChecked()) {
 
                     if (store.getStoreTypeId() == 3) {
                         holder.edt_store_amount.setHint("");
@@ -227,7 +223,9 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                                         dialog.dismiss();
                                     }
                                     recyclerViewClickListener.SingleClick(str, position);
-                                   // hideKeyboard(activity);
+                                    // hideKeyboard(activity);
+                                    flag="done";
+                                    notifyDataSetChanged();
                                 }
                             });
                             ivClose1 = dialog.findViewById(R.id.ivClose);
@@ -248,6 +246,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                                     }
                                     holder.check_box_store.setChecked(false);
                                     dataViews.get(position).setSelected(false);
+                                    flag="";
                                 }
                             });
                             dialog.show();
@@ -269,6 +268,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                                 holder.check_box_store.setChecked(false);
                                 dataViews.get(Integer.parseInt(position)).setSelected(false);
                                 DialogUtil.dismiss();
+                                flag="";
                             }
 
                             @Override
@@ -288,7 +288,9 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                                 dataViews.get(position).setSelected(true);
                                 dataViews.get(position).setList(subStoreTypeList);
                                 DialogUtil.dismiss();
-
+                                notifyDataSetChanged();
+                                flag="done";
+                               // notifyDataSetChanged();
                             }
 
                             @Override
@@ -410,6 +412,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                                 holder.check_box_store.setChecked(false);
                                 dataViews.get(Integer.parseInt(position)).setSelected(false);
                                 DialogUtil.dismiss();
+                                flag="";
                             }
 
                             @Override
@@ -429,7 +432,9 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                                 dataViews.get(position).setSelected(true);
                                 dataViews.get(position).setList(subStoreTypeList);
                                 DialogUtil.dismiss();
-
+                                flag="done";
+                                notifyDataSetChanged();
+                             //   notifyDataSetChanged();
                             }
 
                             @Override
@@ -465,6 +470,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                                 dataViews.get(position).setSelected(false);
                                 holder.check_box_store.setChecked(false);
                                 DialogUtil.dismiss();
+                                flag="";
                             }
 
                             @Override
@@ -480,6 +486,9 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                                 holder.tvSubType.setText(datashow);
                                 dataViews.get(position).setList(subStoreTypeList);
                                 DialogUtil.dismiss();
+                                flag="done";
+                                notifyDataSetChanged();
+                               // notifyDataSetChanged();
                             }
 
                             @Override
@@ -495,16 +504,40 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                         });
 
                     }
+
+                    for (int i = 0; i < dataViews.size(); i++) {
+                        //dataViews.get(i).setSelected(false);
+                        if (i == position) {
+                            dataViews.get(i).setSelected(true);
+                        } else {
+                            dataViews.get(i).setSelected(false);
+                          //  dataViews.get(position).setList(null);
+                        }
+                    }
+
+
+                    //dataViews.get(position).setSelected(true);
+
+
                 }
 
                 if (holder.check_box_store.isChecked()) {
                    /* if (!store.getStoreType().contains(Constants.CAC_STORE))
                         holder.edt_store_amount.setEnabled(true);*/
                     dataViews.get(position).setSelected(true);
+//                    for (int i = 0; i < dataViews.size(); i++) {
+//                        if (dataViews.get(i).isSelected()) {
+//
+//                        }
+//                    }
                 } else {
                     //   holder.edt_store_amount.setEnabled(false);
                     dataViews.get(position).setSelected(false);
+
                     holder.tvSubType.setText("");
+
+
+
                 }
 
 
@@ -602,8 +635,35 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                    // notifyItemChanged(notifyPosition);
                 }*/
 
+
+
+
             }
         });
+
+
+      /*  if (dataViews.get(position).getSubStoreTypeList().is) {
+            holder.tvSubType.setText("");
+        } else {
+            // holder.tvSubType.setText("");
+            String datashow = "";
+            for (int i = 0; i < dataViews.get(position).getSubStoreTypeList().size(); i++) {
+                if (dataViews.get(position).getSubStoreTypeList().get(i).isSelected()) {
+                    datashow = datashow + dataViews.get(position).getSubStoreTypeList().get(i).getStoreType() + ":" + dataViews.get(position).getSubStoreTypeList().get(i).getRate() + "\n";
+                    dataViews.get(position).setSelected(true);
+                }
+            }
+            holder.tvSubType.setText(datashow);
+        }*/
+        if (dataViews.get(position).isSelected()) {
+            holder.check_box_store.setChecked(true);
+            holder.tvSubType.setVisibility(View.VISIBLE);
+
+
+        } else {
+            holder.check_box_store.setChecked(false);
+            holder.tvSubType.setVisibility(View.GONE);
+        }
 
 
         /*holder.check_box_store.setOnClickListener(new View.OnClickListener() {
@@ -839,29 +899,28 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
         }
 
         holder.edt_store_amount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                                           @Override
+                                                           public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
+                                                           }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                                           @Override
+                                                           public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
+                                                           }
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                try {
-                    float rate = Float.parseFloat(editable.toString());
-                    dataViews.get(position).setRate("" + rate);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                                                           @Override
+                                                           public void afterTextChanged(Editable editable) {
+                                                               try {
+                                                                   float rate = Float.parseFloat(editable.toString());
+                                                                   dataViews.get(position).setRate("" + rate);
+                                                               } catch (Exception e) {
+                                                                   e.printStackTrace();
 //                                                                           Toast.makeText(mContext, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
-                }
+                                                               }
 
-            }
-        }
-
+                                                           }
+                                                       }
 
 
         );

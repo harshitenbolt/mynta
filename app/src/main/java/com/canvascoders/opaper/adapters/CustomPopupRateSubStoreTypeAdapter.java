@@ -107,6 +107,7 @@ public class CustomPopupRateSubStoreTypeAdapter extends RecyclerView.Adapter<Cus
             holder.edt_store_amount.setVisibility(View.GONE);
         } else {
             holder.edt_store_amount.setVisibility(View.VISIBLE);
+            holder.edt_store_amount.setText(vendorTypeList.get(position).getRate());
         }
         // holder.edt_store_amount.setText(store.getRate());
 
