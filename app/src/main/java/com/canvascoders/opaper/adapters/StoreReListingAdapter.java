@@ -255,7 +255,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                     } else if (store.getStoreTypeId() == 101) {
 
 
-                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position, new DialogListnerSubSTore() {
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position,"", new DialogListnerSubSTore() {
 
 
                             @Override
@@ -399,7 +399,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                     } else if (store.getStoreTypeId() == 102) {
 
 
-                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position, new DialogListnerSubSTore() {
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position,"", new DialogListnerSubSTore() {
 
 
                             @Override
@@ -451,8 +451,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
                     } else {
 
 
-                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "", position, new DialogListnerSubSTore() {
-
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "", position,"", new DialogListnerSubSTore() {
 
                             @Override
                             public void onClickDetails(String positon, String fathername, String dob, String id) {

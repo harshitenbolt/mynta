@@ -1720,11 +1720,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             }*/
 
 
-            if (listStoreType.size() == 0) {
+          /*  if (listStoreType.size() == 0) {
                 Toast.makeText(getActivity(), "Please Select Store Type", Toast.LENGTH_LONG).show();
                 // showMSG(false, "Provide Pincode");
                 return false;
-            }
+            }*/
         }
         return true;
     }

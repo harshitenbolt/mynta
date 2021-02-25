@@ -250,7 +250,7 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
                                     rateTypeBeans.addAll(tempList);
                                     Constants.subStoreTypeList = rateTypeBeans;
 
-                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, getContext(), RateFragment.this, msg);
+                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, getActivity(), RateFragment.this, msg);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));

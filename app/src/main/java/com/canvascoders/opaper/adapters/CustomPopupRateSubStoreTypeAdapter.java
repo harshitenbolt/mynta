@@ -60,16 +60,17 @@ public class CustomPopupRateSubStoreTypeAdapter extends RecyclerView.Adapter<Cus
     List<MensaAlteration> finalData = new ArrayList<>();
     String Type;
     Context mContext;
-    String allchecked = "";
+    String allchecked = "",isMultiple="";
     Integer storeSelcetd = 0;
 
-    public CustomPopupRateSubStoreTypeAdapter(List<SubStoreType> vendorTypeList, Context context, String type, String allchecked) {
+    public CustomPopupRateSubStoreTypeAdapter(List<SubStoreType> vendorTypeList, Context context, String type, String allchecked,String isMultiple) {
         this.vendorTypeList = vendorTypeList;
         this.context = context;
         this.onTaskCompleted = onTaskCompleted;
         this.Type = type;
         this.context = context;
         this.allchecked = allchecked;
+        this.isMultiple=isMultiple;
     }
 
 
@@ -173,13 +174,38 @@ public class CustomPopupRateSubStoreTypeAdapter extends RecyclerView.Adapter<Cus
 
                 } else {
                     if (holder.cbSelect.isChecked()) {
-                        if (vendorTypeList.get(position).getStoreTypeId() == 8) {
-                            vendorTypeList.get(0).setSelected(false);
-                            notifyDataSetChanged();
+
+                        if(!isMultiple.equalsIgnoreCase("yes")) {
+                            if (vendorTypeList.get(position).getStoreTypeId() == 4) {
+                                vendorTypeList.get(1).setSelected(false);
+                                vendorTypeList.get(2).setSelected(false);
+                                notifyDataSetChanged();
+                            }
+
+                            if (vendorTypeList.get(position).getStoreTypeId() == 8) {
+                                vendorTypeList.get(0).setSelected(false);
+                                vendorTypeList.get(2).setSelected(false);
+                                notifyDataSetChanged();
+                            }
+
+                            if (vendorTypeList.get(position).getStoreTypeId() == 12) {
+                                vendorTypeList.get(0).setSelected(false);
+                                vendorTypeList.get(1).setSelected(false);
+                                notifyDataSetChanged();
+                            }
                         }
-                        if (vendorTypeList.get(position).getStoreTypeId() == 4) {
-                            vendorTypeList.get(1).setSelected(false);
-                            notifyDataSetChanged();
+                        else{
+                            if (vendorTypeList.get(position).getStoreTypeId() == 4) {
+                                vendorTypeList.get(1).setSelected(false);
+                                vendorTypeList.get(2).setSelected(false);
+                                notifyDataSetChanged();
+                            }
+
+                            if (vendorTypeList.get(position).getStoreTypeId() == 8) {
+                                vendorTypeList.get(0).setSelected(false);
+                                vendorTypeList.get(2).setSelected(false);
+                                notifyDataSetChanged();
+                            }
                         }
                         holder.edt_store_amount.setEnabled(true);
                         vendorTypeList.get(position).setSelected(true);

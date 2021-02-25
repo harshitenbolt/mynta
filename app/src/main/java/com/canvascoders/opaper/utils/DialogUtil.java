@@ -148,7 +148,6 @@ public class DialogUtil implements RecyclerViewClickListener {
             @Override
             public void onClick(View v) {
                 dialogInterface.onClickDetails(etName.getText().toString(), etYear.getText().toString(), etPicnode.getText().toString(), etUDID.getText().toString());
-
             }
         });
 
@@ -286,7 +285,7 @@ public class DialogUtil implements RecyclerViewClickListener {
     }
 
 
-    public static void SubStoreType(Context mContext, JSONArray store, String allChecked, Integer position, final DialogListnerSubSTore dialogInterface) {
+    public static void SubStoreType(Context mContext1, JSONArray store, String allChecked, Integer position,String isMultiple, final DialogListnerSubSTore dialogInterface) {
 
         Button btSubmit;
         ImageView ivClose;
@@ -303,7 +302,7 @@ public class DialogUtil implements RecyclerViewClickListener {
         }
 
 
-        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+        dialog = new Dialog(mContext1, R.style.DialogSlideAnim);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         dialog.setContentView(R.layout.dialogue_popup_list);
         dialog.setCanceledOnTouchOutside(false);
@@ -329,9 +328,9 @@ public class DialogUtil implements RecyclerViewClickListener {
             }
         }
 
-        customPopupSubStoreTypeAdapter = new CustomPopupRateSubStoreTypeAdapter(subStoreTypeList, mContext, "StoreType", allChecked);
+        customPopupSubStoreTypeAdapter = new CustomPopupRateSubStoreTypeAdapter(subStoreTypeList, mContext1, "StoreType", allChecked,isMultiple);
 
-        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext1, RecyclerView.VERTICAL, false);
 
         rvItems1.setLayoutManager(horizontalLayoutManager1);
 
@@ -350,13 +349,13 @@ public class DialogUtil implements RecyclerViewClickListener {
                             if (subStoreTypeList.get(i).getStoreTypeId() != 7) {
                                 if (subStoreTypeList.get(i).getStoreTypeId() != 11) {
                                     if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("0.0") || subStoreTypeList.get(i).getRate().equalsIgnoreCase("0")) {
-                                        Toast.makeText(mContext, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(mContext1, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                                         validation = false;
-                                        return;
+                                        break;
                                     } else if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("")) {
-                                        Toast.makeText(mContext, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(mContext1, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                                         validation = false;
-                                        return;
+                                        break;
                                     } else {
                                         validation = true;
                                         try {
@@ -407,10 +406,10 @@ public class DialogUtil implements RecyclerViewClickListener {
                                 if (subStoreTypeList.get(i).getStoreTypeId() != 9) {
                                     flag = "selected";
                                     if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("0.0") || subStoreTypeList.get(i).getRate().equalsIgnoreCase("0")) {
-                                        Toast.makeText(mContext, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(mContext1, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                                         break;
                                     } else if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("")) {
-                                        Toast.makeText(mContext, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(mContext1, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
                                         break;
                                     } else {
                                         flag = "done";

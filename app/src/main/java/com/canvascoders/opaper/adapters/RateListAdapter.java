@@ -282,7 +282,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                     } else if (store.getStoreTypeId() == 101) {
 
 
-                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position, new DialogListnerSubSTore() {
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position,"yes", new DialogListnerSubSTore() {
 
 
                             @Override
@@ -423,7 +423,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                     } else if (store.getStoreTypeId() == 102) {
 
 
-                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position, new DialogListnerSubSTore() {
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position,"yes", new DialogListnerSubSTore() {
 
 
                             @Override
@@ -472,7 +472,7 @@ public class RateListAdapter extends RecyclerView.Adapter<RateListAdapter.ItemHo
                     } else {
 
 
-                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "", position, new DialogListnerSubSTore() {
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "", position,"yes", new DialogListnerSubSTore() {
 
 
                             @Override

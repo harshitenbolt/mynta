@@ -488,7 +488,7 @@ public class RateListonBoardingAdapter extends RecyclerView.Adapter<RateListonBo
                     } else if (store.getStoreTypeId() == 101) {
 
 
-                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position, new DialogListnerSubSTore() {
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position,"yes", new DialogListnerSubSTore() {
 
 
                             @Override
@@ -629,7 +629,7 @@ public class RateListonBoardingAdapter extends RecyclerView.Adapter<RateListonBo
                     } else if (store.getStoreTypeId() == 102) {
 
 
-                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position, new DialogListnerSubSTore() {
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position,"yes", new DialogListnerSubSTore() {
 
 
                             @Override
@@ -678,7 +678,7 @@ public class RateListonBoardingAdapter extends RecyclerView.Adapter<RateListonBo
                     } else {
 
 
-                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "", position, new DialogListnerSubSTore() {
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "", position,"yes", new DialogListnerSubSTore() {
 
 
                             @Override

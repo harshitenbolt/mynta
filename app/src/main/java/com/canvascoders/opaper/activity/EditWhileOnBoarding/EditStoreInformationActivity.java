@@ -937,11 +937,11 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
             return false;
         }*/
 
-        if (listStoreType.size() == 0) {
+    /*    if (listStoreType.size() == 0) {
             Toast.makeText(EditStoreInformationActivity.this, "Please Select Store Type", Toast.LENGTH_LONG).show();
             // showMSG(false, "Provide Pincode");
             return false;
-        }
+        }*/
         if (shopImg.equalsIgnoreCase("")) {
             Toast.makeText(EditStoreInformationActivity.this, "Please Select image of Store ", Toast.LENGTH_LONG).show();
             // showMSG(false, "Provide Pincode");
