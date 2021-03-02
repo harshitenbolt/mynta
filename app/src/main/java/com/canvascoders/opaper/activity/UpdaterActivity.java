@@ -1,10 +1,13 @@
 package com.canvascoders.opaper.activity;
 
 import android.app.DownloadManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
+import android.content.pm.PackageInstaller;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -30,12 +33,17 @@ import com.canvascoders.opaper.utils.RealPathUtil;
 
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class UpdaterActivity extends AppCompatActivity {
 
     private AppCompatButton btn_update;
     private ProgressBar progressBar;
     private AppCompatTextView txt_note;
+    private static final String PACKAGE_INSTALLED_ACTION =
+            "com.example.android.apis.content.SESSION_API_PACKAGE_INSTALLED";
 
     //    private PermissionUtil.PermissionRequestObject mALLPermissionRequest;
     @Override
@@ -57,11 +65,55 @@ public class UpdaterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 progressBar.setVisibility(View.VISIBLE);
                 txt_note.setVisibility(View.VISIBLE);
-                appUpdate();
+
+                if (Build.VERSION.SDK_INT >= 30) {
+                    appUpdate3();
+                } else {
+                    appUpdate();
+                }
+
             }
         });
 //        RequestAllPermission();
     }
+
+
+/*
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (PACKAGE_INSTALLED_ACTION.equals(intent.getAction())) {
+            int status = extras.getInt(PackageInstaller.EXTRA_STATUS);
+            String message = extras.getString(PackageInstaller.EXTRA_STATUS_MESSAGE);
+            switch (status) {
+                case PackageInstaller.STATUS_PENDING_USER_ACTION:
+                    // This test app isn't privileged, so the user has to confirm the install.
+                    Intent confirmIntent = (Intent) extras.get(Intent.EXTRA_INTENT);
+                    startActivity(confirmIntent);
+                    break;
+                case PackageInstaller.STATUS_SUCCESS:
+                    Toast.makeText(this, "Install succeeded!", Toast.LENGTH_SHORT).show();
+                    break;
+                case PackageInstaller.STATUS_FAILURE:
+                case PackageInstaller.STATUS_FAILURE_ABORTED:
+                case PackageInstaller.STATUS_FAILURE_BLOCKED:
+                case PackageInstaller.STATUS_FAILURE_CONFLICT:
+                case PackageInstaller.STATUS_FAILURE_INCOMPATIBLE:
+                case PackageInstaller.STATUS_FAILURE_INVALID:
+                case PackageInstaller.STATUS_FAILURE_STORAGE:
+                    Toast.makeText(this, "Install failed! " + status + ", " + message,
+                            Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(this, "Unrecognized status received from installer: " + status,
+                            Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+*/
+
+
 //    public void RequestAllPermission() {
 //        String[] allPermission = {Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.CAMERA};
 //        mALLPermissionRequest = PermissionUtil.with(this).request(allPermission).onResult(
@@ -154,4 +206,76 @@ public class UpdaterActivity extends AppCompatActivity {
         //register receiver for when .apk download is compete
         registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
+    private void appUpdate3() {
+
+        //  String destination = Environment.getExternalStoragePublicDirectory()(Environment.DIRECTORY_PICTURES) + "/";
+
+     //   String destination = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + Environment.DIRECTORY_PICTURES + "/";
+        ;
+        String destination = getExternalCacheDir() + "/" + Environment.DIRECTORY_PICTURES + "/";
+        ;
+        String fileName = "opaper.apk";
+        destination += fileName;
+        final Uri uri = Uri.parse("file://" + destination);
+        File file = new File(RealPathUtil.getRealPath(UpdaterActivity.this, uri));
+        /*if (file.exists())
+            file.delete();*/
+        String url = Constants.APKROOT + "apk/opaper.apk";
+        /* String url = "http://139.59.94.135/apk/opaper.apk"; */ //Constants.BaseURL + "apk/opaper.apk";//
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setDescription("opaper Version" + Constants.APP_VERSION);
+        request.setTitle("Opaper Update");
+        request.setDestinationUri(uri);
+        final DownloadManager manager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        final long downloadId = manager.enqueue(request);
+
+        BroadcastReceiver onComplete = new BroadcastReceiver() {
+            public void onReceive(Context ctxt, Intent intent) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N/* && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P*/) {
+
+                    Intent install = new Intent(Intent.ACTION_VIEW);
+                    install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    Uri apkUri = FileProvider.getUriForFile(UpdaterActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", file);
+
+                    install.setDataAndType(apkUri,
+                            manager.getMimeTypeForDownloadedFile(downloadId));
+                    install.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(install);
+
+                    unregisterReceiver(this);
+                    finish();
+
+
+
+                    /*Uri apkUri = FileProvider.getUriForFile(UpdaterActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", file);
+                    intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+                    intent.setData(apkUri);
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(intent);*/
+                } /*else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+
+                    Uri apkUri = FileProvider.getUriForFile(UpdaterActivity.this, BuildConfig.APPLICATION_ID + ".fileprovider", file);
+                    intent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
+                    intent.setData(apkUri);
+                    intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(intent);
+
+                }*/ else {
+                    Intent install = new Intent(Intent.ACTION_VIEW);
+                    install.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    //intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                    install.setDataAndType(uri, manager.getMimeTypeForDownloadedFile(downloadId));
+                    startActivity(install);
+                    unregisterReceiver(this);
+                    finish();
+                }
+            }
+        };
+        //register receiver for when .apk download is compete
+        registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+
 }
