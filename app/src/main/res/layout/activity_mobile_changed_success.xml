@@ -62,7 +62,6 @@
 
             <ImageView
                 android:id="@+id/determinate"
-                class="mbanje.kurt.fabbutton.FabButton"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"

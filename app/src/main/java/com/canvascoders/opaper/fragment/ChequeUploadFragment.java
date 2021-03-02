@@ -64,7 +64,7 @@ import com.canvascoders.opaper.utils.OnTaskCompleted;
 import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
-import com.google.android.gms.vision.text.TextRecognizer;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -111,7 +111,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
     private SessionManager sessionManager;
     private boolean isPanSelected = false;
     private EditText edit_ac_no, edit_ac_name, edit_ifsc, edit_bank_name, edit_bank_branch_name, edit_bank_address;
-    private TextRecognizer detector;
+   // private TextRecognizer detector;
     Context mcontext;
     View view;
     String bank_name = "";
@@ -347,7 +347,7 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
         btExtract.setOnClickListener(this);
         btn_cheque_card.setOnClickListener(this);
-        detector = new TextRecognizer.Builder(mcontext).build();
+       // detector = new TextRecognizer.Builder(mcontext).build();
         progressDialog = new ProgressDialog(mcontext);
         progressDialog.setCancelable(false);
 

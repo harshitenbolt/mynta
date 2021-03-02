@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "926736469204",
-    "firebase_url": "https://opapermy.firebaseio.com",
-    "project_id": "opapermy",
-    "storage_bucket": "opapermy.appspot.com"
+    "project_number": "659699270810",
+    "firebase_url": "https://opaper-my-9e225.firebaseio.com",
+    "project_id": "opaper-my-9e225",
+    "storage_bucket": "opaper-my-9e225.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:926736469204:android:8c69cbf34ffbd621",
+        "mobilesdk_app_id": "1:659699270810:android:d35ee8daa6372d7ec84b23",
         "android_client_info": {
           "package_name": "com.canvascoders.opaper"
         }
       },
       "oauth_client": [
         {
-          "client_id": "926736469204-q25id3skhplv6sr25v0g3ssrsgho5av3.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.canvascoders.opaper",
-            "certificate_hash": "bd16a9f337f5233e67ce208e51b777cce1db43cb"
-          }
-        },
-        {
-          "client_id": "926736469204-589ajgpmp12ug813vv1jnh7gvv77k7mh.apps.googleusercontent.com",
+          "client_id": "659699270810-hm512ih667r5gpp35733ndgn21cga3tp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCJjVzZQp7_lo0bh7VJ3iU80f4pDkkWWqs"
+          "current_key": "AIzaSyBU4xskKmMWV8qG7kHoxVMqd42wFAiyIAM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "926736469204-589ajgpmp12ug813vv1jnh7gvv77k7mh.apps.googleusercontent.com",
+              "client_id": "659699270810-hm512ih667r5gpp35733ndgn21cga3tp.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

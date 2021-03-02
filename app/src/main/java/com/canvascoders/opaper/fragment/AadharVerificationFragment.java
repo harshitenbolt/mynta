@@ -3,6 +3,7 @@ package com.canvascoders.opaper.fragment;
 import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -421,7 +423,6 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             @Override
             public void onFailed() {
                 Toast.makeText(mcontext, "request permission failed", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -554,7 +555,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                             ivVoterBackSelected.setVisibility(View.VISIBLE);
                             tvVoterBack.setVisibility(View.GONE);
                             if (!dlImageOathFront.equalsIgnoreCase("") && !dlImagePathBack.equalsIgnoreCase("")) {
-                                ApiCallGetDetailLicence(dlImageOathFront,dlImagePathBack);
+                                ApiCallGetDetailLicence(dlImageOathFront, dlImagePathBack);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -625,7 +626,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                         Glide.with(getActivity()).load(aadharImagepathBack).placeholder(R.drawable.aadhardcardback).into(ivAdharImageBack);
                         Toast.makeText(getActivity(), adharOCRResponse.getFrontBackImageMessage(), Toast.LENGTH_LONG).show();
                     } else if (adharOCRResponse.getIsFrontOk() && adharOCRResponse.getIsBackOk()) {
-                        ApiCallSubmitOcr(adharOCRResponse.getAadharCardDetail().getName(),"","",adharOCRResponse.getAadharCardDetail().getAadharCardNumber(),String.valueOf(adharOCRResponse.getAadharCardDetail().getAadharCardDetailId()),adharOCRResponse.getAadharCardDetail().getFileName(),adharOCRResponse.getAadharCardDetail().getFileUrl());
+                        ApiCallSubmitOcr(adharOCRResponse.getAadharCardDetail().getName(), "", "", adharOCRResponse.getAadharCardDetail().getAadharCardNumber(), String.valueOf(adharOCRResponse.getAadharCardDetail().getAadharCardDetailId()), adharOCRResponse.getAadharCardDetail().getFileName(), adharOCRResponse.getAadharCardDetail().getFileUrl());
                         showEditDialog(adharOCRResponse.getAadharCardDetail());
                     } else if (!adharOCRResponse.getIsFrontOk() && !adharOCRResponse.getIsBackOk()) {
                         aadharImagepathFront = "";
@@ -721,7 +722,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
     private void ApiCallSubmitOcr(String name, String fathername, String dob, String id, String detailsId, String filename, String fileUrl) {
         Map<String, String> params = new HashMap<String, String>();
-       // params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        // params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         JSONObject jsonObject = new JSONObject();
         if (kyc_type.equalsIgnoreCase("2")) {
@@ -748,7 +749,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         if (kyc_type.equalsIgnoreCase("1")) {
 
             try {
-                jsonObject.put(Constants.PARAM_AADHAR_ID,id);
+                jsonObject.put(Constants.PARAM_AADHAR_ID, id);
                 jsonObject.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
                 jsonObject.put(Constants.PARAM_AADHAR_NO, id);
                 jsonObject.put(Constants.PARAM_NAME, name);
@@ -813,13 +814,13 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
     private void showEditDialog(AadharCardDetail aadharCardDetail) {
-        AadharCardDetail adharcardDetails1= aadharCardDetail;
+        AadharCardDetail adharcardDetails1 = aadharCardDetail;
         sessionManager.saveData(Constants.KEY_UID, adharcardDetails1.getAadharCardNumber());
         sessionManager.saveData(Constants.KEY_AADHAR_NAME, adharcardDetails1.getName());
         Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             public void run() {
-                editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, adharcardDetails1.getAadharCardNumber(), adharcardDetails1.getName(), adharcardDetails1.getBirthDate(), str_process_id, false,"0");
+                editNameDialogFragment = EditNameDialogFragment.newInstance(AadharVerificationFragment.this, adharcardDetails1.getAadharCardNumber(), adharcardDetails1.getName(), adharcardDetails1.getBirthDate(), str_process_id, false, "0");
                 editNameDialogFragment.setCancelable(false);
                 editNameDialogFragment.show(getChildFragmentManager(), "fragment_edit_name");
             }
@@ -840,6 +841,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                 imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
                 Log.e("datadata", imagecamera);
+                //Toast.makeText(mcontext, imagecamera, Toast.LENGTH_SHORT).show();
                 intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
 
@@ -992,7 +994,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
             //setButtonImage();
         }
-
+        // Toast.makeText(mcontext,resultCode+"" , Toast.LENGTH_SHORT).show();
 
     }
 
@@ -1032,17 +1034,17 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                             voterDetailsId = String.valueOf(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdDetailId());
                             filename = voterOCRGetDetaisResponse.getVoterIdDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getVoterIdDetail().getFileUrl();
-                            String outputDateStr="";
+                            String outputDateStr = "";
 
                             DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                             DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
-                            if(!voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate().equalsIgnoreCase("")) {
+                            if (!voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate().equalsIgnoreCase("")) {
                                 Date date = inputFormat.parse(voterOCRGetDetaisResponse.getVoterIdDetail().getBirthDate());
                                 outputDateStr = outputFormat.format(date);
                             }
 
 
-                            DialogUtil.VoterDetail(getActivity(), voterOCRGetDetaisResponse.getVoterIdDetail().getName(), voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber(), voterOCRGetDetaisResponse.getVoterIdDetail().getFatherName(),outputDateStr, new DialogListner() {
+                            DialogUtil.VoterDetail(getActivity(), voterOCRGetDetaisResponse.getVoterIdDetail().getName(), voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdNumber(), voterOCRGetDetaisResponse.getVoterIdDetail().getFatherName(), outputDateStr, new DialogListner() {
                                 @Override
                                 public void onClickPositive() {
 
@@ -1136,7 +1138,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
     }
 
 
-    private void ApiCallGetDetailLicence(String drivingLicencePath,String drivinglicenceback) {
+    private void ApiCallGetDetailLicence(String drivingLicencePath, String drivinglicenceback) {
         // MultipartBody.Part voter_front_part = null;
         MultipartBody.Part driving_licence_part = null;
 
@@ -1157,12 +1159,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
         dlPartBack = MultipartBody.Part.createFormData(Constants.PARAM_DL_BACK_IMAGE, imagefile2.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(drivinglicenceback)), imagefile2));
 
 
-
         Mylogger.getInstance().Logit(TAG, "getocUserInfo");
         mProgressDialog.setMessage("we are retrieving information, please wait!");
         mProgressDialog.show();
         hideKeyboardwithoutPopulateFragment();
-        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part,dlPartBack);
+        Call<DrivingLicenceDetailResponse> call = ApiClient.getClient2().create(ApiInterface.class).getDrivingLicenceDetail(params, driving_licence_part, dlPartBack);
         call.enqueue(new Callback<DrivingLicenceDetailResponse>() {
             @Override
             public void onResponse(Call<DrivingLicenceDetailResponse> call, Response<DrivingLicenceDetailResponse> response) {
@@ -1181,11 +1182,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileUrl();
 
-                            String outputDateStr="";
+                            String outputDateStr = "";
 
                             DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
                             DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
-                            if(!voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate().equalsIgnoreCase("")) {
+                            if (!voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate().equalsIgnoreCase("")) {
                                 Date date = inputFormat.parse(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
                                 outputDateStr = outputFormat.format(date);
                             }
@@ -1238,7 +1239,7 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                 @Override
                                 public void onClickDetails(String name, String fathername, String dob, String id) {
 
-                                    ApiCallSubmitOcr(name,fathername,dob,id,dlIdDetailId,filename,fileUrl);
+                                    ApiCallSubmitOcr(name, fathername, dob, id, dlIdDetailId, filename, fileUrl);
                                     ApiCallSubmitKYC(name, fathername, dob, id);
 
 

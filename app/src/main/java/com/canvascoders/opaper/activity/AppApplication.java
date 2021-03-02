@@ -10,11 +10,10 @@ import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.NetworkConnectivity;
 import com.canvascoders.opaper.utils.SessionManager;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import io.fabric.sdk.android.Fabric;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,8 +34,8 @@ public class AppApplication extends MultiDexApplication {
     String TAG = AppApplication.class.getSimpleName();
     private static AppApplication mInstance;
     public static float dip;
-//    private RequestQueue mRequestQueue;
-
+    //    private RequestQueue mRequestQueue;
+    private FirebaseAnalytics mFirebaseAnalytics;
     public static final String BASE_URL = Constants.BaseURL;
 
     public static Retrofit retrofit = null;
@@ -46,7 +45,7 @@ public class AppApplication extends MultiDexApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         mInstance = this;
 

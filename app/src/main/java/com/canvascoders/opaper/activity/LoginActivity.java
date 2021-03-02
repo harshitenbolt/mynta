@@ -9,8 +9,10 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
@@ -52,6 +54,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.os.Build.VERSION.SDK_INT;
 import static com.canvascoders.opaper.utils.Constants.showAlert;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -78,8 +81,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_new);
 
+
         gps = new GPSTracker(LoginActivity.this);
         initView();
+
+
+
+
 
         requestPermissionHandler.requestPermission(this, new String[]{
                 Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -270,7 +278,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String User_value = Build.USER;
         String Host_value = Build.HOST;
         String Version = Build.VERSION.RELEASE;
-        String API_level = Build.VERSION.SDK_INT + "";
+        String API_level = SDK_INT + "";
         String Build_ID = Build.ID;
         String Build_Time = Build.TIME + "";
         String Fingerprint = Build.FINGERPRINT;

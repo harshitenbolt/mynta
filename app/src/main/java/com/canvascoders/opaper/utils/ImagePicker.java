@@ -20,6 +20,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.DocumentsContract;
@@ -79,8 +80,11 @@ public class ImagePicker {
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile()));
             Log.e("datadtaa", String.valueOf(FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile())));
         } else if (Build.VERSION.SDK_INT >= 29) {
-            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile()));
+      /*      takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile()));
             Log.e("datadtaa", String.valueOf(FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile())));
+*/
+
+            takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         } else {
             takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getTempFile()));
@@ -176,37 +180,49 @@ public class ImagePicker {
     }
 
 
-    public static Bitmap getImageFromResult(Context context, int resultCode,
-                                            Intent imageReturnedIntent) {
+    public static Bitmap getImageFromResult(Context context, int resultCode, Intent imageReturnedIntent) {
         Log.d(TAG, "getImageFromResult, resultCode: " + resultCode);
         Bitmap bm = null;
         File imageFile = getTempFile();
-        if (resultCode == Activity.RESULT_OK) {
-            Uri selectedImage;
-            boolean isCamera = (imageReturnedIntent == null ||
-                    imageReturnedIntent.getData() == null ||
-                    imageReturnedIntent.getData().toString().contains(imageFile.toString()));
-            if (isCamera) {
-                Log.e("build_versionn", String.valueOf(Build.VERSION.SDK_INT));/** CAMERA **/
-                if (Build.VERSION.SDK_INT > 21) { //use this if Lollipop_Mr1 (API 22) or above
-                    selectedImage = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", imageFile);
-                    Constants.KEY_PHOTO = selectedImage;
-                    Log.e("datadata", String.valueOf(Constants.KEY_PHOTO));
-                } else {
-                    selectedImage = Uri.fromFile(imageFile);
+        if (Build.VERSION.SDK_INT >= 29) {
 
+            Bundle extras = imageReturnedIntent.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            return imageBitmap;
+
+        } else {
+
+
+            if (resultCode == Activity.RESULT_OK) {
+                Uri selectedImage;
+                boolean isCamera = (imageReturnedIntent == null ||
+                        imageReturnedIntent.getData() == null ||
+                        imageReturnedIntent.getData().toString().contains(imageFile.toString()));
+                if (isCamera) {
+                    Log.e("build_versionn", String.valueOf(Build.VERSION.SDK_INT));/** CAMERA **/
+                    if (Build.VERSION.SDK_INT > 21) { //use this if Lollipop_Mr1 (API 22) or above
+                        selectedImage = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", imageFile);
+                        Constants.KEY_PHOTO = selectedImage;
+                        Log.e("datadata", String.valueOf(Constants.KEY_PHOTO));
+                    } else {
+                        selectedImage = Uri.fromFile(imageFile);
+
+                    }
+                } else {            /** ALBUM **/
+                    selectedImage = imageReturnedIntent.getData();
                 }
-            } else {            /** ALBUM **/
-                selectedImage = imageReturnedIntent.getData();
-            }
-            filePath = selectedImage.getPath();
-            Log.d("selectedImage:", selectedImage.toString());
+                filePath = selectedImage.getPath();
+                Log.d("selectedImage:", selectedImage.toString());
 
-            bm = getImageResized(context, selectedImage);
-            // int rotation = getRotation(context, selectedImage, isCamera);
-            //bm = rotate(bm, rotation);
+                bm = getImageResized(context, selectedImage);
+                // int rotation = getRotation(context, selectedImage, isCamera);
+                //bm = rotate(bm, rotation);
+            }
+            return bm;
+
         }
-        return bm;
+
+
     }
 
 

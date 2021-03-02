@@ -58,7 +58,7 @@ import com.canvascoders.opaper.utils.PostAsynchTask;
 import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
-import com.google.android.gms.vision.text.TextRecognizer;
+//import com.google.android.gms.vision.text.TextRecognizer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -110,7 +110,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
     private SessionManager sessionManager;
     private boolean isPanSelected = true;
     private EditText edit_ac_no, edit_ac_name, edit_ifsc, edit_bank_name, edit_bank_branch_name, edit_bank_address;
-    private TextRecognizer detector;
+    //private TextRecognizer detector;
     private RequestPermissionHandler requestPermissionHandler;
     private CheckBox cd_aggre_terms_condition;
     File auxFile = null;
@@ -457,7 +457,7 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
         btn_next.setOnClickListener(this);
         tvClickCheque.setOnClickListener(this);
         btn_cheque_card_select.setOnClickListener(this);
-        detector = new TextRecognizer.Builder(mcontext).build();
+        //detector = new TextRecognizer.Builder(mcontext).build();
         progressDialog = new ProgressDialog(mcontext);
 
 

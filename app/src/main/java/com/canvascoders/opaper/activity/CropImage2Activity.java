@@ -45,6 +45,7 @@ public class CropImage2Activity extends AppCompatActivity {
     private static final int REQUEST_SAF_PICK_IMAGE = 10012;
     private static final String PROGRESS_DIALOG = "ProgressDialog";
     private static final String KEY_FRAME_RECT = "FrameRect";
+    public static String customFileProvider= "com.theartofdev.edmodo.cropper.genericFileProvider";
     private final LoadCallback mLoadCallback = new LoadCallback() {
         @Override
         public void onSuccess() {
