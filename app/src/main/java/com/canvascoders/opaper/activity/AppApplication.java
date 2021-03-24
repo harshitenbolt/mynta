@@ -49,6 +49,7 @@ public class AppApplication extends MultiDexApplication {
 
         mInstance = this;
 
+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 

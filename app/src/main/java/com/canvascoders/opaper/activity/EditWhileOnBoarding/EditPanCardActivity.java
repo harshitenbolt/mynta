@@ -692,10 +692,9 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
             }
 
             if (requestCode == IMAGE_GST) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditPanCardActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditPanCardActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditPanCardActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_3);
             }
 

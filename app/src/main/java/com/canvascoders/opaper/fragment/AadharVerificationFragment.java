@@ -836,13 +836,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
             if (requestCode == IMAGE_AADHAR_FRONT) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
                 Log.e("datadata", imagecamera);
                 //Toast.makeText(mcontext, imagecamera, Toast.LENGTH_SHORT).show();
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
 
 
@@ -865,10 +863,10 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
             }
             if (requestCode == IMAGE_AADHAR_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_BACK);
                /* File casted_image = new File(aadharImagepathFront);
                 if (casted_image.exists()) {
@@ -905,10 +903,10 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
             }
             if (requestCode == IMAGE_VOTER_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_FRONT);
 
             }
@@ -932,11 +930,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
             if (requestCode == IMAGE_VOTER_BACK) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
 
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_BACK);
 
             }
@@ -958,10 +956,10 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
             }
 
             if (requestCode == IMAGE_DL_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
             }
 
@@ -984,13 +982,30 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
 
 
             if (requestCode == IMAGE_DL_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                dlImagePathBack = ImagePicker.getBitmapPath(bitmap, getActivity());
-                Glide.with(getActivity()).load(dlImagePathBack).into(ivDlImageBack);
-                ivDlBackSelected.setVisibility(View.VISIBLE);
-                tvDlBack.setVisibility(View.GONE);
-
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
+                Intent intent = new Intent(getActivity(), CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                startActivityForResult(intent, CROPPED_IMAGE_DL_BACK);
             }
+
+
+            if (requestCode == CROPPED_IMAGE_DL_BACK) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                dlImagePathBack = RealPathUtil.getPath(getActivity(), imgURI);
+                try {
+                    Glide.with(getActivity()).load(dlImagePathBack).into(ivDlImageBack);
+                    ivDlBackSelected.setVisibility(View.VISIBLE);
+                    tvDlBack.setVisibility(View.GONE);
+                    File casted_image = new File(imagecamera);
+                    if (casted_image.exists()) {
+                        casted_image.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
 
             //setButtonImage();
         }

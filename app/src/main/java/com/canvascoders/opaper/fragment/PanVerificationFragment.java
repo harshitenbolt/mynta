@@ -464,10 +464,10 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
             if (requestCode == IMAGE_PAN) {
 
                 //  Constants.hideKeyboardwithoutPopulate(getActivity());
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE);
 
             }

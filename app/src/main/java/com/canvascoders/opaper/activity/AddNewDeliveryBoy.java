@@ -164,7 +164,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
     RadioGroup rg;
     LinearLayout llDrivingLicenceDetails, llAadharDetails, llVoterDetails;
     private TextView tvAdharFront, tvAdharBack, tvVoterFront, tvVoterBack, tvDlFront, tvDlBack, tvScan;
-    private ImageView ivAdharFrontSelected, ivAdharABackSelected, ivVoterFrontSelected, ivDlFrontSelected, ivVoterBackSelected, ivAdharIamgeFront, ivAdharImageBack, ivVoterImageFront, ivVoterImageBack, ivDlImageFront, ivDlImageBack;
+    private ImageView ivAdharFrontSelected, ivAdharABackSelected, ivVoterFrontSelected, ivDlFrontSelected, ivVoterBackSelected, ivAdharIamgeFront, ivAdharImageBack, ivVoterImageFront, ivVoterImageBack;
     private EditText etAdharName, etDObAdhar, etAdharNumber, etVoterName, etVoterFatherName, etVoterDOB, etVoterIdNumber;
     RelativeLayout rlSelctAdharDOB, rlSelectVoterDOB;
     TextView tvAdharDOB, tvVoterDOB;
@@ -2136,12 +2136,10 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
             if (requestCode == IMAGE_AADHAR_FRONT) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(AddNewDeliveryBoy.this, resultCode, data);
-
-                imagecamera = ImagePicker.getBitmapPath(bitmap, AddNewDeliveryBoy.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(AddNewDeliveryBoy.this, CropImage2Activity.class);
                 Log.e("datadata", imagecamera);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
 
 
@@ -2175,10 +2173,10 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
             }
             if (requestCode == IMAGE_AADHAR_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(AddNewDeliveryBoy.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, AddNewDeliveryBoy.this);
+
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(AddNewDeliveryBoy.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_BACK);
                /* File casted_image = new File(aadharImagepathFront);
                 if (casted_image.exists()) {
@@ -2225,10 +2223,9 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
             }
             if (requestCode == IMAGE_VOTER_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(AddNewDeliveryBoy.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, AddNewDeliveryBoy.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(AddNewDeliveryBoy.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_FRONT);
 
             }
@@ -2268,11 +2265,9 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
             if (requestCode == IMAGE_VOTER_BACK) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(AddNewDeliveryBoy.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, AddNewDeliveryBoy.this);
-
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(AddNewDeliveryBoy.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_BACK);
 
             }
@@ -2310,31 +2305,55 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             }
 
 
-            if (requestCode == LICENCEIMAGE) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(AddNewDeliveryBoy.this, resultCode, data);
-                // img_doc_upload_2.setImageBitmap(bitmap);
-                licenceImagePath = ImagePicker.getBitmapPath(bitmap, AddNewDeliveryBoy.this);
-                ivDriving_Licence.setPadding(0, 0, 0, 0);
-                // ImageUtils.getInstant().getImageUri(EditPanCardActivity, photo);
-                Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
-                //  ApiCallGetDetailLicence(licenceImagePath);
-                if (!licenceImagePathBack.equalsIgnoreCase("") && !licenceImagePath.equalsIgnoreCase(""))
-                    ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
 
+            if (requestCode == LICENCEIMAGE) {
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                Intent intent = new Intent(this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
             }
+
+
+            if (requestCode == CROPPED_IMAGE_DL_FRONT) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                licenceImagePath = RealPathUtil.getPath(this, imgURI);
+                try {
+                    Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
+                    ivDriving_Licence.setPadding(0, 0, 0, 0);
+                    if (!licenceImagePathBack.equalsIgnoreCase("") && !licenceImagePath.equalsIgnoreCase(""))
+                        ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
 
             if (requestCode == LICENCEIMAGEBACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(AddNewDeliveryBoy.this, resultCode, data);
-                // img_doc_upload_2.setImageBitmap(bitmap);
-                licenceImagePathBack = ImagePicker.getBitmapPath(bitmap, AddNewDeliveryBoy.this);
-                ivDrivingLicenceBack.setPadding(0, 0, 0, 0);
-                // ImageUtils.getInstant().getImageUri(EditPanCardActivity, photo);
-                Glide.with(this).load(licenceImagePathBack).into(ivDrivingLicenceBack);
-                if (!licenceImagePathBack.equalsIgnoreCase("") && !licenceImagePath.equalsIgnoreCase("")) {
-                    ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
-                }
-
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                Intent intent = new Intent(this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                startActivityForResult(intent, CROPPED_IMAGE_DL_BACK);
             }
+
+
+            if (requestCode == CROPPED_IMAGE_DL_BACK) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                licenceImagePathBack = RealPathUtil.getPath(this, imgURI);
+                try {
+                    Glide.with(this).load(licenceImagePathBack).into(ivDrivingLicenceBack);
+                    ivDrivingLicenceBack.setPadding(0, 0, 0, 0);
+                    if (!licenceImagePathBack.equalsIgnoreCase("") && !licenceImagePath.equalsIgnoreCase("")) {
+                        ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
             if (requestCode == PROFILEIMAGE) {
                 Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);

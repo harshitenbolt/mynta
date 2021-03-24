@@ -623,12 +623,12 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                 deleteImages();
                 // CropImage.activity(Uri.fromFile(new File())).start(getContext(), this);
 //                Constants.hideKeyboardwithoutPopulate(getActivity());
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
 
                 //intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(ImagePicker.getBitmapPath(bitmap, getActivity()))).toString());
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE);
 
             } else if (requestCode == CROPPED_IMAGE) {

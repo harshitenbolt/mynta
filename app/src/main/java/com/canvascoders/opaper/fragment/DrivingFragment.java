@@ -359,10 +359,9 @@ public class DrivingFragment extends Fragment implements View.OnClickListener {
         if (resultCode == RESULT_OK) {
 
             if (requestCode == IMAGE_DRIVING_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(getContext(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getContext());
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(context, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 getParentFragment().startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
                 onDetach();
             }

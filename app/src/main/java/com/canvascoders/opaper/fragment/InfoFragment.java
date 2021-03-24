@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -2234,8 +2235,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
 
             if (requestCode == IMAGE_GST) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                gstPath = ImagePicker.getBitmapPath(bitmap, getActivity());
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
+                gstPath = ImagePicker.getPathFromUri(getActivity(),uri);
                 Glide.with(getActivity()).load(gstPath).placeholder(R.drawable.placeholder)
                         .into(ivGst);
             }

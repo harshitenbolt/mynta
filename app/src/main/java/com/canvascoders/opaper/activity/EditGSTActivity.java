@@ -1879,15 +1879,14 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                /* Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
                 imagecamera = ImagePicker.getBitmapPath(bitmap, EditGSTActivity.this);
                 Intent intent = new Intent(EditGSTActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_3);*/
 
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditGSTActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
 
                 Intent intent = new Intent(EditGSTActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_3);
             }
 
@@ -1947,11 +1946,10 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             if (requestCode == IMAGE_CHEQUE) {
 
 //                Constants.hideKeyboardwithoutPopulate(getActivity());
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditGSTActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
 
                 Intent intent = new Intent(EditGSTActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_2);
 
 

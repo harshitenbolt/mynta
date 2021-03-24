@@ -654,10 +654,9 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
         if (resultCode == RESULT_OK) {
 
             if (requestCode == IMAGE_GST) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditGstDetailsActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditGstDetailsActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditGstDetailsActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_3);
             }
 

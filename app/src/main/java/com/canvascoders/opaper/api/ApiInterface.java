@@ -687,7 +687,6 @@ public interface ApiInterface {
     Call<BankDetailResp> getBankDetails(@Header("Authorization") String token, @Body JsonObject data);
 
 
-    //@FormUrlEncoded
     @POST("check-esign")
     Call<CheckEsignResponse> checkEsign(@Header("Authorization") String token, @QueryMap Map<String, String> data);
 

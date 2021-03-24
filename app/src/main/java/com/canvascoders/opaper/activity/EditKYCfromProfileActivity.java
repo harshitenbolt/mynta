@@ -1802,12 +1802,10 @@ public class EditKYCfromProfileActivity extends AppCompatActivity implements Vie
 
             if (requestCode == IMAGE_AADHAR_FRONT) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
-
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditKYCfromProfileActivity.this, CropImage2Activity.class);
                 Log.e("datadata", imagecamera);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
 
 
@@ -1830,10 +1828,9 @@ public class EditKYCfromProfileActivity extends AppCompatActivity implements Vie
 
             }
             if (requestCode == IMAGE_AADHAR_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditKYCfromProfileActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_BACK);
                /* File casted_image = new File(aadharImagepathFront);
                 if (casted_image.exists()) {
@@ -1870,10 +1867,9 @@ public class EditKYCfromProfileActivity extends AppCompatActivity implements Vie
 
             }
             if (requestCode == IMAGE_VOTER_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditKYCfromProfileActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_FRONT);
 
             }
@@ -1897,11 +1893,10 @@ public class EditKYCfromProfileActivity extends AppCompatActivity implements Vie
 
             if (requestCode == IMAGE_VOTER_BACK) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
 
                 Intent intent = new Intent(EditKYCfromProfileActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_BACK);
 
             }
@@ -1923,10 +1918,9 @@ public class EditKYCfromProfileActivity extends AppCompatActivity implements Vie
             }
 
             if (requestCode == IMAGE_DL_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditKYCfromProfileActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
             }
 

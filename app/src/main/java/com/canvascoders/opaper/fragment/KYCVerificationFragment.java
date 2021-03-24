@@ -651,10 +651,10 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
 
             if (requestCode == IMAGE_AADHAR_FRONT) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
 
 
@@ -677,10 +677,10 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
 
             }
             if (requestCode == IMAGE_AADHAR_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_BACK);
                *//* File casted_image = new File(aadharImagepathFront);
                 if (casted_image.exists()) {
@@ -712,10 +712,10 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
                 processScannedData(data.getStringExtra(Constants.CONTENT));
             }
             if (requestCode == IMAGE_VOTER_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_FRONT);
 
             }
@@ -739,11 +739,11 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
 
             if (requestCode == IMAGE_VOTER_BACK) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
 
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_BACK);
 
             }
@@ -765,10 +765,10 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
             }
 
             if (requestCode == IMAGE_DL_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, getActivity());
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(getActivity(), CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
             }
 
@@ -791,7 +791,7 @@ public class KYCVerificationFragment extends Fragment implements View.OnClickLis
 
 
             if (requestCode == IMAGE_DL_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+
                 dlImagePathBack = ImagePicker.getBitmapPath(bitmap, getActivity());
                 Glide.with(getActivity()).load(dlImagePathBack).into(ivDlImageBack);
                 ivDlBackSelected.setVisibility(View.VISIBLE);

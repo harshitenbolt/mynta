@@ -302,11 +302,10 @@ public class EditBankDetailsActivity extends AppCompatActivity implements View.O
             if (requestCode == IMAGE_CHEQUE) {
                 deleteImages();
 //                Constants.hideKeyboardwithoutPopulate(EditBankDetailsActivity.this);
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditBankDetailsActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditBankDetailsActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
 
                 Intent intent = new Intent(EditBankDetailsActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE);
 
 

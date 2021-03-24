@@ -740,7 +740,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
             if (resultCode == RESULT_OK) {
                 /*if (IMAGE_SELCTED_IMG == IMAGE_SHPO_ACT) {
 
-                 *//* Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                 *//*
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 storeImg = ImagePicker.getBitmapPath(bitmap, getActivity()); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
                 Glide.with(getActivity()).load(storeImg).into(ivShopImageSingle);
@@ -756,7 +756,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                 }*//*
 
                 ivAddressProofSelected.setVisibility(View.VISIBLE);
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+
                 String shoap_act_image_path = ImagePicker.getBitmapPath(bitmap, getActivity());
                 shopActImage.add(shoap_act_image_path);
                 // rvImageListBills.setAdapter(myAdapter);
@@ -785,8 +785,8 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
             }*/
                 if (IMAGE_SELCTED_IMG == IMAGE_SHPO_ACT) {
 
-                    Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                    String shoap_act_image_path = ImagePicker.getBitmapPath(bitmap, getActivity());
+                    Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
+                    String shoap_act_image_path = ImagePicker.getPathFromUri( getActivity(),uri);
 
                     shopActImage.add(shoap_act_image_path);
 
@@ -832,10 +832,9 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                     if (casted_image6.exists()) {
                         casted_image6.delete();
                     }
-
-                    Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                    Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                     // img_doc_upload_2.setImageBitmap(bitmap);
-                    shopImg = ImagePicker.getBitmapPath(bitmap, getActivity()); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+                    shopImg = ImagePicker.getPathFromUri( getActivity(),uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
                     Glide.with(getActivity()).load(shopImg).into(ivStoreImage);
                     Log.e("aadharcard", "back image" + shopImg);
                     ivStoreImageSelected.setVisibility(View.VISIBLE);
@@ -848,9 +847,11 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                     if (casted_image2.exists()) {
                         casted_image2.delete();
                     }
+
+                    Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                     Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                     // img_doc_upload_2.setImageBitmap(bitmap);
-                    ownerImg = ImagePicker.getBitmapPath(bitmap, getActivity()); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+                    ownerImg = ImagePicker.getPathFromUri( getActivity(),uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
                     Glide.with(getActivity()).load(ownerImg).into(ivOwnerImage);
                     Log.e("aadharcard", "back image" + ownerImg);
                     ivOwnerImageSelected.setVisibility(View.VISIBLE);

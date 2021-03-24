@@ -2495,12 +2495,10 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
             if (requestCode == IMAGE_AADHAR_FRONT) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
-
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditDeliveryBoyActivity.this, CropImage2Activity.class);
                 Log.e("datadata", imagecamera);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
 
 
@@ -2534,10 +2532,9 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
             }
             if (requestCode == IMAGE_AADHAR_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditDeliveryBoyActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_BACK);
                /* File casted_image = new File(aadharImagepathFront);
                 if (casted_image.exists()) {
@@ -2584,10 +2581,9 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
             }
             if (requestCode == IMAGE_VOTER_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditDeliveryBoyActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_FRONT);
 
             }
@@ -2627,11 +2623,10 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
 
             if (requestCode == IMAGE_VOTER_BACK) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
 
                 Intent intent = new Intent(EditDeliveryBoyActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_BACK);
 
             }

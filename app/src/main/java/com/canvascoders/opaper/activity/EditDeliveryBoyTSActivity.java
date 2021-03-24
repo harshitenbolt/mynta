@@ -119,7 +119,7 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
     private static int IMAGE_SELCTION_CODE = 0;
     private EditText etAdharName, etDObAdhar, etAdharNumber, etVoterName, etVoterFatherName, etVoterDOB, etVoterIdNumber;
     private Button btSubmit;
-    String ocrid="";
+    String ocrid = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -792,8 +792,8 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
                         ApiCallSubmitOcr("", "", stringDob, etVoterIdNumber.getText().toString(), ocrid, filename, fileUrl);
 
                     }
-                    if(kyc_type.equalsIgnoreCase("1")){
-                        ApiCallSubmitOcr(etAdharName.getText().toString(),"","",etAdharNumber.getText().toString(),etAdharNumber.getText().toString(),"","");
+                    if (kyc_type.equalsIgnoreCase("1")) {
+                        ApiCallSubmitOcr(etAdharName.getText().toString(), "", "", etAdharNumber.getText().toString(), etAdharNumber.getText().toString(), "", "");
                     }
                     ApiCallSubmit();
                 }
@@ -1122,12 +1122,11 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
 
             if (requestCode == IMAGE_AADHAR_FRONT) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyTSActivity.this, resultCode, data);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
 
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyTSActivity.this);
                 Intent intent = new Intent(EditDeliveryBoyTSActivity.this, CropImage2Activity.class);
                 Log.e("datadata", imagecamera);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
 
 
@@ -1161,10 +1160,9 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
 
             }
             if (requestCode == IMAGE_AADHAR_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyTSActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyTSActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditDeliveryBoyTSActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_BACK);
                /* File casted_image = new File(aadharImagepathFront);
                 if (casted_image.exists()) {
@@ -1211,10 +1209,9 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
 
             }
             if (requestCode == IMAGE_VOTER_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyTSActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyTSActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditDeliveryBoyTSActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_FRONT);
 
             }
@@ -1254,11 +1251,10 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
 
             if (requestCode == IMAGE_VOTER_BACK) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyTSActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyTSActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
 
                 Intent intent = new Intent(EditDeliveryBoyTSActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_BACK);
 
             }
@@ -1297,26 +1293,50 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
 
 
             if (requestCode == LICENCEIMAGE) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyTSActivity.this, resultCode, data);
-                // img_doc_upload_2.setImageBitmap(bitmap);
-                licenceImagePath = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyTSActivity.this);
-                ivDriving_Licence.setPadding(0, 0, 0, 0);
-                // ImageUtils.getInstant().getImageUri(getActivity(), photo);
-                Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
-                if (!licenceBackImagePath.equalsIgnoreCase("") && !licenceImagePath.equalsIgnoreCase("")) {
-                    ApiCallGetDetailLicence(licenceImagePath, licenceBackImagePath);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                Intent intent = new Intent(this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
+            }
+
+            if (requestCode == CROPPED_IMAGE_DL_FRONT) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                licenceImagePath = RealPathUtil.getPath(this, imgURI);
+                try {
+                    Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
+                    ivDriving_Licence.setPadding(0, 0, 0, 0);
+                    if (!licenceBackImagePath.equalsIgnoreCase("") && !licenceImagePath.equalsIgnoreCase(""))
+                        ApiCallGetDetailLicence(licenceImagePath, licenceBackImagePath);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
             if (requestCode == LICENCEIMAGEBACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyTSActivity.this, resultCode, data);
-                // img_doc_upload_2.setImageBitmap(bitmap);
-                licenceBackImagePath = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyTSActivity.this);
-                ivDrivingLicenceBack.setPadding(0, 0, 0, 0);
-                // ImageUtils.getInstant().getImageUri(getActivity(), photo);
-                Glide.with(this).load(licenceBackImagePath).into(ivDrivingLicenceBack);
-                ApiCallGetDetailLicence(licenceImagePath, licenceBackImagePath);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                Intent intent = new Intent(this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                startActivityForResult(intent, CROPPED_IMAGE_DL_BACK);
             }
+
+            if (requestCode == CROPPED_IMAGE_DL_BACK) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                licenceBackImagePath = RealPathUtil.getPath(this, imgURI);
+                try {
+                    Glide.with(this).load(licenceBackImagePath).into(ivDrivingLicenceBack);
+                    ivDrivingLicenceBack.setPadding(0, 0, 0, 0);
+                    tvDlBack.setVisibility(View.GONE);
+                    ApiCallGetDetailLicence(licenceImagePath, licenceBackImagePath);
+                    File casted_image = new File(imagecamera);
+                    if (casted_image.exists()) {
+                        casted_image.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
             if (requestCode == PROFILEIMAGE) {
                 Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
@@ -1370,7 +1390,7 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
                         VoterOCRGetDetaisResponse voterOCRGetDetaisResponse = response.body();
                         if (voterOCRGetDetaisResponse.getStatus().equalsIgnoreCase("success")) {
                             voterDetailsId = String.valueOf(voterOCRGetDetaisResponse.getVoterIdDetail().getVoterIdDetailId());
-                            ocrid=voterDetailsId;
+                            ocrid = voterDetailsId;
                             filename = voterOCRGetDetaisResponse.getVoterIdDetail().getFileName();
                             fileUrl = voterOCRGetDetaisResponse.getVoterIdDetail().getFileUrl();
                             String outputDateStr = "";
@@ -1503,7 +1523,7 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
         }
         if (kyc_type.equalsIgnoreCase("1")) {
             try {
-                jsonObject.put(Constants.PARAM_AADHAR_ID,id);
+                jsonObject.put(Constants.PARAM_AADHAR_ID, id);
                 jsonObject.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
                 jsonObject.put(Constants.PARAM_AADHAR_NO, id);
                 jsonObject.put(Constants.PARAM_NAME, name);
@@ -1603,7 +1623,7 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
                             //fathername = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFatherName();
                             dob.setText(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getBirthDate());
 
-                            ocrid= String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
+                            ocrid = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
                             /* dlnumber = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceNumber();
                             dlIdDetailId = String.valueOf(voterOCRGetDetaisResponse.getDrivingLicenceDetail().getDrivingLicenceDetailId());
                             filename = voterOCRGetDetaisResponse.getDrivingLicenceDetail().getFileName();

@@ -1794,12 +1794,10 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
             if (requestCode == IMAGE_AADHAR_FRONT) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
-
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditKycActivity.this, CropImage2Activity.class);
                 Log.e("datadata", imagecamera);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
 
 
@@ -1822,10 +1820,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
             }
             if (requestCode == IMAGE_AADHAR_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditKycActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_BACK);
                /* File casted_image = new File(aadharImagepathFront);
                 if (casted_image.exists()) {
@@ -1862,10 +1859,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
             }
             if (requestCode == IMAGE_VOTER_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditKycActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_FRONT);
 
             }
@@ -1889,11 +1885,10 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
 
             if (requestCode == IMAGE_VOTER_BACK) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
 
                 Intent intent = new Intent(EditKycActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_VOTER_BACK);
 
             }
@@ -1915,10 +1910,9 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             if (requestCode == IMAGE_DL_FRONT) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
-                imagecamera = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(EditKycActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(imagecamera)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
             }
 
@@ -1940,14 +1934,31 @@ public class EditKycActivity extends AppCompatActivity implements View.OnClickLi
             }
 
 
-            if (requestCode == IMAGE_DL_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditKycActivity.this, resultCode, data);
-                dlImagePathBack = ImagePicker.getBitmapPath(bitmap, EditKycActivity.this);
-                Glide.with(EditKycActivity.this).load(dlImagePathBack).into(ivDlImageBack);
-                ivDlBackSelected.setVisibility(View.VISIBLE);
-                tvDlBack.setVisibility(View.GONE);
 
+            if (requestCode == IMAGE_DL_BACK) {
+                Uri uri = ImagePicker.getPickImageResultUri(EditKycActivity.this, data);
+                Intent intent = new Intent(EditKycActivity.this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                startActivityForResult(intent, CROPPED_IMAGE_DL_BACK);
             }
+
+
+            if (requestCode == CROPPED_IMAGE_DL_BACK) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                dlImagePathBack = RealPathUtil.getPath(EditKycActivity.this, imgURI);
+                try {
+                    Glide.with(EditKycActivity.this).load(dlImagePathBack).into(ivDlImageBack);
+                    ivDlBackSelected.setVisibility(View.VISIBLE);
+                    tvDlBack.setVisibility(View.GONE);
+                    File casted_image = new File(imagecamera);
+                    if (casted_image.exists()) {
+                        casted_image.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
 
             //setButtonImage();
         }
