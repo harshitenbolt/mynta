@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -43,6 +44,7 @@ import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
+import com.canvascoders.opaper.activity.EndTaskActivity;
 import com.canvascoders.opaper.adapters.CustomPopupAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupApproachAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupLocalityAdapter;
@@ -1189,9 +1191,10 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
         if (resultCode == RESULT_OK) {
             if (requestCode == 105) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditStoreInformationActivity.this, resultCode, data);
+              //  Bitmap bitmap = ImagePicker.getImageFromResult(EditStoreInformationActivity.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
-                shopImg = ImagePicker.getBitmapPath(bitmap, EditStoreInformationActivity.this); // ImageUtils.getInstant().getImageUri(EditStoreInformationActivity.this, photo);
+                Uri uri = ImagePicker.getPickImageResultUri(EditStoreInformationActivity.this, data);
+                shopImg = ImagePicker.getPathFromUri(EditStoreInformationActivity.this,uri); // ImageUtils.getInstant().getImageUri(EditStoreInformationActivity.this, photo);
                 Glide.with(EditStoreInformationActivity.this).load(shopImg).into(ivStoreImage);
                 Log.e("imageowner", "back image" + shopImg);
                 ivStoreImageSelected.setVisibility(View.VISIBLE);

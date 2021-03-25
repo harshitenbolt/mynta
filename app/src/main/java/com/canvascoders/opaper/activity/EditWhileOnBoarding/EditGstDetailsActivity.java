@@ -675,14 +675,15 @@ public class EditGstDetailsActivity extends AppCompatActivity implements View.On
             if (requestCode == IMAGE_PAN) {
                 // deleteImages();
 //                Constants.hideKeyboardwithoutPopulate(EditGstDetailsActivity.this);
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditGstDetailsActivity.this, resultCode, data);
-                cameraimage = ImagePicker.getBitmapPath(bitmap, EditGstDetailsActivity.this);
+              //  Bitmap bitmap = ImagePicker.getImageFromResult(EditGstDetailsActivity.this, resultCode, data);
+                //cameraimage = ImagePicker.getBitmapPath(bitmap, EditGstDetailsActivity.this);
                /* Glide.with(getActivity()).load(panImagepath).into(btn_pan_card);
                 isPanSelected = true;
                 btn_pan_card_select.setVisibility(View.VISIBLE);
                 Log.e("Pan image path", panImagepath);*/
+                Uri uri = ImagePicker.getPickImageResultUri(EditGstDetailsActivity.this, data);
                 Intent intent = new Intent(EditGstDetailsActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(cameraimage)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE);
 
 

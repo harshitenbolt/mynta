@@ -736,8 +736,14 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_PROFILE) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
-                    profImage = ImagePicker.getBitmapPath(bitmap, this);
+                /*Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
+                profImage = ImagePicker.getBitmapPath(bitmap, this);
+*/
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                profImage = ImagePicker.getPathFromUri(this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+
                 Glide.with(this).load(profImage).asBitmap().centerCrop().into(new BitmapImageViewTarget(iv_image) {
                     @Override
                     protected void setResource(Bitmap resource) {
@@ -747,11 +753,22 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                         iv_image.setImageDrawable(circularBitmapDrawable);
                     }
                 });
+
+
+
+
             }
 
             if (requestCode == IMAGE_LICENCE) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
+              /*  Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 licenceImagePath = ImagePicker.getBitmapPath(bitmap, this);
+*/
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                licenceImagePath = ImagePicker.getPathFromUri(this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+
+
                 Glide.with(this).load(licenceImagePath).placeholder(R.drawable.placeholder)
                         .into(iv_driving);
             }

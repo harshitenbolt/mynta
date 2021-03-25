@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -482,9 +483,13 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
         if (resultCode == RESULT_OK) {
             if (requestCode == 105) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditOwnerInfoActivity.this, resultCode, data);
+               // Bitmap bitmap = ImagePicker.getImageFromResult(EditOwnerInfoActivity.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
-                ownerImage = ImagePicker.getBitmapPath(bitmap, EditOwnerInfoActivity.this); // ImageUtils.getInstant().getImageUri(EditOwnerInfoActivity.this, photo);
+                Uri uri = ImagePicker.getPickImageResultUri(EditOwnerInfoActivity.this, data);
+             //   Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                ownerImage = ImagePicker.getPathFromUri(EditOwnerInfoActivity.this,uri); //
+            //    ownerImage = ImagePicker.getBitmapPath(bitmap, EditOwnerInfoActivity.this); // ImageUtils.getInstant().getImageUri(EditOwnerInfoActivity.this, photo);
                 Glide.with(EditOwnerInfoActivity.this).load(ownerImage).into(ivOwnerImage);
                 //  Log.e("imageowner", "back image" + shopImg);
                 ivOwnerImageSelected.setVisibility(View.VISIBLE);

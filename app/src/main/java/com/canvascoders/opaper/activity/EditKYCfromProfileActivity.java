@@ -1942,13 +1942,40 @@ public class EditKYCfromProfileActivity extends AppCompatActivity implements Vie
             }
 
 
-            if (requestCode == IMAGE_DL_BACK) {
+            /*if (requestCode == IMAGE_DL_BACK) {
                 Bitmap bitmap = ImagePicker.getImageFromResult(EditKYCfromProfileActivity.this, resultCode, data);
                 dlImagePathBack = ImagePicker.getBitmapPath(bitmap, EditKYCfromProfileActivity.this);
                 Glide.with(EditKYCfromProfileActivity.this).load(dlImagePathBack).into(ivDlImageBack);
                 ivDlBackSelected.setVisibility(View.VISIBLE);
                 tvDlBack.setVisibility(View.GONE);
 
+
+
+            }
+*/
+
+            if (requestCode == IMAGE_DL_BACK) {
+                Uri uri = ImagePicker.getPickImageResultUri(EditKYCfromProfileActivity.this, data);
+                Intent intent = new Intent(EditKYCfromProfileActivity.this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                startActivityForResult(intent, CROPPED_IMAGE_DL_BACK);
+            }
+
+
+            if (requestCode == CROPPED_IMAGE_DL_BACK) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                dlImagePathBack = RealPathUtil.getPath(EditKYCfromProfileActivity.this, imgURI);
+                try {
+                    Glide.with(EditKYCfromProfileActivity.this).load(dlImagePathBack).into(ivDlImageBack);
+                    ivDlBackSelected.setVisibility(View.VISIBLE);
+                    tvDlBack.setVisibility(View.GONE);
+                    File casted_image = new File(imagecamera);
+                    if (casted_image.exists()) {
+                        casted_image.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             //setButtonImage();

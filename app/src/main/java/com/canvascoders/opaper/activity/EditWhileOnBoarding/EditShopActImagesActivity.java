@@ -9,6 +9,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -407,8 +408,16 @@ public class EditShopActImagesActivity extends AppCompatActivity implements View
 
                 if (IMAGE_SELCTED_IMG == IMAGE_SHPO_ACT) {
 
-                    Bitmap bitmap = ImagePicker.getImageFromResult(EditShopActImagesActivity.this, resultCode, data);
-                    String shoap_act_image_path = ImagePicker.getBitmapPath(bitmap, EditShopActImagesActivity.this);
+
+
+
+                  //  Bitmap bitmap = ImagePicker.getImageFromResult(EditShopActImagesActivity.this, resultCode, data);
+                   // String shoap_act_image_path = ImagePicker.getBitmapPath(bitmap, EditShopActImagesActivity.this);
+
+
+                    Uri uri = ImagePicker.getPickImageResultUri(EditShopActImagesActivity.this, data);
+                    String shoap_act_image_path  = ImagePicker.getPathFromUri(EditShopActImagesActivity.this,uri); // ImageUtils.getInstant().getImageUri(EditStoreInformationActivity.this, photo);
+
 
                     shopActImage.add(shoap_act_image_path);
 

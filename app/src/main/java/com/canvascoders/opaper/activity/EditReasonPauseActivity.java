@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -181,9 +182,15 @@ public class EditReasonPauseActivity extends AppCompatActivity implements View.O
             if (resultCode == RESULT_OK) {
 
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditReasonPauseActivity.this, resultCode, data);
+              //  Bitmap bitmap = ImagePicker.getImageFromResult(EditReasonPauseActivity.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
-                taskImage = ImagePicker.getBitmapPath(bitmap, EditReasonPauseActivity.this); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+                Uri uri = ImagePicker.getPickImageResultUri(EditReasonPauseActivity.this, data);
+             //   Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                taskImage = ImagePicker.getPathFromUri( EditReasonPauseActivity.this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+
+
+             //   taskImage = ImagePicker.getBitmapPath(bitmap, EditReasonPauseActivity.this); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
 
                 Glide.with(EditReasonPauseActivity.this).load(taskImage).into(ivIssueImage);
             }

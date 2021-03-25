@@ -13,6 +13,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -526,9 +527,16 @@ public class AddNewTaskActivity extends AppCompatActivity implements View.OnClic
         if (resultCode == RESULT_OK) {
             if (requestCode == 105) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(AddNewTaskActivity.this, resultCode, data);
+               /* Bitmap bitmap = ImagePicker.getImageFromResult(AddNewTaskActivity.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 shopImg = ImagePicker.getBitmapPath(bitmap, AddNewTaskActivity.this); // ImageUtils.getInstant().getImageUri(EditStoreInformationActivity.this, photo);
+*/
+                Uri uri = ImagePicker.getPickImageResultUri(AddNewTaskActivity.this, data);
+                //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                shopImg = ImagePicker.getPathFromUri( AddNewTaskActivity.this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+
+
                 Glide.with(AddNewTaskActivity.this).load(shopImg).into(ivAddTaskImage);
                 Log.e("imageowner", "back image" + shopImg);
                 // ivStoreImageSelected.setVisibility(View.VISIBLE);

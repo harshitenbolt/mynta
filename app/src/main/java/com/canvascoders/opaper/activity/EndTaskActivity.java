@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -267,8 +268,12 @@ public class EndTaskActivity extends AppCompatActivity implements View.OnClickLi
 
             if (resultCode == RESULT_OK) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EndTaskActivity.this, resultCode, data);
-                String shoap_act_image_path = ImagePicker.getBitmapPath(bitmap, EndTaskActivity.this);
+                //Bitmap bitmap = ImagePicker.getImageFromResult(EndTaskActivity.this, resultCode, data);
+              //  String shoap_act_image_path = ImagePicker.getBitmapPath(bitmap, EndTaskActivity.this);
+                Uri uri = ImagePicker.getPickImageResultUri(EndTaskActivity.this, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                String  shoap_act_image_path = ImagePicker.getPathFromUri( EndTaskActivity.this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+
 
                 shopActImage.add(shoap_act_image_path);
 

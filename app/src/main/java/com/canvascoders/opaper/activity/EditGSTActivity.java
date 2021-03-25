@@ -1861,8 +1861,10 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
         if (resultCode == RESULT_OK) {
             if (IMAGE_SELCTED_IMG == IMAGE_SHOP_IMG) {
 
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
-                shopImg = ImagePicker.getBitmapPath(bitmap, EditGSTActivity.this); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+          //      Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
+                Uri uri = ImagePicker.getPickImageResultUri(EditGSTActivity.this, data);
+
+                shopImg =ImagePicker.getPathFromUri( EditGSTActivity.this,uri);// ImageUtils.getInstant().getImageUri(getActivity(), photo);
                 Glide.with(EditGSTActivity.this).load(shopImg).into(ivStoreImage);
                 ivStoreImageSelected.setVisibility(View.VISIBLE);
 
@@ -1912,14 +1914,15 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             if (requestCode == IMAGE_PAN) {
 
 //                Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
-                cameraimage = ImagePicker.getBitmapPath(bitmap, EditGSTActivity.this);
+            //    Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
+              //  cameraimage = ImagePicker.getBitmapPath(bitmap, EditGSTActivity.this);
                /* Glide.with(getActivity()).load(panImagepath).into(btn_pan_card);
                 isPanSelected = true;
                 btn_pan_card_select.setVisibility(View.VISIBLE);
                 Log.e("Pan image path", panImagepath);*/
+                Uri uri = ImagePicker.getPickImageResultUri(EditGSTActivity.this, data);
                 Intent intent = new Intent(EditGSTActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(cameraimage)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE);
 
 

@@ -2664,7 +2664,7 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
             }
 
 
-            if (requestCode == LICENCEIMAGE) {
+         /*   if (requestCode == LICENCEIMAGE) {
                 Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 licenceImagePath = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
@@ -2675,22 +2675,92 @@ public class EditDeliveryBoyActivity extends AppCompatActivity implements View.O
                     ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
                 }
 
+            }*/
+
+
+            if (requestCode == LICENCEIMAGE) {
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                Intent intent = new Intent(this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
             }
 
-            if (requestCode == LICENCEIMAGEBACK) {
+            if (requestCode == CROPPED_IMAGE_DL_FRONT) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                licenceImagePath = RealPathUtil.getPath(this, imgURI);
+                try {
+                    Glide.with(this).load(licenceImagePath).into(ivDriving_Licence);
+                    ivDriving_Licence.setPadding(0, 0, 0, 0);
+                    if (!licenceImagePathBack.equalsIgnoreCase("") && !licenceImagePath.equalsIgnoreCase(""))
+                        ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+         /*   if (requestCode == LICENCEIMAGEBACK) {
                 Bitmap bitmap = ImagePicker.getImageFromResult(EditDeliveryBoyActivity.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 licenceImagePathBack = ImagePicker.getBitmapPath(bitmap, EditDeliveryBoyActivity.this);
                 ivDlImageBack.setPadding(0, 0, 0, 0);
+
                 // ImageUtils.getInstant().getImageUri(EditPanCardActivity, photo);
                 Glide.with(this).load(licenceImagePathBack).into(ivDlImageBack);
                 ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
 
+            }*/
+
+
+
+            if (requestCode == LICENCEIMAGEBACK) {
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                Intent intent = new Intent(this, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                startActivityForResult(intent, CROPPED_IMAGE_DL_BACK);
             }
+
+            if (requestCode == CROPPED_IMAGE_DL_BACK) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                licenceImagePathBack = RealPathUtil.getPath(this, imgURI);
+                try {
+                    Glide.with(this).load(licenceImagePathBack).into(ivDlImageBack);
+                    ivDlImageBack.setPadding(0, 0, 0, 0);
+                    tvDlBack.setVisibility(View.GONE);
+                    ApiCallGetDetailLicence(licenceImagePath, licenceImagePathBack);
+                    File casted_image = new File(imagecamera);
+                    if (casted_image.exists()) {
+                        casted_image.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             if (requestCode == PROFILEIMAGE) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
+             /*   Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
-                profileImagepath = ImagePicker.getBitmapPath(bitmap, this);
+                profileImagepath = ImagePicker.getBitmapPath(bitmap, this);*/
+
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                profileImagepath = ImagePicker.getPathFromUri( this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+
                 ivProfile.setPadding(0, 0, 0, 0);// ImageUtils.getInstant().getImageUri(getActivity(), photo);
 
                 Glide.with(this).load(profileImagepath).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivProfile) {

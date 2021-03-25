@@ -440,14 +440,16 @@ public class EditPanCardActivity extends AppCompatActivity implements View.OnCli
             if (requestCode == IMAGE_PAN) {
                 // deleteImages();
 //                Constants.hideKeyboardwithoutPopulate(EditPanCardActivity.this);
-                Bitmap bitmap = ImagePicker.getImageFromResult(EditPanCardActivity.this, resultCode, data);
-                cameraimage = ImagePicker.getBitmapPath(bitmap, EditPanCardActivity.this);
+             //   Bitmap bitmap = ImagePicker.getImageFromResult(EditPanCardActivity.this, resultCode, data);
+               // cameraimage = ImagePicker.getBitmapPath(bitmap, EditPanCardActivity.this);
                /* Glide.with(getActivity()).load(panImagepath).into(btn_pan_card);
                 isPanSelected = true;
                 btn_pan_card_select.setVisibility(View.VISIBLE);
                 Log.e("Pan image path", panImagepath);*/
+
+                Uri uri = ImagePicker.getPickImageResultUri(EditPanCardActivity.this, data);
                 Intent intent = new Intent(EditPanCardActivity.this, CropImage2Activity.class);
-                intent.putExtra(KEY_SOURCE_URI, Uri.fromFile(new File(cameraimage)).toString());
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE);
 
 

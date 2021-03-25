@@ -643,9 +643,16 @@ public class EditDeliveryBoyFSActivity extends AppCompatActivity implements View
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == PROFILEIMAGE) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
+               /* Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 profileImagepath = ImagePicker.getBitmapPath(bitmap, this);
+*/
+                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                profileImagepath = ImagePicker.getPathFromUri( this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+
+
                 ivProfile.setPadding(0, 0, 0, 0);// ImageUtils.getInstant().getImageUri(getActivity(), photo);
 
                 Glide.with(this).load(profileImagepath).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivProfile) {

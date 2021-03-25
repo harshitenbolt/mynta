@@ -383,16 +383,32 @@ public class DrivingFragment extends Fragment implements View.OnClickListener {
             }
 
 
+
+
             if (requestCode == IMAGE_DRIVING_BACK) {
-                Bitmap bitmap = ImagePicker.getImageFromResult(getContext(), resultCode, data);
-                dlImagePathBack = ImagePicker.getBitmapPath(bitmap, getContext());
-                Glide.with(getContext()).load(dlImagePathBack).into(ivDlImageBack);
-                ivDlBackSelected.setVisibility(View.VISIBLE);
-                tvDlBack.setVisibility(View.GONE);
-
-
-                //setButtonImage();
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
+                Intent intent = new Intent(context, CropImage2Activity.class);
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                getParentFragment().startActivityForResult(intent, CROPPED_IMAGE_DL_BACK);
+                onDetach();
             }
+
+            if (requestCode == CROPPED_IMAGE_DL_BACK) {
+                imgURI = Uri.parse(data.getStringExtra("uri"));
+                dlImagePathBack = RealPathUtil.getPath(getContext(), imgURI);
+                try {
+                    Glide.with(context).load(dlImagePathBack).into(ivDlImageBack);
+                    ivDlBackSelected.setVisibility(View.VISIBLE);
+                    tvDlBack.setVisibility(View.GONE);
+                    File casted_image = new File(imagecamera);
+                    if (casted_image.exists()) {
+                        casted_image.delete();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
 
 

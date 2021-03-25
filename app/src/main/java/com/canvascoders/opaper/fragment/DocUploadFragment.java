@@ -738,70 +738,15 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
         if ((requestCode == IMAGE_SHPO_ACT && resultCode == RESULT_OK) || (requestCode == IMAGE_SHOP_IMG && resultCode == RESULT_OK) || (requestCode == IMAGE_OWNER_IMG && resultCode == RESULT_OK) || (requestCode == IMAGE_SHPO_ACT_MULTIPLE && resultCode == RESULT_OK)) {
 
             if (resultCode == RESULT_OK) {
-                /*if (IMAGE_SELCTED_IMG == IMAGE_SHPO_ACT) {
 
-                 *//*
-                // img_doc_upload_2.setImageBitmap(bitmap);
-                storeImg = ImagePicker.getBitmapPath(bitmap, getActivity()); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
-                Glide.with(getActivity()).load(storeImg).into(ivShopImageSingle);
-                Log.e("aadharcard", "back image" + storeImg);
-
-
-                for (int i = 0; i < billImages.size(); i++) {
-                    File casted_image3 = new File(billImages.get(i));
-                    if (casted_image3.exists()) {
-                        casted_image3.delete();
-                    }
-
-                }*//*
-
-                ivAddressProofSelected.setVisibility(View.VISIBLE);
-
-                String shoap_act_image_path = ImagePicker.getBitmapPath(bitmap, getActivity());
-                shopActImage.add(shoap_act_image_path);
-                // rvImageListBills.setAdapter(myAdapter);
-                myAdapter.notifyDataSetChanged();
-                rvImageListBills.setAdapter(myAdapter);
-               // myAdapter = new MyAdapter(mcontext, shopActImage);
-
-                LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-
-                rvImageListBills.setLayoutManager(horizontalLayoutManager);
-
-                rvImageListBills.setAdapter(myAdapter);
-                ivAddressProofSelected.setVisibility(View.VISIBLE);
-
-
-
-
-
-//                    Bitmap photo = (Bitmap) data.getExtras().get("data");
-//                    imgURI = ImageUtils.getInstant().getImageUri(getActivity(), photo);
-//                    //imgURI = data.getData();
-//                    String shoap_act_image_path = ImageUtils.getInstant().getRealPathFromURI(mcontext, imgURI);
-//                    Log.e("aadharcard", "front image" + shoap_act_image_path);
-//                    shopActImage.add(shoap_act_image_path);
-//                    myAdapter.notifyDataSetChanged();
-            }*/
                 if (IMAGE_SELCTED_IMG == IMAGE_SHPO_ACT) {
 
                     Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                     String shoap_act_image_path = ImagePicker.getPathFromUri( getActivity(),uri);
-
                     shopActImage.add(shoap_act_image_path);
-
-
                     Log.e("size", String.valueOf(shopActImage.size()));
                     myAdapterforRecycler.notifyDataSetChanged();
                     myAdapter.notifyDataSetChanged();
-
-//                    Bitmap photo = (Bitmap) data.getExtras().get("data");
-//                    imgURI = ImageUtils.getInstant().getImageUri(getActivity(), photo);
-//                    //imgURI = data.getData();
-//                    String shoap_act_image_path = ImageUtils.getInstant().getRealPathFromURI(mcontext, imgURI);
-//                    Log.e("aadharcard", "front image" + shoap_act_image_path);
-//                    shopActImage.add(shoap_act_image_path);
-//                    myAdapter.notifyDataSetChanged();
                 }
 
            /* if (IMAGE_SELCTED_IMG == IMAGE_SHPO_ACT_MULTIPLE) {
@@ -849,7 +794,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                     }
 
                     Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
-                    Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                  //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                     // img_doc_upload_2.setImageBitmap(bitmap);
                     ownerImg = ImagePicker.getPathFromUri( getActivity(),uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
                     Glide.with(getActivity()).load(ownerImg).into(ivOwnerImage);
