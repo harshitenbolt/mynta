@@ -1,0 +1,34 @@
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ProjectModuleManager\">\n    <modules>\n      <module fileurl=\"file://$PROJECT_DIR$/Opaper-my.iml\" filepath=\"$PROJECT_DIR$/Opaper-my.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/app/app.iml\" filepath=\"$PROJECT_DIR$/app/app.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/digio-esign2/digio-esign2.iml\" filepath=\"$PROJECT_DIR$/digio-esign2/digio-esign2.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/library/library.iml\" filepath=\"$PROJECT_DIR$/library/library.iml\" />\n      <module fileurl=\"file://$PROJECT_DIR$/opaper-my.iml\" filepath=\"$PROJECT_DIR$/opaper-my.iml\" />\n    </modules>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/modules.xml	(revision 7c1b8661187453e5af5f13a048c42c1c4403e65a)
++++ .idea/modules.xml	(date 1620709181629)
+@@ -2,11 +2,18 @@
+ <project version="4">
+   <component name="ProjectModuleManager">
+     <modules>
+-      <module fileurl="file://$PROJECT_DIR$/Opaper-my.iml" filepath="$PROJECT_DIR$/Opaper-my.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/digio-esign2/digio-esign2.iml" filepath="$PROJECT_DIR$/digio-esign2/digio-esign2.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
+-      <module fileurl="file://$PROJECT_DIR$/opaper-my.iml" filepath="$PROJECT_DIR$/opaper-my.iml" />
++      <module fileurl="file://$PROJECT_DIR$/aadhaarapi_gateway_sdk/aadhaarapi_gateway_sdk.iml" filepath="$PROJECT_DIR$/aadhaarapi_gateway_sdk/aadhaarapi_gateway_sdk.iml" group="opaper-my/aadhaarapi_gateway_sdk" />
++      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="opaper-my/app" />
++      <module fileurl="file://$PROJECT_DIR$/digio-esign2/digio-esign2.iml" filepath="$PROJECT_DIR$/digio-esign2/digio-esign2.iml" group="opaper-my/digio-esign2" />
++      <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" group="opaper-my/library" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/myntra_version2.iml" filepath="$PROJECT_DIR$/.idea/modules/myntra_version2.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/aadhaarapi_gateway_sdk/myntra_version2.aadhaarapi_gateway_sdk.iml" filepath="$PROJECT_DIR$/.idea/modules/aadhaarapi_gateway_sdk/myntra_version2.aadhaarapi_gateway_sdk.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/myntra_version2.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/myntra_version2.app.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/digio-esign2/myntra_version2.digio-esign2.iml" filepath="$PROJECT_DIR$/.idea/modules/digio-esign2/myntra_version2.digio-esign2.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/myntra_version2.library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/myntra_version2.library.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/openCVLibrary343/myntra_version2.openCVLibrary343.iml" filepath="$PROJECT_DIR$/.idea/modules/openCVLibrary343/myntra_version2.openCVLibrary343.iml" />
++      <module fileurl="file://$PROJECT_DIR$/opaper-my.iml" filepath="$PROJECT_DIR$/opaper-my.iml" group="opaper-my" />
++      <module fileurl="file://$PROJECT_DIR$/openCVLibrary343/openCVLibrary343.iml" filepath="$PROJECT_DIR$/openCVLibrary343/openCVLibrary343.iml" group="opaper-my/openCVLibrary343" />
+     </modules>
+   </component>
+ </project>
+\ No newline at end of file

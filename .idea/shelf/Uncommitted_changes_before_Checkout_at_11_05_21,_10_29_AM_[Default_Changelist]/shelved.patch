@@ -1,0 +1,22 @@
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ProjectModuleManager\">\n    <modules>\n      <module fileurl=\"file://$PROJECT_DIR$/aadhaarapi_gateway_sdk/aadhaarapi_gateway_sdk.iml\" filepath=\"$PROJECT_DIR$/aadhaarapi_gateway_sdk/aadhaarapi_gateway_sdk.iml\" group=\"opaper-my/aadhaarapi_gateway_sdk\" />\n      <module fileurl=\"file://$PROJECT_DIR$/app/app.iml\" filepath=\"$PROJECT_DIR$/app/app.iml\" group=\"opaper-my/app\" />\n      <module fileurl=\"file://$PROJECT_DIR$/digio-esign2/digio-esign2.iml\" filepath=\"$PROJECT_DIR$/digio-esign2/digio-esign2.iml\" group=\"opaper-my/digio-esign2\" />\n      <module fileurl=\"file://$PROJECT_DIR$/library/library.iml\" filepath=\"$PROJECT_DIR$/library/library.iml\" group=\"opaper-my/library\" />\n      <module fileurl=\"file://$PROJECT_DIR$/opaper-my.iml\" filepath=\"$PROJECT_DIR$/opaper-my.iml\" group=\"opaper-my\" />\n      <module fileurl=\"file://$PROJECT_DIR$/openCVLibrary343/openCVLibrary343.iml\" filepath=\"$PROJECT_DIR$/openCVLibrary343/openCVLibrary343.iml\" group=\"opaper-my/openCVLibrary343\" />\n    </modules>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/modules.xml	(revision 1ddf8cb0a816f145878f72e5fc1b8cd1e5b45b71)
++++ .idea/modules.xml	(date 1620709008635)
+@@ -6,6 +6,12 @@
+       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="opaper-my/app" />
+       <module fileurl="file://$PROJECT_DIR$/digio-esign2/digio-esign2.iml" filepath="$PROJECT_DIR$/digio-esign2/digio-esign2.iml" group="opaper-my/digio-esign2" />
+       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" group="opaper-my/library" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/myntra_version2.iml" filepath="$PROJECT_DIR$/.idea/modules/myntra_version2.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/aadhaarapi_gateway_sdk/myntra_version2.aadhaarapi_gateway_sdk.iml" filepath="$PROJECT_DIR$/.idea/modules/aadhaarapi_gateway_sdk/myntra_version2.aadhaarapi_gateway_sdk.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/myntra_version2.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/myntra_version2.app.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/digio-esign2/myntra_version2.digio-esign2.iml" filepath="$PROJECT_DIR$/.idea/modules/digio-esign2/myntra_version2.digio-esign2.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/library/myntra_version2.library.iml" filepath="$PROJECT_DIR$/.idea/modules/library/myntra_version2.library.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/openCVLibrary343/myntra_version2.openCVLibrary343.iml" filepath="$PROJECT_DIR$/.idea/modules/openCVLibrary343/myntra_version2.openCVLibrary343.iml" />
+       <module fileurl="file://$PROJECT_DIR$/opaper-my.iml" filepath="$PROJECT_DIR$/opaper-my.iml" group="opaper-my" />
+       <module fileurl="file://$PROJECT_DIR$/openCVLibrary343/openCVLibrary343.iml" filepath="$PROJECT_DIR$/openCVLibrary343/openCVLibrary343.iml" group="opaper-my/openCVLibrary343" />
+     </modules>
