@@ -53,26 +53,38 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.canvascoders.opaper.Beans.ErrorResponsePan.Validation;
+import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
+import com.canvascoders.opaper.Beans.GetParameterResponse;
 import com.canvascoders.opaper.Beans.GetVendorTypeDetails;
 import com.canvascoders.opaper.Beans.ObjectPopup;
 import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
+import com.canvascoders.opaper.Beans.getITrResponse.Datum;
+import com.canvascoders.opaper.Beans.getITrResponse.GetITYears;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.ChangeMobileActivity;
+import com.canvascoders.opaper.activity.CropImage2Activity;
+import com.canvascoders.opaper.activity.EditGSTActivity;
+import com.canvascoders.opaper.activity.InvoiceDetailsActivity;
 import com.canvascoders.opaper.adapters.CustomPopupAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupApproachAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupLocalityAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupShipmentAdapter;
 import com.canvascoders.opaper.adapters.CustomPopupStoreTypeAdapter;
+import com.canvascoders.opaper.adapters.ITRListAdapter;
+import com.canvascoders.opaper.adapters.NoOFInvoicesListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
+import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.DialogUtil;
 import com.canvascoders.opaper.utils.GPSTracker;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.canvascoders.opaper.utils.Mylogger;
+import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 import com.canvascoders.opaper.activity.AppApplication;
@@ -101,9 +113,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
+import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
+import static com.canvascoders.opaper.utils.Constants.Image_name;
+import static com.canvascoders.opaper.utils.Constants.dataRate;
 import static com.canvascoders.opaper.utils.Constants.hideKeyboardwithoutPopulate;
 
-public class InfoFragment extends Fragment implements View.OnClickListener, RecyclerViewClickListener /*implements View.OnClickListener*/ {
+public class InfoFragment extends Fragment implements View.OnClickListener, RecyclerViewClickListener, DialogListner /*implements View.OnClickListener*/ {
 
     private EditText etEmail, etStorename, etOwnerName, etStoreShopNo, etStoreStreet, etStoreLandmark, etStorePincode, etStoreCity, etStoreState, etRoute;
     private EditText etCurrentShopNo, etCurrentStreet, etCurrentLandmark, etCurrentPincode, etCurrentCity, etCurrentState, etPerShopNo, etPerStreet, etPerLandmark, etPerPincode, etPerCity, etPerState, edit_gstn;
@@ -130,11 +145,12 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     CustomPopupApproachAdapter customPopupApproachAdapter;
     CustomPopupShipmentAdapter customPopupShipmentAdapter;
     String email = "", storename = "", ownername = "", dateofbirth = "", storeaddress = "", storeaddress1 = "", storeaddresslandmark = "", storeaddressPincode = "", storeaddressCity = "", dcdata = "", storeaddressState = "", route = "";
-
+    Integer position = 0;
     View view2, view3;
     LinearLayout llOwnerInfo, llGeneraInfo, llAddrssInfo;
     Button btNext;
-    Switch ifgst;
+    List<Datum> dataList = new ArrayList<>();
+    Switch ifgst, sw_Itr;
     private String gstPath = "";
     RelativeLayout rvVendorType, rvStoreType, rvLocality, rvApproach, rvShipmentTransfer, rvVendorTypeDetail;
     int i = 0;
@@ -144,7 +160,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     private String lattitude = "", longitude = "";
     GPSTracker gps;
     private TextView tvPartner;
-
+    String itrNumber = "";
+    boolean isImage = false;
     private String blockCharacterSet = "~#^|$%&*!'()*+-,./:;<=>?@[]";
     private InputFilter filter = new InputFilter() {
 
@@ -206,9 +223,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     Button btChangePan;
     View view;
     LinearLayout llGst;
+    RecyclerView rvItr;
     ImageView ivGst;
     private RequestPermissionHandler requestPermissionHandler;
-
+    ITRListAdapter itrListAdapter;
+    String dateofITR = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -282,10 +301,9 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
         }
         getUserInfo();
+        getITRYears();
         return view;
     }
-
-
 
 
     private void getUserInfo() {
@@ -299,7 +317,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             mProgressDialog.setMessage("we are retrieving information, please wait!");
             mProgressDialog.show();
 
-            Call<ResponseBody> callUpload = ApiClient.getClient().create(ApiInterface.class).getDetails("Bearer "+sessionManager.getToken(),params);
+            Call<ResponseBody> callUpload = ApiClient.getClient().create(ApiInterface.class).getDetails("Bearer " + sessionManager.getToken(), params);
             callUpload.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -320,13 +338,10 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                                         String pan = result.getString("pan_no").toString();
                                         String first = String.valueOf(pan.charAt(3));
                                         if (!first.equalsIgnoreCase("C") && !first.equalsIgnoreCase("F")) {
-                                             etOwnerName.setText(result.getString("name").toString());
-                                        }
-                                        else{
+                                            etOwnerName.setText(result.getString("name").toString());
+                                        } else {
                                             etOwnerName.setText("");
                                         }
-
-
 
 
                                     } else if (jsonObject.getInt("responseCode") == 405) {
@@ -348,8 +363,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
                         }
-                    }
-                    else{
+                    } else {
                         Toast.makeText(getActivity(), "#errorcode 2051 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
 
                     }
@@ -368,6 +382,58 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         }
 
     }
+
+    private void getITRYears() {
+        Mylogger.getInstance().Logit(TAG, "getUserInfo");
+        if (AppApplication.networkConnectivity.isNetworkAvailable()) {
+
+            Map<String, String> params = new HashMap<String, String>();
+            params.put(Constants.PARAM_TOKEN, sessionManager.getToken());
+            params.put(Constants.PARAM_PROCESS_ID, str_process_id);
+            Mylogger.getInstance().Logit(TAG, "getUserInfo");
+            mProgressDialog.setMessage("we are retrieving information, please wait!");
+            mProgressDialog.show();
+
+            Call<GetITYears> callUpload = ApiClient.getClient().create(ApiInterface.class).getITRYears("Bearer " + sessionManager.getToken(), params);
+            callUpload.enqueue(new Callback<GetITYears>() {
+                @Override
+                public void onResponse(Call<GetITYears> call, Response<GetITYears> response) {
+                    mProgressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        GetITYears getITYears = response.body();
+                        if (getITYears.getResponseCode() == 200) {
+                            if (getITYears.getData().size() > 0) {
+                                dataList = getITYears.getData();
+                                itrListAdapter = new ITRListAdapter(getActivity(), getITYears.getData(), InfoFragment.this);
+                                LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                                rvItr.setLayoutManager(horizontalLayoutManager);
+                                rvItr.setAdapter(itrListAdapter);
+                            } else {
+                                Toast.makeText(getActivity(), getITYears.getResponse(), Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getActivity(), getITYears.getResponse(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getActivity(), "#errorcode 1456 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetITYears> call, Throwable t) {
+                    mProgressDialog.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode 1456 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+
+        } else {
+            Constants.ShowNoInternet(mcontext);
+        }
+
+    }
+
 
     private void initView() {
 
@@ -395,7 +461,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         rvShipmentTransfer.setOnClickListener(this);
         rvLocality.setOnClickListener(this);
         rvApproach.setOnClickListener(this);
-
+        rvItr = view.findViewById(R.id.rvItr);
         btChangePan = view.findViewById(R.id.btChangePan);
         btChangePan.setOnClickListener(this);
         rvVendorType.setOnClickListener(this);
@@ -473,6 +539,17 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
         dc = (Spinner) view.findViewById(R.id.dc);
         ifgst = view.findViewById(R.id.switch_gst);
+        sw_Itr = view.findViewById(R.id.sw_Itr);
+       /* sw_Itr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    rvItr.setVisibility(View.VISIBLE);
+                } else {
+                    rvItr.setVisibility(View.GONE);
+                }
+            }
+        });*/
         ifgst.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -634,8 +711,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         } else {
             Constants.ShowNoInternet(getActivity());
         }
-
-
 
 
     }
@@ -1103,7 +1178,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i, boolean b) {
                         if (b) {
-
                             listStoreType.add(select_Store_type.get(i));
                         } else {
                             listStoreType.remove(select_Store_type.get(i));
@@ -1437,6 +1511,35 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         } else if (popup.equalsIgnoreCase("Shipment")) {
             selectedString = listShipment.get(position).getUserName();
         }
+
+    }
+
+    @Override
+    public void onClickPositive() {
+
+    }
+
+    @Override
+    public void onClickNegative() {
+
+    }
+
+    @Override
+    public void onClickDetails(String name, String fathername, String dob, String id) {
+
+    }
+
+    @Override
+    public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+        itrNumber = accName;
+        position = Integer.parseInt(ifsc);
+        Intent chooseImageIntent = ImagePicker.getCameraIntent(getActivity());
+        startActivityForResult(chooseImageIntent, position);
+    }
+
+    @Override
+    public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
 
     }
 
@@ -1851,14 +1954,36 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         Log.e("User Date", "Edit info" + user);
         Log.e("User Date", "Edit info" + str_process_id + "   " + sessionManager.getAgentID());
 
+        MultipartBody.Part finalImages[] = new MultipartBody.Part[dataList.size()];
+        for (int i = 0; i < dataList.size(); i++) {
+            if (dataList.get(i).isSelectedImage()) {
+                isImage = true;
+                user.put("financial_year[" + i + "]", "" + dataList.get(i).getFinancialYear());
+                user.put("assessment_year[" + i + "]", "" + dataList.get(i).getAssessmentYear());
+                user.put("itr_number[" + i + "]", "" + dataList.get(i).getItrNumber());
+                user.put("itr_filling_date[" + i + "]", "" + dataList.get(i).getDateofITR());
+                File imagefile1 = new File(dataList.get(i).getImage());
+                finalImages[i] = MultipartBody.Part.createFormData("itr_doc", imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dataList.get(i).getImage())), imagefile1));
+            } else {
+                finalImages[i] = null;
+            }
+        }
 
         if (isgsttn.equalsIgnoreCase("yes")) {
             File imagefile = new File(gstPath);
             typedFile = MultipartBody.Part.createFormData(Constants.PARAM_GST_CERTIFICATE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(gstPath)), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
-            call = ApiClient.getClient().create(ApiInterface.class).submitBizDetailsGST("Bearer " + sessionManager.getToken(), user, typedFile);
-        } else {
-            call = ApiClient.getClient().create(ApiInterface.class).submitBizDetails("Bearer " + sessionManager.getToken(), user);
 
+            call = ApiClient.getClient().create(ApiInterface.class).submitBizDetailsGST("Bearer " + sessionManager.getToken(), user, typedFile, finalImages);
+
+        } else {
+            if (isImage) {
+                call = ApiClient.getClient().create(ApiInterface.class).submitBizDetailsITR("Bearer " + sessionManager.getToken(), user, finalImages);
+
+            } else {
+
+
+                call = ApiClient.getClient().create(ApiInterface.class).submitBizDetails("Bearer " + sessionManager.getToken(), user);
+            }
         }
 
         call.enqueue(new Callback<GetUserDetailResponse>() {
@@ -2235,11 +2360,50 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
 
             if (requestCode == IMAGE_GST) {
+                // Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
-                gstPath = ImagePicker.getPathFromUri(getActivity(),uri);
+                //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                gstPath = ImagePicker.getPathFromUri(getActivity(), uri);
+                //gstPath = ImagePicker.getPathFromUri(getActivity(), uri);
                 Glide.with(getActivity()).load(gstPath).placeholder(R.drawable.placeholder)
                         .into(ivGst);
             }
+            if (requestCode == position) {
+
+                // Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
+               /* Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
+
+                String ImagePath = ImagePicker.getPathFromUri(getActivity(), uri);
+                dataList.get(position).setSelectedImage(true);
+                dataList.get(position).setImage(ImagePath);
+
+                itrListAdapter.notifyDataSetChanged();*/
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
+                Intent intent = new Intent(getActivity(), CropImage2Activity.class);
+                //Toast.makeText(mcontext, imagecamera, Toast.LENGTH_SHORT).show();
+                intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                startActivityForResult(intent, position + 1234);
+            }
+
+            if (requestCode == position + 1234) {
+                Uri imgURI = Uri.parse(data.getStringExtra("uri"));
+                String aadharImagepathFront = RealPathUtil.getPath(getActivity(), imgURI);
+                try {
+                    dataList.get(position).setSelectedImage(true);
+                    dataList.get(position).setImage(aadharImagepathFront);
+                    itrListAdapter.notifyDataSetChanged();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                ExtractITDetails();
+
+            }
+
+
         }
        /* if (requestCode == IMAGE_LICENCE && resultCode == Activity.RESULT_OK) {
             CropImage.activity(Uri.fromFile(new File(data.getStringExtra(MyCameraActivity.FILEURI)))).start(this);
@@ -2256,6 +2420,58 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     public boolean isFirstnameValid(String text) {
 
         return text.matches("^([A-Za-z]+)(\\s[A-Za-z]+)*\\s?$");
+    }
+
+    public void ExtractITDetails() {
+
+        MultipartBody.Part typedFile = null;
+        HashMap<String, String> params = new HashMap<>();
+        params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
+        params.put("number_for_itr_filled", str_process_id);
+        params.put("image_type", "itr");
+        if (!TextUtils.isEmpty(dataList.get(position).getImage())) {
+
+            mProgressDialog.setMessage("Extracting image...");
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
+
+            File imagefile = new File(dataList.get(position).getImage());
+            typedFile = MultipartBody.Part.createFormData("image", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dataList.get(position).getImage())), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
+
+
+            Call<GetParameterResponse> call = ApiClient.getClient2().create(ApiInterface.class).verifyITRNumber(params, typedFile);
+            call.enqueue(new Callback<GetParameterResponse>() {
+                @Override
+                public void onResponse(Call<GetParameterResponse> call, retrofit2.Response<GetParameterResponse> response) {
+                    mProgressDialog.dismiss();
+                    try {
+                        if (response.isSuccessful()) {
+                            // deleteImages();
+                            GetParameterResponse getPanDetailsResponse = response.body();
+                            if (getPanDetailsResponse.getStatus().equalsIgnoreCase("success")) {
+
+                                Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getActivity(), "#errorcode :- 2010 NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetParameterResponse> call, Throwable t) {
+                    mProgressDialog.dismiss();
+                    Toast.makeText(getActivity(), "#errorcode :- 2010 NSDL error Contact administrator immediately", Toast.LENGTH_LONG).show();
+                }
+            });
+
+
+        }
     }
 
 

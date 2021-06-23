@@ -30,6 +30,7 @@ import com.canvascoders.opaper.Beans.GetOTPfrStoreExeResponse.GetOTPfrStoreExeRe
 import com.canvascoders.opaper.Beans.GetOldKYCResponse.GetOldKYCResponse;
 import com.canvascoders.opaper.Beans.GetPanDetailsResponse.GetPanDetailsResponse;
 import com.canvascoders.opaper.Beans.GetPanExistResponse.GetPanAlreadyExistResponse;
+import com.canvascoders.opaper.Beans.GetParameterResponse;
 import com.canvascoders.opaper.Beans.GetStoreTypeResponse;
 import com.canvascoders.opaper.Beans.GetTaskEndResponse.GetTaskEndResponse;
 import com.canvascoders.opaper.Beans.GetTasksTypeListing;
@@ -76,6 +77,7 @@ import com.canvascoders.opaper.Beans.VoterDlOCRSubmitResponse.ApiSubmitOCRPanVot
 import com.canvascoders.opaper.Beans.VoterOCRGetDetailsResponse.VoterOCRGetDetaisResponse;
 import com.canvascoders.opaper.Beans.bizdetails.GetUserDetailResponse;
 import com.canvascoders.opaper.Beans.dc.GetDC;
+import com.canvascoders.opaper.Beans.getITrResponse.GetITYears;
 import com.canvascoders.opaper.Beans.getMerakApiResponse.GetMerakResponse;
 import com.canvascoders.opaper.Beans.otp.GetOTP;
 import com.canvascoders.opaper.Beans.verifylocation.GetLocationResponse;
@@ -151,6 +153,11 @@ public interface ApiInterface {
     @Multipart
     @POST("pan-card-detail")
     Call<GetPanDetailsResponse> getPanDetails(@PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
+
+    @Multipart
+    @POST("verify-itr-number")
+    Call<GetParameterResponse> verifyITRNumber(@PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
+
 
     @Multipart
     @POST("cheque-detail")
@@ -230,9 +237,14 @@ public interface ApiInterface {
 
     @Multipart
     @POST("submit-details")
-    Call<GetUserDetailResponse> submitBizDetailsGST(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
+    Call<GetUserDetailResponse> submitBizDetailsGST(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment, @Part MultipartBody.Part[] itr);
 
     //-----------------------------------------------------------------------------
+
+    @Multipart
+    @POST("submit-details")
+    Call<GetUserDetailResponse> submitBizDetailsITR(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part[] itr);
+
 
     @Multipart
     @POST("edit-owner-info")
@@ -609,6 +621,11 @@ public interface ApiInterface {
     @POST("get-details")
     Call<ResponseBody> getDetails(@Header("Authorization") String token, @QueryMap Map<String, String> apiVersionMap);
 
+    @POST("get-fy-ay")
+    Call<GetITYears> getITRYears(@Header("Authorization") String token, @QueryMap Map<String, String> apiVersionMap);
+
+
+
     //-----------------------------------------------------------------------------
 
     @Headers({"Content-type: application/json", "Accept: */*"})
@@ -627,6 +644,11 @@ public interface ApiInterface {
     Call<ChangeMobileResponse> changeMobile(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
 
     //-----------------------------------------------------------------------------
+
+    @FormUrlEncoded
+    @POST("verify-itr-number")
+    Call<GetParameterResponse> verifyITR(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
+
 
 
     @POST("get-bank-details-from-ifsc")

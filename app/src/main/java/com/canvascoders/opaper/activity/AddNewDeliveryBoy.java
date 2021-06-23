@@ -2135,14 +2135,11 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
 
             if (requestCode == IMAGE_AADHAR_FRONT) {
-
                 Uri uri = ImagePicker.getPickImageResultUri(this, data);
                 Intent intent = new Intent(AddNewDeliveryBoy.this, CropImage2Activity.class);
                 Log.e("datadata", imagecamera);
                 intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_ADHAR_FRONT);
-
-
             }
             if (requestCode == CROPPED_IMAGE_ADHAR_FRONT) {
                 imgURI = Uri.parse(data.getStringExtra("uri"));
@@ -2307,7 +2304,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
 
             if (requestCode == LICENCEIMAGE) {
-                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                Uri uri = ImagePicker.getPickImageResultUri(AddNewDeliveryBoy.this, data);
                 Intent intent = new Intent(this, CropImage2Activity.class);
                 intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);

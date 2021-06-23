@@ -42,7 +42,7 @@ public class Constants {
     public static final String KEY_IS_EDIT_ADDENDUM_FLAG = "is_addendum_rate_edit";
 
     //Whole App Base URL for API manage n Call
-
+    public static String Image_name;
   // public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
        public static String BaseURL = "https://mystaging.opaper.in/api3/";
     // test server 20
