@@ -123,6 +123,18 @@ public class BasicDetails {
     @SerializedName("gstn")
     @Expose
     private String gstn;
+
+    public String getItr() {
+        return itr;
+    }
+
+    public void setItr(String itr) {
+        this.itr = itr;
+    }
+
+    @SerializedName("itr")
+    @Expose
+    private String itr;
     @SerializedName("rate")
     @Expose
     private String rate;

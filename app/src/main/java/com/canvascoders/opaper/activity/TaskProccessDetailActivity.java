@@ -37,19 +37,19 @@ import retrofit2.Response;
 public class TaskProccessDetailActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     ImageView ivBack;
-    ImageView tvAddNewGST;
-    ImageView ivEditLocation, ivEditKyc, ivEditPan, ivEditBank, ivEditStoreDetails, ivOwnerDetails, ivGstInformation, ivShopActEdit, ivDeliveryDetails, ivRateDetails;
+    ImageView tvAddNewGST,tvAddNewITR;
+    ImageView ivEditLocation, ivEditKyc, ivEditPan, ivEditBank, ivEditStoreDetails, ivOwnerDetails, ivGstInformation,ivITRInformation, ivShopActEdit, ivDeliveryDetails, ivRateDetails;
     String proccess_id = "";
     NetworkConnectivity networkConnectivity;
-    LinearLayout llShopActDisable, llShopActEnable, llLocationEnable, llLocatonDisable, llKyCEnable, llKYCDisable, llPanEnable, llPanDisable, llChequeEnable, llChequeDisable, llInformationEnable, llVendorDetailsEnable, llVendorsDetailsDisable, llOwnerDisable, llOwnerEnable, llDocumentsDisable, llDocumentsEnable, llDeliveryBoysEnable, llDeliveryBoysDisable, llRateDetailsEnable, llRateDetailsDisable, llRateApprovalEnable, llRateApprovalDisable, llAgreementEnable, llAgreementDisable, llGstEnable, llGstDisable;
+    LinearLayout llShopActDisable, llShopActEnable, llLocationEnable, llLocatonDisable, llKyCEnable, llKYCDisable, llPanEnable, llPanDisable, llChequeEnable, llChequeDisable, llInformationEnable, llVendorDetailsEnable, llVendorsDetailsDisable, llOwnerDisable, llOwnerEnable, llDocumentsDisable, llDocumentsEnable, llDeliveryBoysEnable, llDeliveryBoysDisable, llRateDetailsEnable, llRateDetailsDisable, llRateApprovalEnable, llRateApprovalDisable, llAgreementEnable, llAgreementDisable, llGstEnable,llITREnable, llGstDisable,llITRDisable;
     SessionManager sessionManager;
-    TextView tvSHopActText, tvLocationText, tvKYCText, tvPanText, tvBankText, tvStoreText, tvOwnerText, tvGstText, tvDeliveryText, tvRateText, tvRateApprovalText;
+    TextView tvSHopActText, tvLocationText, tvKYCText, tvPanText, tvBankText, tvStoreText, tvOwnerText, tvGstText,tvITRText, tvDeliveryText, tvRateText, tvRateApprovalText;
     TextView tvLattitude, tvLongitude, tvDocNumber, tvDocAddress, tvDocName, tvPanName, tvPanNumber, tvPanDOB, tvBankAccName, tvBankAcccountNumber, tvBankBranchName, tvStoreName, tvStoreAddress, tvStoreDCName, tvOwnerNAme, tvOwnerAddress, tvOwnerEmailID, tvGSTNumber, tvGStPanNumber, tvNoDeliveryBoysAdded, tvNoofRates;
     ProgressDialog progressDialog;
     ImageView ivAdharFront, ivAdharBack, ivPanFront, ivGstFront;
     String mobile = "";
 
-    TextView tvRemarkLocation, tvRemarkKYC, tvRemarkPan, tvRemarkBank, tvRemarkStore, tvRemarkOwner, tvRemarkGST, tvRemarkShopAct, tvRemarkDelivery, tvRemarkRateDetails, tvRemarkRateApproval;
+    TextView tvRemarkLocation, tvRemarkKYC, tvRemarkPan, tvRemarkBank, tvRemarkStore, tvRemarkOwner, tvRemarkGST,tvRemarkITR, tvRemarkShopAct, tvRemarkDelivery, tvRemarkRateDetails, tvRemarkRateApproval;
     ImageView ivChequeImage;
     SwipeRefreshLayout swResfresh;
     ImageView ivStoreImage,ivOwnerImage;
@@ -70,6 +70,8 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
     private void init() {
         ivBack = findViewById(R.id.iv_back_process);
         tvAddNewGST = findViewById(R.id.tvAddGST);
+        tvAddNewITR= findViewById(R.id.tvAddITR);
+        tvAddNewITR.setOnClickListener(this);
         tvAddNewGST.setOnClickListener(this);
         networkConnectivity = new NetworkConnectivity(this);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +87,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         ivEditStoreDetails = findViewById(R.id.ivEditStoreDetails);
         ivOwnerDetails = findViewById(R.id.ivEditOwnerDetails);
         ivGstInformation = findViewById(R.id.ivEditGSTDetails);
+        ivITRInformation = findViewById(R.id.ivEditITRDetails);
         ivShopActEdit = findViewById(R.id.ivEditShopAct);
         ivShopActEdit.setOnClickListener(this);
         ivGstFront = findViewById(R.id.ivGstFront);
@@ -101,6 +104,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         ivEditStoreDetails.setOnClickListener(this);
         ivOwnerDetails.setOnClickListener(this);
         ivGstInformation.setOnClickListener(this);
+        ivITRInformation.setOnClickListener(this);
         ivDeliveryDetails.setOnClickListener(this);
         llShopActDisable = findViewById(R.id.llShopActDisable);
         llShopActEnable = findViewById(R.id.llShopActEnable);
@@ -126,8 +130,9 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         llRateApprovalEnable = findViewById(R.id.llRateApprovalEnable);
         llRateApprovalDisable = findViewById(R.id.llRateApprovalDisable);
         llGstEnable = findViewById(R.id.llGStEnable);
+        llITREnable = findViewById(R.id.llITREnable);
         llGstDisable = findViewById(R.id.llGstDisable);
-
+        llITRDisable = findViewById(R.id.llITRDisable);
 
         tvGSTNumber = findViewById(R.id.tvGstNo);
         tvGStPanNumber = findViewById(R.id.tvGstPanNumber);
@@ -139,7 +144,6 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         tvBankText = findViewById(R.id.tvTextStepCheque);
         tvStoreText = findViewById(R.id.tvTextStepStoreAddress);
         tvOwnerText = findViewById(R.id.tvTextStepOwnerInfo);
-        tvGstText = findViewById(R.id.tvTextStepGST);
         tvDeliveryText = findViewById(R.id.tvTextStepDeliveryBoys);
         tvRateText = findViewById(R.id.tvRateDetailsText);
         tvRateApprovalText = findViewById(R.id.tvTextStepRateApproval);
@@ -152,6 +156,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         tvPanName = findViewById(R.id.tvPanName);
         tvPanDOB = findViewById(R.id.tvPanDOB);
         tvGstText = findViewById(R.id.tvTextStepGST);
+        tvITRText= findViewById(R.id.tvTextStepITR);
         tvBankAccName = findViewById(R.id.tvAccNameBank);
         tvBankAcccountNumber = findViewById(R.id.tvBankAccNumber);
         tvBankBranchName = findViewById(R.id.tvBranchName);
@@ -173,6 +178,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         tvRemarkStore = findViewById(R.id.tvTextNotVendor);
         tvRemarkOwner = findViewById(R.id.tvTextOwner);
         tvRemarkGST = findViewById(R.id.tvTextNotGST);
+        tvRemarkITR = findViewById(R.id.tvTextNotITR);
         tvRemarkShopAct = findViewById(R.id.tvTextNotShopAct);
         tvRemarkDelivery = findViewById(R.id.tvTextNotDelivery);
         tvRemarkRateDetails = findViewById(R.id.tvTextNotRate);
@@ -558,6 +564,61 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
 
                         }
 
+                        //ITR
+
+                        if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getItrDetails() == 1) {
+                            llITRDisable.setVisibility(View.GONE);
+                            llITREnable.setVisibility(View.VISIBLE);
+                          //  tvPanNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanNo());
+                            //tvPanName.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanName());
+                            //tvPanDOB.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getNsdlPanName());
+                            //Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getPan()).into(ivPanFront);
+                            // Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().get()).into(ivAdharBack);
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                                //  tvRemarkKYC.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getPanVerifyRemark());
+
+                                if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getItrDetailsRemark().equalsIgnoreCase("")) {
+                                    //tvRemarkPan.setVisibility(View.VISIBLE);
+                                  //  tvPanNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanNo());
+                                    //tvPanName.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanName());
+                                   // tvPanDOB.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getNsdlPanName());
+                                  //  Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getPan()).into(ivPanFront);
+                                    tvRemarkITR.setVisibility(View.VISIBLE);
+                                    tvRemarkITR.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getItrDetailsRemark());
+                                } else {
+                                    tvRemarkITR.setVisibility(View.GONE);
+                                }
+                            }
+
+
+                        } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getItrDetails() == 0) {
+                            llITRDisable.setVisibility(View.VISIBLE);
+                            llITREnable.setVisibility(View.GONE);
+                            tvITRText.setVisibility(View.GONE);
+/*
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                                // tvRemarkGST.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getFillGstDetailsRemark());
+
+                                if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getPanVerifyRemark().equalsIgnoreCase("")) {
+                                    llPanEnable.setVisibility(View.VISIBLE);
+                                    tvPanNumber.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanNo());
+                                    tvPanName.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getPanName());
+                                    tvPanDOB.setText(getTrackDetailsResponse.getData().get(0).getProccessDetail().getNsdlPanName());
+                                    Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getPan()).into(ivPanFront);
+                                    llPanDisable.setVisibility(View.GONE);
+                                    tvPanText.setVisibility(View.GONE);
+                                    tvRemarkPan.setVisibility(View.VISIBLE);
+                                    tvRemarkPan.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getPanVerifyRemark());
+                                }
+                            }*/
+                        } else {
+                            llITRDisable.setVisibility(View.VISIBLE);
+                            llITREnable.setVisibility(View.GONE);
+                            tvITRText.setVisibility(View.VISIBLE);
+                        }
+
+
+
 
                         // Store
                         if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getFillStoreDetails() == 1) {
@@ -917,7 +978,6 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                         } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getEcomAgreement() == 0) {
 
                         } else {
-
                         }
 
 
@@ -993,6 +1053,14 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                 startActivity(i6);
                 break;
 
+            case R.id.ivEditITRDetails:
+                Intent i11 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
+                i11.putExtra(Constants.DATA, "ITR");
+                i11.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i11.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+                startActivity(i11);
+                break;
+
 
             case R.id.ivDeliveryDetails:
                 Intent i7 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
@@ -1023,6 +1091,14 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                 i10.putExtra(Constants.KEY_EMP_MOBILE, mobile);
                 i10.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                 startActivity(i10);
+                break;
+
+            case R.id.tvAddITR:
+                Intent i12 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
+                i12.putExtra(Constants.DATA, "ITR");
+                i12.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i12.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+                startActivity(i12);
                 break;
 
 

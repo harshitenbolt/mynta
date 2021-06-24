@@ -59,7 +59,7 @@ public class ITRListAdapter extends RecyclerView.Adapter<ITRListAdapter.ItemHold
     @Override
     public void onBindViewHolder(ItemHolder holder, final int position) {
         holder.tvITRYear.setText("FY:- " + bankDetailList.get(position).getFinancialYear() + "  (AY :- " + bankDetailList.get(position).getAssessmentYear() + ")");
-
+        holder.etITRNumber.setText(bankDetailList.get(position).getItrNumber());
         holder.ivAddImageITR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

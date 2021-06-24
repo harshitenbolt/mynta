@@ -234,6 +234,10 @@ public interface ApiInterface {
     @POST("submit-details")
     Call<GetUserDetailResponse> submitBizDetails(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
 
+    @FormUrlEncoded
+    @POST("edit-itr-submit-details")
+    Call<GetUserDetailResponse> editsubmitBizDetails(@Header("Authorization") String token, @FieldMap() Map<String, String> data);
+
 
     @Multipart
     @POST("submit-details")
@@ -244,6 +248,9 @@ public interface ApiInterface {
     @Multipart
     @POST("submit-details")
     Call<GetUserDetailResponse> submitBizDetailsITR(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part[] itr);
+    @Multipart
+    @POST("edit-itr-submit-details")
+    Call<GetUserDetailResponse> editsubmitBizDetailsITR(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part[] itr);
 
 
     @Multipart
@@ -565,6 +572,9 @@ public interface ApiInterface {
     Call<GetAgreementLinkSend> linkGenerate(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
 
 
+    @FormUrlEncoded
+    @POST("edit-noc-resign-link")
+    Call<GetAgreementLinkSend> sendLInk(@Header("Authorization") String header, @FieldMap Map<String, String> apiVersionMap);
 
     @FormUrlEncoded
     @POST("resend-reactive-link")

@@ -1963,9 +1963,9 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 user.put("itr_number[" + i + "]", "" + dataList.get(i).getItrNumber());
                 user.put("itr_filling_date[" + i + "]", "" + dataList.get(i).getDateofITR());
                 File imagefile1 = new File(dataList.get(i).getImage());
-                finalImages[i] = MultipartBody.Part.createFormData("itr_doc", imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dataList.get(i).getImage())), imagefile1));
+                finalImages[i] = MultipartBody.Part.createFormData("itr_doc[]", imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dataList.get(i).getImage())), imagefile1));
             } else {
-                finalImages[i] = null;
+                // finalImages[i] = null;
             }
         }
 
@@ -1978,10 +1978,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         } else {
             if (isImage) {
                 call = ApiClient.getClient().create(ApiInterface.class).submitBizDetailsITR("Bearer " + sessionManager.getToken(), user, finalImages);
-
             } else {
-
-
                 call = ApiClient.getClient().create(ApiInterface.class).submitBizDetails("Bearer " + sessionManager.getToken(), user);
             }
         }
@@ -2021,6 +2018,31 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             }
                             if (validation.getVendorTypeDetail() != null && validation.getVendorTypeDetail().length() > 0) {
                                 Toast.makeText(getActivity(), validation.getVendorTypeDetail(), Toast.LENGTH_LONG).show();
+                                // return false;
+                                // return false;
+                            }
+
+
+                            if (validation.getAssessment_year() != null && validation.getAssessment_year().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getAssessment_year(), Toast.LENGTH_LONG).show();
+                                // return false;
+                                // return false;
+                            }
+
+                            if (validation.getFinancial_year() != null && validation.getFinancial_year().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getFinancial_year(), Toast.LENGTH_LONG).show();
+                                // return false;
+                                // return false;
+                            }
+
+                            if (validation.getItr_number() != null && validation.getItr_number().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getItr_number(), Toast.LENGTH_LONG).show();
+                                // return false;
+                                // return false;
+                            }
+
+                            if (validation.getItr_doc() != null && validation.getItr_doc().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getItr_doc(), Toast.LENGTH_LONG).show();
                                 // return false;
                                 // return false;
                             }
@@ -2427,7 +2449,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         MultipartBody.Part typedFile = null;
         HashMap<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
-        params.put("number_for_itr_filled", str_process_id);
+        params.put("number_for_itr_filled", itrNumber);
         params.put("image_type", "itr");
         if (!TextUtils.isEmpty(dataList.get(position).getImage())) {
 
@@ -2449,10 +2471,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             // deleteImages();
                             GetParameterResponse getPanDetailsResponse = response.body();
                             if (getPanDetailsResponse.getStatus().equalsIgnoreCase("success")) {
-
                                 Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
                             } else {
+                                dataList.get(position).setItrNumber("");
+                                itrListAdapter.notifyDataSetChanged();
                                 Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
 

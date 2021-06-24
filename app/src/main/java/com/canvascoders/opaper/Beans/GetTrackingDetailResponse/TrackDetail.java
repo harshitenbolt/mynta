@@ -29,6 +29,20 @@ public class TrackDetail {
     @Expose
     private Integer fillOwnerDetails;
 
+    public Integer getItrDetails() {
+        return ItrDetails;
+    }
+
+    public void setItrDetails(Integer itrDetails) {
+        ItrDetails = itrDetails;
+    }
+
+    @SerializedName("itr_details")
+    @Expose
+    private Integer ItrDetails;
+
+
+
     public Integer getFillStoreDetails() {
         return fillStoreDetails;
     }
@@ -57,7 +71,17 @@ public class TrackDetail {
     @Expose
     private Integer fillGstDetails;
 
+    public Integer getFillIRDetails() {
+        return fillIRDetails;
+    }
 
+    public void setFillIRDetails(Integer fillIRDetails) {
+        this.fillIRDetails = fillIRDetails;
+    }
+
+    @SerializedName("fill_itr_details")
+    @Expose
+    private Integer fillIRDetails;
 
     @SerializedName("upload_files")
     @Expose

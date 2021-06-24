@@ -40,6 +40,21 @@ public class VendorRejection {
     @SerializedName("pan_verify_remark")
     @Expose
     private String panVerifyRemark;
+
+
+
+    public String getItrDetailsRemark() {
+        return itrDetailsRemark;
+    }
+
+    public void setItrDetailsRemark(String itrDetailsRemark) {
+        this.itrDetailsRemark = itrDetailsRemark;
+    }
+
+    @SerializedName("itr_details_remark")
+    @Expose
+    private String itrDetailsRemark;
+
     @SerializedName("cheque_verify")
     @Expose
     private Integer chequeVerify;
@@ -85,6 +100,29 @@ public class VendorRejection {
     @SerializedName("fill_gst_details_remark")
     @Expose
     private String fillGstDetailsRemark;
+
+
+    @SerializedName("fill_itr_details")
+    @Expose
+    private Integer fillitrDetails;
+    @SerializedName("fill_itr_details_solved")
+    @Expose
+    private Integer fillitrDetailsSolved;
+
+    public String getFillitrDetailsRemark() {
+        return fillitrDetailsRemark;
+    }
+
+    public void setFillitrDetailsRemark(String fillitrDetailsRemark) {
+        this.fillitrDetailsRemark = fillitrDetailsRemark;
+    }
+
+    @SerializedName("fill_itr_details_remark")
+    @Expose
+    private String fillitrDetailsRemark;
+
+
+
     @SerializedName("upload_files")
     @Expose
     private Integer uploadFiles;

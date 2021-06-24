@@ -1830,6 +1830,155 @@
                             android:layout_marginTop="@dimen/_3sdp"
                             android:background="@color/text_color_dark_grey" />
 
+                        <LinearLayout
+                            android:id="@+id/llITR"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_15sdp">
+
+                            <LinearLayout
+                                android:id="@+id/llITREnable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_17sdp"
+                                        android:layout_height="@dimen/_17sdp"
+                                        android:src="@drawable/gst" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="ITR information"
+                                        android:textColor="@color/colorBlack"
+                                        android:textSize="@dimen/_12sdp" />
+
+                                    <ImageView
+                                        android:id="@+id/ivEditITRDetails"
+                                        android:layout_width="@dimen/_15sdp"
+                                        android:layout_height="@dimen/_15sdp"
+                                        android:layout_gravity="end|center"
+                                        android:src="@drawable/editnote" />
+
+                                    <ImageView
+                                        android:id="@+id/tvAddITR"
+                                        android:visibility="gone"
+                                        android:layout_width="@dimen/_15sdp"
+                                        android:layout_height="@dimen/_15sdp"
+                                        android:layout_gravity="end|center"
+                                        android:gravity="center"
+                                        android:src="@drawable/ic_add_img" />
+
+
+                                </LinearLayout>
+
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:orientation="horizontal">
+
+
+                                    <LinearLayout
+                                        android:layout_width="@dimen/_45sdp"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_marginLeft="@dimen/_25sdp"></LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_12sdp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+
+                                    </LinearLayout>
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/llITRDisable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+
+                                <TextView
+                                    android:id="@+id/tvTextStepITR"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserratsemibold"
+                                    android:text="You are in this step"
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_20sdp"
+                                        android:layout_height="@dimen/_20sdp"
+                                        android:src="@drawable/gst_grey" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="GST verification"
+                                        android:textColor="@color/text_color_dark_grey"
+                                        android:textSize="@dimen/_13sdp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tvTextNotITR"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:fontFamily="@font/montserratsemibold"
+                                android:lines="2"
+                                android:text=""
+                                android:textColor="@color/colorRed"
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
+
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@color/text_color_dark_grey" />
+
 
                         <LinearLayout
                             android:id="@+id/llShopActs"

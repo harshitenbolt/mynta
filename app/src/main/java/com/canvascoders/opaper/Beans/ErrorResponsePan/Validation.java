@@ -144,6 +144,60 @@ public class Validation {
     @SerializedName("route")
     @Expose
     private String route;
+
+
+    @SerializedName("assessment_year")
+    @Expose
+    private String assessment_year;
+
+
+    @SerializedName("financial_year")
+    @Expose
+    private String financial_year;
+
+
+    public String getAssessment_year() {
+        return assessment_year;
+    }
+
+    public void setAssessment_year(String assessment_year) {
+        this.assessment_year = assessment_year;
+    }
+
+    public String getFinancial_year() {
+        return financial_year;
+    }
+
+    public void setFinancial_year(String financial_year) {
+        this.financial_year = financial_year;
+    }
+
+    public String getItr_number() {
+        return itr_number;
+    }
+
+    public void setItr_number(String itr_number) {
+        this.itr_number = itr_number;
+    }
+
+    public String getItr_doc() {
+        return itr_doc;
+    }
+
+    public void setItr_doc(String itr_doc) {
+        this.itr_doc = itr_doc;
+    }
+
+    @SerializedName("itr_number")
+    @Expose
+    private String itr_number;
+
+
+    @SerializedName("itr_doc")
+    @Expose
+    private String itr_doc;
+
+
     @SerializedName("residential_address")
     @Expose
     private String residentialAddress;
