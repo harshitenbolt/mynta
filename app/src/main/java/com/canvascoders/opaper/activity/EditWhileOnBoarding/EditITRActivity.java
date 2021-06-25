@@ -273,6 +273,9 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
 
                             } else {
                                 dataList.get(position).setItrNumber("");
+                                dataList.get(position).setImage("");
+                                dataList.get(position).setSelectedImage(false);
+                                dataList.get(position).setDateofITR("");
                                 itrListAdapter.notifyDataSetChanged();
                                 Toast.makeText(EditITRActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }

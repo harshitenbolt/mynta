@@ -90,10 +90,11 @@ public class ITRListAdapter extends RecyclerView.Adapter<ITRListAdapter.ItemHold
             }
         });
 
-        if (bankDetailList.get(position).isSelectedImage()) {
+       // if (bankDetailList.get(position).isSelectedImage()) {
             Glide.with(mContext).load(bankDetailList.get(position).getImage()).placeholder(R.drawable.ic_add_img)
                     .into(holder.ivAddImageITR);
-        }
+
+
 //        holder.tvStauts.setText(bankDetail.getStatus());
         holder.tvItRDate.setOnClickListener(new View.OnClickListener() {
             @Override
