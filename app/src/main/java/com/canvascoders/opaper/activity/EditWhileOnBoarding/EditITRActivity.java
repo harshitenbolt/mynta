@@ -273,9 +273,10 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
 
                             } else {
                                 dataList.get(position).setItrNumber("");
+
                                 dataList.get(position).setImage("");
                                 dataList.get(position).setSelectedImage(false);
-                                dataList.get(position).setDateofITR("");
+                               // dataList.get(position).setDateofITR("");
                                 itrListAdapter.notifyDataSetChanged();
                                 Toast.makeText(EditITRActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -438,7 +439,6 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
             call = ApiClient.getClient().create(ApiInterface.class).editsubmitBizDetailsITR("Bearer " + sessionManager.getToken(), user, finalImages);
         } else {
             call = ApiClient.getClient().create(ApiInterface.class).editsubmitBizDetails("Bearer " + sessionManager.getToken(), user);
-
         }
 
         call.enqueue(new Callback<GetUserDetailResponse>() {
@@ -449,7 +449,7 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
                     GetUserDetailResponse getUserDetailResponse = response.body();
                     Mylogger.getInstance().Logit(TAG, getUserDetailResponse.getResponse());
                     if (getUserDetailResponse.getResponseCode() == 200) {
-                        Mylogger.getInstance().Logit(TAG, "" + getUserDetailResponse.getData().get(0).getProccessId());
+                     //   Mylogger.getInstance().Logit(TAG, "" + getUserDetailResponse.getData().get(0).getProccessId());
 
                         showAlert(getUserDetailResponse.getResponse());
                         // commanFragmentCallWithoutBackStack(new DocUploadFragment());

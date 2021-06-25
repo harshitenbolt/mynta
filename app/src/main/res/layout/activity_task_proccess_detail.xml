@@ -1951,7 +1951,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         android:fontFamily="@font/montserratsemibold"
-                                        android:text="GST verification"
+                                        android:text="ITR verification"
                                         android:textColor="@color/text_color_dark_grey"
                                         android:textSize="@dimen/_13sdp" />
                                 </LinearLayout>

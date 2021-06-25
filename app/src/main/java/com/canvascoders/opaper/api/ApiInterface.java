@@ -248,6 +248,7 @@ public interface ApiInterface {
     @Multipart
     @POST("submit-details")
     Call<GetUserDetailResponse> submitBizDetailsITR(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part[] itr);
+
     @Multipart
     @POST("edit-itr-submit-details")
     Call<GetUserDetailResponse> editsubmitBizDetailsITR(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part[] itr);

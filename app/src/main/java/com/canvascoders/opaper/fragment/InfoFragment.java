@@ -2478,7 +2478,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                                 dataList.get(position).setItrNumber("");
                                 dataList.get(position).setImage("");
                                 dataList.get(position).setSelectedImage(false);
-                                dataList.get(position).setDateofITR("");
+                              //  dataList.get(position).setDateofITR("");
                                 itrListAdapter.notifyDataSetChanged();
                                 Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
