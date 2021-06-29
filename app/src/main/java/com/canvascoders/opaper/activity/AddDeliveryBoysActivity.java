@@ -82,6 +82,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.canvascoders.opaper.utils.Constants.Image_name;
+
 public class AddDeliveryBoysActivity extends AppCompatActivity implements View.OnClickListener, RecyclerViewClickListener {
     // after 23 version from new lappy
 
@@ -691,7 +693,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
             public void onSuccess() {
 
                 IMAGE_SELCTION_CODE = IMAGE_LICENCE;
-                Intent chooseImageIntent = ImagePicker.getCameraIntent(AddDeliveryBoysActivity.this);
+                Intent chooseImageIntent = ImagePicker.getCameraIntent2(AddDeliveryBoysActivity.this);
                 startActivityForResult(chooseImageIntent, IMAGE_LICENCE);
 
             }
@@ -716,7 +718,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
             public void onSuccess() {
 
                 IMAGE_SELCTION_CODE = IMAGE_PROFILE;
-                Intent chooseImageIntent = ImagePicker.getCameraIntent(AddDeliveryBoysActivity.this);
+                Intent chooseImageIntent = ImagePicker.getCameraIntent2(AddDeliveryBoysActivity.this);
                 startActivityForResult(chooseImageIntent, IMAGE_PROFILE);
 
             }
@@ -739,7 +741,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
                 /*Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 profImage = ImagePicker.getBitmapPath(bitmap, this);
 */
-                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data,Image_name);
                 //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 profImage = ImagePicker.getPathFromUri(this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
@@ -763,7 +765,7 @@ public class AddDeliveryBoysActivity extends AppCompatActivity implements View.O
               /*  Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 licenceImagePath = ImagePicker.getBitmapPath(bitmap, this);
 */
-                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data,Image_name);
                 //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 licenceImagePath = ImagePicker.getPathFromUri(this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);

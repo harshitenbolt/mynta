@@ -101,6 +101,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
+import static com.canvascoders.opaper.utils.Constants.Image_name;
 
 public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClickListener {
 
@@ -1839,7 +1840,7 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
 
     private void captureImage(int i) {
         if (i == 1) {
-            Intent chooseImageIntent = ImagePicker.getCameraIntent(this);
+            Intent chooseImageIntent = ImagePicker.getCameraIntent2(this);
             startActivityForResult(chooseImageIntent, PROFILEIMAGE);
         }
         if (i == 2) {
@@ -2302,7 +2303,6 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
             }
 
 
-
             if (requestCode == LICENCEIMAGE) {
                 Uri uri = ImagePicker.getPickImageResultUri(AddNewDeliveryBoy.this, data);
                 Intent intent = new Intent(this, CropImage2Activity.class);
@@ -2323,9 +2323,6 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                     e.printStackTrace();
                 }
             }
-
-
-
 
 
             if (requestCode == LICENCEIMAGEBACK) {
@@ -2356,11 +2353,11 @@ public class AddNewDeliveryBoy extends AppCompatActivity implements View.OnClick
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 profileImagepath = ImagePicker.getBitmapPath(bitmap, this);
 */
-                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data, Image_name);
                 //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
-                profileImagepath = ImagePicker.getPathFromUri( this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
 
+                profileImagepath = ImagePicker.getPathFromUri(this, uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
 
 
                 ivProfile.setPadding(0, 0, 0, 0);// ImageUtils.getInstant().getImageUri(EditPanCardActivity, photo);

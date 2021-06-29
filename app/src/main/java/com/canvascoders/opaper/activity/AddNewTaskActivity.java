@@ -70,6 +70,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.canvascoders.opaper.utils.Constants.Image_name;
+
 public class AddNewTaskActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView ivBack;
@@ -302,7 +304,7 @@ public class AddNewTaskActivity extends AppCompatActivity implements View.OnClic
                 }
                 break;
             case R.id.ivTaskImage:
-                Intent chooseImageIntent = ImagePicker.getCameraIntent(AddNewTaskActivity.this);
+                Intent chooseImageIntent = ImagePicker.getCameraIntent2(AddNewTaskActivity.this);
                 startActivityForResult(chooseImageIntent, 105);
                 break;
         }
@@ -532,7 +534,7 @@ public class AddNewTaskActivity extends AppCompatActivity implements View.OnClic
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 shopImg = ImagePicker.getBitmapPath(bitmap, AddNewTaskActivity.this); // ImageUtils.getInstant().getImageUri(EditStoreInformationActivity.this, photo);
 */
-                Uri uri = ImagePicker.getPickImageResultUri(AddNewTaskActivity.this, data);
+                Uri uri = ImagePicker.getPickImageResultUri(AddNewTaskActivity.this, data,Image_name);
                 //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 shopImg = ImagePicker.getPathFromUri( AddNewTaskActivity.this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
