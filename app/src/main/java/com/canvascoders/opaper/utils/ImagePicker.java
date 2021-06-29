@@ -48,6 +48,7 @@ import java.util.Objects;
  * Date: 08/09/2015
  * Email: m3ario@gmail.com
  */
+import static com.canvascoders.opaper.utils.Constants.Image_name;
 public class ImagePicker {
 
     private static final int DEFAULT_MIN_WIDTH_QUALITY = 50;        // min pixels
@@ -103,6 +104,15 @@ public class ImagePicker {
         return outputFileUri;
     }
 
+
+    public static Uri getCaptureImageOutputUri(@NonNull Context context, String imageName) {
+        Uri outputFileUri = null;
+        File getImage = context.getExternalCacheDir();
+        if (getImage != null) {
+            outputFileUri = Uri.fromFile(new File(getImage.getPath(), imageName + ".jpeg"));
+        }
+        return outputFileUri;
+    }
 
     public static Intent getCameraIntent(@NonNull Context context, Uri outputFileUri) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -285,6 +295,16 @@ public class ImagePicker {
         return isCamera || data.getData() == null ? getCaptureImageOutputUri(context) : data.getData();
     }
 
+
+    public static Uri getPickImageResultUri(@NonNull Context context, @Nullable Intent data, String imageName) {
+        boolean isCamera = true;
+        if (data != null && data.getData() != null) {
+            String action = data.getAction();
+            isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
+        }
+        return isCamera || data.getData() == null ? getCaptureImageOutputUri(context, imageName) : data.getData();
+    }
+
     private static File getTempFile() {
         Log.e("TEMP ", "File Called");
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), IMAGE_DIRECTORY_NAME);
@@ -421,6 +441,36 @@ public class ImagePicker {
     public static String getImagePath() {
         return filePath;
     }
+
+
+    public static Intent getCameraIntent2(Context context) {
+        Long tsLong = System.currentTimeMillis() / 1000;
+        String ts = tsLong.toString();
+        Image_name = ts;
+        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePhotoIntent.putExtra("return-data", true);
+
+        if (Build.VERSION.SDK_INT > 21 && Build.VERSION.SDK_INT <= 29) {
+//            takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile()));
+//            Log.e("datadtaa", String.valueOf(FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile())));
+            takePhotoIntent = getCameraIntent(context, getCaptureImageOutputUri(context, ts));
+        } else if (Build.VERSION.SDK_INT >= 30) {
+         /*   takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile()));
+            Log.e("datadtaa", String.valueOf(FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", getTempFile())));
+*/
+            takePhotoIntent = getCameraIntent(context, getCaptureImageOutputUri(context, ts));
+
+
+        } else {
+            takePhotoIntent = getCameraIntent(context, getCaptureImageOutputUri(context, ts));
+
+        }
+        return takePhotoIntent;
+
+    }
+
+
+
 
     public static String getPathFromUri(Context context, Uri uri) {
 

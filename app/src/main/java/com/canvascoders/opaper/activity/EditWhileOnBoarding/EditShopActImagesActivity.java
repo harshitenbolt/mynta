@@ -46,6 +46,8 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import static com.canvascoders.opaper.utils.Constants.Image_name;
+
 public class EditShopActImagesActivity extends AppCompatActivity implements View.OnClickListener {
     private String shop_act = "shop_act";
     private SessionManager sessionManager;
@@ -361,7 +363,7 @@ public class EditShopActImagesActivity extends AppCompatActivity implements View
 //                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //                    startActivityForResult(cameraIntent, IMAGE_SHPO_ACT);
 
-                    Intent chooseImageIntent = ImagePicker.getCameraIntent(EditShopActImagesActivity.this);
+                    Intent chooseImageIntent = ImagePicker.getCameraIntent2(EditShopActImagesActivity.this);
                     startActivityForResult(chooseImageIntent, IMAGE_SHPO_ACT);
                 }
 
@@ -415,7 +417,7 @@ public class EditShopActImagesActivity extends AppCompatActivity implements View
                    // String shoap_act_image_path = ImagePicker.getBitmapPath(bitmap, EditShopActImagesActivity.this);
 
 
-                    Uri uri = ImagePicker.getPickImageResultUri(EditShopActImagesActivity.this, data);
+                    Uri uri = ImagePicker.getPickImageResultUri(EditShopActImagesActivity.this, data,Image_name);
                     String shoap_act_image_path  = ImagePicker.getPathFromUri(EditShopActImagesActivity.this,uri); // ImageUtils.getInstant().getImageUri(EditStoreInformationActivity.this, photo);
 
 

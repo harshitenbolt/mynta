@@ -77,6 +77,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.canvascoders.opaper.utils.Constants.Image_name;
 import static com.canvascoders.opaper.utils.Constants.hideKeyboardwithoutPopulate;
 
 public class EditStoreInformationActivity extends AppCompatActivity implements View.OnClickListener, RecyclerViewClickListener {
@@ -682,11 +683,11 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
 
 
             case R.id.ivStoreImage:
-                Intent chooseImageIntent = ImagePicker.getCameraIntent(EditStoreInformationActivity.this);
+                Intent chooseImageIntent = ImagePicker.getCameraIntent2(EditStoreInformationActivity.this);
                 startActivityForResult(chooseImageIntent, 105);
                 break;
             case R.id.ivStoreImageSelected:
-                Intent chooseImageIntent1 = ImagePicker.getCameraIntent(EditStoreInformationActivity.this);
+                Intent chooseImageIntent1 = ImagePicker.getCameraIntent2(EditStoreInformationActivity.this);
                 startActivityForResult(chooseImageIntent1, 105);
                 break;
 
@@ -1193,7 +1194,7 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
 
               //  Bitmap bitmap = ImagePicker.getImageFromResult(EditStoreInformationActivity.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
-                Uri uri = ImagePicker.getPickImageResultUri(EditStoreInformationActivity.this, data);
+                Uri uri = ImagePicker.getPickImageResultUri(EditStoreInformationActivity.this, data,Image_name);
                 shopImg = ImagePicker.getPathFromUri(EditStoreInformationActivity.this,uri); // ImageUtils.getInstant().getImageUri(EditStoreInformationActivity.this, photo);
                 Glide.with(EditStoreInformationActivity.this).load(shopImg).into(ivStoreImage);
                 Log.e("imageowner", "back image" + shopImg);

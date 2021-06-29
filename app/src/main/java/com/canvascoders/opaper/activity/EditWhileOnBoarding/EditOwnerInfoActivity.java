@@ -66,6 +66,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.canvascoders.opaper.utils.Constants.Image_name;
+
 public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnClickListener {
     ImageView ivBack;
     RequestPermissionHandler requestPermissionHandler;
@@ -416,11 +418,11 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivOwnerImage:
-                Intent chooseImageIntent = ImagePicker.getCameraIntent(EditOwnerInfoActivity.this);
+                Intent chooseImageIntent = ImagePicker.getCameraIntent2(EditOwnerInfoActivity.this);
                 startActivityForResult(chooseImageIntent, 105);
                 break;
             case R.id.ivOwnerImageSelected:
-                Intent chooseImageIntent1 = ImagePicker.getCameraIntent(EditOwnerInfoActivity.this);
+                Intent chooseImageIntent1 = ImagePicker.getCameraIntent2(EditOwnerInfoActivity.this);
                 startActivityForResult(chooseImageIntent1, 105);
                 break;
 
@@ -484,7 +486,7 @@ public class EditOwnerInfoActivity extends AppCompatActivity implements View.OnC
 
                // Bitmap bitmap = ImagePicker.getImageFromResult(EditOwnerInfoActivity.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
-                Uri uri = ImagePicker.getPickImageResultUri(EditOwnerInfoActivity.this, data);
+                Uri uri = ImagePicker.getPickImageResultUri(EditOwnerInfoActivity.this, data,Image_name);
              //   Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 ownerImage = ImagePicker.getPathFromUri(EditOwnerInfoActivity.this,uri); //

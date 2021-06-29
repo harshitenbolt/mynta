@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 public class Constants {
 
     //-------------------------------------------------------------------------
-    public final static int APP_VERSION = 36; // need to set +1 here befor apk sent on last update before 942018 @ 12 version
+    public final static int APP_VERSION = 37; // need to set +1 here befor apk sent on last update before 942018 @ 12 version
     //-------------------------------------------------------------------------
     public final static String FORMAT = "format";
     public final static String CONTENT = "content";
@@ -43,24 +43,24 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
     public static String Image_name;
-   // public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
-         public static String BaseURL = "https://mystaging.opaper.in/api3/";
+    public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+   //      public static String BaseURL = "https://mystaging.opaper.in/api3/";
     // test server 20
     ///xfbd
-    public final static String APP_NAME = "my_stage"; //stage
-   // public final static String APP_NAME = "my_live"; //live
-  //  public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
-     public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
+   // public final static String APP_NAME = "my_stage"; //stage
+   public final static String APP_NAME = "my_live"; //live
+    public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+   //  public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
 
     // public static String BaseURL = "http://139.59.94.135/api3/";  // test server 2
 
 
-    //public static String APKROOT = "https://myntraopaper.opaper.in/";
+    public static String APKROOT = "https://myntraopaper.opaper.in/";
 
-    //staging apk root
-      public static String APKROOT = "https://mystaging.opaper.in/";
+   // staging apk root
+   //   public static String APKROOT = "https://mystaging.opaper.in/";
 
 
     public static String AADHAR_VID_URL = "https://resident.uidai.gov.in/web/resident/vidgeneration";

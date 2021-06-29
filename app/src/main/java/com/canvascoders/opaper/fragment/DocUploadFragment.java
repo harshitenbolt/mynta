@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.CropImage2Activity;
 import com.canvascoders.opaper.activity.TaskListActivity;
 import com.canvascoders.opaper.adapters.MyAdapterforRecycler;
 import com.canvascoders.opaper.utils.GPSTracker;
@@ -47,6 +48,7 @@ import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.Beans.PancardVerifyResponse.CommonResponse;
 import com.canvascoders.opaper.utils.Constants;
 import com.canvascoders.opaper.utils.Mylogger;
+import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 
@@ -63,6 +65,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 import static android.app.Activity.RESULT_OK;
+import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
+import static com.canvascoders.opaper.utils.Constants.Image_name;
 
 
 public class DocUploadFragment extends Fragment implements View.OnClickListener {
@@ -445,7 +449,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
 //                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //                    startActivityForResult(cameraIntent, IMAGE_SHPO_ACT);
 
-                    Intent chooseImageIntent = ImagePicker.getCameraIntent(getActivity());
+                    Intent chooseImageIntent = ImagePicker.getCameraIntent2(getActivity());
                     startActivityForResult(chooseImageIntent, IMAGE_SHPO_ACT);
                 }
 
@@ -455,7 +459,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                     IMAGE_SELCTED_IMG = IMAGE_SHOP_IMG;
 
 
-                    Intent chooseImageIntent = ImagePicker.getCameraIntent(getActivity());
+                    Intent chooseImageIntent = ImagePicker.getCameraIntent2(getActivity());
                     startActivityForResult(chooseImageIntent, IMAGE_SHOP_IMG);
                 }
 
@@ -464,7 +468,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
 
                     IMAGE_SELCTED_IMG = IMAGE_OWNER_IMG;
 
-                    Intent chooseImageIntent = ImagePicker.getCameraIntent(getActivity());
+                    Intent chooseImageIntent = ImagePicker.getCameraIntent2(getActivity());
                     startActivityForResult(chooseImageIntent, IMAGE_OWNER_IMG);
                 }
 
@@ -659,7 +663,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                         }
 
                     } else {
-                        Toast.makeText(getActivity(), "#errorcode 2042 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "#errorcode 2042 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
 
                         // Toast.makeText(mcontext, "Server Timeout", Toast.LENGTH_LONG).show();
                     }
@@ -669,7 +673,7 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
                 @Override
                 public void onFailure(Call<CommonResponse> call, Throwable t) {
                     progressDialog.dismiss();
-                    Toast.makeText(getActivity(),  "#errorcode 2042 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "#errorcode 2042 " + getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
             });
         } else {
@@ -735,77 +739,80 @@ public class DocUploadFragment extends Fragment implements View.OnClickListener 
         // if the result is capturing Image
 
         super.onActivityResult(requestCode, resultCode, data);
-        if ((requestCode == IMAGE_SHPO_ACT && resultCode == RESULT_OK) || (requestCode == IMAGE_SHOP_IMG && resultCode == RESULT_OK) || (requestCode == IMAGE_OWNER_IMG && resultCode == RESULT_OK) || (requestCode == IMAGE_SHPO_ACT_MULTIPLE && resultCode == RESULT_OK)) {
 
-            if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
 
-                if (IMAGE_SELCTED_IMG == IMAGE_SHPO_ACT) {
+            if (IMAGE_SELCTED_IMG == IMAGE_SHPO_ACT) {
 
-                    Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
-                    String shoap_act_image_path = ImagePicker.getPathFromUri( getActivity(),uri);
-                    shopActImage.add(shoap_act_image_path);
-                    Log.e("size", String.valueOf(shopActImage.size()));
-                    myAdapterforRecycler.notifyDataSetChanged();
-                    myAdapter.notifyDataSetChanged();
-                }
-
-           /* if (IMAGE_SELCTED_IMG == IMAGE_SHPO_ACT_MULTIPLE) {
-                File casted_image3 = new File(storeImg);
-                if (casted_image3.exists()) {
-                    casted_image3.delete();
-                }
-                Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                String shoap_act_image_path = ImagePicker.getBitmapPath(bitmap, getActivity());
-
-                billImages.add(shoap_act_image_path);
-//                myAdapter.notifyDataSetChanged();
-                storeImg = "";
-                rvImageListBills.setVisibility(View.VISIBLE);
-                myAdapter = new MyAdapter(mcontext, shopActImage);
-
-                LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-
-                rvImageListBills.setLayoutManager(horizontalLayoutManager);
-
-                rvImageListBills.setAdapter(myAdapter);
-                ivAddressProofSelected.setVisibility(View.VISIBLE);
-            }*/
-
-
-                if (IMAGE_SELCTED_IMG == IMAGE_SHOP_IMG) {
-                    File casted_image6 = new File(shopImg);
-                    if (casted_image6.exists()) {
-                        casted_image6.delete();
-                    }
-                    Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
-                    // img_doc_upload_2.setImageBitmap(bitmap);
-                    shopImg = ImagePicker.getPathFromUri( getActivity(),uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
-                    Glide.with(getActivity()).load(shopImg).into(ivStoreImage);
-                    Log.e("aadharcard", "back image" + shopImg);
-                    ivStoreImageSelected.setVisibility(View.VISIBLE);
-
-                }
-
-
-                if (IMAGE_SELCTED_IMG == IMAGE_OWNER_IMG) {
-                    File casted_image2 = new File(ownerImg);
-                    if (casted_image2.exists()) {
-                        casted_image2.delete();
-                    }
-
-                    Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
-                  //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
-                    // img_doc_upload_2.setImageBitmap(bitmap);
-                    ownerImg = ImagePicker.getPathFromUri( getActivity(),uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
-                    Glide.with(getActivity()).load(ownerImg).into(ivOwnerImage);
-                    Log.e("aadharcard", "back image" + ownerImg);
-                    ivOwnerImageSelected.setVisibility(View.VISIBLE);
-                }
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data, Image_name);
+                String shoap_act_image_path = ImagePicker.getPathFromUri(getActivity(), uri);
+                shopActImage.add(shoap_act_image_path);
+                Log.e("size", String.valueOf(shopActImage.size()));
+                myAdapterforRecycler.notifyDataSetChanged();
+                myAdapter.notifyDataSetChanged();
             }
 
 
-            //setButtonImage();
+            if (IMAGE_SELCTED_IMG == IMAGE_SHOP_IMG) {
+                File casted_image6 = new File(shopImg);
+                if (casted_image6.exists()) {
+                    casted_image6.delete();
+                }
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data,Image_name);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                shopImg = ImagePicker.getPathFromUri(getActivity(), uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+                Glide.with(getActivity()).load(shopImg).into(ivStoreImage);
+                Log.e("aadharcard", "back image" + shopImg);
+                ivStoreImageSelected.setVisibility(View.VISIBLE);
+
+            }
+
+
+              /*  if (IMAGE_SELCTED_IMG == IMAGE_SHOP_IMG) {
+                    Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
+                    Intent intent = new Intent(getActivity(), CropImage2Activity.class);
+                    intent.putExtra(KEY_SOURCE_URI, uri.toString());
+                    getParentFragment().startActivityForResult(intent, 1123);
+                    onDetach();
+                }
+
+                if (requestCode == 1123) {
+                    imgURI = Uri.parse(data.getStringExtra("uri"));
+                    shopImg = RealPathUtil.getPath(getContext(), imgURI);
+                    try {
+                        Glide.with(getActivity()).load(shopImg).into(ivStoreImage);
+                        Log.e("aadharcard", "back image" + shopImg);
+                        ivStoreImageSelected.setVisibility(View.VISIBLE);
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+*/
+
+
+            if (IMAGE_SELCTED_IMG == IMAGE_OWNER_IMG) {
+                File casted_image2 = new File(ownerImg);
+                if (casted_image2.exists()) {
+                    casted_image2.delete();
+                }
+
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data, Image_name);
+                //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
+                // img_doc_upload_2.setImageBitmap(bitmap);
+                ownerImg = ImagePicker.getPathFromUri(getActivity(), uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
+                Glide.with(getActivity()).load(ownerImg).into(ivOwnerImage);
+                Log.e("aadharcard", "back image" + ownerImg);
+                ivOwnerImageSelected.setVisibility(View.VISIBLE);
+            }
+
+
         }
+
+
+        //setButtonImage();
+
 
     }
 

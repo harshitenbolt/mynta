@@ -45,6 +45,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.canvascoders.opaper.utils.Constants.Image_name;
+
 public class EndTaskActivity extends AppCompatActivity implements View.OnClickListener {
 
     ImageView ivBack;
@@ -242,7 +244,7 @@ public class EndTaskActivity extends AppCompatActivity implements View.OnClickLi
 //                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 //                    startActivityForResult(cameraIntent, IMAGE_SHPO_ACT);
 
-                    Intent chooseImageIntent = ImagePicker.getCameraIntent(EndTaskActivity.this);
+                    Intent chooseImageIntent = ImagePicker.getCameraIntent2(EndTaskActivity.this);
                     startActivityForResult(chooseImageIntent, 143);
                 }
 
@@ -270,7 +272,7 @@ public class EndTaskActivity extends AppCompatActivity implements View.OnClickLi
 
                 //Bitmap bitmap = ImagePicker.getImageFromResult(EndTaskActivity.this, resultCode, data);
               //  String shoap_act_image_path = ImagePicker.getBitmapPath(bitmap, EndTaskActivity.this);
-                Uri uri = ImagePicker.getPickImageResultUri(EndTaskActivity.this, data);
+                Uri uri = ImagePicker.getPickImageResultUri(EndTaskActivity.this, data,Image_name);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 String  shoap_act_image_path = ImagePicker.getPathFromUri( EndTaskActivity.this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);
 

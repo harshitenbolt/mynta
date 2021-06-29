@@ -47,8 +47,8 @@
 
     <string name="complete_esign">  Link for completing E-sign verification has been sent to this user\'s registered Mobile No. If Link not received click "Resend". If Completed process then click "Check E-sign". </string>
     <string name="start_esign">Esign verification for this user is pending under </string>
-    <string name="app_version_2">APP VERSION : 36</string>
-    <string name="version_23">App Version 36</string>
+    <string name="app_version_2">APP VERSION : 37</string>
+    <string name="version_23">App Version 37</string>
 
     <array name="shoptype">
         <item>--Shop Type--</item>

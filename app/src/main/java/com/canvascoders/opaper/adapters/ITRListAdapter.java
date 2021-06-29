@@ -65,6 +65,7 @@ public class ITRListAdapter extends RecyclerView.Adapter<ITRListAdapter.ItemHold
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(holder.etITRNumber.getText()) && !TextUtils.isEmpty(holder.tvItRDate.getText())) {
                     recyclerViewClickListener.onClickChequeDetails(holder.etITRNumber.getText().toString(), holder.tvItRDate.getText().toString(), String.valueOf(position), "", "", "");
+                    holder.etITRNumber.setError(null);
                 } else {
                     holder.etITRNumber.setError("Provide ITR Number and Date");
                 }
@@ -90,9 +91,9 @@ public class ITRListAdapter extends RecyclerView.Adapter<ITRListAdapter.ItemHold
             }
         });
 
-       // if (bankDetailList.get(position).isSelectedImage()) {
-            Glide.with(mContext).load(bankDetailList.get(position).getImage()).placeholder(R.drawable.ic_add_img)
-                    .into(holder.ivAddImageITR);
+        // if (bankDetailList.get(position).isSelectedImage()) {
+        Glide.with(mContext).load(bankDetailList.get(position).getImage()).placeholder(R.drawable.ic_add_img)
+                .into(holder.ivAddImageITR);
 
 
 //        holder.tvStauts.setText(bankDetail.getStatus());

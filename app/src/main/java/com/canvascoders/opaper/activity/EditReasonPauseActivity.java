@@ -47,6 +47,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.canvascoders.opaper.utils.Constants.Image_name;
+
 public class EditReasonPauseActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button btSubmit;
@@ -103,7 +105,7 @@ public class EditReasonPauseActivity extends AppCompatActivity implements View.O
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ivIssueImage:
-                Intent chooseImageIntent = ImagePicker.getCameraIntent(EditReasonPauseActivity.this);
+                Intent chooseImageIntent = ImagePicker.getCameraIntent2(EditReasonPauseActivity.this);
                 startActivityForResult(chooseImageIntent, 200);
                 break;
 
@@ -184,7 +186,7 @@ public class EditReasonPauseActivity extends AppCompatActivity implements View.O
 
               //  Bitmap bitmap = ImagePicker.getImageFromResult(EditReasonPauseActivity.this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
-                Uri uri = ImagePicker.getPickImageResultUri(EditReasonPauseActivity.this, data);
+                Uri uri = ImagePicker.getPickImageResultUri(EditReasonPauseActivity.this, data,Image_name);
              //   Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 taskImage = ImagePicker.getPathFromUri( EditReasonPauseActivity.this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);

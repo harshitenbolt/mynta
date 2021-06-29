@@ -81,6 +81,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
+import static com.canvascoders.opaper.utils.Constants.Image_name;
 
 public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View.OnClickListener {
     ProgressDialog mProgressDialog;
@@ -902,7 +903,7 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
 
     private void captureImage(int i) {
         if (i == 1) {
-            Intent chooseImageIntent = ImagePicker.getCameraIntent(this);
+            Intent chooseImageIntent = ImagePicker.getCameraIntent2(this);
             startActivityForResult(chooseImageIntent, PROFILEIMAGE);
         }
         if (i == 2) {
@@ -1341,7 +1342,7 @@ public class EditDeliveryBoyTSActivity extends AppCompatActivity implements View
                // Bitmap bitmap = ImagePicker.getImageFromResult(this, resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
           //       = ImagePicker.getBitmapPath(bitmap, this);
-                Uri uri = ImagePicker.getPickImageResultUri(this, data);
+                Uri uri = ImagePicker.getPickImageResultUri(this, data,Image_name);
                 //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 profileImagepath = ImagePicker.getPathFromUri( this,uri); // ImageUtils.getInstant().getImageUri(getActivity(), photo);

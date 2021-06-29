@@ -2352,7 +2352,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             public void onSuccess() {
 
                 IMAGE_SELCTION_CODE = IMAGE_GST;
-                Intent chooseImageIntent = ImagePicker.getCameraIntent(getActivity());
+                Intent chooseImageIntent = ImagePicker.getCameraIntent2(getActivity());
                 startActivityForResult(chooseImageIntent, IMAGE_GST);
 
             }
@@ -2379,11 +2379,9 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-
-
             if (requestCode == IMAGE_GST) {
                 // Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
-                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data,Image_name);
                 //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 gstPath = ImagePicker.getPathFromUri(getActivity(), uri);

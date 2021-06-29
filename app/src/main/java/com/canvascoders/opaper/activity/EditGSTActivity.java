@@ -109,6 +109,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.canvascoders.opaper.activity.CropImage2Activity.KEY_SOURCE_URI;
+import static com.canvascoders.opaper.utils.Constants.Image_name;
 
 public class EditGSTActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, OnMapReadyCallback,
         LocationListener, View.OnClickListener {
@@ -1583,7 +1584,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
                 if (side_of_document == 3) {
 
                     IMAGE_SELCTED_IMG = IMAGE_SHOP_IMG;
-                    Intent chooseImageIntent = ImagePicker.getCameraIntent(EditGSTActivity.this);
+                    Intent chooseImageIntent = ImagePicker.getCameraIntent2(EditGSTActivity.this);
                     startActivityForResult(chooseImageIntent, IMAGE_SHOP_IMG);
                 }
 
@@ -1862,7 +1863,7 @@ public class EditGSTActivity extends AppCompatActivity implements GoogleApiClien
             if (IMAGE_SELCTED_IMG == IMAGE_SHOP_IMG) {
 
           //      Bitmap bitmap = ImagePicker.getImageFromResult(EditGSTActivity.this, resultCode, data);
-                Uri uri = ImagePicker.getPickImageResultUri(EditGSTActivity.this, data);
+                Uri uri = ImagePicker.getPickImageResultUri(EditGSTActivity.this, data,Image_name);
 
                 shopImg =ImagePicker.getPathFromUri( EditGSTActivity.this,uri);// ImageUtils.getInstant().getImageUri(getActivity(), photo);
                 Glide.with(EditGSTActivity.this).load(shopImg).into(ivStoreImage);
