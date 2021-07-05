@@ -41,7 +41,7 @@ public class ITRListAdapter extends RecyclerView.Adapter<ITRListAdapter.ItemHold
     private int mYear, mMonth, mDay, mHour, mMinute;
 
     public ITRListAdapter(Context ctx, List<Datum> dataViews, DialogListner recyclerViewClickListener) {
-        this.bankDetailList = dataViews;
+        bankDetailList = dataViews;
         mContext = ctx;
         this.recyclerViewClickListener = recyclerViewClickListener;
 
@@ -49,7 +49,6 @@ public class ITRListAdapter extends RecyclerView.Adapter<ITRListAdapter.ItemHold
 
     @Override
     public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         mContext = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_itr, parent, false);
         return new ITRListAdapter.ItemHolder(view);
@@ -58,22 +57,7 @@ public class ITRListAdapter extends RecyclerView.Adapter<ITRListAdapter.ItemHold
 
     @Override
     public void onBindViewHolder(ItemHolder holder, final int position) {
-        holder.tvITRYear.setText("FY:- " + bankDetailList.get(position).getFinancialYear() + "  (AY :- " + bankDetailList.get(position).getAssessmentYear() + ")");
         holder.etITRNumber.setText(bankDetailList.get(position).getItrNumber());
-        holder.ivAddImageITR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!TextUtils.isEmpty(holder.etITRNumber.getText()) && !TextUtils.isEmpty(holder.tvItRDate.getText())) {
-                    recyclerViewClickListener.onClickChequeDetails(holder.etITRNumber.getText().toString(), holder.tvItRDate.getText().toString(), String.valueOf(position), "", "", "");
-                    holder.etITRNumber.setError(null);
-                } else {
-                    holder.etITRNumber.setError("Provide ITR Number and Date");
-                }
-
-            }
-        });
-
-
         holder.etITRNumber.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -82,14 +66,32 @@ public class ITRListAdapter extends RecyclerView.Adapter<ITRListAdapter.ItemHold
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
 
             @Override
+
             public void afterTextChanged(Editable s) {
                 bankDetailList.get(position).setItrNumber(holder.etITRNumber.getText().toString());
             }
         });
+
+
+        holder.tvITRYear.setText("FY:- " + bankDetailList.get(position).getFinancialYear() + "  (AY :- " + bankDetailList.get(position).getAssessmentYear() + ")");
+
+        holder.ivAddImageITR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(holder.etITRNumber.getText()) && !TextUtils.isEmpty(holder.tvItRDate.getText())) {
+                    recyclerViewClickListener.onClickChequeDetails(holder.etITRNumber.getText().toString(), holder.tvItRDate.getText().toString(), String.valueOf(position), "", "", "");
+                    // recyclerViewClickListener.onClickChequeDetails(position+"",)
+                    holder.etITRNumber.setError(null);
+                } else {
+                    holder.etITRNumber.setError("Provide ITR Number and Date");
+                }
+
+            }
+        });
+
 
         // if (bankDetailList.get(position).isSelectedImage()) {
         Glide.with(mContext).load(bankDetailList.get(position).getImage()).placeholder(R.drawable.ic_add_img)
@@ -129,19 +131,27 @@ public class ITRListAdapter extends RecyclerView.Adapter<ITRListAdapter.ItemHold
                                     daysString = "0" + daysString;
                                 }
 
-                                holder.tvItRDate.setText(year + "-" + monthString + "-" + daysString);
-                                bankDetailList.get(position).setDateofITR(holder.tvItRDate.getText().toString());
+                                holder.tvItRDate.setText(daysString + "-" + monthString + "-" + year);
+                                bankDetailList.get(position).setDateofITR(year + "-" + monthString + "-" + daysString);
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.getDatePicker().setMaxDate(minDate);
                 datePickerDialog.show();
             }
         });
+        holder.tvItRDate.setText(bankDetailList.get(position).getDateofITR());
+        if (bankDetailList.get(position).isSelectedImage()) {
+            holder.etITRNumber.setEnabled(false);
+            holder.tvItRDate.setEnabled(false);
+        } else {
+            holder.etITRNumber.setEnabled(true);
+            holder.tvItRDate.setEnabled(true);
+        }
+        //  bankDetailList.get(position).setDateofITR(holder.tvItRDate.getText().toString());
     }
 
     @Override
     public int getItemCount() {
-
         return bankDetailList.size();
     }
 

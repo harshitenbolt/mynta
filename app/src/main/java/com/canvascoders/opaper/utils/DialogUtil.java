@@ -1591,7 +1591,7 @@ public class DialogUtil {
     }
 
 
-    public static void errorMessage(Context mContext, String title, String message, final DialogInterface dialogInterface) {
+    public static void errorMessage(Context mContext, String title) {
         TextView tvMessage, tvTitle;
         Button btSubmit;
 
@@ -1606,13 +1606,12 @@ public class DialogUtil {
         dialog.setCanceledOnTouchOutside(false);
         dialog.setCancelable(false);
 
-
-        btSubmit = dialog.findViewById(R.id.btSubmitAdharDet);
+        tvMessage = dialog.findViewById(R.id.tvmessage);
+        tvMessage.setText(title);
+        btSubmit = dialog.findViewById(R.id.btSubmit);
         btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                 dialog.dismiss();
             }
         });

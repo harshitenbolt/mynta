@@ -80,11 +80,14 @@
                                 android:hint="ITR Date"
                                 android:layout_marginTop="@dimen/_5sdp"
                                 android:id="@+id/tvItRDate"
-                                android:editable="false"
+                                android:layout_marginLeft="@dimen/_2sdp"
                                 style="@style/App_EditTextStyle"
                                 android:layout_width="match_parent"
-                                android:layout_marginLeft="@dimen/_3sdp"
-                                android:drawablePadding="@dimen/_5sdp" />
+                                android:fontFamily="@font/montesemibold"
+                                android:gravity="center_vertical"
+                                android:imeOptions="actionNext"
+                                android:inputType="none"
+                                android:text="" />
 
                     </LinearLayout>
 

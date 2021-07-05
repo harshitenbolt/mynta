@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import com.canvascoders.opaper.Beans.GeneralSupportResponse.GeneralSupportResponse;
 import com.canvascoders.opaper.Beans.SubmitImageResponse.SubmitImageResponse;
 import com.canvascoders.opaper.api.ApiClient;
+import com.canvascoders.opaper.helper.DialogListner;
+import com.canvascoders.opaper.utils.DialogUtil;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.google.android.material.navigation.NavigationView;
 
@@ -707,8 +709,6 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                     NotificattionResponse getnotificationdata = response.body();
 
 
-
-
                     if (getnotificationdata != null) {
 
 
@@ -780,10 +780,19 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
                                     finish();
                                 }
+
+
+                                if (getnotificationdata.getNotice().equalsIgnoreCase("")) {
+
+                                } else {
+                                    DialogUtil.errorMessage(DashboardActivity.this, getnotificationdata.getNotice());
+                                }
                                 // lockDrawer();
 
                             } else {
                                 unlockDrawer();
+
+
                             }
                         }
                     } else {

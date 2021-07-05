@@ -101,6 +101,19 @@ public class NotificattionResponse {
     @Expose
     private Boolean isupdateavailable;
 
+    public String getNotice() {
+        return notice;
+    }
+
+    public void setNotice(String notice) {
+        this.notice = notice;
+    }
+
+    @SerializedName("notice")
+    @Expose
+    private String notice;
+
+
     @SerializedName("version")
     @Expose
     private Integer version;

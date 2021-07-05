@@ -404,7 +404,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                         if (getITYears.getResponseCode() == 200) {
                             if (getITYears.getData().size() > 0) {
                                 dataList = getITYears.getData();
-                                itrListAdapter = new ITRListAdapter(getActivity(), getITYears.getData(), InfoFragment.this);
+                                itrListAdapter = new ITRListAdapter(getActivity(), dataList, InfoFragment.this);
                                 LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                                 rvItr.setLayoutManager(horizontalLayoutManager);
                                 rvItr.setAdapter(itrListAdapter);
@@ -1534,6 +1534,8 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
         itrNumber = accName;
         position = Integer.parseInt(ifsc);
+        /*  dataList.get(position).setItrNumber(accName);*/
+        /*  dataList.get(position).setDateofITR(payeename);*/
         Intent chooseImageIntent = ImagePicker.getCameraIntent(getActivity());
         startActivityForResult(chooseImageIntent, position);
     }
@@ -1774,7 +1776,17 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 return false;
             }
 
-
+//            for (int i1 = 0; i1 < dataList.size(); i++) {
+//                if (!dataList.get(i1).getItrNumber().equalsIgnoreCase("")) {
+//                    isImage = true;
+//                    if (!dataList.get(i1).isSelectedImage()) {
+//                        Toast.makeText(getActivity(), "Please Select Image of ITR", Toast.LENGTH_LONG).show();
+//                        return false;
+//                    }
+//                } else {
+//                    // finalImages[i] = null;
+//                }
+//            }
             if (listLanaguage.size() == 0) {
                 Toast.makeText(getActivity(), "Please Select Language", Toast.LENGTH_LONG).show();
                 // showMSG(false, "Provide Pincode");
@@ -1815,8 +1827,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 etLicenceNumeber.requestFocus();
                 return false;
             }*/
-
-
             if (listStoreType.size() == 0) {
                 Toast.makeText(getActivity(), "Please Select Store Type", Toast.LENGTH_LONG).show();
                 // showMSG(false, "Provide Pincode");
@@ -1955,6 +1965,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         Log.e("User Date", "Edit info" + str_process_id + "   " + sessionManager.getAgentID());
 
         MultipartBody.Part finalImages[] = new MultipartBody.Part[dataList.size()];
+
         for (int i = 0; i < dataList.size(); i++) {
             if (dataList.get(i).isSelectedImage()) {
                 isImage = true;
@@ -1966,15 +1977,17 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 finalImages[i] = MultipartBody.Part.createFormData("itr_doc[]", imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dataList.get(i).getImage())), imagefile1));
             } else {
                 // finalImages[i] = null;
+                user.put("financial_year[" + i + "]", "" + dataList.get(i).getFinancialYear());
+                user.put("assessment_year[" + i + "]", "" + dataList.get(i).getAssessmentYear());
+                user.put("itr_number[" + i + "]", "" + dataList.get(i).getItrNumber());
+                user.put("itr_filling_date[" + i + "]", "" + dataList.get(i).getDateofITR());
             }
         }
 
         if (isgsttn.equalsIgnoreCase("yes")) {
             File imagefile = new File(gstPath);
             typedFile = MultipartBody.Part.createFormData(Constants.PARAM_GST_CERTIFICATE, imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(gstPath)), imagefile));//RequestBody.create(MediaType.parse("image"), new File(mProfileBitmapPath));
-
             call = ApiClient.getClient().create(ApiInterface.class).submitBizDetailsGST("Bearer " + sessionManager.getToken(), user, typedFile, finalImages);
-
         } else {
             if (isImage) {
                 call = ApiClient.getClient().create(ApiInterface.class).submitBizDetailsITR("Bearer " + sessionManager.getToken(), user, finalImages);
@@ -1982,7 +1995,6 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 call = ApiClient.getClient().create(ApiInterface.class).submitBizDetails("Bearer " + sessionManager.getToken(), user);
             }
         }
-
         call.enqueue(new Callback<GetUserDetailResponse>() {
             @Override
             public void onResponse(Call<GetUserDetailResponse> call, Response<GetUserDetailResponse> response) {
@@ -2025,6 +2037,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
 
                             if (validation.getAssessment_year() != null && validation.getAssessment_year().length() > 0) {
                                 Toast.makeText(getActivity(), validation.getAssessment_year(), Toast.LENGTH_LONG).show();
+                                // return false;
+                                // return false;
+                            }
+                            if (validation.getItr_filling_date() != null && validation.getItr_filling_date().length() > 0) {
+                                Toast.makeText(getActivity(), validation.getItr_filling_date(), Toast.LENGTH_LONG).show();
                                 // return false;
                                 // return false;
                             }
@@ -2381,7 +2398,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_GST) {
                 // Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
-                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data,Image_name);
+                Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data, Image_name);
                 //  Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 // img_doc_upload_2.setImageBitmap(bitmap);
                 gstPath = ImagePicker.getPathFromUri(getActivity(), uri);
@@ -2413,7 +2430,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 try {
                     dataList.get(position).setSelectedImage(true);
                     dataList.get(position).setImage(aadharImagepathFront);
-                    itrListAdapter.notifyDataSetChanged();
+                    itrListAdapter = new ITRListAdapter(getActivity(), dataList, InfoFragment.this);
+
+                    LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                    rvItr.setLayoutManager(horizontalLayoutManager);
+                    rvItr.setAdapter(itrListAdapter);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -2447,7 +2468,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         MultipartBody.Part typedFile = null;
         HashMap<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
-        params.put("number_for_itr_filled", itrNumber);
+        params.put("number_for_itr_filled", dataList.get(position).getItrNumber());
         params.put("image_type", "itr");
         if (!TextUtils.isEmpty(dataList.get(position).getImage())) {
 
@@ -2470,13 +2491,17 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                             GetParameterResponse getPanDetailsResponse = response.body();
                             if (getPanDetailsResponse.getStatus().equalsIgnoreCase("success")) {
                                 Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
+                                // dataList.get(position).setItrNumber(itrNumber);
+                                itrListAdapter = new ITRListAdapter(getActivity(), dataList, InfoFragment.this);
+                                LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                                rvItr.setLayoutManager(horizontalLayoutManager);
+                                rvItr.setAdapter(itrListAdapter);
+                                // itrListAdapter.notifyDataSetChanged();
                             } else {
-
                                 dataList.get(position).setItrNumber("");
                                 dataList.get(position).setImage("");
                                 dataList.get(position).setSelectedImage(false);
-                              //  dataList.get(position).setDateofITR("");
+                                dataList.get(position).setDateofITR("");
                                 itrListAdapter.notifyDataSetChanged();
                                 Toast.makeText(getActivity(), getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }

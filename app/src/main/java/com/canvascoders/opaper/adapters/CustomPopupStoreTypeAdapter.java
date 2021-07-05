@@ -67,15 +67,16 @@ public class CustomPopupStoreTypeAdapter extends RecyclerView.Adapter<CustomPopu
                         lastChecked.setChecked(false);
                         vendorTypeList.get(lastCheckedPos).setSelected(false);
                     }
-
                     lastChecked = cb;
                     lastCheckedPos = clickedPos;
                    /* if(Type.equalsIgnoreCase("VendorType")){
                         onTaskCompleted.SingleClick("VendorType",position);
                     }
-                    else */if(Type.equalsIgnoreCase("StoreType")){
+                    else */
+                    if(Type.equalsIgnoreCase("StoreType")){
                         onTaskCompleted.SingleClick("StoreType",position);
                     }
+
                     /*else if(Type.equalsIgnoreCase("Locality")){
                         onTaskCompleted.SingleClick("StoreType",position);
                     }*/

@@ -15,6 +15,18 @@ public class Datum {
     @Expose
     private String financialYear;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+
     private boolean selectedImage = false;
 
     public boolean isSelectedImage() {
@@ -33,9 +45,8 @@ public class Datum {
         this.itrNumber = itrNumber;
     }
 
-    @SerializedName("itrNumber")
-    @Expose
-    private String itrNumber;
+
+    private String itrNumber = "";
 
     public String getDateofITR() {
         return dateofITR;
@@ -45,12 +56,10 @@ public class Datum {
         this.dateofITR = dateofITR;
     }
 
-    @SerializedName("dateofITR")
-    @Expose
-    private String dateofITR;
 
-    @SerializedName("image")
-    @Expose
+    private String dateofITR = "";
+
+
     private String image;
 
     public String getImage() {

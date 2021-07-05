@@ -230,8 +230,15 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
 
     @Override
     public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+     /*   itrNumber = accName;
+        position = Integer.parseInt(ifsc);
+        Intent chooseImageIntent = ImagePicker.getCameraIntent(EditITRActivity.this);
+        startActivityForResult(chooseImageIntent, position);*/
+
         itrNumber = accName;
         position = Integer.parseInt(ifsc);
+        /*  dataList.get(position).setItrNumber(accName);*/
+        /*  dataList.get(position).setDateofITR(payeename);*/
         Intent chooseImageIntent = ImagePicker.getCameraIntent(EditITRActivity.this);
         startActivityForResult(chooseImageIntent, position);
     }
@@ -268,16 +275,23 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
                             // deleteImages();
                             GetParameterResponse getPanDetailsResponse = response.body();
                             if (getPanDetailsResponse.getStatus().equalsIgnoreCase("success")) {
-
                                 Toast.makeText(EditITRActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                dataList.get(position).setItrNumber(itrNumber);
+                                itrListAdapter = new ITRListAdapter(EditITRActivity.this, dataList, EditITRActivity.this);
 
+                                LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(EditITRActivity.this, LinearLayoutManager.VERTICAL, false);
+                                rvItr.setLayoutManager(horizontalLayoutManager);
+                                rvItr.setAdapter(itrListAdapter);
                             } else {
                                 dataList.get(position).setItrNumber("");
-
                                 dataList.get(position).setImage("");
                                 dataList.get(position).setSelectedImage(false);
-                               // dataList.get(position).setDateofITR("");
-                                itrListAdapter.notifyDataSetChanged();
+                                 dataList.get(position).setDateofITR("");
+                                itrListAdapter = new ITRListAdapter(EditITRActivity.this, dataList, EditITRActivity.this);
+
+                                LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(EditITRActivity.this, LinearLayoutManager.VERTICAL, false);
+                                rvItr.setLayoutManager(horizontalLayoutManager);
+                                rvItr.setAdapter(itrListAdapter);
                                 Toast.makeText(EditITRActivity.this, getPanDetailsResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
 
@@ -329,7 +343,7 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
                 try {
                     dataList.get(position).setSelectedImage(true);
                     dataList.get(position).setImage(aadharImagepathFront);
-                    itrListAdapter.notifyDataSetChanged();
+                    // itrListAdapter.notifyDataSetChanged();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -431,6 +445,10 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
                 finalImages[i] = MultipartBody.Part.createFormData("itr_doc[]", imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dataList.get(i).getImage())), imagefile1));
             } else {
                 // finalImages[i] = null;
+                user.put("financial_year[" + i + "]", "" + dataList.get(i).getFinancialYear());
+                user.put("assessment_year[" + i + "]", "" + dataList.get(i).getAssessmentYear());
+                user.put("itr_number[" + i + "]", "" + dataList.get(i).getItrNumber());
+                user.put("itr_filling_date[" + i + "]", "" + dataList.get(i).getDateofITR());
             }
         }
 
@@ -449,7 +467,7 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
                     GetUserDetailResponse getUserDetailResponse = response.body();
                     Mylogger.getInstance().Logit(TAG, getUserDetailResponse.getResponse());
                     if (getUserDetailResponse.getResponseCode() == 200) {
-                     //   Mylogger.getInstance().Logit(TAG, "" + getUserDetailResponse.getData().get(0).getProccessId());
+                        //   Mylogger.getInstance().Logit(TAG, "" + getUserDetailResponse.getData().get(0).getProccessId());
 
                         showAlert(getUserDetailResponse.getResponse());
                         // commanFragmentCallWithoutBackStack(new DocUploadFragment());
@@ -479,6 +497,11 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
 
                             if (validation.getItr_number() != null && validation.getItr_number().length() > 0) {
                                 Toast.makeText(EditITRActivity.this, validation.getItr_number(), Toast.LENGTH_LONG).show();
+                                // return false;
+                                // return false;
+                            }
+                            if (validation.getItr_filling_date() != null && validation.getItr_filling_date().length() > 0) {
+                                Toast.makeText(EditITRActivity.this, validation.getItr_filling_date(), Toast.LENGTH_LONG).show();
                                 // return false;
                                 // return false;
                             }

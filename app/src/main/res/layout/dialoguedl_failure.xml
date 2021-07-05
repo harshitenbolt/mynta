@@ -28,7 +28,7 @@
                       android:fontFamily="@font/montesemibold"
                       android:gravity="center"
                       android:textColor="@color/colorBlack"
-                      android:text="Validation Error" />
+                      android:text="NOTICE" />
 
 
             </RelativeLayout>
@@ -59,10 +59,9 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:layout_width="match_parent"
                     android:gravity="center"
-                    android:lines="2"
+                    android:text=""
                     android:textColor="@color/colorRed"
                     android:fontFamily="@font/montesemibold"
-                    android:hint="Driving Licence Number"
                     />
             </LinearLayout>
 

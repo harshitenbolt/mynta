@@ -141,6 +141,19 @@ public class Validation {
     @SerializedName("dob")
     @Expose
     private String dob;
+
+    public String getItr_filling_date() {
+        return itr_filling_date;
+    }
+
+    public void setItr_filling_date(String itr_filling_date) {
+        this.itr_filling_date = itr_filling_date;
+    }
+
+    @SerializedName("itr_filling_date")
+    @Expose
+    private String itr_filling_date;
+
     @SerializedName("route")
     @Expose
     private String route;
