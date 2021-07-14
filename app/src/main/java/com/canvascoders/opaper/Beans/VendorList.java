@@ -37,6 +37,18 @@ public class VendorList implements Serializable {
     @Expose
     private String isDisableRate;
 
+    public String getIsEnableITR() {
+        return isEnableITR;
+    }
+
+    public void setIsEnableITR(String isEnableITR) {
+        this.isEnableITR = isEnableITR;
+    }
+
+    @SerializedName("is_enable_itr")
+    @Expose
+    private String isEnableITR;
+
     public String getIsDisableCheque() {
         return isDisableCheque;
     }

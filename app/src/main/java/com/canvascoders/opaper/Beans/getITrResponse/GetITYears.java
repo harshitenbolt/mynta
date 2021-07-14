@@ -18,6 +18,19 @@ public class GetITYears {
     @SerializedName("status")
     @Expose
     private String status;
+
+    public String getNoc() {
+        return noc;
+    }
+
+    public void setNoc(String noc) {
+        this.noc = noc;
+    }
+
+    @SerializedName("noc")
+    @Expose
+    private String noc;
+
     @SerializedName("data")
     @Expose
     private List<Datum> data = null;

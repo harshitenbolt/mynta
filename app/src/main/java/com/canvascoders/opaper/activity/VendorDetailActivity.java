@@ -53,6 +53,7 @@ import com.canvascoders.opaper.Beans.VendorList;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.Screenshot.DragRectView;
 import com.canvascoders.opaper.Screenshot.Screenshot;
+import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditITRActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditKycActivity;
 import com.canvascoders.opaper.adapters.DocumentListAdapter;
 import com.canvascoders.opaper.api.ApiClient;
@@ -110,7 +111,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
     GoogleMap map;
     private static Dialog dialog;
     ProgressDialog mProgress;
-    CardView cvPan, cvMobile, cvCheque, cvRate, cvResignAgreement, cvDelBoy, cvAddGSTIMAGE;
+    CardView cvPan, cvMobile, cvCheque, cvRate, cvResignAgreement, cvDelBoy, cvAddGSTIMAGE, cvAddITR;
     private ImageView ivBack, ivSupport;
     RecyclerView rvDocuments;
     AppCompatSpinner spYear;
@@ -400,6 +401,7 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
         cvMobile = findViewById(R.id.cvMobileNo);
         cvCheque = findViewById(R.id.cvCheque);
         cvRate = findViewById(R.id.cvRate);
+        cvAddITR = findViewById(R.id.cvITR);
         cvGST = findViewById(R.id.cvGST);
         cvKYC = findViewById(R.id.cvKYC);
         cvResignAgreement = findViewById(R.id.cvResign);
@@ -580,10 +582,17 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
                 // llDelBoy.setVisibility(View.GONE);
             }
 
+
             if (vendor.getIsDisableRate().equalsIgnoreCase("1")) {
                 cvRate.setVisibility(View.GONE);
             } else {
                 cvRate.setVisibility(View.VISIBLE);
+            }
+
+            if (vendor.getIsEnableITR().equalsIgnoreCase("1")) {
+                cvAddITR.setVisibility(View.VISIBLE);
+            } else {
+                cvAddITR.setVisibility(View.GONE);
             }
 
 
@@ -706,6 +715,15 @@ public class VendorDetailActivity extends FragmentActivity implements OnMapReady
             public void onClick(View view) {
                 Intent myIntent = new Intent(VendorDetailActivity.this, StoreTypeListingActivity.class);
                 myIntent.putExtra("data", String.valueOf(vendor.getProccessId()));
+                startActivity(myIntent);
+            }
+        });
+
+        cvAddITR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(VendorDetailActivity.this, EditITRActivity.class);
+                myIntent.putExtra(Constants.KEY_PROCESS_ID, String.valueOf(vendor.getProccessId()));
                 startActivity(myIntent);
             }
         });

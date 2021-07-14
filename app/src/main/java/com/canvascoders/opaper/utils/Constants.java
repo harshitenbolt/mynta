@@ -152,7 +152,6 @@ public class Constants {
     public static String KEY_SUPPORT_ID = "support_id";
     public static String KEY_EDIT_DETAIL = "edit_detail";
 
-
     public static String dataRate[] = null;
     //-------------------------
 

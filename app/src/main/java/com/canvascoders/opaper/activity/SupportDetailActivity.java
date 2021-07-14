@@ -235,9 +235,7 @@ public class SupportDetailActivity extends AppCompatActivity implements View.OnC
             File imagefile1 = new File(image);
             attachment_part = MultipartBody.Part.createFormData(Constants.PARAM_ATTACHMENT, imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(image)), imagefile1));
             call = ApiClient.getClient().create(ApiInterface.class).getCommentResponsewithImage("Bearer " + sessionManager.getToken(), params, attachment_part);
-
         }
-
 
         call.enqueue(new Callback<CommentResponse>() {
             @Override

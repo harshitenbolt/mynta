@@ -1974,7 +1974,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                 user.put("itr_number[" + i + "]", "" + dataList.get(i).getItrNumber());
                 user.put("itr_filling_date[" + i + "]", "" + dataList.get(i).getDateofITR());
                 File imagefile1 = new File(dataList.get(i).getImage());
-                finalImages[i] = MultipartBody.Part.createFormData("itr_doc[]", imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dataList.get(i).getImage())), imagefile1));
+                finalImages[i] = MultipartBody.Part.createFormData("itr_doc[" + i + "]", imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dataList.get(i).getImage())), imagefile1));
             } else {
                 // finalImages[i] = null;
                 user.put("financial_year[" + i + "]", "" + dataList.get(i).getFinancialYear());
@@ -2469,6 +2469,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         HashMap<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
         params.put("number_for_itr_filled", dataList.get(position).getItrNumber());
+        params.put("assessment_year", dataList.get(position).getAssessmentYear());
         params.put("image_type", "itr");
         if (!TextUtils.isEmpty(dataList.get(position).getImage())) {
 

@@ -17,6 +17,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -42,6 +43,7 @@ import com.canvascoders.opaper.Beans.TaskDetailResponse.GetTaskDetailsResponse;
 import com.canvascoders.opaper.Beans.TaskDetailResponse.SubTaskList;
 import com.canvascoders.opaper.Beans.TaskDetailResponse.SubTaskReason;
 import com.canvascoders.opaper.R;
+import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditITRActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.InfoFragment;
@@ -232,7 +234,9 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                 if (ContextCompat.checkSelfPermission(getApplicationContext(), CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
                     startActivity(intent);
                 } else {
-                    requestPermissions(new String[]{CALL_PHONE}, 1);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[]{CALL_PHONE}, 1);
+                    }
                 }
             }
         });
@@ -457,6 +461,19 @@ public class TaskDetailActivity extends AppCompatActivity implements OnMapReadyC
                     i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
                     startActivity(i);
 */
+                }
+                else if (screenNumber.equalsIgnoreCase("17")) {
+                    String proccess_id = "";
+                    for (int i = 0; i < keyList.size(); i++) {
+                        if (keyList.get(i).equalsIgnoreCase("proccess_id")) {
+                            proccess_id = valuesList.get(i);
+                        }
+
+                    }
+                    Intent i = new Intent(TaskDetailActivity.this, EditITRActivity.class);
+                    i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+                    startActivity(i);
+
                 }
 
 

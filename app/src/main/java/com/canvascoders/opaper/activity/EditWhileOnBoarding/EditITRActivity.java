@@ -113,7 +113,7 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
         btSendLink = findViewById(R.id.btSendLink);
         btSendLink.setOnClickListener(this);
         APiCallGetTrackDetails();
-        getITRYears();
+
 
 
     }
@@ -142,7 +142,7 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
                             llGeneralInfo.setVisibility(View.VISIBLE);
                             llSendMessageInfo.setVisibility(View.GONE);
                         }
-
+                        getITRYears();
                     } else {
                         Toast.makeText(EditITRActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
 
@@ -189,6 +189,14 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
                             } else {
                                 Toast.makeText(EditITRActivity.this, getITYears.getResponse(), Toast.LENGTH_SHORT).show();
                             }
+                            if (getITYears.getNoc().equalsIgnoreCase("1")) {
+                                llGeneralInfo.setVisibility(View.GONE);
+                                llSendMessageInfo.setVisibility(View.VISIBLE);
+                            } else {
+                                llGeneralInfo.setVisibility(View.VISIBLE);
+                                llSendMessageInfo.setVisibility(View.GONE);
+                            }
+
                         } else {
                             Toast.makeText(EditITRActivity.this, getITYears.getResponse(), Toast.LENGTH_SHORT).show();
                         }
@@ -254,6 +262,7 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
         HashMap<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_APP_NAME, Constants.APP_NAME);
         params.put("number_for_itr_filled", itrNumber);
+        params.put("assessment_year", dataList.get(position).getAssessmentYear());
         params.put("image_type", "itr");
         if (!TextUtils.isEmpty(dataList.get(position).getImage())) {
 
@@ -286,7 +295,7 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
                                 dataList.get(position).setItrNumber("");
                                 dataList.get(position).setImage("");
                                 dataList.get(position).setSelectedImage(false);
-                                 dataList.get(position).setDateofITR("");
+                                dataList.get(position).setDateofITR("");
                                 itrListAdapter = new ITRListAdapter(EditITRActivity.this, dataList, EditITRActivity.this);
 
                                 LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(EditITRActivity.this, LinearLayoutManager.VERTICAL, false);
@@ -442,7 +451,7 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
                 user.put("itr_number[" + i + "]", "" + dataList.get(i).getItrNumber());
                 user.put("itr_filling_date[" + i + "]", "" + dataList.get(i).getDateofITR());
                 File imagefile1 = new File(dataList.get(i).getImage());
-                finalImages[i] = MultipartBody.Part.createFormData("itr_doc[]", imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dataList.get(i).getImage())), imagefile1));
+                finalImages[i] = MultipartBody.Part.createFormData("itr_doc[" + i + "]", imagefile1.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dataList.get(i).getImage())), imagefile1));
             } else {
                 // finalImages[i] = null;
                 user.put("financial_year[" + i + "]", "" + dataList.get(i).getFinancialYear());
