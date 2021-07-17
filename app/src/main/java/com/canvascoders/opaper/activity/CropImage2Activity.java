@@ -24,12 +24,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.canvascoders.opaper.R;
-import com.isseiaoki.simplecropview.CropImageView;
-import com.isseiaoki.simplecropview.callback.CropCallback;
-import com.isseiaoki.simplecropview.callback.LoadCallback;
-import com.isseiaoki.simplecropview.callback.SaveCallback;
-import com.isseiaoki.simplecropview.util.Logger;
-import com.isseiaoki.simplecropview.util.Utils;
+
+import com.canvascoders.opaper.cropview.CropImageView;
+import com.canvascoders.opaper.cropview.callback.CropCallback;
+import com.canvascoders.opaper.cropview.callback.LoadCallback;
+import com.canvascoders.opaper.cropview.callback.SaveCallback;
+import com.canvascoders.opaper.cropview.util.Logger;
+import com.canvascoders.opaper.cropview.util.Utils;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
