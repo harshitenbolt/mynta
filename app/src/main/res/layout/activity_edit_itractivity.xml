@@ -115,7 +115,7 @@
                 android:fontFamily="@font/montemedium"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:text="Please sign ITR declaration for further Proceed"
+                android:text="Sign ITR for the further Proceed."
                 android:textSize="@dimen/_15sdp" />
 
 

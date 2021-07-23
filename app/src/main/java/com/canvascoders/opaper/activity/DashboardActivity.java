@@ -236,6 +236,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         llNavReport.setOnClickListener(this);
         llNavLogut.setOnClickListener(this);
         llNavTask.setOnClickListener(this);
+        llNavTask.setOnClickListener(this);
 
 
         getPermitionGrant();
