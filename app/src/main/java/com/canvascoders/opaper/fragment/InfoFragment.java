@@ -184,7 +184,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
       private List<String> locality = new ArrayList<>();
       private List<String> approach = new ArrayList<>();
   */
-    private String isgsttn = "no";
+    private String isgsttn = "no", if_itr = "";
     private static int IMAGE_SELCTION_CODE = 0;
     private static final int IMAGE_GST = 101;
     private String isPartnered = "no";
@@ -564,6 +564,20 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                     edit_gstn.setText("");
                     llGst.setVisibility(View.GONE);
                     gstPath = "";
+                }
+            }
+        });
+
+        sw_Itr.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    if_itr = "yes";
+                    rvItr.setVisibility(View.VISIBLE);
+                    //  llGst.setVisibility(View.VISIBLE);
+                } else {
+                    if_itr = "no";
+                    rvItr.setVisibility(View.GONE);
                 }
             }
         });
@@ -1932,6 +1946,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         }
 
         //new Update
+        user.put("if_itr", "" + if_itr);
         user.put(Constants.PARAM_OWNER_NAME, "" + etOwnerName.getText());
         user.put(Constants.PARAM_DOB, "" + stringDOB);
         user.put(Constants.PARAM_ROUTE, "R-" + etRoute.getText());
