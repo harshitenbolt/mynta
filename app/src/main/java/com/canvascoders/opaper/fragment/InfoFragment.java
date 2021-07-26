@@ -225,6 +225,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     LinearLayout llGst;
     RecyclerView rvItr;
     ImageView ivGst;
+    RelativeLayout rvITRQuestion;
     private RequestPermissionHandler requestPermissionHandler;
     ITRListAdapter itrListAdapter;
     String dateofITR = "";
@@ -403,12 +404,14 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                         GetITYears getITYears = response.body();
                         if (getITYears.getResponseCode() == 200) {
                             if (getITYears.getData().size() > 0) {
+                                rvITRQuestion.setVisibility(View.VISIBLE);
                                 dataList = getITYears.getData();
                                 itrListAdapter = new ITRListAdapter(getActivity(), dataList, InfoFragment.this);
                                 LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
                                 rvItr.setLayoutManager(horizontalLayoutManager);
                                 rvItr.setAdapter(itrListAdapter);
                             } else {
+                                rvITRQuestion.setVisibility(View.GONE);
                                 Toast.makeText(getActivity(), getITYears.getResponse(), Toast.LENGTH_SHORT).show();
                             }
                         } else {
@@ -449,8 +452,10 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         scMain = view.findViewById(R.id.scMain);
         rvVendorType = view.findViewById(R.id.rvTypeVendor);
         rvVendorType.setOnClickListener(this);
+        rvITRQuestion = view.findViewById(R.id.rvITRQuestion);
         rvStoreType = view.findViewById(R.id.rvStoreType);
         rvVendorTypeDetail = view.findViewById(R.id.rvVendorTypeDetail);
+
         rvApproach = view.findViewById(R.id.rvApproach);
         rvLocality = view.findViewById(R.id.rvLocality);
         rvSelectLanguage = view.findViewById(R.id.rvSelectLanguage);

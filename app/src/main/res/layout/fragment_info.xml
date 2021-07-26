@@ -983,6 +983,7 @@
                         </RelativeLayout>
 
                         <RelativeLayout
+                            android:id="@+id/rvITRQuestion"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_20sdp">
@@ -995,7 +996,7 @@
                                 android:gravity="start"
                                 android:singleLine="false"
                                 android:text="did you file the previous year's ITR?"
-                                android:textSize="@dimen/_9sdp" />
+                                android:textSize="@dimen/_10sdp" />
 
                             <Switch
                                 android:id="@+id/sw_Itr"
