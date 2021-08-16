@@ -26,6 +26,7 @@ import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.EditRateWhileResigAgreeActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EdirRateOnBoardingActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditBankDetailsActivity;
+import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditCOIActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditGstDetailsActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditITRActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditKycActivity;
@@ -255,6 +256,13 @@ public class VerifyOtpEditScreen extends Fragment implements View.OnClickListene
         }
         if (screenname.equalsIgnoreCase("RATEUPDATE")) {
             i = new Intent(getActivity(), EdirRateOnBoardingActivity.class);
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+            startActivity(i);
+            getActivity().finish();
+
+        }
+        if (screenname.equalsIgnoreCase("COI")) {
+            i = new Intent(getActivity(), EditCOIActivity.class);
             i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
             getActivity().finish();

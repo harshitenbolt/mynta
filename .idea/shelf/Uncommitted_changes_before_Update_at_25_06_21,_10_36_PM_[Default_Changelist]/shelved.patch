@@ -1,0 +1,15 @@
+Index: library/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<merger version=\"3\"><dataSet config=\"main\" ignore_pattern=\"!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~\"><source path=\"/home/harshit/Videos/Screen Final New/opaper-my/library/src/main/jniLibs\"/></dataSet><dataSet config=\"debug\" ignore_pattern=\"!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~\"><source path=\"/home/harshit/Videos/Screen Final New/opaper-my/library/src/debug/jniLibs\"/></dataSet></merger>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- library/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml	(revision 1ddf8cb0a816f145878f72e5fc1b8cd1e5b45b71)
++++ library/build/intermediates/incremental/mergeDebugJniLibFolders/merger.xml	(date 1622253245043)
+@@ -1,2 +1,2 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/home/harshit/Videos/Screen Final New/opaper-my/library/src/main/jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/home/harshit/Videos/Screen Final New/opaper-my/library/src/debug/jniLibs"/></dataSet></merger>
+\ No newline at end of file
++<merger version="3"><dataSet config="main" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/enboltlabs/StudioProjects/myntra_version2/library/src/main/jniLibs"/></dataSet><dataSet config="debug" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="/Users/enboltlabs/StudioProjects/myntra_version2/library/src/debug/jniLibs"/></dataSet></merger>
+\ No newline at end of file

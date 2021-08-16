@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorAccent">#795548</color>
+    <color name="colorPrimary">#0097A7</color>
+    <color name="colorPrimaryDark">#00838F</color>
+    <color name="qt_btm_bar">#ffffff</color>
+    <color name="qt_color_bg">@color/colorPrimaryDark</color>
+    <color name="qt_color_ft">#ffffff</color>
+    <string name="app_name">AadhaarAPI_Gateway_SDK</string>
+    <string name="file_chooser">select file</string>
+    <string name="nsdl_aar_mode">QT_NSDL_AAR</string>
+    <string name="nsdl_app_mode">QT_NSDL_APP</string>
+    <string name="qtLabel">AadhaarAPI SDK</string>
+    <string name="qt_cs_rootfolder">AadhaarAPI</string>
+    <string name="qt_cs_subfolder">CreditScoreReports</string>
+    <string name="qt_draggable">y</string>
+    <string name="qt_email_access">y</string>
+    <string name="qt_env">QT_PP</string>
+    <string name="qt_fp_access">y</string>
+    <string name="qt_iris_access">y</string>
+    <string name="qt_local">QT_L</string>
+    <string name="qt_local_url">10.1.2.172</string>
+    <string name="qt_nsdl_mode">QT_NSDL_APP</string>
+    <string name="qt_otp_access">y</string>
+    <string name="qt_phone_auth_access">y</string>
+    <string name="qt_platform">android</string>
+    <string name="qt_preprod">QT_PP</string>
+    <string name="qt_preprod_url">preprod.aadhaarapi.com</string>
+    <string name="qt_prod">QT_P</string>
+    <string name="qt_prod_url">prod.aadhaarapi.com</string>
+    <string name="qt_test">QT_T</string>
+    <string name="qt_test_url">test.aadhaarapi.com</string>
+    <string name="qt_validate_email">n</string>
+    <string name="qt_validate_phone">n</string>
+    <string name="sdk_null_response_error">No response received from server</string>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="MaterialTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="QtCameraTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+</resources>

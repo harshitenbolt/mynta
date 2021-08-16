@@ -1109,6 +1109,14 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                 startActivity(i13);
                 break;
 
+            case R.id.ivEditCOI:
+                Intent i14 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
+                i14.putExtra(Constants.DATA, "COI");
+                i14.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i14.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+                startActivity(i14);
+                break;
+
 
         }
 
