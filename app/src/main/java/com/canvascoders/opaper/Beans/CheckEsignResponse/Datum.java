@@ -19,6 +19,19 @@ public class Datum {
     @Expose
     private String screenMsg;
 
+    public String getIf_msme() {
+        return if_msme;
+    }
+
+    public void setIf_msme(String if_msme) {
+        this.if_msme = if_msme;
+    }
+
+    @SerializedName("if_msme")
+    @Expose
+    private String if_msme;
+
+
     public boolean getIfEcom() {
         return ifEcom;
     }

@@ -1101,6 +1101,14 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                 startActivity(i12);
                 break;
 
+            case R.id.ivEditMSME:
+                Intent i13 = new Intent(TaskProccessDetailActivity.this, EditFunctionalityKiranaActivity.class);
+                i13.putExtra(Constants.DATA, "MSME");
+                i13.putExtra(Constants.KEY_EMP_MOBILE, mobile);
+                i13.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+                startActivity(i13);
+                break;
+
 
         }
 

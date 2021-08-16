@@ -247,10 +247,185 @@
 
 
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_3sdp">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:visibility="invisible"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="79dp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_marginRight="@dimen/_3sdp"
+                            android:background="@drawable/roundedcornergrey"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_10sdp">
+
+                            <ImageView
+
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_22sdp"
+                                android:src="@drawable/agreement" />
+
+                            <TextView
+                                style="@style/TextviewwithoutSize"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/montemedium"
+                                android:singleLine="true"
+                                android:text="AGREEMENT"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/_6sdp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginBottom="@dimen/_8sdp" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rvMSME"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:id="@+id/llMSME"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@drawable/roundedcornergrey"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_10sdp">
+
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_22sdp"
+                                android:src="@drawable/assessment" />
+
+                            <TextView
+                                style="@style/TextviewwithoutSize"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/montemedium"
+                                android:singleLine="true"
+                                android:text="MSME"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/_5sdp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/ivAssessMSME"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginBottom="@dimen/_8sdp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+
+                            android:id="@+id/llCOI"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_marginRight="@dimen/_3sdp"
+                            android:background="@drawable/roundedcornergrey"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_10sdp">
+
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_22sdp"
+                                android:src="@drawable/noc" />
+
+                            <TextView
+                                style="@style/TextviewwithoutSize"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/montemedium"
+                                android:text="COI"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/_6sdp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/ivSOAStatus"
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginBottom="@dimen/_8sdp"
+
+                            />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                       android:visibility="invisible"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@drawable/roundedcornergrey"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_10sdp">
+
+                            <ImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_22sdp"
+                                android:src="@drawable/gstdeclarational" />
+
+                            <TextView
+                                style="@style/TextviewwithoutSize"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:fontFamily="@font/montemedium"
+                                android:gravity="center"
+                                android:lines="2"
+                                android:maxLines="2"
+                                android:text="GST DECLARATION"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/_5sdp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="@dimen/_18sdp"
+                            android:layout_height="@dimen/_18sdp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginBottom="@dimen/_8sdp" />
+                    </RelativeLayout>
+
+
+                </LinearLayout>
 
                 <ImageView
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_100sdp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_80sdp"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_30sdp"
                     android:src="@drawable/esign" />

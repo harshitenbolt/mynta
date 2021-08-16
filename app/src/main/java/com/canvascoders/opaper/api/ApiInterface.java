@@ -125,9 +125,19 @@ public interface ApiInterface {
     Call<GetVendorTypeDetails> getVendorType(@Header("Authorization") String token, @Field("proccess_id") String mobile_number);
 
 
+    @Multipart
+    @POST("submit-details3")
+    Call<CommonResponse> submitMSME(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
+
+
     @FormUrlEncoded
     @POST("agreement-resign")
     Call<ResignAgreementResponse> ResignAgreement(@Header("Authorization") String token, @Field("proccess_id") String data);
+
+
+    @FormUrlEncoded
+    @POST("skip-msme")
+    Call<CommonResponse> skipMSME(@Header("Authorization") String token, @Field("proccess_id") String data);
 
 
     @FormUrlEncoded

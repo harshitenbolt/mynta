@@ -1611,6 +1611,199 @@
                             android:layout_marginTop="@dimen/_3sdp"
                             android:background="@color/text_color_dark_grey" />
 
+                        <LinearLayout
+                            android:id="@+id/llMsmeInfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_15sdp">
+
+                            <LinearLayout
+                                android:id="@+id/llMSMEEnable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_17sdp"
+                                        android:layout_height="@dimen/_17sdp"
+                                        android:src="@drawable/manuser" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:layout_weight="1"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="MSME details"
+                                        android:textColor="@color/colorBlack"
+                                        android:textSize="@dimen/_12sdp" />
+
+                                    <ImageView
+                                        android:id="@+id/ivEditMSME"
+                                        android:layout_width="@dimen/_15sdp"
+                                        android:layout_height="@dimen/_15sdp"
+                                        android:layout_gravity="end|center"
+                                        android:src="@drawable/editnote" />
+
+                                    <TextView
+                                        android:visibility="gone"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="end"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:background="@drawable/rounded_corner_bordercolor_green"
+                                        android:fontFamily="@font/montserratbold"
+                                        android:gravity="center"
+                                        android:paddingLeft="@dimen/_10sdp"
+                                        android:paddingTop="@dimen/_5sdp"
+                                        android:paddingRight="@dimen/_10sdp"
+                                        android:paddingBottom="@dimen/_5sdp"
+                                        android:src="@drawable/location_green"
+                                        android:text="Done"
+                                        android:textColor="@color/colorPrimary"
+                                        android:textSize="@dimen/_7sdp" />
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:orientation="horizontal">
+
+
+                                    <ImageView
+                                        android:id="@+id/ivMSMEImage"
+                                        android:layout_width="@dimen/_45sdp"
+                                        android:layout_height="@dimen/_35sdp"
+                                        android:layout_marginLeft="@dimen/_25sdp"
+                                        android:background="@drawable/roundedcornergrey_small"
+                                        android:clipToPadding="true"
+                                        android:elevation="@dimen/_10sdp"
+                                        android:padding="@dimen/_5sdp"
+                                        >
+
+                                    </ImageView>
+
+
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="@dimen/_12sdp"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:orientation="vertical">
+
+
+                                        <TextView
+
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratsemibold"
+                                            android:singleLine="true"
+                                            android:text="MSME number"
+                                            android:textColor="@color/text_color_dark_grey"
+                                            android:textSize="@dimen/_8sdp" />
+
+
+                                        <TextView
+                                            android:id="@+id/tvMSMEName"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:fontFamily="@font/montserratregular"
+                                            android:singleLine="true"
+                                            android:text="N/A"
+                                            android:textSize="@dimen/_7sdp" />
+                                    </LinearLayout>
+
+
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/_2sdp"
+                                    android:orientation="horizontal">
+
+
+
+
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:id="@+id/llMSMEDisable"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="gone">
+
+
+                                <TextView
+                                    android:id="@+id/tvTextStepMSMEInfo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserratsemibold"
+                                    android:text="You are in this step"
+                                    android:textColor="@color/colorBlue"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="horizontal">
+
+                                    <ImageView
+                                        android:layout_width="@dimen/_20sdp"
+                                        android:layout_height="@dimen/_20sdp"
+                                        android:src="@drawable/agreement_grey" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:fontFamily="@font/montserratsemibold"
+                                        android:text="MSME Information"
+                                        android:textColor="@color/text_color_dark_grey"
+                                        android:textSize="@dimen/_13sdp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tvTextMSME"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:fontFamily="@font/montserratsemibold"
+                                android:lines="2"
+                                android:text=""
+                                android:textColor="@color/colorRed"
+                                android:textSize="@dimen/_10sdp"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@color/text_color_dark_grey" />
 
                         <LinearLayout
                             android:id="@+id/llGST"
@@ -1661,7 +1854,7 @@
                                         android:layout_height="@dimen/_15sdp"
                                         android:layout_gravity="end|center"
                                         android:gravity="center"
-                                        android:src="@drawable/ic_add_img" />
+                                        app:srcCompat="@drawable/ic_add_img" />
 
 
                                 </LinearLayout>
@@ -1822,6 +2015,7 @@
                                 android:visibility="gone" />
 
 
+                        </LinearLayout>
                         </LinearLayout>
 
                         <View

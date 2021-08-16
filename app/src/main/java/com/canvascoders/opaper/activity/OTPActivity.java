@@ -15,6 +15,7 @@ import android.os.Handler;
 import androidx.annotation.NonNull;
 
 import com.canvascoders.opaper.Beans.SubmitImageResponse.SubmitImageResponse;
+import com.canvascoders.opaper.fragment.MSMEFragment;
 import com.canvascoders.opaper.utils.ImagePicker;
 import com.google.android.material.navigation.NavigationView;
 
@@ -332,11 +333,7 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
 
 
         } else if (screen == 6) {
-
-
             commanFragmentCallWithoutBackStack(new DocUploadFragment());
-
-
         } else if (screen == 7) {
             commanFragmentCallWithoutBackStack(new DeliveryBoyFragment());
             //commanFragmentCallWithoutBackStack(new RateFragment());
@@ -442,7 +439,35 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
            /* i = new Intent(OTPActivity.this, TaskCompletedFragment.class);
             startActivity(i);
             finish();*/
-        } else {
+        }
+        else if (screen == 14) {
+
+            commanFragmentCallWithoutBackStack(new MSMEFragment());
+
+        }
+        else if (screen == 15) {
+
+            status_page = "MSME signing process";
+            i = new Intent(OTPActivity.this, ProcessInfoActivity.class);
+            i.putExtra("page_process", status_page);
+            startActivity(i);
+            finish();
+
+        }
+        else if (screen == 16) {
+
+            status_page = "COI signing process";
+            i = new Intent(OTPActivity.this, ProcessInfoActivity.class);
+            i.putExtra("page_process", status_page);
+            startActivity(i);
+            finish();
+            // commanFragmentCallWithoutBackStack(new TaskCompletedFragment());
+
+           /* i = new Intent(OTPActivity.this, TaskCompletedFragment.class);
+            startActivity(i);
+            finish();*/
+        }else {
+
             Toast.makeText(getApplicationContext(), "" + screen, Toast.LENGTH_SHORT).show();
         }
 

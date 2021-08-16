@@ -51,6 +51,19 @@ public class DocUpload {
     @SerializedName("owner_image")
     @Expose
     private String ownerImage;
+
+    @SerializedName("msme_registration_cert")
+    @Expose
+    private String msme_registration_cert;
+
+    public String getMsme_registration_cert() {
+        return msme_registration_cert;
+    }
+
+    public void setMsme_registration_cert(String msme_registration_cert) {
+        this.msme_registration_cert = msme_registration_cert;
+    }
+
     @SerializedName("mass_upload")
     @Expose
     private String massUpload;

@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:background="@color/lightGrey"
+    android:clickable="true"
+    android:gravity="center">
+
+
+
+    <ScrollView
+        android:id="@+id/scMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/item_wrapper_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                style="@style/CustomCardView"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_5sdp">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:orientation="vertical">
+
+
+
+                    <LinearLayout
+                        android:id="@+id/llOwnerInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:orientation="vertical">
+
+
+
+                                <LinearLayout
+                                    android:orientation="vertical"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top"
+                                    android:visibility="visible"
+                                    android:layout_marginBottom="@dimen/_5sdp"
+                                    android:gravity="top">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+
+                                        android:orientation="vertical">
+                                        <RelativeLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content">
+
+                                            <TextView
+                                                android:id="@+id/tvMSME"
+                                                style="@style/App_TextViewSmall"
+                                                android:layout_width="wrap_content"
+                                                android:layout_alignParentEnd="true"
+                                                android:layout_centerVertical="true"
+                                                android:background="@drawable/rounded_corner_view_blue"
+                                                android:focusable="false"
+                                                android:fontFamily="@font/montebold"
+                                                android:gravity="center"
+                                                android:padding="@dimen/_4sdp"
+                                                android:text="CLICK HERE"
+                                                android:textColor="@color/whitePrimary"
+                                                android:textSize="@dimen/_6sdp" />
+
+                                            <ImageView
+                                                android:id="@+id/ivCheckMSMEFront"
+                                                android:layout_width="@dimen/_15sdp"
+                                                android:layout_height="@dimen/_15sdp"
+                                                android:layout_alignParentEnd="true"
+                                                android:layout_centerVertical="true"
+                                                android:src="@drawable/bluecheck"
+                                                android:visibility="gone" />
+
+                                        </RelativeLayout>
+                                        <RelativeLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_weight="5"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                style="@style/TextviewwithoutSize"
+                                                android:layout_width="wrap_content"
+                                                android:layout_centerInParent="true"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:gravity="center"
+                                                android:singleLine="true"
+                                                android:text="MSME REGISTRATION CERTIFICATE"
+                                                android:textColor="@color/colorBlue"
+                                                android:textSize="@dimen/_8sdp" />
+
+
+                                            <RelativeLayout
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content">
+
+
+                                                <ImageView
+                                                    android:id="@+id/tvClickPanSelected"
+                                                    android:layout_width="@dimen/_15sdp"
+                                                    android:layout_height="@dimen/_15sdp"
+                                                    android:focusable="false"
+                                                    android:layout_alignParentEnd="true"
+                                                    android:layout_centerVertical="true"
+                                                    android:src="@drawable/bluecheck"
+                                                    android:visibility="gone" />
+
+                                            </RelativeLayout>
+
+                                        </RelativeLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="@dimen/_150sdp"
+                                            android:layout_marginTop="@dimen/_10sdp"
+                                            android:layout_marginBottom="@dimen/_20sdp"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/roundedcornergrey">
+
+                                            <ImageView
+                                                android:id="@+id/ivMSME"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:layout_margin="@dimen/_10sdp"
+                                                android:scaleType="centerInside"
+                                                android:src="@drawable/msme" />
+                                        </LinearLayout>
+                                    </LinearLayout>
+                                    <LinearLayout
+                                        android:id="@+id/llGonext"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:gravity="center"
+                                        android:visibility="gone"
+                                        android:layout_marginLeft="@dimen/margin_20dp"
+                                        android:layout_marginRight="@dimen/margin_20dp"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/btGoBack"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="center"
+                                            android:layout_weight="0.8"
+                                            android:fontFamily="@font/montesemibold"
+                                            android:gravity="end|center_vertical"
+                                            android:text="Don't want to change ?"
+                                            android:textColor="@color/colorBlack"
+                                            android:textSize="@dimen/_8sdp"
+                                            android:visibility="visible" />
+                                        <TextView
+                                            android:id="@+id/tvGoBack"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:layout_gravity="start"
+                                            android:fontFamily="@font/montemedium"
+                                            android:gravity="start"
+                                            android:textStyle="bold"
+                                            android:layout_weight="1"
+                                            android:paddingLeft="@dimen/_3sdp"
+
+                                            android:text="Click Here"
+                                            android:textColor="@color/colorRed"
+                                            android:textSize="@dimen/_10sdp"
+                                            android:visibility="visible" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:gravity="center"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="@dimen/_5sdp"
+                                        android:layout_weight="1"
+                                        android:visibility="gone"
+                                        android:orientation="vertical">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:gravity="center"
+                                            android:orientation="horizontal">
+
+                                            <TextView
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_marginLeft="@dimen/_5sdp"
+                                                android:layout_weight="1"
+                                                android:textAllCaps="true"
+                                                android:fontFamily="@font/montesemibold"
+                                                android:text="Service tax reg.\ncertificate"
+                                                android:textColor="@color/colorYellow"
+                                                android:textSize="@dimen/_10sdp" />
+
+                                            <ImageView
+                                                android:id="@+id/ivServiceTaxCertiSelecte"
+                                                android:layout_width="@dimen/_15sdp"
+                                                android:layout_height="@dimen/_15sdp"
+                                                android:layout_gravity="center"
+                                                android:layout_marginRight="@dimen/_5sdp"
+                                                android:src="@drawable/bluecheck"
+                                                android:visibility="gone" />
+                                        </LinearLayout>
+
+
+                                        <androidx.cardview.widget.CardView
+                                            android:layout_width="@dimen/_110sdp"
+                                            android:layout_height="@dimen/_110sdp"
+                                            android:layout_marginLeft="@dimen/_2sdp"
+                                            android:layout_marginTop="@dimen/_5sdp"
+                                            android:layout_marginRight="@dimen/_2sdp"
+                                            android:layout_marginBottom="@dimen/_2sdp"
+                                            android:background="@drawable/roundedcornergreythick"
+                                            android:elevation="@dimen/_5sdp"
+                                            app:cardCornerRadius="@dimen/_5sdp">
+
+
+                                            <ImageView
+                                                android:id="@+id/ivServiceTaxCerti"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                android:background="@drawable/ic_add_img"
+                                                android:scaleType="centerCrop" />
+
+                                        </androidx.cardview.widget.CardView>
+
+
+                                    </LinearLayout>
+
+
+
+                                </LinearLayout>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:gravity="top"
+                                android:visibility="visible"
+                                android:orientation="vertical">
+
+
+
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="@dimen/_20sdp"
+                                    android:layout_height="wrap_content">
+                                    <TextView
+                                        style="@style/App_TextViewSmall"
+                                        android:text="MSME Registration No (UAN No.)"
+                                        android:textColor="@color/colorBlue" />
+                                    <TextView
+                                        style="@style/App_TextViewSmall"
+                                        android:text=" *"
+                                        android:textColor="@color/colorRed" />
+
+                                </LinearLayout>
+                                <EditText
+                                    android:id="@+id/etMSME"
+                                    style="@style/App_EditTextStyle"
+                                    android:layout_width="match_parent"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:inputType="textCapCharacters"
+                                    android:imeOptions="actionDone"
+                                    android:textAllCaps="true"
+                                    android:textColor="@color/colorBlack"
+                                    android:textSize="@dimen/_10sdp" />
+
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.2"
+                                android:gravity="center"
+                                android:visibility="gone"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="@dimen/_5sdp"
+                                    android:layout_weight="1"
+                                    android:layout_marginTop="@dimen/_5sdp"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="@dimen/_5sdp"
+                                            android:layout_weight="1"
+                                            android:fontFamily="@font/montesemibold"
+                                            android:lines="2"
+                                            android:text="Reception area"
+                                            android:textAllCaps="true"
+                                            android:textColor="@color/colorBlue"
+                                            android:textSize="@dimen/_10sdp" />
+
+                                        <ImageView
+                                            android:id="@+id/ivReceptionImageSelected"
+                                            android:layout_width="@dimen/_15sdp"
+                                            android:layout_height="@dimen/_15sdp"
+                                            android:layout_gravity="center"
+                                            android:layout_marginRight="@dimen/_5sdp"
+                                            android:src="@drawable/bluecheck"
+                                            android:visibility="gone" />
+                                    </LinearLayout>
+
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="@dimen/_110sdp"
+                                        android:layout_height="@dimen/_110sdp"
+                                        android:layout_marginLeft="@dimen/_2sdp"
+                                        android:layout_marginRight="@dimen/_2sdp"
+                                        android:layout_marginBottom="@dimen/_2sdp"
+                                        android:background="@drawable/roundedcornergreythick"
+                                        android:elevation="@dimen/_5sdp"
+                                        app:cardCornerRadius="@dimen/_5sdp">
+
+
+                                        <ImageView
+                                            android:id="@+id/ivStoreImage"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:background="@drawable/ic_add_img"
+                                            android:scaleType="centerCrop" />
+
+                                    </androidx.cardview.widget.CardView>
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+
+
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="@dimen/_40sdp">
+        <Button
+            android:id="@+id/btSkip"
+            style="@style/Button_withYello"
+            android:layout_weight="1"
+            android:text="SKIP" />
+        <Button
+            android:id="@+id/btSubmit"
+            style="@style/Button_withGreen"
+            android:layout_weight="1"
+            android:text="SUBMIT" />
+    </LinearLayout>
+
+</RelativeLayout>

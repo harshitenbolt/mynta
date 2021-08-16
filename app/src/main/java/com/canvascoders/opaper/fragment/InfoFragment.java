@@ -130,7 +130,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     private static Dialog dialog;
     private TextView tvTypeofVendor, tvStoreType, tvVendorTypeDetail, tvLocality, tvApproach, tvShipment;
     private TextView tvLanguage;
-    private Switch switchGst, switchPartner;
+    private Switch swMSME, switchPartner;
     private String TAG = "InfoFragment";
     private ProgressDialog mProgressDialog;
     String validationapiUrl = "";
@@ -187,7 +187,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     private String isgsttn = "no", if_itr = "";
     private static int IMAGE_SELCTION_CODE = 0;
     private static final int IMAGE_GST = 101;
-    private String isPartnered = "no";
+    private String isPartnered = "no", ismSME = "no";
     private RelativeLayout rvSelectLanguage, rvSelectStoretype;
     private ArrayList<String> dcLists = new ArrayList<>();
     String[] select_language = {
@@ -628,6 +628,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         etPerCity = view.findViewById(R.id.etPerCity);
         etPerState = view.findViewById(R.id.etPerState);
         switchPartner = view.findViewById(R.id.sw_partner);
+        swMSME = view.findViewById(R.id.swMSME);
 
         cbSame.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -711,6 +712,19 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
                     isPartnered = "yes";
                 } else {
                     isPartnered = "no";
+
+                }
+            }
+        });
+        swMSME.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Mylogger.getInstance().Logit(TAG, "" + isChecked);
+                // tvPartner.setEnabled(isChecked);
+                if (isChecked) {
+                    ismSME = "yes";
+                } else {
+                    ismSME = "no";
 
                 }
             }
@@ -1943,6 +1957,7 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
         user.put(Constants.PARAM_STORE_ADDRESS_LANDMARK, "" + etStoreLandmark.getText());
         user.put(Constants.PARAM_LATITUDE, "" + lattitude);
         user.put(Constants.PARAM_LONGITUDE, "" + longitude);
+        user.put(Constants.IF_MSME, "" + ismSME);
 
         if (!TextUtils.isEmpty(etLicenceNumeber.getText().toString())) {
             user.put(Constants.PARAM_LICENCE_NO, "" + etLicenceNumeber.getText());
@@ -2352,7 +2367,12 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                commanFragmentCallWithoutBackStack(new DocUploadFragment());
+                if (ismSME.equals("yes")) {
+                    commanFragmentCallWithoutBackStack(new MSMEFragment());
+                } else {
+                    commanFragmentCallWithoutBackStack(new DocUploadFragment());
+                }
+
 
             }
         });

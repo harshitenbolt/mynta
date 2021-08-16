@@ -981,6 +981,27 @@
                                 android:text="Select Store Type"
                                 android:textSize="@dimen/font_login" />
                         </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_20sdp">
+
+                            <TextView
+                                style="@style/App_TextViewSmall"
+                                android:layout_alignParentStart="true"
+                                android:fontFamily="@font/montesemibold"
+                                android:gravity="start"
+                                android:singleLine="false"
+                                android:text="is MSME certificate\navailable?"
+                                android:textSize="@dimen/_11sdp" />
+
+                            <Switch
+                                android:id="@+id/swMSME"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true" />
+                        </RelativeLayout>
+
 
                         <RelativeLayout
                             android:id="@+id/rvITRQuestion"

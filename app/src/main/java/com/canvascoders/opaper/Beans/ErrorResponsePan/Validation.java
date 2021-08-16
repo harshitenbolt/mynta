@@ -135,6 +135,30 @@ public class Validation {
     // error response for vendor details validation...
 
 
+    @SerializedName("msme_registration_no")
+    @Expose
+    private String msme_registration_no;
+
+    public String getMsme_registration_no() {
+        return msme_registration_no;
+    }
+
+    public void setMsme_registration_no(String msme_registration_no) {
+        this.msme_registration_no = msme_registration_no;
+    }
+
+    public String getMsme_registration_cert() {
+        return msme_registration_cert;
+    }
+
+    public void setMsme_registration_cert(String msme_registration_cert) {
+        this.msme_registration_cert = msme_registration_cert;
+    }
+
+    @SerializedName("msme_registration_cert")
+    @Expose
+    private String msme_registration_cert;
+
     @SerializedName("owner_name")
     @Expose
     private String ownerName;

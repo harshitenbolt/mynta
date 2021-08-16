@@ -30,6 +30,7 @@ import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditGstDetailsActivi
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditITRActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditKycActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditLocationActivity;
+import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditMSMEActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditOwnerInfoActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditPanCardActivity;
 import com.canvascoders.opaper.activity.EditWhileOnBoarding.EditShopActImagesActivity;
@@ -227,6 +228,13 @@ public class VerifyOtpEditScreen extends Fragment implements View.OnClickListene
         }
         if (screenname.equalsIgnoreCase("OWNER")) {
             i = new Intent(getActivity(), EditOwnerInfoActivity.class);
+            i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
+            startActivity(i);
+            getActivity().finish();
+        }
+
+        if (screenname.equalsIgnoreCase("MSME")) {
+            i = new Intent(getActivity(), EditMSMEActivity.class);
             i.putExtra(Constants.KEY_PROCESS_ID, proccess_id);
             startActivity(i);
             getActivity().finish();

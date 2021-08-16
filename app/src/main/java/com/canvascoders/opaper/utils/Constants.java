@@ -43,14 +43,14 @@ public class Constants {
 
     //Whole App Base URL for API manage n Call
     public static String Image_name;
-  //  public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
-           public static String BaseURL = "https://mystaging.opaper.in/api3/";
+    //  public static String BaseURL = "https://myntraopaper.opaper.in/api3/";
+    public static String BaseURL = "https://mystaging.opaper.in/api3/";
     // test server 20
     ///xfbd
     public final static String APP_NAME = "my_stage"; //stage
-   // public final static String APP_NAME = "my_live"; //live
-   // public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
-      public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
+    // public final static String APP_NAME = "my_live"; //live
+    // public static String BaseImageURL = "https://myntraopaper.opaper.in"; // Also change when change to live one.
+    public static String BaseImageURL = "https://mystaging.opaper.in"; // Also change when change to live one.
 
     public static String BaseURLOCR = "https://lynk.host/api/";
 
@@ -60,7 +60,7 @@ public class Constants {
     //public static String APKROOT = "https://myntraopaper.opaper.in/";
 
     // staging apk root
-     public static String APKROOT = "https://mystaging.opaper.in/";
+    public static String APKROOT = "https://mystaging.opaper.in/";
 
 
     public static String AADHAR_VID_URL = "https://resident.uidai.gov.in/web/resident/vidgeneration";
@@ -258,7 +258,7 @@ public class Constants {
 
     public static String PARAM_VOTER_NO = "voter_id_num";
 
-
+    public static String PARAM_MSME_REG_NO = "msme_registration_no";
     public static String PARAM_PROCESS_ID = "proccess_id";
     public static String PARAM_UID = "uid";
     public static String PARAM_KYC_TYPE = "kyc_type";
@@ -321,6 +321,7 @@ public class Constants {
     public static String PARAM_STORE_TYPE = "store_type";
     public static String PARAM_ENBOLT_ID = "enbolt_id";
     public static String PARAM_LONGITUDE = "longitude";
+    public static String IF_MSME = "if_msme";
 
     public static String PARAM_IS_PAN_EXIST = "is_pan_exist";
     public static String PARAM_IS_BANK_EXIST = "is_bank_exist";
