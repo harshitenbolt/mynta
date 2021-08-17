@@ -86,7 +86,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
     EditText etMSMERegistration;
     ProgressDialog progressDialog;
     private static final int IMAGE_DRIVING_FRONT = 1021, IMAGE_DRIVING_BACK = 1022, CROPPED_IMAGE_DL_FRONT = 1023, CROPPED_IMAGE_DL_BACK = 1024;
-
+    ImageView ivBack;
     Context context;
 
 
@@ -94,6 +94,16 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_msmeactivity);
+        ivBack = findViewById(R.id.ivBack);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        requestPermissionHandler = new RequestPermissionHandler();
+        sessionManager = new SessionManager(this);
+        str_process_id = getIntent().getStringExtra(Constants.KEY_PROCESS_ID);
         init();
     }
 
@@ -107,6 +117,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
         btSumit = findViewById(R.id.btSubmit);
         btSumit.setOnClickListener(this);
         btSkip.setOnClickListener(this);
+        APiCallGetTrackDetails();
     }
 
 
@@ -283,7 +294,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
 
         File imagefile = new File(dlImageOathFront);
         typedFile = MultipartBody.Part.createFormData("msme_registration_cert", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(dlImageOathFront)), imagefile));
-        ApiClient.getClient().create(ApiInterface.class).submitMSME("Bearer " + sessionManager.getToken(), params, typedFile).enqueue(new Callback<CommonResponse>() {
+        ApiClient.getClient().create(ApiInterface.class).editMSME("Bearer " + sessionManager.getToken(), params, typedFile).enqueue(new Callback<CommonResponse>() {
             @Override
             public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
                 progressDialog.dismiss();

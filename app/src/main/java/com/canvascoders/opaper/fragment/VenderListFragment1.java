@@ -489,6 +489,9 @@ public class VenderListFragment1 extends Fragment implements SwipeRefreshLayout.
                             vList.setGstdeclaration(vendorList.getGstdeclaration());
                             vList.setVendorSendForApproval(vendorList.getVendorSendForApproval());
                             vList.setBankDetailUpdationRequired(vendorList.getBankDetailUpdationRequired());
+                            vList.setMsme(vendorList.getMsme());
+                            vList.setMsme_agreement(vendorList.getMsme_agreement());
+                            vList.setCoi_agreement(vendorList.getCoi_agreement());
                             vList.setProccessId(vendorList.getProccessId());
                             vList.setName(vendorList.getName());
                             vList.setRate(vendorList.getRate());

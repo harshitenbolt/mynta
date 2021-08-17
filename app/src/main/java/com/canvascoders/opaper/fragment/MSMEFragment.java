@@ -103,6 +103,7 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
         tvMSME = v.findViewById(R.id.tvMSME);
         tvMSME.setOnClickListener(this);
         ivMSME = v.findViewById(R.id.ivMSME);
+        requestPermissionHandler = new RequestPermissionHandler();
         ivCheckMSMEFront = v.findViewById(R.id.ivCheckMSMEFront);
         ivCheckMSMEFront.setOnClickListener(this);
         btSkip = v.findViewById(R.id.btSkip);
@@ -122,9 +123,8 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
                 if (imageSide == 1) {
                     IMAGE_SELCTION_CODE = IMAGE_MSME_FRONT;
                     Intent intent1 = ImagePicker.getCameraIntent(context);
-                    getParentFragment().startActivityForResult(intent1, IMAGE_MSME_FRONT);
+                    startActivityForResult(intent1, IMAGE_MSME_FRONT);
                     //DrivingFragment.this.startActivityForResult(intent1, IMAGE_DRIVING_FRONT);
-
                 }
 
             }
@@ -154,12 +154,9 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
                     } else {
                         Constants.ShowNoInternet(getActivity());
                     }
-
                 }
-
                 break;
             case R.id.btSkip:
-
                 showAlert();
                 break;
 
@@ -333,8 +330,8 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
                 Uri uri = ImagePicker.getPickImageResultUri(getActivity(), data);
                 Intent intent = new Intent(context, CropImage2Activity.class);
                 intent.putExtra(KEY_SOURCE_URI, uri.toString());
-                getParentFragment().startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
-                onDetach();
+                startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
+
             }
 
             if (requestCode == CROPPED_IMAGE_DL_FRONT) {

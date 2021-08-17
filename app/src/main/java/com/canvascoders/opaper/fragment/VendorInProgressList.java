@@ -536,6 +536,9 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
                             vList.setGstdeclaration(vendorList.getGstdeclaration());
                             vList.setVendorSendForApproval(vendorList.getVendorSendForApproval());
                             vList.setBankDetailUpdationRequired(vendorList.getBankDetailUpdationRequired());
+                            vList.setMsme(vendorList.getMsme());
+                            vList.setMsme_agreement(vendorList.getMsme_agreement());
+                            vList.setCoi_agreement(vendorList.getCoi_agreement());
 
                             vList.setName(vendorList.getName());
                             vList.setRate(vendorList.getRate());
@@ -699,7 +702,9 @@ public class VendorInProgressList extends Fragment implements SwipeRefreshLayout
                             vList.setGstdeclaration(vendorList.getGstdeclaration());
                             vList.setVendorSendForApproval(vendorList.getVendorSendForApproval());
                             vList.setBankDetailUpdationRequired(vendorList.getBankDetailUpdationRequired());
-
+                            vList.setMsme(vendorList.getMsme());
+                            vList.setMsme_agreement(vendorList.getMsme_agreement());
+                            vList.setCoi_agreement(vendorList.getCoi_agreement());
                             vList.setName(vendorList.getName());
                             vList.setRate(vendorList.getRate());
                             vList.setAssessmentverify(vendorList.getAssessmentverify());

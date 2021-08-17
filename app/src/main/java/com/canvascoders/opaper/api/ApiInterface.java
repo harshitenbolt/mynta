@@ -130,9 +130,18 @@ public interface ApiInterface {
     Call<CommonResponse> submitMSME(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
 
 
+    @Multipart
+    @POST("edit-msme")
+    Call<CommonResponse> editMSME(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
+
+
     @FormUrlEncoded
     @POST("agreement-resign")
     Call<ResignAgreementResponse> ResignAgreement(@Header("Authorization") String token, @Field("proccess_id") String data);
+
+    @FormUrlEncoded
+    @POST("edit-coi-resign-link")
+    Call<ResignAgreementResponse> sendLinkCOI(@Header("Authorization") String token, @Field("proccess_id") String data);
 
 
     @FormUrlEncoded

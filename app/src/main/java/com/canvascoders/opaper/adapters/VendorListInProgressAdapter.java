@@ -153,6 +153,21 @@ public class VendorListInProgressAdapter extends RecyclerView.Adapter<VendorList
             holder.tvStatuswhileOnBoarding.setTextColor(context.getResources().getColor(R.color.color10));
             tintViewDrawable(holder.tvStatuswhileOnBoarding, context.getResources().getColor(R.color.color10));
         }
+        else if (!TextUtils.isEmpty(vendorLists.get(position).getMsme()) && !vendorLists.get(position).getMsme().equalsIgnoreCase("0")) {
+            holder.tvStatuswhileOnBoarding.setText(" " + vendorLists.get(position).getMsme());
+            holder.tvStatuswhileOnBoarding.setTextColor(context.getResources().getColor(R.color.color10));
+            tintViewDrawable(holder.tvStatuswhileOnBoarding, context.getResources().getColor(R.color.color10));
+        }
+        else if (!TextUtils.isEmpty(vendorLists.get(position).getMsme_agreement()) && !vendorLists.get(position).getMsme_agreement().equalsIgnoreCase("0")) {
+            holder.tvStatuswhileOnBoarding.setText(" " + vendorLists.get(position).getMsme_agreement());
+            holder.tvStatuswhileOnBoarding.setTextColor(context.getResources().getColor(R.color.color10));
+            tintViewDrawable(holder.tvStatuswhileOnBoarding, context.getResources().getColor(R.color.color10));
+        }
+        else if (!TextUtils.isEmpty(vendorLists.get(position).getCoi_agreement()) && !vendorLists.get(position).getCoi_agreement().equalsIgnoreCase("0")) {
+            holder.tvStatuswhileOnBoarding.setText(" " + vendorLists.get(position).getCoi_agreement());
+            holder.tvStatuswhileOnBoarding.setTextColor(context.getResources().getColor(R.color.color10));
+            tintViewDrawable(holder.tvStatuswhileOnBoarding, context.getResources().getColor(R.color.color10));
+        }
 
 
     }

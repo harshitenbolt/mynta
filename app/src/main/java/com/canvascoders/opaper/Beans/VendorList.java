@@ -310,6 +310,42 @@ public class VendorList implements Serializable {
     @Expose
     private String ecomAgreeement;
 
+    @SerializedName("msme")
+    @Expose
+    private String msme;
+
+    @SerializedName("msme_agreement")
+    @Expose
+    private String msme_agreement;
+
+    public String getMsme() {
+        return msme;
+    }
+
+    public void setMsme(String msme) {
+        this.msme = msme;
+    }
+
+    public String getMsme_agreement() {
+        return msme_agreement;
+    }
+
+    public void setMsme_agreement(String msme_agreement) {
+        this.msme_agreement = msme_agreement;
+    }
+
+    public String getCoi_agreement() {
+        return coi_agreement;
+    }
+
+    public void setCoi_agreement(String coi_agreement) {
+        this.coi_agreement = coi_agreement;
+    }
+
+    @SerializedName("coi_agreement")
+    @Expose
+    private String coi_agreement;
+
     public String getEcomAgreeement() {
         return ecomAgreeement;
     }
