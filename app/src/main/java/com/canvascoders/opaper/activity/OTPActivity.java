@@ -221,7 +221,6 @@ public class OTPActivity extends AppCompatActivity implements NavigationView.OnN
 
                 break;
             case R.id.llNavInvoice:
-
                 commanFragmentCallWithoutBackStack(new InvoiceMainFragment());
                 drawer.closeDrawer(GravityCompat.START);
                 break;

@@ -412,6 +412,115 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                         }
 
                                     }
+                                    //if msme selected
+                                    else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("MSME Sign.")) {
+                                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                                            ivAgreeStatus.setBackgroundDrawable(null);
+                                            llAgreement.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAgreement.setPadding(pL, pT, pR, pB);
+
+                                            ivNocStatus.setBackgroundDrawable(null);
+                                            llNoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llNoc.setPadding(pL, pT, pR, pB);
+
+                                            ivGstStatus.setBackgroundDrawable(null);
+                                            llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llGSt.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessStatus.setBackgroundDrawable(null);
+                                            llAssesment.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAssesment.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessMSME.setBackgroundDrawable(getResources().getDrawable(R.drawable.greencheck));
+                                            llMSME.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
+                                            llMSME.setPadding(pL, pT, pR, pB);
+
+                                            ivSOAStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
+                                            llSOA.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llSOA.setPadding(pL, pT, pR, pB);
+
+                                        } else {
+                                            ivAgreeStatus.setBackground(null);
+                                            llAgreement.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAgreement.setPadding(pL, pT, pR, pB);
+
+                                            ivNocStatus.setBackground(null);
+                                            llNoc.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llNoc.setPadding(pL, pT, pR, pB);
+
+                                            ivGstStatus.setBackground(null);
+                                            llGSt.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llGSt.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessStatus.setBackground(null);
+                                            llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAssesment.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessMSME.setBackground(getResources().getDrawable(R.drawable.greencheck));
+                                            llMSME.setBackground(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
+                                            llMSME.setPadding(pL, pT, pR, pB);
+
+                                            ivSOAStatus.setBackground(getResources().getDrawable(R.drawable.pending));
+                                            llSOA.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llSOA.setPadding(pL, pT, pR, pB);
+
+                                        }
+
+                                    }
+
+                                    else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("COI Sign.")) {
+                                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                                            ivAgreeStatus.setBackgroundDrawable(null);
+                                            llAgreement.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAgreement.setPadding(pL, pT, pR, pB);
+
+                                            ivNocStatus.setBackgroundDrawable(null);
+                                            llNoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llNoc.setPadding(pL, pT, pR, pB);
+
+                                            ivGstStatus.setBackgroundDrawable(null);
+                                            llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llGSt.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessStatus.setBackgroundDrawable(null);
+                                            llAssesment.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAssesment.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessMSME.setBackgroundDrawable(null);
+                                            llMSME.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llMSME.setPadding(pL, pT, pR, pB);
+
+                                            ivSOAStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.greencheck));
+                                            llSOA.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
+                                            llSOA.setPadding(pL, pT, pR, pB);
+
+
+                                        } else {
+                                            ivAgreeStatus.setBackground(null);
+                                            llAgreement.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAgreement.setPadding(pL, pT, pR, pB);
+
+                                            ivNocStatus.setBackground(null);
+                                            llNoc.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llNoc.setPadding(pL, pT, pR, pB);
+
+                                            ivGstStatus.setBackground(null);
+                                            llGSt.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llGSt.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessStatus.setBackground(null);
+                                            llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAssesment.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessMSME.setBackground(null);
+                                            llMSME.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llMSME.setPadding(pL, pT, pR, pB);
+
+                                            ivSOAStatus.setBackground(getResources().getDrawable(R.drawable.greencheck));
+                                            llSOA.setBackground(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
+                                            llSOA.setPadding(pL, pT, pR, pB);
+                                        }
+                                    }
 
 
                                 } else {
@@ -601,7 +710,115 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
 
                                     }
 
+                                    //if msme selected
+                                    else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("MSME Sign.")) {
+                                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                                            ivAgreeStatus.setBackgroundDrawable(null);
+                                            llAgreement.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAgreement.setPadding(pL, pT, pR, pB);
 
+                                            ivNocStatus.setBackgroundDrawable(null);
+                                            llNoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llNoc.setPadding(pL, pT, pR, pB);
+
+                                            ivGstStatus.setBackgroundDrawable(null);
+                                            llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llGSt.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessStatus.setBackgroundDrawable(null);
+                                            llAssesment.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAssesment.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessMSME.setBackgroundDrawable(getResources().getDrawable(R.drawable.greencheck));
+                                            llMSME.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
+                                            llMSME.setPadding(pL, pT, pR, pB);
+
+                                            ivSOAStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.pending));
+                                            llSOA.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llSOA.setPadding(pL, pT, pR, pB);
+
+                                        } else {
+                                            ivAgreeStatus.setBackground(null);
+                                            llAgreement.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAgreement.setPadding(pL, pT, pR, pB);
+
+                                            ivNocStatus.setBackground(null);
+                                            llNoc.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llNoc.setPadding(pL, pT, pR, pB);
+
+                                            ivGstStatus.setBackground(null);
+                                            llGSt.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llGSt.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessStatus.setBackground(null);
+                                            llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAssesment.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessMSME.setBackground(getResources().getDrawable(R.drawable.greencheck));
+                                            llMSME.setBackground(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
+                                            llMSME.setPadding(pL, pT, pR, pB);
+
+                                            ivSOAStatus.setBackground(getResources().getDrawable(R.drawable.pending));
+                                            llSOA.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llSOA.setPadding(pL, pT, pR, pB);
+
+                                        }
+
+                                    }
+
+                                    else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("COI Sign.")) {
+                                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                                            ivAgreeStatus.setBackgroundDrawable(null);
+                                            llAgreement.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAgreement.setPadding(pL, pT, pR, pB);
+
+                                            ivNocStatus.setBackgroundDrawable(null);
+                                            llNoc.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llNoc.setPadding(pL, pT, pR, pB);
+
+                                            ivGstStatus.setBackgroundDrawable(null);
+                                            llGSt.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llGSt.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessStatus.setBackgroundDrawable(null);
+                                            llAssesment.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAssesment.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessMSME.setBackgroundDrawable(null);
+                                            llMSME.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llMSME.setPadding(pL, pT, pR, pB);
+
+                                            ivSOAStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.greencheck));
+                                            llSOA.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
+                                            llSOA.setPadding(pL, pT, pR, pB);
+
+
+                                        } else {
+                                            ivAgreeStatus.setBackground(null);
+                                            llAgreement.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAgreement.setPadding(pL, pT, pR, pB);
+
+                                            ivNocStatus.setBackground(null);
+                                            llNoc.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llNoc.setPadding(pL, pT, pR, pB);
+
+                                            ivGstStatus.setBackground(null);
+                                            llGSt.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llGSt.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessStatus.setBackground(null);
+                                            llAssesment.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llAssesment.setPadding(pL, pT, pR, pB);
+
+                                            ivAssessMSME.setBackground(null);
+                                            llMSME.setBackground(getResources().getDrawable(R.drawable.roundedcornergrey));
+                                            llMSME.setPadding(pL, pT, pR, pB);
+
+                                            ivSOAStatus.setBackground(getResources().getDrawable(R.drawable.greencheck));
+                                            llSOA.setBackground(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
+                                            llSOA.setPadding(pL, pT, pR, pB);
+                                        }
+                                    }
                                 }
                             } else {
                                 rvGST.setVisibility(View.GONE);

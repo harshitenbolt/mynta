@@ -75,7 +75,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
     private static final int IMAGE_MSME_FRONT = 1021;
     LinearLayout llCapturePan;
     RequestPermissionHandler requestPermissionHandler;
-    ProgressDialog mProgressDialog;
+
     private static int IMAGE_SELCTION_CODE = 0;
     private boolean isPanSelected = false;
     String str_process_id = "";
@@ -101,6 +101,9 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
                 finish();
             }
         });
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Please wait ...");
+        progressDialog.setCancelable(false);
         requestPermissionHandler = new RequestPermissionHandler();
         sessionManager = new SessionManager(this);
         str_process_id = getIntent().getStringExtra(Constants.KEY_PROCESS_ID);
@@ -122,14 +125,14 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
 
 
     private void APiCallGetTrackDetails() {
-        mProgressDialog.show();
+        progressDialog.show();
         Map<String, String> params = new HashMap<>();
         params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         params.put(Constants.PARAM_AGENT_ID, sessionManager.getAgentID());
         ApiClient.getClient().create(ApiInterface.class).geTrackingDetails("Bearer " + sessionManager.getToken(), params).enqueue(new Callback<GetTrackDetailsResponse>() {
             @Override
             public void onResponse(Call<GetTrackDetailsResponse> call, Response<GetTrackDetailsResponse> response) {
-                mProgressDialog.dismiss();
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     GetTrackDetailsResponse getTrackDetailsResponse = response.body();
                     if (getTrackDetailsResponse.getResponseCode() == 200) {
@@ -149,7 +152,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onFailure(Call<GetTrackDetailsResponse> call, Throwable t) {
-                mProgressDialog.dismiss();
+                progressDialog.dismiss();
                 Toast.makeText(EditMSMEActivity.this, "#errorcode 2091 " + getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
             }
         });

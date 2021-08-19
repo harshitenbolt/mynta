@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -76,13 +77,12 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
     private static final int IMAGE_MSME_FRONT = 1021;
     LinearLayout llCapturePan;
     RequestPermissionHandler requestPermissionHandler;
-    ProgressDialog mProgressDialog;
+
     private static int IMAGE_SELCTION_CODE = 0;
     private boolean isPanSelected = false;
     String str_process_id = "";
     private String file_name, file_url, pan_card_detail_id, birth_date = "";
     SessionManager sessionManager;
-    String str_proccess_id;
     ImageView ivMSME, ivCheckMSMEFront;
     EditText etMSMERegistration;
     ProgressDialog progressDialog;
@@ -97,6 +97,12 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
         v = inflater.inflate(R.layout.fragment_m_s_m_e, container, false);
         context = this.getContext();
         OTPActivity.settitle(Constants.TITLE_MSME_VERIFICATION);
+        progressDialog = new ProgressDialog(context);
+
+        sessionManager = new SessionManager(getActivity());
+        str_process_id = sessionManager.getData(Constants.KEY_PROCESS_ID);
+        progressDialog.setMessage("Please wait ...");
+        progressDialog.setCancelable(false);
         init();
         return v;
     }
@@ -105,7 +111,7 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
         tvMSME = v.findViewById(R.id.tvMSME);
         tvMSME.setOnClickListener(this);
         ivMSME = v.findViewById(R.id.ivMSME);
-        etMSMERegistration =v.findViewById(R.id.etMSME);
+        etMSMERegistration = v.findViewById(R.id.etMSME);
         requestPermissionHandler = new RequestPermissionHandler();
         ivCheckMSMEFront = v.findViewById(R.id.ivCheckMSMEFront);
         ivCheckMSMEFront.setOnClickListener(this);
@@ -172,12 +178,12 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
         MultipartBody.Part typedFile = null;
         Map<String, String> params = new HashMap<String, String>();
 
-        params.put(Constants.PARAM_PROCESS_ID, str_proccess_id);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         params.put("app_current_version", String.valueOf(Constants.APP_VERSION));
 
-       // File imagefile = new File(panImagepath);
-       // typedFile = MultipartBody.Part.createFormData("msme_registration_cert", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile));
-        ApiClient.getClient().create(ApiInterface.class).skipMSME("Bearer " + sessionManager.getToken(), str_proccess_id).enqueue(new Callback<CommonResponse>() {
+        // File imagefile = new File(panImagepath);
+        // typedFile = MultipartBody.Part.createFormData("msme_registration_cert", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile));
+        ApiClient.getClient().create(ApiInterface.class).skipMSME("Bearer " + sessionManager.getToken(), str_process_id).enqueue(new Callback<CommonResponse>() {
             @Override
             public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
                 progressDialog.dismiss();
@@ -244,7 +250,7 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
         MultipartBody.Part typedFile = null;
         Map<String, String> params = new HashMap<String, String>();
 
-        params.put(Constants.PARAM_PROCESS_ID, str_proccess_id);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         params.put(Constants.PARAM_MSME_REG_NO, "" + etMSMERegistration.getText());
         params.put("app_current_version", String.valueOf(Constants.APP_VERSION));
 
@@ -257,7 +263,8 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
                 if (response.isSuccessful()) {
                     CommonResponse commonResponse = response.body();
                     if (commonResponse.getResponseCode() == 200) {
-                        commanFragmentCallWithoutBackStack(new DocUploadFragment());
+                     //   commanFragmentCallWithoutBackStack(new DocUploadFragment());
+                        showAlert(commonResponse.getResponse());
                     } else {
                         Toast.makeText(getActivity(), commonResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         if (commonResponse.getResponseCode() == 400) {
@@ -288,6 +295,44 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+
+    }
+
+    private void showAlert(String msg) {
+        Button btSubmit;
+        TextView tvMessage, tvTitle;
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+        dialog = new Dialog(context);
+        dialog = new Dialog(getActivity(), R.style.DialogLSideBelow);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_success);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        btSubmit = dialog.findViewById(R.id.btSubmit);
+        tvMessage = dialog.findViewById(R.id.tvMessage);
+        tvTitle = dialog.findViewById(R.id.tvTitle);
+        tvTitle.setText("MSME Details");
+
+        tvMessage.setText(msg);
+
+        btSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+
+                commanFragmentCallWithoutBackStack(new DocUploadFragment());
+
+
+            }
+        });
+
+        dialog.setCancelable(false);
+
+        dialog.show();
 
     }
 

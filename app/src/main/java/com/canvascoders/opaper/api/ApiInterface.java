@@ -126,7 +126,7 @@ public interface ApiInterface {
 
 
     @Multipart
-    @POST("submit-details3")
+    @POST("submit-msme")
     Call<CommonResponse> submitMSME(@Header("Authorization") String token, @PartMap() Map<String, String> data, @Part MultipartBody.Part attachment);
 
 
