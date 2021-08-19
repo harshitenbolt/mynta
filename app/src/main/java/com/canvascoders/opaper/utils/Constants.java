@@ -429,6 +429,7 @@ public class Constants {
     public static String TITLE_NOC_DETAIL = "Noc Details";
     public static String TITLE_NOTIFICATION = "Notification";
     public static String TITLE_PAN_CARD_VERIFICATION = "PAN Verification";
+    public static String TITLE_MSME_VERIFICATION = "MSME Verification";
     public static String TITLE_PROFILE = "Profile";
     public static String TITLE_RATE_UPDATE = "Rate Update";
     public static String TITLE_DELIVERY_BOY = "Delivery boy";

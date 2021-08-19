@@ -34,6 +34,7 @@ import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.CropImage2Activity;
 import com.canvascoders.opaper.activity.EndTaskActivity;
+import com.canvascoders.opaper.activity.OTPActivity;
 import com.canvascoders.opaper.activity.TaskDetailActivity;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
@@ -95,6 +96,7 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_m_s_m_e, container, false);
         context = this.getContext();
+        OTPActivity.settitle(Constants.TITLE_MSME_VERIFICATION);
         init();
         return v;
     }
@@ -103,6 +105,7 @@ public class MSMEFragment extends Fragment implements View.OnClickListener {
         tvMSME = v.findViewById(R.id.tvMSME);
         tvMSME.setOnClickListener(this);
         ivMSME = v.findViewById(R.id.ivMSME);
+        etMSMERegistration =v.findViewById(R.id.etMSME);
         requestPermissionHandler = new RequestPermissionHandler();
         ivCheckMSMEFront = v.findViewById(R.id.ivCheckMSMEFront);
         ivCheckMSMEFront.setOnClickListener(this);
