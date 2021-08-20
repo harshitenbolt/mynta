@@ -15,6 +15,18 @@ public class BasicDetails {
     @SerializedName("name")
     @Expose
     private String name;
+
+    public String getMsme_registration_no() {
+        return msme_registration_no;
+    }
+
+    public void setMsme_registration_no(String msme_registration_no) {
+        this.msme_registration_no = msme_registration_no;
+    }
+
+    @SerializedName("msme_registration_no")
+    @Expose
+    private String msme_registration_no;
     @SerializedName("father_name")
     @Expose
     private String fatherName;

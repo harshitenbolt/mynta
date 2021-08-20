@@ -38,21 +38,21 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
 
     ImageView ivBack;
     ImageView tvAddNewGST,tvAddNewITR;
-    ImageView ivEditLocation, ivEditKyc, ivEditPan, ivEditBank, ivEditStoreDetails, ivOwnerDetails, ivGstInformation,ivITRInformation, ivShopActEdit, ivDeliveryDetails, ivRateDetails;
+    ImageView ivEditLocation, ivEditKyc, ivEditPan, ivEditBank,ivEditMSME,ivEditCOI, ivEditStoreDetails, ivOwnerDetails, ivGstInformation,ivITRInformation, ivShopActEdit, ivDeliveryDetails, ivRateDetails;
     String proccess_id = "";
     NetworkConnectivity networkConnectivity;
-    LinearLayout llShopActDisable, llShopActEnable, llLocationEnable, llLocatonDisable, llKyCEnable, llKYCDisable, llPanEnable, llPanDisable, llChequeEnable, llChequeDisable, llInformationEnable, llVendorDetailsEnable, llVendorsDetailsDisable, llOwnerDisable, llOwnerEnable, llDocumentsDisable, llDocumentsEnable, llDeliveryBoysEnable, llDeliveryBoysDisable, llRateDetailsEnable, llRateDetailsDisable, llRateApprovalEnable, llRateApprovalDisable, llAgreementEnable, llAgreementDisable, llGstEnable,llITREnable, llGstDisable,llITRDisable;
+    LinearLayout llShopActDisable, llShopActEnable, llLocationEnable, llLocatonDisable, llKyCEnable, llKYCDisable, llPanEnable, llPanDisable,llMSMEEnable,llMSMEDisable,llCoiDisable,llCOiEanable, llChequeEnable, llChequeDisable, llInformationEnable, llVendorDetailsEnable, llVendorsDetailsDisable, llOwnerDisable, llOwnerEnable, llDocumentsDisable, llDocumentsEnable, llDeliveryBoysEnable, llDeliveryBoysDisable, llRateDetailsEnable, llRateDetailsDisable, llRateApprovalEnable, llRateApprovalDisable, llAgreementEnable, llAgreementDisable, llGstEnable,llITREnable, llGstDisable,llITRDisable;
     SessionManager sessionManager;
-    TextView tvSHopActText, tvLocationText, tvKYCText, tvPanText, tvBankText, tvStoreText, tvOwnerText, tvGstText,tvITRText, tvDeliveryText, tvRateText, tvRateApprovalText;
-    TextView tvLattitude, tvLongitude, tvDocNumber, tvDocAddress, tvDocName, tvPanName, tvPanNumber, tvPanDOB, tvBankAccName, tvBankAcccountNumber, tvBankBranchName, tvStoreName, tvStoreAddress, tvStoreDCName, tvOwnerNAme, tvOwnerAddress, tvOwnerEmailID, tvGSTNumber, tvGStPanNumber, tvNoDeliveryBoysAdded, tvNoofRates;
+    TextView tvSHopActText, tvLocationText, tvKYCText, tvPanText,tvMsmeText,tvCOIText, tvBankText, tvStoreText, tvOwnerText, tvGstText,tvITRText, tvDeliveryText, tvRateText, tvRateApprovalText;
+    TextView tvLattitude, tvLongitude, tvDocNumber, tvDocAddress, tvDocName, tvPanName,tvMSMEName,tvCOIName, tvPanNumber, tvPanDOB, tvBankAccName, tvBankAcccountNumber, tvBankBranchName, tvStoreName, tvStoreAddress, tvStoreDCName, tvOwnerNAme, tvOwnerAddress, tvOwnerEmailID, tvGSTNumber, tvGStPanNumber, tvNoDeliveryBoysAdded, tvNoofRates;
     ProgressDialog progressDialog;
     ImageView ivAdharFront, ivAdharBack, ivPanFront, ivGstFront;
     String mobile = "";
 
-    TextView tvRemarkLocation, tvRemarkKYC, tvRemarkPan, tvRemarkBank, tvRemarkStore, tvRemarkOwner, tvRemarkGST,tvRemarkITR, tvRemarkShopAct, tvRemarkDelivery, tvRemarkRateDetails, tvRemarkRateApproval;
+    TextView tvRemarkLocation, tvRemarkKYC, tvRemarkPan, tvRemarkBank, tvRemarkStore, tvRemarkOwner,tvRemarkMSME,tvRemakrCOI, tvRemarkGST,tvRemarkITR, tvRemarkShopAct, tvRemarkDelivery, tvRemarkRateDetails, tvRemarkRateApproval;
     ImageView ivChequeImage;
     SwipeRefreshLayout swResfresh;
-    ImageView ivStoreImage,ivOwnerImage;
+    ImageView ivStoreImage,ivOwnerImage,ivMSMEImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +84,11 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         ivEditKyc = findViewById(R.id.ivEditKYC);
         ivEditPan = findViewById(R.id.ivEditPan);
         ivEditBank = findViewById(R.id.ivEditCheque);
+        ivEditMSME = findViewById(R.id.ivEditMSME);
+        ivEditCOI = findViewById(R.id.ivEditCOI);
+
+        ivEditMSME.setOnClickListener(this);
+        ivEditCOI.setOnClickListener(this);
         ivEditStoreDetails = findViewById(R.id.ivEditStoreDetails);
         ivOwnerDetails = findViewById(R.id.ivEditOwnerDetails);
         ivGstInformation = findViewById(R.id.ivEditGSTDetails);
@@ -95,6 +100,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         ivRateDetails = findViewById(R.id.ivRateDetails);
         ivChequeImage = findViewById(R.id.ivChequeImage);
         ivStoreImage = findViewById(R.id.ivStoreImage);
+        ivMSMEImage = findViewById(R.id.ivMSMEImage);
         ivOwnerImage = findViewById(R.id.ivOwnerImage);
         ivRateDetails.setOnClickListener(this);
         ivEditLocation.setOnClickListener(this);
@@ -116,6 +122,11 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         llKyCEnable = findViewById(R.id.llKYCENable);
         llKYCDisable = findViewById(R.id.llKycDisable);
         llPanEnable = findViewById(R.id.llPanEnable);
+        llMSMEEnable = findViewById(R.id.llMSMEEnable);
+        llMSMEDisable = findViewById(R.id.llMSMEDisable);
+        llCoiDisable = findViewById(R.id.llCOIDisable);
+        llCOiEanable = findViewById(R.id.llCOIEnable);
+
         llPanDisable = findViewById(R.id.llPanDisable);
         llChequeEnable = findViewById(R.id.llBankEnable);
         llChequeDisable = findViewById(R.id.llChequeDisable);
@@ -140,8 +151,10 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         tvSHopActText = findViewById(R.id.tvTextStepShopAct);
         tvKYCText = findViewById(R.id.tvTextStepKYC);
         tvPanText = findViewById(R.id.tvTextStepPan);
+        tvMsmeText = findViewById(R.id.tvTextStepMSMEInfo);
+        tvCOIText = findViewById(R.id.tvTextStepCOIInfo);
         tvBankText = findViewById(R.id.tvTextStepCheque);
-        tvBankText = findViewById(R.id.tvTextStepCheque);
+
         tvStoreText = findViewById(R.id.tvTextStepStoreAddress);
         tvOwnerText = findViewById(R.id.tvTextStepOwnerInfo);
         tvDeliveryText = findViewById(R.id.tvTextStepDeliveryBoys);
@@ -154,6 +167,7 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         tvDocAddress = findViewById(R.id.tvDocKYCAddress);
         tvPanNumber = findViewById(R.id.tvPanNumber);
         tvPanName = findViewById(R.id.tvPanName);
+        tvMSMEName = findViewById(R.id.tvMSMEName);
         tvPanDOB = findViewById(R.id.tvPanDOB);
         tvGstText = findViewById(R.id.tvTextStepGST);
         tvITRText= findViewById(R.id.tvTextStepITR);
@@ -177,6 +191,9 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
         tvRemarkBank = findViewById(R.id.tvTextNotBank);
         tvRemarkStore = findViewById(R.id.tvTextNotVendor);
         tvRemarkOwner = findViewById(R.id.tvTextOwner);
+        tvRemarkMSME= findViewById(R.id.tvTextMSME);
+        tvRemakrCOI= findViewById(R.id.tvTextCOI);
+
         tvRemarkGST = findViewById(R.id.tvTextNotGST);
         tvRemarkITR = findViewById(R.id.tvTextNotITR);
         tvRemarkShopAct = findViewById(R.id.tvTextNotShopAct);
@@ -396,6 +413,75 @@ public class TaskProccessDetailActivity extends AppCompatActivity implements Vie
                             llPanDisable.setVisibility(View.VISIBLE);
                             llPanEnable.setVisibility(View.GONE);
                             tvPanText.setVisibility(View.VISIBLE);
+                        }
+
+
+
+
+                        // MSME Card Verification
+                        if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getMsme_details() == 1) {
+                            llMSMEDisable.setVisibility(View.GONE);
+                            llMSMEEnable.setVisibility(View.VISIBLE);
+                            tvMSMEName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getMsme_registration_no());
+                            Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getMsme_registration_cert()).into(ivMSMEImage);
+                            // Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().get()).into(ivAdharBack);
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                                //  tvRemarkKYC.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getPanVerifyRemark());
+
+                                if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getMsmeVerifyRemark().equalsIgnoreCase("")) {
+                                    //tvRemarkPan.setVisibility(View.VISIBLE);
+                                    tvMSMEName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getMsme_registration_no());
+                                    Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getMsme_registration_cert()).into(ivMSMEImage);
+                                    tvRemarkMSME.setVisibility(View.VISIBLE);
+                                    tvRemarkMSME.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getMsmeVerifyRemark());
+                                } else {
+                                    tvRemarkMSME.setVisibility(View.GONE);
+                                }
+                            }
+
+
+                        } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getMsme_details() == 0) {
+                            llMSMEDisable.setVisibility(View.VISIBLE);
+                            llMSMEEnable.setVisibility(View.GONE);
+                            tvMsmeText.setVisibility(View.GONE);
+
+                        } else {
+                            llMSMEDisable.setVisibility(View.VISIBLE);
+                            llMSMEEnable.setVisibility(View.GONE);
+                            tvMsmeText.setVisibility(View.VISIBLE);
+                        }
+
+                        // COI Card Verification
+                        if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getCoi() == 1) {
+                            llCoiDisable.setVisibility(View.GONE);
+                            llCOiEanable.setVisibility(View.VISIBLE);
+                           // tvMSMEName.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getMsme_registration_no());
+                            //Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getMsme_registration_cert()).into(ivMSMEImage);
+                            // Glide.with(TaskProccessDetailActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().get()).into(ivAdharBack);
+                            if (getTrackDetailsResponse.getData().get(0).getVendorRejection().size() > 0) {
+                                //  tvRemarkKYC.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getPanVerifyRemark());
+
+                                if (!getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getCoi_remark().equalsIgnoreCase("")) {
+                                    //tvRemarkPan.setVisibility(View.VISIBLE);
+                                    tvRemakrCOI.setVisibility(View.VISIBLE);
+                                    tvRemakrCOI.setText(getTrackDetailsResponse.getData().get(0).getVendorRejection().get(0).getCoi_remark());
+                                } else {
+                                    tvRemakrCOI.setVisibility(View.GONE);
+                                }
+
+
+                            }
+
+
+                        } else if (getTrackDetailsResponse.getData().get(0).getTrackDetail().getCoi() == 0) {
+                            llCoiDisable.setVisibility(View.VISIBLE);
+                            llCOiEanable.setVisibility(View.GONE);
+                            tvCOIText.setVisibility(View.GONE);
+
+                        } else {
+                            llCoiDisable.setVisibility(View.VISIBLE);
+                            llCOiEanable.setVisibility(View.GONE);
+                            tvCOIText.setVisibility(View.VISIBLE);
                         }
 
 

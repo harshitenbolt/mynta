@@ -48,13 +48,13 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
     private String lattitude = "", longitude = "";
     GPSTracker gps;
     final int sdk = android.os.Build.VERSION.SDK_INT;
-    RelativeLayout rvGST, rvECOM,rvMSME;
-    private ImageView ivAgreeStatus, ivGstStatus, ivAssessStatus, ivNocStatus,ivAssessMSME,ivSOAStatus;
+    RelativeLayout rvGST, rvECOM, rvMSME;
+    private ImageView ivAgreeStatus, ivGstStatus, ivAssessStatus, ivNocStatus, ivAssessMSME, ivSOAStatus;
     private Boolean resend = false;
     private String TAG = "Process_info";
     ProgressDialog progressDialog;
     int pL, pT, pR, pB;
-    LinearLayout llNoc, llAgreement, llGSt, llAssesment,llMSME,llSOA;
+    LinearLayout llNoc, llAgreement, llGSt, llAssesment, llMSME, llSOA;
     boolean main = true;
 
 
@@ -89,7 +89,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
         ivNocStatus = findViewById(R.id.ivNOCStatus);
         ivGstStatus = findViewById(R.id.ivGSTStatus);
         ivAssessMSME = findViewById(R.id.ivAssessMSME);
-        ivSOAStatus =findViewById(R.id.ivSOAStatus);
+        ivSOAStatus = findViewById(R.id.ivSOAStatus);
 
         btnDashboard = findViewById(R.id.btnDashboard);
         btnDashboard.setOnClickListener(this);
@@ -99,7 +99,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
         btnResend.setOnClickListener(this);
         rvGST = findViewById(R.id.rvGst);
         rvECOM = findViewById(R.id.rvECOM);
-        rvMSME= findViewById(R.id.rvMSME);
+        rvMSME = findViewById(R.id.rvMSME);
         llAgreement = findViewById(R.id.llAgreement);
         llNoc = findViewById(R.id.llNoc);
         llGSt = findViewById(R.id.llGST);
@@ -215,9 +215,9 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                             }
 
                             if (checkEsignResponse.getData().get(0).getIf_msme().equals("no")) {
-                                rvMSME.setVisibility(View.GONE);
-                            } else {
                                 rvMSME.setVisibility(View.VISIBLE);
+                            } else {
+                                rvMSME.setVisibility(View.GONE);
                             }
 
                             if (checkEsignResponse.getData().get(0).getIfGst() != null) {
@@ -466,9 +466,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
 
                                         }
 
-                                    }
-
-                                    else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("COI Sign.")) {
+                                    } else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("COI Sign.")) {
                                         if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                                             ivAgreeStatus.setBackgroundDrawable(null);
                                             llAgreement.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
@@ -493,7 +491,6 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             ivSOAStatus.setBackgroundDrawable(getResources().getDrawable(R.drawable.greencheck));
                                             llSOA.setBackgroundDrawable(getResources().getDrawable(R.drawable.rounded_corner_bordercolor_green));
                                             llSOA.setPadding(pL, pT, pR, pB);
-
 
                                         } else {
                                             ivAgreeStatus.setBackground(null);
@@ -521,8 +518,6 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
                                             llSOA.setPadding(pL, pT, pR, pB);
                                         }
                                     }
-
-
                                 } else {
                                     rvGST.setVisibility(View.GONE);
                                     if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("Agreement Sign.")) {
@@ -764,9 +759,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
 
                                         }
 
-                                    }
-
-                                    else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("COI Sign.")) {
+                                    } else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("COI Sign.")) {
                                         if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                                             ivAgreeStatus.setBackgroundDrawable(null);
                                             llAgreement.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));
@@ -1065,9 +1058,7 @@ public class ProcessInfoActivity extends AppCompatActivity implements View.OnCli
 
                                     }
 
-                                }
-
-                                else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("COI Sign.")) {
+                                } else if (checkEsignResponse.getData().get(0).getScreenMsg().equalsIgnoreCase("COI Sign.")) {
                                     if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                                         ivAgreeStatus.setBackgroundDrawable(null);
                                         llAgreement.setBackgroundDrawable(getResources().getDrawable(R.drawable.roundedcornergrey));

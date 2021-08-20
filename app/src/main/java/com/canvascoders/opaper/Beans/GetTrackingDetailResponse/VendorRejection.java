@@ -28,18 +28,110 @@ public class VendorRejection {
     @SerializedName("aadhaar_verify_solved")
     @Expose
     private Integer aadhaarVerifySolved;
+
+
+
+    @SerializedName("coi")
+    @Expose
+    private Integer coi;
+
+    @SerializedName("coi_solved")
+    @Expose
+    private Integer coi_solved;
+
+    public Integer getCoi() {
+        return coi;
+    }
+
+    public void setCoi(Integer coi) {
+        this.coi = coi;
+    }
+
+    public Integer getCoi_solved() {
+        return coi_solved;
+    }
+
+    public void setCoi_solved(Integer coi_solved) {
+        this.coi_solved = coi_solved;
+    }
+
+    public String getCoi_remark() {
+        return coi_remark;
+    }
+
+    public void setCoi_remark(String coi_remark) {
+        this.coi_remark = coi_remark;
+    }
+
+    @SerializedName("coi_remark")
+    @Expose
+    private String coi_remark;
+
+
     @SerializedName("aadhaar_verify_remark")
     @Expose
     private String aadhaarVerifyRemark;
     @SerializedName("pan_verify")
     @Expose
     private Integer panVerify;
+
+    @SerializedName("msme_details")
+    @Expose
+    private Integer msmeVerify;
+
+    public Integer getMsmeVerify() {
+        return msmeVerify;
+    }
+
+    public void setMsmeVerify(Integer msmeVerify) {
+        this.msmeVerify = msmeVerify;
+    }
+
+    public Integer getMsmedetailssolved() {
+        return msmedetailssolved;
+    }
+
+    public void setMsmedetailssolved(Integer msmedetailssolved) {
+        this.msmedetailssolved = msmedetailssolved;
+    }
+
+    public String getMsmeVerifyRemark() {
+        return msmeVerifyRemark;
+    }
+
+    public void setMsmeVerifyRemark(String msmeVerifyRemark) {
+        this.msmeVerifyRemark = msmeVerifyRemark;
+    }
+
+    public Integer getFillitrDetails() {
+        return fillitrDetails;
+    }
+
+    public void setFillitrDetails(Integer fillitrDetails) {
+        this.fillitrDetails = fillitrDetails;
+    }
+
+    public Integer getFillitrDetailsSolved() {
+        return fillitrDetailsSolved;
+    }
+
+    public void setFillitrDetailsSolved(Integer fillitrDetailsSolved) {
+        this.fillitrDetailsSolved = fillitrDetailsSolved;
+    }
+
+    @SerializedName("msme_details_solved")
+    @Expose
+    private Integer msmedetailssolved;
     @SerializedName("pan_verify_solved")
     @Expose
     private Integer panVerifySolved;
     @SerializedName("pan_verify_remark")
     @Expose
     private String panVerifyRemark;
+    @SerializedName("msme_details_remark")
+    @Expose
+    private String msmeVerifyRemark;
+
 
 
 

@@ -81,13 +81,13 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
     String str_process_id = "";
     private String file_name, file_url, pan_card_detail_id, birth_date = "";
     SessionManager sessionManager;
-    String str_proccess_id;
+
     ImageView ivMSME, ivCheckMSMEFront;
     EditText etMSMERegistration;
     ProgressDialog progressDialog;
     private static final int IMAGE_DRIVING_FRONT = 1021, IMAGE_DRIVING_BACK = 1022, CROPPED_IMAGE_DL_FRONT = 1023, CROPPED_IMAGE_DL_BACK = 1024;
     ImageView ivBack;
-    Context context;
+
 
 
     @Override
@@ -101,7 +101,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
                 finish();
             }
         });
-        progressDialog = new ProgressDialog(context);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait ...");
         progressDialog.setCancelable(false);
         requestPermissionHandler = new RequestPermissionHandler();
@@ -114,6 +114,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
         tvMSME = findViewById(R.id.tvMSME);
         tvMSME.setOnClickListener(this);
         ivMSME = findViewById(R.id.ivMSME);
+        etMSMERegistration = findViewById(R.id.etMSME);
         ivCheckMSMEFront = findViewById(R.id.ivCheckMSMEFront);
         ivCheckMSMEFront.setOnClickListener(this);
         btSkip = findViewById(R.id.btSkip);
@@ -137,7 +138,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
                     GetTrackDetailsResponse getTrackDetailsResponse = response.body();
                     if (getTrackDetailsResponse.getResponseCode() == 200) {
                         //  Toast.makeText(EditMSMEActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
-                        etMSMERegistration.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getOwnerName());
+                        etMSMERegistration.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getMsme_registration_no());
 
 
                         Glide.with(EditMSMEActivity.this).load(Constants.BaseImageURL + getTrackDetailsResponse.getData().get(0).getDocUpload().getMsme_registration_cert()).into(ivMSME);
@@ -169,7 +170,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
 
                 if (imageSide == 1) {
                     IMAGE_SELCTION_CODE = IMAGE_MSME_FRONT;
-                    Intent intent1 = ImagePicker.getCameraIntent(context);
+                    Intent intent1 = ImagePicker.getCameraIntent(EditMSMEActivity.this);
                     startActivityForResult(intent1, IMAGE_MSME_FRONT);
                     //DrivingFragment.this.startActivityForResult(intent1, IMAGE_DRIVING_FRONT);
 
@@ -219,19 +220,19 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
         MultipartBody.Part typedFile = null;
         Map<String, String> params = new HashMap<String, String>();
 
-        params.put(Constants.PARAM_PROCESS_ID, str_proccess_id);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         params.put("app_current_version", String.valueOf(Constants.APP_VERSION));
 
         // File imagefile = new File(panImagepath);
         // typedFile = MultipartBody.Part.createFormData("msme_registration_cert", imagefile.getName(), RequestBody.create(MediaType.parse(Constants.getMimeType(panImagepath)), imagefile));
-        ApiClient.getClient().create(ApiInterface.class).skipMSME("Bearer " + sessionManager.getToken(), str_proccess_id).enqueue(new Callback<CommonResponse>() {
+        ApiClient.getClient().create(ApiInterface.class).skipMSME("Bearer " + sessionManager.getToken(), str_process_id).enqueue(new Callback<CommonResponse>() {
             @Override
             public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     CommonResponse commonResponse = response.body();
                     if (commonResponse.getResponseCode() == 200) {
-                        commanFragmentCallWithoutBackStack(new DocUploadFragment());
+                        finish();
                     } else {
                         Toast.makeText(EditMSMEActivity.this, commonResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         if (commonResponse.getResponseCode() == 400) {
@@ -291,7 +292,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
         MultipartBody.Part typedFile = null;
         Map<String, String> params = new HashMap<String, String>();
 
-        params.put(Constants.PARAM_PROCESS_ID, str_proccess_id);
+        params.put(Constants.PARAM_PROCESS_ID, str_process_id);
         params.put(Constants.PARAM_MSME_REG_NO, "" + etMSMERegistration.getText());
         params.put("app_current_version", String.valueOf(Constants.APP_VERSION));
 
@@ -304,7 +305,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
                 if (response.isSuccessful()) {
                     CommonResponse commonResponse = response.body();
                     if (commonResponse.getResponseCode() == 200) {
-                        commanFragmentCallWithoutBackStack(new DocUploadFragment());
+                      finish();
                     } else {
                         Toast.makeText(EditMSMEActivity.this, commonResponse.getResponse(), Toast.LENGTH_SHORT).show();
                         if (commonResponse.getResponseCode() == 400) {
@@ -378,7 +379,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
         if (resultCode == RESULT_OK) {
             if (requestCode == IMAGE_MSME_FRONT) {
                 Uri uri = ImagePicker.getPickImageResultUri(EditMSMEActivity.this, data);
-                Intent intent = new Intent(context, CropImage2Activity.class);
+                Intent intent = new Intent(this, CropImage2Activity.class);
                 intent.putExtra(KEY_SOURCE_URI, uri.toString());
                 startActivityForResult(intent, CROPPED_IMAGE_DL_FRONT);
 
@@ -389,7 +390,7 @@ public class EditMSMEActivity extends AppCompatActivity implements View.OnClickL
                 dlImageOathFront = RealPathUtil.getPath(EditMSMEActivity.this, imgURI);
                 isPanSelected = true;
                 try {
-                    Glide.with(context).load(dlImageOathFront).into(ivMSME);
+                    Glide.with(this).load(dlImageOathFront).into(ivMSME);
                     ivCheckMSMEFront.setVisibility(View.VISIBLE);
                     tvMSME.setVisibility(View.GONE);
                     File casted_image = new File(imagecamera);

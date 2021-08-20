@@ -53,7 +53,7 @@
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".activity.EditWhileOnBoarding.EditMSMEActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.EditWhileOnBoarding.EditITRActivity"
             android:screenOrientation="portrait"

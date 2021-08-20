@@ -15,6 +15,30 @@ public class TrackDetail {
     @SerializedName("pan_verify")
     @Expose
     private Integer panVerify;
+
+    @SerializedName("msme_details")
+    @Expose
+    private Integer msme_details;
+
+    public Integer getMsme_details() {
+        return msme_details;
+    }
+
+    public void setMsme_details(Integer msme_details) {
+        this.msme_details = msme_details;
+    }
+
+    public Integer getCoi() {
+        return coi;
+    }
+
+    public void setCoi(Integer coi) {
+        this.coi = coi;
+    }
+
+    @SerializedName("coi")
+    @Expose
+    private Integer coi;
     @SerializedName("cheque_verify")
     @Expose
     private Integer chequeVerify;

@@ -34,7 +34,7 @@ public class EditCOIActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_coiactivity);
-        ivBack = findViewById(R.id.ivBack);
+        ivBack = findViewById(R.id.iv_back_process);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +70,7 @@ public class EditCOIActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     progressDialog.dismiss();
                     ResignAgreementResponse resignAgreementResponse = response.body();
-                    if (resignAgreementResponse.getResponseCode() == 200) {
+                    if (resignAgreementResponse.getResponseCode() ==     200) {
 
                         Toast.makeText(EditCOIActivity.this, resignAgreementResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     } else if (resignAgreementResponse.getResponseCode() == 411) {
