@@ -9,8 +9,8 @@ android {
         applicationId "com.canvascoders.opaper"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 17
-        versionName "1.16"
+        versionCode 18
+        versionName "1.17"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
