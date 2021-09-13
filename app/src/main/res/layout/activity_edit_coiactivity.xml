@@ -92,7 +92,7 @@
                             style="@style/TextviewwithoutSize"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="E-sign is pending. link to sign the agreement has been sent to kirana's registered mobile number."
+                            android:text="E-sign is pending. link to sign the COI has been sent to kirana's registered mobile number."
                             android:textSize="@dimen/_10sdp" />
 
                         <TextView

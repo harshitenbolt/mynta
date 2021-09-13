@@ -117,7 +117,6 @@ public class EditDeliveryBoyFSActivity extends AppCompatActivity implements View
             Constants.ShowNoInternet(EditDeliveryBoyFSActivity.this);
         }
 
-
     }
 
 

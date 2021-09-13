@@ -261,7 +261,6 @@ public class AddGstImageActivity extends AppCompatActivity implements View.OnCli
                     } else {
                         Toast.makeText(AddGstImageActivity.this, addDelBoyResponse.getResponse(), Toast.LENGTH_SHORT).show();
                     }
-
                 } else {
                     Toast.makeText(AddGstImageActivity.this, "#errorcode :- 2021 "+getString(R.string.something_went_wrong), Toast.LENGTH_LONG).show();
                 }
