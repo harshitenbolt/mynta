@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import com.canvascoders.opaper.Beans.GeneralSupportResponse.GeneralSupportResponse;
 import com.canvascoders.opaper.Beans.SubmitImageResponse.SubmitImageResponse;
 import com.canvascoders.opaper.api.ApiClient;
+import com.canvascoders.opaper.fragment.ExpiredAgreementVendorFragment;
 import com.canvascoders.opaper.helper.DialogListner;
 import com.canvascoders.opaper.utils.DialogUtil;
 import com.canvascoders.opaper.utils.ImagePicker;
@@ -118,7 +119,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
     String mobileNo = "";
     RelativeLayout rvMainWithRect;
     RequestPermissionHandler requestPermissionHandler;
-
+    ImageView ivNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,8 +181,8 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
         tvLiveVendorCount = findViewById(R.id.tvLiveVendorCount);
         tvCountNotification = findViewById(R.id.tvCountNotification);
         tvCountTasks = findViewById(R.id.tvCountTasks);
-
-
+        ivNotification = findViewById(R.id.ivNotification);
+        ivNotification.setOnClickListener(this);
         llInProgressVendors = findViewById(R.id.llInProgressVendor);
         llInvoice = findViewById(R.id.llInvoice);
 
@@ -426,8 +427,19 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                 llInProgressVendors.setBackgroundResource(0);
                 llReports.setBackgroundResource(0);
                 llInvoice.setBackgroundResource(0);
+//                Intent i1 = new Intent(DashboardActivity.this, NotificationActivity.class);
+//                startActivity(i1);
+                commanFragmentCallWithBackStack(new ExpiredAgreementVendorFragment());
+
+                //   commanFragmentCallWithBackStack(new NotificationFragment());
+                break;
+
+            case R.id.ivNotification:
+                tv_title.setText("Notifications");
+
                 Intent i1 = new Intent(DashboardActivity.this, NotificationActivity.class);
                 startActivity(i1);
+                // commanFragmentCallWithBackStack(new ExpiredAgreementVendorFragment());
 
                 //   commanFragmentCallWithBackStack(new NotificationFragment());
                 break;

@@ -32,6 +32,16 @@
                 android:text="Dashboard"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_14sdp" />
+            <ImageView
+                android:id="@+id/ivNotification"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="end"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/notificationmain" />
 
             <ImageView
                 android:id="@+id/ivSupport"
