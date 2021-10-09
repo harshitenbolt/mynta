@@ -429,6 +429,11 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                     }
 
                     @Override
+                    public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                    }
+
+                    @Override
                     public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                     }
@@ -471,6 +476,11 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
                     @Override
                     public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                    }
+
+                    @Override
+                    public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                     }
 
@@ -527,6 +537,11 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                 }
 
                 @Override
+                public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                }
+
+                @Override
                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                 }
@@ -579,6 +594,11 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                             }
 
                             @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                            }
+
+                            @Override
                             public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
                                 storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
                                 submitocr(accName, payeename, ifsc);
@@ -612,6 +632,11 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
                             @Override
                             public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                            }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                             }
 
@@ -774,6 +799,11 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
                                 }
 
                                 @Override
+                                public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                                }
+
+                                @Override
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
                                     storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);
                                 }
@@ -805,6 +835,11 @@ public class ChequeUploadFragment extends Fragment implements View.OnClickListen
 
                             @Override
                             public void onClickDetails(String name, String fathername, String dob, String id) {
+
+                            }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                             }
 

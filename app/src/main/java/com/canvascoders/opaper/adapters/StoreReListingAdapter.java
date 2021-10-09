@@ -34,11 +34,16 @@ import android.widget.TextView;
 import com.canvascoders.opaper.Beans.MensaAlteration;
 import com.canvascoders.opaper.Beans.ObjectPopup;
 import com.canvascoders.opaper.Beans.StoreTypeBean;
+import com.canvascoders.opaper.Beans.SubStoreType;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.fragment.PanVerificationFragment;
 import com.canvascoders.opaper.helper.DialogListner;
+import com.canvascoders.opaper.helper.DialogListnerSubSTore;
 import com.canvascoders.opaper.helper.RecyclerViewClickListener;
 import com.canvascoders.opaper.utils.Constants;
+import com.canvascoders.opaper.utils.DialogUtil;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,18 +64,19 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
     RecyclerViewClickListener recyclerViewClickListener;
     List<String> keysname = new ArrayList<>();
     List<String> valueName = new ArrayList<>();
-    String Message="";
+    String Message = "";
+    String flag ="";
     boolean[] checkedStoreType;
 
 
-    public StoreReListingAdapter(List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener,String Message) {
+    public StoreReListingAdapter(List<StoreTypeBean> dataViews, Map<String, String> mensaAlterationList, Context mContext, RecyclerViewClickListener recyclerViewClickListener, String Message) {
         this.dataViews = dataViews;
         this.mContext = mContext;
         this.recyclerViewClickListener = recyclerViewClickListener;
         this.mensaAlterationList = mensaAlterationList;
         keysname.addAll(mensaAlterationList.keySet());
         valueName.addAll(mensaAlterationList.values());
-        this.Message=Message;
+        this.Message = Message;
     }
 
     @NonNull
@@ -91,11 +97,9 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
         holder.check_box_store.setChecked(false);
 
 
-
-
         if (store.getStoreTypeId() == 4) {
             holder.edt_store_amount.setEnabled(true);
-            holder.rvSeperateRight.setVisibility(View.VISIBLE);
+            //  holder.rvSeperateRight.setVisibility(View.VISIBLE);
             holder.vSeperate.setVisibility(View.VISIBLE);
         }
 
@@ -118,23 +122,20 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
             holder.edt_store_amount.setEnabled(false);
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
-        }
-       else if (store.getStoreTypeId() == 8) {
+        } else if (store.getStoreTypeId() == 8) {
             holder.tv_store_name.setText("Marvel - DC 2.0");
             holder.edt_store_amount.setText("     ");
             holder.edt_store_amount.setEnabled(false);
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
-        }
-        else if (store.getStoreTypeId() == 9) {
+        } else if (store.getStoreTypeId() == 9) {
             holder.edt_store_amount.setText("     ");
             holder.edt_store_amount.setEnabled(false);
             holder.rvSeperateRight.setVisibility(View.GONE);
             holder.vSeperate.setVisibility(View.GONE);
-        }
-        else {
-            holder.rvSeperateRight.setVisibility(View.VISIBLE);
-            holder.vSeperate.setVisibility(View.VISIBLE);
+        } else {
+            // holder.rvSeperateRight.setVisibility(View.VISIBLE);
+            // holder.vSeperate.setVisibility(View.VISIBLE);
         }
 
 
@@ -144,9 +145,527 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
             holder.edt_store_amount.setText("10%/3% GMV");
             holder.edt_store_amount.setEnabled(false);
         }
-
-
         holder.check_box_store.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+/*
+                if (store.getStoreType().contains(Constants.ASSISTED)) {
+                    holder.edt_store_amount.setHint("");
+                    holder.edt_store_amount.setText("     ");
+                    holder.edt_store_amount.setEnabled(false);
+                    holder.rvSeperateRight.setVisibility(View.GONE);
+                    holder.vSeperate.setVisibility(View.GONE);
+                }
+
+                if (store.getStoreType().contains("Mensa Bet - CAC")) {
+                    holder.edt_store_amount.setHint("");
+                    holder.edt_store_amount.setText("     ");
+                    holder.edt_store_amount.setEnabled(false);
+                    holder.rvSeperateRight.setVisibility(View.GONE);
+                    holder.vSeperate.setVisibility(View.GONE);
+                }*/         flag="";
+                if (holder.check_box_store.isChecked()) {
+
+                    if (store.getStoreTypeId() == 3) {
+                        holder.edt_store_amount.setHint("");
+                        holder.edt_store_amount.setText("     ");
+                        holder.edt_store_amount.setEnabled(false);
+                        //holder.edt_store_amount.setFocusable(false);
+                        holder.rvSeperateRight.setVisibility(View.GONE);
+                        holder.vSeperate.setVisibility(View.GONE);
+                        //dialogbox opeb
+                        if (holder.check_box_store.isChecked()) {
+                            TextView tvtitleStoreType;
+                            RecyclerView rvItems1;
+                            Button btSubmit1;
+                            Dialog dialog;
+                            ImageView ivClose1;
+                            AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(mContext, R.style.CustomDialog);
+
+                            dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                            dialog.setContentView(R.layout.dialogue_popup_list);
+                            dialog.setCanceledOnTouchOutside(false);
+                            dialog.setCancelable(true);
+
+                            tvtitleStoreType = dialog.findViewById(R.id.tvTitleListPopup);
+                            tvtitleStoreType.setText("Mensa Alteration Type");
+                            rvItems1 = dialog.findViewById(R.id.rvListPopup);
+                            btSubmit1 = dialog.findViewById(R.id.btSubmitDetail);
+                            List<MensaAlteration> mensaAlterations = new ArrayList<>();
+                            for (int i = 0; i < keysname.size(); i++) {
+                                MensaAlteration mensaAlteration = new MensaAlteration(false, keysname.get(i), valueName.get(i));
+                                mensaAlterations.add(mensaAlteration);
+                            }
+                            customPopupStoreTypeAdapter = new CustomPopupRateStoreTypeAdapter(mensaAlterations, mContext, "StoreType", this);
+
+                            LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+
+                            rvItems1.setLayoutManager(horizontalLayoutManager1);
+
+                            rvItems1.setAdapter(customPopupStoreTypeAdapter);
+
+                            btSubmit1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    // tvVendorTypeDetail.setText(selectedString);
+                                    String str = "";
+                                    if (dataRate != null) {
+                                        Log.e("suaave", dataRate.toString());
+                                        str = TextUtils.join(",", dataRate);
+                                        Log.e("itemlist", str);
+                                        dialog.dismiss();
+                                    } else {
+                                        holder.check_box_store.setChecked(false);
+                                        dataViews.get(position).setSelected(false);
+                                        str = "";
+                                        dialog.dismiss();
+                                    }
+                                    recyclerViewClickListener.SingleClick(str, position);
+                                    // hideKeyboard(activity);
+                                    flag="done";
+                                    notifyDataSetChanged();
+                                }
+                            });
+                            ivClose1 = dialog.findViewById(R.id.ivClose);
+                            ivClose1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    String str = "";
+                                    if (dataRate != null) {
+                                        Log.e("suaave", dataRate.toString());
+                                        str = TextUtils.join(",", dataRate);
+                                        Log.e("itemlist", str);
+                                        dialog.dismiss();
+                                    } else {
+                                        holder.check_box_store.setChecked(false);
+                                        str = "";
+                                        dataViews.get(position).setSelected(false);
+                                        dialog.dismiss();
+                                    }
+                                    holder.check_box_store.setChecked(false);
+                                    dataViews.get(position).setSelected(false);
+                                    flag="";
+                                }
+                            });
+                            dialog.show();
+                        }
+
+                    } else if (store.getStoreTypeId() == 101) {
+
+
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position,"", new DialogListnerSubSTore() {
+
+
+                            @Override
+                            public void onClickDetails(String position, String fathername, String dob, String id) {
+                          /*  ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
+
+                            ApiCallSubmitKYC(name, fathername, dob, id);*/
+
+
+                                holder.check_box_store.setChecked(false);
+                                dataViews.get(Integer.parseInt(position)).setSelected(false);
+                                DialogUtil.dismiss();
+                                flag="";
+                            }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+
+                            }
+
+                            @Override
+                            public void onStoreType1(Integer positin, JSONObject jsonObject, List<SubStoreType> subStoreTypeList) {
+
+                                String datashow = "";
+                                for (int i = 0; i < subStoreTypeList.size(); i++) {
+                                    datashow = datashow + subStoreTypeList.get(i).getStoreType() + ":" + subStoreTypeList.get(i).getRate() + "\n";
+                                }
+                                holder.tvSubType.setText(datashow);
+                                dataViews.get(position).setSelected(true);
+                                dataViews.get(position).setList(subStoreTypeList);
+                                DialogUtil.dismiss();
+                                notifyDataSetChanged();
+                                flag="done";
+                               // notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                            }
+
+                        });
+
+/*
+
+                    if (holder.check_box_store.isChecked()) {
+                        TextView tvtitleStoreType;
+                        RecyclerView rvItems1;
+                        Button btSubmit1;
+                        Dialog dialog;
+                        ImageView ivClose1;
+                        AlertDialog.Builder mBuilder2 = new AlertDialog.Builder(mContext, R.style.CustomDialog);
+
+                        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialog.setContentView(R.layout.dialogue_popup_list);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setCancelable(true);
+
+                        tvtitleStoreType = dialog.findViewById(R.id.tvTitleListPopup);
+                        tvtitleStoreType.setText("Sub Store");
+                        rvItems1 = dialog.findViewById(R.id.rvListPopup);
+                        btSubmit1 = dialog.findViewById(R.id.btSubmitDetail);
+
+
+                        List<SubStoreType> subStoreTypeList=new ArrayList<>();
+                        JSONArray jArray = (JSONArray) store.getJsonArray();
+                        if (jArray != null) {
+                            for (int i = 0; i < jArray.length(); i++) {
+                                try {
+                                    Gson gson = new Gson();
+                                    SubStoreType obj = gson.fromJson(jArray.getJSONObject(i).toString(), SubStoreType.class);
+                                    subStoreTypeList.add(obj);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        customPopupSubStoreTypeAdapter = new CustomPopupRateSubStoreTypeAdapter(subStoreTypeList, mContext, "StoreType", this, "allchecked");
+
+                        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false);
+
+                        rvItems1.setLayoutManager(horizontalLayoutManager1);
+
+                        rvItems1.setAdapter(customPopupSubStoreTypeAdapter);
+
+                        btSubmit1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // tvVendorTypeDetail.setText(selectedString);
+                                String str = "";
+                                if (dataRate != null) {
+                                    String showData = "";
+                                    Log.e("suaave", dataRate.toString());
+                                    str = TextUtils.join(",", dataRate);
+                                    Log.e("itemlist", str);
+
+                                } else {
+                                    holder.check_box_store.setChecked(false);
+                                    dataViews.get(position).setSelected(false);
+                                    str = "";
+                                    dialog.dismiss();
+                                }
+                                recyclerViewClickListener.SingleClick(str, position);
+                                hideKeyboard(activity);
+                            }
+                        });
+                        ivClose1 = dialog.findViewById(R.id.ivClose);
+                        ivClose1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String str = "";
+                                if (dataRate != null) {
+                                    Log.e("suaave", dataRate.toString());
+                                    str = TextUtils.join(",", dataRate);
+                                    Log.e("itemlist", str);
+                                    dialog.dismiss();
+                                } else {
+                                    holder.check_box_store.setChecked(false);
+                                    str = "";
+                                    dataViews.get(position).setSelected(false);
+                                    dialog.dismiss();
+                                }
+                                holder.check_box_store.setChecked(false);
+                                dataViews.get(position).setSelected(false);
+
+                            }
+                        });
+
+
+                        dialog.show();*/
+
+
+                    } else if (store.getStoreTypeId() == 102) {
+
+
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "allchecked", position,"", new DialogListnerSubSTore() {
+
+
+                            @Override
+                            public void onClickDetails(String position, String fathername, String dob, String id) {
+                          /*  ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
+
+                            ApiCallSubmitKYC(name, fathername, dob, id);*/
+
+
+                                holder.check_box_store.setChecked(false);
+                                dataViews.get(Integer.parseInt(position)).setSelected(false);
+                                DialogUtil.dismiss();
+                                flag="";
+                            }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+
+                            }
+
+                            @Override
+                            public void onStoreType1(Integer positin, JSONObject jsonObject, List<SubStoreType> subStoreTypeList) {
+
+                                String datashow = "";
+                                for (int i = 0; i < subStoreTypeList.size(); i++) {
+                                    datashow = datashow + subStoreTypeList.get(i).getStoreType() + ":" + subStoreTypeList.get(i).getRate() + "\n";
+                                }
+                                holder.tvSubType.setText(datashow);
+                                dataViews.get(position).setSelected(true);
+                                dataViews.get(position).setList(subStoreTypeList);
+                                DialogUtil.dismiss();
+                                flag="done";
+                                notifyDataSetChanged();
+                             //   notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                            }
+
+                        });
+                    } else {
+
+
+                        DialogUtil.SubStoreType(mContext, store.getJsonArray(), "", position,"", new DialogListnerSubSTore() {
+
+                            @Override
+                            public void onClickDetails(String positon, String fathername, String dob, String id) {
+                          /*  ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
+
+                            ApiCallSubmitKYC(name, fathername, dob, id);*/
+                         /*   holder.check_box_store.setChecked(false);
+                            dataViews.get(Integer.parseInt(positon)).setSelected(false);
+                            DialogUtil.dismiss();*/
+                            }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+                                // Log.e("finallyinRate", jsonObject.toString());
+                                dataViews.get(position).setSelected(false);
+                                holder.check_box_store.setChecked(false);
+                                DialogUtil.dismiss();
+                                flag="";
+                            }
+
+                            @Override
+                            public void onStoreType1(Integer positin, JSONObject jsonObject, List<SubStoreType> subStoreTypeList) {
+
+                                String datashow = "";
+                                for (int i = 0; i < subStoreTypeList.size(); i++) {
+                                    if (subStoreTypeList.get(i).isSelected()) {
+                                        datashow = datashow + subStoreTypeList.get(i).getStoreType() + ":" + subStoreTypeList.get(i).getRate() + "\n";
+                                        dataViews.get(position).setSelected(true);
+                                    }
+                                }
+                                holder.tvSubType.setText(datashow);
+                                dataViews.get(position).setList(subStoreTypeList);
+                                DialogUtil.dismiss();
+                                flag="done";
+                                notifyDataSetChanged();
+                               // notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
+
+                            }
+
+                            @Override
+                            public void onClickAddressDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress, String dc) {
+
+                            }
+
+                        });
+
+                    }
+
+                    for (int i = 0; i < dataViews.size(); i++) {
+                        //dataViews.get(i).setSelected(false);
+                        if (i == position) {
+                            dataViews.get(i).setSelected(true);
+                        } else {
+                            dataViews.get(i).setSelected(false);
+                          //  dataViews.get(position).setList(null);
+                        }
+                    }
+
+
+                    //dataViews.get(position).setSelected(true);
+
+
+                }
+
+                if (holder.check_box_store.isChecked()) {
+                   /* if (!store.getStoreType().contains(Constants.CAC_STORE))
+                        holder.edt_store_amount.setEnabled(true);*/
+                    dataViews.get(position).setSelected(true);
+//                    for (int i = 0; i < dataViews.size(); i++) {
+//                        if (dataViews.get(i).isSelected()) {
+//
+//                        }
+//                    }
+                } else {
+                    //   holder.edt_store_amount.setEnabled(false);
+                    dataViews.get(position).setSelected(false);
+
+                    holder.tvSubType.setText("");
+
+
+
+                }
+
+
+// If the last one is selected
+//                    if (dataViews.size() > 5 && position != 5 && dataViews.get(5).isSelected()) {
+//                        dataViews.get(5).setSelected(false);
+//                        dataViews.get(5).setRate("0");
+//                        notifyItemChanged(5);
+//                    }
+
+                // If Third sel then deselct Fifth
+                   /* if (position == 3) {
+//                        if (dataViews.get(5).isSelected()) {
+                        dataViews.get(5).setSelected(false);
+                        dataViews.get(5).setRate("0");
+                        notifyItemChanged(5);
+//                        }
+                    }*/
+                //IF Fifth selected deselect third
+                  /*  if (position == 5) {
+//                        for (int i = 0; i <= 4; i++) {
+//                        if (dataViews.get(3).isSelected()) {
+                        dataViews.get(3).setSelected(false);
+                        dataViews.get(3).setRate("0");
+                        notifyItemChanged(3);
+//                        }
+//                        }
+                    }*/
+
+/*
+                if (store.getStoreTypeId() == 8) {
+                    if (holder.check_box_store.isChecked()) {
+                        TextView tvMessage;
+                        Button btSubmit1;
+                        Dialog dialog;
+
+                        dialog = new Dialog(mContext, R.style.DialogSlideAnim);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                        dialog.setContentView(R.layout.dialogue_message);
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.setCancelable(true);
+
+                        tvMessage = dialog.findViewById(R.id.tvMessage);
+                        tvMessage.setText(Message);
+                        btSubmit1 = dialog.findViewById(R.id.btSubmit);
+                        btSubmit1.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                // tvVendorTypeDetail.setText(selectedString);
+                                for (int i = 0; i < dataViews.size(); i++) {
+                                    if (dataViews.get(i).getStoreTypeId() == 4) {
+                                        dataViews.get(i).setSelected(false);
+                                        dataViews.get(i).setRate("0");
+                                        // holder.check_box_store.setChecked(false);
+                                    } else {
+
+                                    }
+                                }
+                                int notifyPosition = 0;
+                                for (int i = 0; i < dataViews.size(); i++) {
+
+                                    if (dataViews.get(i).getStoreTypeId() == 4) {
+                                        notifyPosition = i;
+                                    }
+                                }
+                                notifyItemChanged(notifyPosition);
+                                dialog.dismiss();
+                            }
+                        });
+
+                        dialog.show();
+
+                    }
+
+                }
+                if (store.getStoreTypeId() == 4) {
+                    for (int i = 0; i < dataViews.size(); i++) {
+                        if (dataViews.get(i).getStoreTypeId() == 8) {
+                            dataViews.get(i).setSelected(false);
+                            dataViews.get(i).setRate("0");
+                            // holder.check_box_store.setChecked(false);
+                        } else {
+
+                        }
+                    }
+
+                    int notifyPosition = 0;
+                    for (int i = 0; i < dataViews.size(); i++) {
+
+                        if (dataViews.get(i).getStoreTypeId() == 8) {
+                            notifyPosition = i;
+                        }
+                    }
+                    notifyItemChanged(notifyPosition);
+                   // notifyItemChanged(notifyPosition);
+                }*/
+
+
+
+
+            }
+        });
+
+
+      /*  if (dataViews.get(position).getSubStoreTypeList().is) {
+            holder.tvSubType.setText("");
+        } else {
+            // holder.tvSubType.setText("");
+            String datashow = "";
+            for (int i = 0; i < dataViews.get(position).getSubStoreTypeList().size(); i++) {
+                if (dataViews.get(position).getSubStoreTypeList().get(i).isSelected()) {
+                    datashow = datashow + dataViews.get(position).getSubStoreTypeList().get(i).getStoreType() + ":" + dataViews.get(position).getSubStoreTypeList().get(i).getRate() + "\n";
+                    dataViews.get(position).setSelected(true);
+                }
+            }
+            holder.tvSubType.setText(datashow);
+        }*/
+        if (dataViews.get(position).isSelected()) {
+            holder.check_box_store.setChecked(true);
+            holder.tvSubType.setVisibility(View.VISIBLE);
+
+
+        } else {
+            holder.check_box_store.setChecked(false);
+            holder.tvSubType.setVisibility(View.GONE);
+        }
+
+
+        /*holder.check_box_store.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -269,9 +788,9 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
 
 
                 if (store.getStoreType().contains(Constants.CAC_STORE)) {
-                       /* holder.check_box_store.setChecked(true);
+                       *//* holder.check_box_store.setChecked(true);
                         holder.check_box_store.setEnabled(true);
-                        holder.edt_store_amount.setText("10%/3% GMV");*/
+                        holder.edt_store_amount.setText("10%/3% GMV");*//*
                     holder.edt_store_amount.setEnabled(false);
                 }
 
@@ -357,7 +876,7 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
             }
 
             }
-        });
+        });*/
         holder.check_box_store.setEnabled(true);
         holder.check_box_store.setChecked(store.isSelected());
         holder.edt_store_amount.setEnabled(store.isSelected());
@@ -379,29 +898,28 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
         }
 
         holder.edt_store_amount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                                           @Override
+                                                           public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
+                                                           }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                                           @Override
+                                                           public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
+                                                           }
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                try {
-                    float rate = Float.parseFloat(editable.toString());
-                    dataViews.get(position).setRate("" + rate);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                                                           @Override
+                                                           public void afterTextChanged(Editable editable) {
+                                                               try {
+                                                                   float rate = Float.parseFloat(editable.toString());
+                                                                   dataViews.get(position).setRate("" + rate);
+                                                               } catch (Exception e) {
+                                                                   e.printStackTrace();
 //                                                                           Toast.makeText(mContext, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
-                }
+                                                               }
 
-            }
-        }
-
+                                                           }
+                                                       }
 
 
         );
@@ -450,9 +968,11 @@ public class StoreReListingAdapter extends RecyclerView.Adapter<StoreReListingAd
         public AppCompatEditText edt_store_amount;
         public RelativeLayout rvSeperateRight;
         public View vSeperate;
+        TextView tvSubType;
 
         public ItemHolder(View itemView) {
             super(itemView);
+            tvSubType = itemView.findViewById(R.id.tvSubType);
             vSeperate = itemView.findViewById(R.id.viewSeperate);
             rvSeperateRight = itemView.findViewById(R.id.rvRightMain);
             check_box_store = itemView.findViewById(R.id.check_box_store);

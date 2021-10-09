@@ -143,7 +143,7 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
         // mProgressDialog.show();
         JsonArray jsonArray = new JsonArray();
         // checking from neutral stores to get updated data.
-        for (int i = 0; i < rateTypeBeans.size(); i++) {
+       /* for (int i = 0; i < rateTypeBeans.size(); i++) {
 
             if (rateTypeBeans.get(i).isSelected() && !rateTypeBeans.get(i).getIsApproved().equalsIgnoreCase("1")) {
                 JsonObject jsonObject = new JsonObject();
@@ -206,6 +206,97 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
                 jsonArray.add(jsonObject);
             }
         }
+*/
+
+
+        for (int i = 0; i < rateTypeBeans.size(); i++) {
+
+
+            if (rateTypeBeans.get(i).isSelected()) {
+                //  jsonArray.
+
+                if (rateTypeBeans.get(i).getStoreTypeId() == 3) {
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
+                    jsonObject.addProperty("rate", "0");
+                    jsonObject.addProperty("sub_store_type", alterationselected);
+                    jsonArray.add(jsonObject);
+                } else {
+                    for (int i1 = 0; i1 < rateTypeBeans.get(i).getList().size(); i1++) {
+                        if (rateTypeBeans.get(i).getList().get(i1).isSelected()) {
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("store_type", rateTypeBeans.get(i).getList().get(i1).getStoreTypeId());
+                            jsonObject.addProperty("rate", rateTypeBeans.get(i).getList().get(i1).getRate() + "");
+                            jsonArray.add(jsonObject);
+                        }
+                    }
+                }
+
+            }
+
+     /*       if (rateTypeBeans.get(i).isSelected() && !rateTypeBeans.get(i).getIsApproved().equalsIgnoreCase("1")) {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
+
+
+                if (!rateTypeBeans.get(i).getStoreType().contains(Constants.CAC_STORE) && !rateTypeBeans.get(i).getStoreType().contains(Constants.ASSISTED)) {
+                    if (!rateTypeBeans.get(i).getStoreType().contains("Mensa - Alteration") && rateTypeBeans.get(i).getStoreTypeId() != 8) {
+                        if (rateTypeBeans.get(i).getStoreTypeId() != 9) {
+                            if (rateTypeBeans.get(i).getRate() != null && rateTypeBeans.get(i).getRate().length() > 0) {
+                                if (!rateTypeBeans.get(i).getRate().equalsIgnoreCase("0") && !rateTypeBeans.get(i).getRate().equalsIgnoreCase("0.0")) {
+                                    try {
+//                        float rate = Float.parseFloat(rateTypeBeans.get(i).getRate());
+//                        if(rate>0)
+                                        jsonObject.addProperty("rate", "" + rateTypeBeans.get(i).getRate());
+                                        //  mProgressDialog.dismiss();
+
+//                        else
+//                        {
+//                            Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(getContext(), "Please Enter Valid Amount", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } else {
+                                    mProgressDialog.dismiss();
+                                    Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                            } else {
+                                Toast.makeText(mcontext, "Issue with rate:" + rateTypeBeans.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                return;
+                            }
+
+                        }
+                        else{
+                            jsonObject.addProperty("rate", "0");
+                            if (rateTypeBeans.get(i).getStoreTypeId() == 9) {
+                                //jsonObject.addProperty("sub_store_type", alterationselected);
+                            }
+                        }
+                    } else {
+                        jsonObject.addProperty("rate", "0");
+                        if (rateTypeBeans.get(i).getStoreTypeId() == 8) {
+                            //jsonObject.addProperty("sub_store_type", alterationselected);
+                        }
+                        else if (rateTypeBeans.get(i).getStoreTypeId() == 9) {
+                            //jsonObject.addProperty("sub_store_type", alterationselected);
+                        }else {
+                            jsonObject.addProperty("sub_store_type", alterationselected);
+                        }
+                    }
+                } else {
+                    jsonObject.addProperty("rate", "0");
+                }
+                jsonArray.add(jsonObject);
+            }
+     */
+        }
+        Log.e("hamadigyu", jsonArray.toString());
+
 
         if (jsonArray.size() <= 0) {
             Toast.makeText(this, "Nothing to Update or press Skip to sign addendum", Toast.LENGTH_LONG).show();
@@ -457,7 +548,7 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
                                 Log.e("in JSON", "" + jsonObject.toString());
 
                                 if (jsonObject.getString("responseCode").equalsIgnoreCase("200")) {
-                                    JSONArray rateJsonArray = jsonObject.getJSONArray("data");
+                                    JSONArray rateJsonArray = jsonObject.getJSONArray("service");
 
 
                                     JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
@@ -514,7 +605,7 @@ public class EdirRateOnBoardingActivity extends AppCompatActivity implements Rec
 //                                    }
 
 
-                                    rateListAdapter = new RateListonBoardingAdapter(rateTypeBeans, yourHashMap, EdirRateOnBoardingActivity.this, EdirRateOnBoardingActivity.this, msg);
+                                    rateListAdapter = new RateListonBoardingAdapter(EdirRateOnBoardingActivity.this,rateTypeBeans, yourHashMap, EdirRateOnBoardingActivity.this, EdirRateOnBoardingActivity.this, msg);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));

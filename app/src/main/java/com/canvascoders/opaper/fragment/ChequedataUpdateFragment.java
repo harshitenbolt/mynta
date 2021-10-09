@@ -513,6 +513,11 @@ public class ChequedataUpdateFragment extends Fragment implements View.OnClickLi
                             }
 
                             @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                            }
+
+                            @Override
                             public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
                                 if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                                     storeCheque(accName, payeename, ifsc, bankname, BranchName, bankAdress);

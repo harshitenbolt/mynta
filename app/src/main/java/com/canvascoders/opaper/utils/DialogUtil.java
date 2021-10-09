@@ -13,6 +13,8 @@ import android.os.Handler;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.Html;
@@ -37,21 +39,31 @@ import android.widget.Toast;
 
 import com.canvascoders.opaper.Beans.GetPanExistResponse.GetPanAlreadyExistResponse;
 import com.canvascoders.opaper.Beans.MakeReportResponse.MakeReportResponse;
+import com.canvascoders.opaper.Beans.MensaAlteration;
+import com.canvascoders.opaper.Beans.SubStoreType;
 import com.canvascoders.opaper.Beans.dc.DC;
 import com.canvascoders.opaper.Beans.dc.GetDC;
 import com.canvascoders.opaper.R;
 import com.canvascoders.opaper.activity.AddDeliveryBoysActivity;
 import com.canvascoders.opaper.activity.AppApplication;
 import com.canvascoders.opaper.activity.EditGSTActivity;
+import com.canvascoders.opaper.adapters.CustomPopupRateStoreTypeAdapter;
+import com.canvascoders.opaper.adapters.CustomPopupRateSubStoreTypeAdapter;
 import com.canvascoders.opaper.api.ApiClient;
 import com.canvascoders.opaper.api.ApiInterface;
 import com.canvascoders.opaper.fragment.InfoFragment;
 import com.canvascoders.opaper.fragment.PanVerificationFragment;
 import com.canvascoders.opaper.helper.DialogListner;
+import com.canvascoders.opaper.helper.DialogListnerSubSTore;
+import com.canvascoders.opaper.helper.RecyclerViewClickListener;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -70,7 +82,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class DialogUtil {
+import static com.canvascoders.opaper.utils.Constants.dataRate;
+
+public class DialogUtil implements RecyclerViewClickListener {
     private static Dialog dialog;
     static Boolean selected = false;
     public static EditText etDlName, etFathername, etDlDob, etDlNumber, etCity, etState;
@@ -84,6 +98,8 @@ public class DialogUtil {
     public static LinearLayout llStoreDetails;
     Button btSubmit;
     static Context context;
+    static boolean validation = false;
+    static String flag = "";
     static ProgressDialog progressDialog;
     ImageView ivClose;
     public static Spinner dc;
@@ -132,7 +148,6 @@ public class DialogUtil {
             @Override
             public void onClick(View v) {
                 dialogInterface.onClickDetails(etName.getText().toString(), etYear.getText().toString(), etPicnode.getText().toString(), etUDID.getText().toString());
-
             }
         });
 
@@ -266,6 +281,195 @@ public class DialogUtil {
                 dialog.dismiss();
             }
         });
+        dialog.show();
+    }
+
+
+    public static void SubStoreType(Context mContext1, JSONArray store, String allChecked, Integer position,String isMultiple, final DialogListnerSubSTore dialogInterface) {
+
+        Button btSubmit;
+        ImageView ivClose;
+        TextView tvtitleStoreType;
+        RecyclerView rvItems1;
+        Button btSubmit1;
+
+        ImageView ivClose1;
+        CustomPopupRateSubStoreTypeAdapter customPopupSubStoreTypeAdapter;
+
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
+
+
+        dialog = new Dialog(mContext1, R.style.DialogSlideAnim);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.dialogue_popup_list);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(true);
+
+        tvtitleStoreType = dialog.findViewById(R.id.tvTitleListPopup);
+        tvtitleStoreType.setText("Sub Store");
+        rvItems1 = dialog.findViewById(R.id.rvListPopup);
+        btSubmit1 = dialog.findViewById(R.id.btSubmitDetail);
+
+
+        List<SubStoreType> subStoreTypeList = new ArrayList<>();
+        JSONArray jArray = (JSONArray) store;
+        if (jArray != null) {
+            for (int i = 0; i < jArray.length(); i++) {
+                try {
+                    Gson gson = new Gson();
+                    SubStoreType obj = gson.fromJson(jArray.getJSONObject(i).toString(), SubStoreType.class);
+                    subStoreTypeList.add(obj);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        customPopupSubStoreTypeAdapter = new CustomPopupRateSubStoreTypeAdapter(subStoreTypeList, mContext1, "StoreType", allChecked,isMultiple);
+
+        LinearLayoutManager horizontalLayoutManager1 = new LinearLayoutManager(mContext1, RecyclerView.VERTICAL, false);
+
+        rvItems1.setLayoutManager(horizontalLayoutManager1);
+
+        rvItems1.setAdapter(customPopupSubStoreTypeAdapter);
+
+        btSubmit1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                JSONObject jsonObject = new JSONObject();
+
+
+                if (!allChecked.equalsIgnoreCase("")) {
+                    for (int i = 0; i < subStoreTypeList.size(); i++) {
+                        if (subStoreTypeList.get(i).getStoreTypeId() != 10) {
+                            if (subStoreTypeList.get(i).getStoreTypeId() != 7) {
+                                if (subStoreTypeList.get(i).getStoreTypeId() != 11) {
+                                    if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("0.0") || subStoreTypeList.get(i).getRate().equalsIgnoreCase("0")) {
+                                        Toast.makeText(mContext1, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        validation = false;
+                                        break;
+                                    } else if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("")) {
+                                        Toast.makeText(mContext1, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        validation = false;
+                                        break;
+                                    } else {
+                                        validation = true;
+                                        try {
+                                            jsonObject.put(subStoreTypeList.get(i).getStoreTypeId() + "", subStoreTypeList.get(i).getRate());
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        //
+                                    }
+                                } else {
+                                    try {
+                                        subStoreTypeList.get(i).setRate("0");
+                                        jsonObject.put(subStoreTypeList.get(i).getStoreTypeId() + "", "0");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } else {
+                                try {
+                                    subStoreTypeList.get(i).setRate("0");
+                                    jsonObject.put(subStoreTypeList.get(i).getStoreTypeId() + "", "0");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        } else {
+                            subStoreTypeList.get(i).setRate("0");
+                            try {
+                                jsonObject.put(subStoreTypeList.get(i).getStoreTypeId() + "", "0");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+
+                    if (validation == true) {
+                        dialogInterface.onStoreType1(position, jsonObject, subStoreTypeList);
+                    }
+
+
+                } else {
+
+                    for (int i = 0; i < subStoreTypeList.size(); i++) {
+                        if (subStoreTypeList.get(i).isSelected()) {
+                            if (subStoreTypeList.get((i)).getStoreTypeId() != 8) {
+                                if (subStoreTypeList.get(i).getStoreTypeId() != 9) {
+                                    flag = "selected";
+                                    if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("0.0") || subStoreTypeList.get(i).getRate().equalsIgnoreCase("0")) {
+                                        Toast.makeText(mContext1, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        break;
+                                    } else if (subStoreTypeList.get(i).getRate().equalsIgnoreCase("")) {
+                                        Toast.makeText(mContext1, "Issue with rate:" + subStoreTypeList.get(i).getStoreType(), Toast.LENGTH_LONG).show();
+                                        break;
+                                    } else {
+                                        flag = "done";
+                                    }
+                                } else {
+                                    subStoreTypeList.get(i).setRate("0");
+                                    flag = "done";
+                                }
+                            } else {
+                                subStoreTypeList.get(i).setRate("0");
+                                flag = "done";
+                            }
+                        }
+                    }
+
+                    if (flag.equalsIgnoreCase("")) {
+                        dialogInterface.onStoreType(position, jsonObject);
+                    }
+
+                    if (flag.equalsIgnoreCase("done")) {
+                        dialogInterface.onStoreType1(position, jsonObject, subStoreTypeList);
+                        flag = "";
+                    }
+
+
+                }
+
+
+                //  recyclerViewClickListener.SingleClick(str, position);
+                // hideKeyboard(activity);
+            }
+        });
+        ivClose1 = dialog.findViewById(R.id.ivClose);
+        ivClose1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String str = "";
+                if (dataRate != null) {
+                    Log.e("suaave", dataRate.toString());
+                    str = TextUtils.join(",", dataRate);
+                    Log.e("itemlist", str);
+                    dialog.dismiss();
+                } else {
+//                    holder.check_box_store.setChecked(false);
+//                    str = "";
+//                    dataViews.get(position).setSelected(false);
+//                    dialog.dismiss();
+                    // dialogInterface.onClickNegative();
+                }
+                dialogInterface.onClickDetails(position + "", "", "", "");
+
+                dialog.dismiss();
+//                holder.check_box_store.setChecked(false);
+//                dataViews.get(position).setSelected(false);
+                dialogInterface.onStoreType(position, null);
+
+            }
+        });
+
+
         dialog.show();
     }
 
@@ -1674,6 +1878,21 @@ public class DialogUtil {
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onLongClick(View view, int position, String data) {
+
+    }
+
+    @Override
+    public void SingleClick(String popup, int position) {
+
     }
 
 

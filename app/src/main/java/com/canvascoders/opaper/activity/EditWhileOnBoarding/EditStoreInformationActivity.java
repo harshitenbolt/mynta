@@ -107,15 +107,15 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
     boolean[] checkedItems;
     private String same_address = "0", pincode;
     boolean[] checkedStoreType;
-    RelativeLayout rvVendorType, rvStoreType, rvLocality, rvApproach, rvShipmentTransfer, rvVendorTypeDetail;
-    private TextView tvTypeofVendor, tvStoreType, tvVendorTypeDetail, tvLocality, tvApproach, tvShipment;
+    RelativeLayout rvVendorType,  rvLocality, rvApproach, rvShipmentTransfer, rvVendorTypeDetail;
+    private TextView tvTypeofVendor,  tvVendorTypeDetail, tvLocality, tvApproach, tvShipment;
 
 
 
 
     String storeName="",shopNo="",streetName="",landmark="",storePincode="",storecity="",storeState="",route="",tyepeofVendor="",vendorType="",locality="",approach="",shipment_transfer="",licence_number="",storeType="",storeImage="";
     private Spinner dc;
-    private String lattitude = "", longitude = "";
+    private String lattitude = "", longitude = "",isStore = "";
     List<String> listStoreType = new ArrayList<>();
 
     private ArrayList<String> dcLists = new ArrayList<>();
@@ -131,7 +131,7 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
     CustomPopupShipmentAdapter customPopupShipmentAdapter;
     EditText etLicenceNumber;
 
-    private Switch switchGst, switchPartner;
+    private Switch switchGst, switchPartner,switchStore;
     private String isPartnered = "no";
     private String selectedString = "";
     EditText etRoute;
@@ -212,7 +212,7 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
                         tvApproach.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getApproach());
                         tvShipment.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getShipmentTransfer());
                         etLicenceNumber.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getLicenseNo());
-                        tvStoreType.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreType());
+                        //tvStoreType.setText(getTrackDetailsResponse.getData().get(0).getBasicDetails().getStoreType());
                         Glide.with(EditStoreInformationActivity.this).load(Constants.BaseImageURL+getTrackDetailsResponse.getData().get(0).getDocUpload().getShopImage()).into(ivStoreImage);
                     } else {
                         Toast.makeText(EditStoreInformationActivity.this, getTrackDetailsResponse.getResponse(), Toast.LENGTH_SHORT).show();
@@ -247,7 +247,6 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
 
         rvVendorType = findViewById(R.id.rvTypeVendor);
         rvVendorType.setOnClickListener(this);
-        rvStoreType = findViewById(R.id.rvStoreType);
         // etRoute = findViewById(R.id.etRouteNo);
         rvVendorTypeDetail = findViewById(R.id.rvVendorTypeDetail);
         rvApproach = findViewById(R.id.rvApproach);
@@ -256,7 +255,6 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
         rvShipmentTransfer = findViewById(R.id.rvShipment);
 
         tvTypeofVendor = findViewById(R.id.tvTypeofVendor);
-        tvStoreType = findViewById(R.id.tvStoreType);
         tvVendorTypeDetail = findViewById(R.id.tvVendorTypeDetail);
         tvApproach = findViewById(R.id.tvApproach);
         tvShipment = findViewById(R.id.tvShipment);
@@ -264,7 +262,7 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
 
         dc = (Spinner) findViewById(R.id.dc);
         switchPartner = findViewById(R.id.sw_partner);
-
+        switchStore = findViewById(R.id.sw_store);
         ivStoreImageSelected = findViewById(R.id.ivStoreImageSelected);
         ivStoreImageSelected.setOnClickListener(this);
 
@@ -286,10 +284,24 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
                 }
             }
         });
+
+        switchStore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Mylogger.getInstance().Logit(TAG, "" + isChecked);
+                // tvPartner.setEnabled(isChecked);
+                if (isChecked) {
+                    isStore = "yes";
+                } else {
+                    isStore = "no";
+
+                }
+            }
+        });
         rvShipmentTransfer.setOnClickListener(this);
         rvLocality.setOnClickListener(this);
         rvApproach.setOnClickListener(this);
-        rvStoreType.setOnClickListener(this);
+       // rvStoreType.setOnClickListener(this);
         rvVendorTypeDetail.setOnClickListener(this);
 
         /*ifgst = findViewById(R.id.switch_gst);
@@ -691,7 +703,7 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
                 startActivityForResult(chooseImageIntent1, 105);
                 break;
 
-            case R.id.rvStoreType:
+           /* case R.id.rvStoreType:
                 String[] arr = new String[select_Store_type.size()];
                 for (int i = 0; i < select_Store_type.size(); i++) {
                     arr[i] = select_Store_type.get(i);
@@ -728,7 +740,7 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
                 });
                 AlertDialog mDialogStoreType = mBuilderStoreType.create();
                 mDialogStoreType.show();
-                break;
+                break;*/
 
 
         }
@@ -884,12 +896,12 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
             Toast.makeText(EditStoreInformationActivity.this, "Select Vendor type Detail", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (TextUtils.isEmpty(tvStoreType.getText().toString())) {
-              /*  tvStoreType.requestFocus();
-                tvStoreType.setError("Provide Store Type");*/
+      /*  if (TextUtils.isEmpty(tvStoreType.getText().toString())) {
+              *//*  tvStoreType.requestFocus();
+                tvStoreType.setError("Provide Store Type");*//*
             Toast.makeText(EditStoreInformationActivity.this, "Please Select Store Type", Toast.LENGTH_LONG).show();
             return false;
-        }
+        }*/
 
         if (tvLocality.getText().equals("")) {
             //  tvLocality.requestFocus();
@@ -923,16 +935,16 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
                 etLicenceNumeber.requestFocus();
                 return false;
             }*/
-        if (tvStoreType.getText().toString().equalsIgnoreCase("Select Store Type")) {
+      /*  if (tvStoreType.getText().toString().equalsIgnoreCase("Select Store Type")) {
             Toast.makeText(EditStoreInformationActivity.this, "Please Select Store Type", Toast.LENGTH_LONG).show();
             return false;
-        }
+        }*/
 
-        if (listStoreType.size() == 0) {
+    /*    if (listStoreType.size() == 0) {
             Toast.makeText(EditStoreInformationActivity.this, "Please Select Store Type", Toast.LENGTH_LONG).show();
             // showMSG(false, "Provide Pincode");
             return false;
-        }
+        }*/
         if (shopImg.equalsIgnoreCase("")) {
             Toast.makeText(EditStoreInformationActivity.this, "Please Select image of Store ", Toast.LENGTH_LONG).show();
             // showMSG(false, "Provide Pincode");
@@ -1022,7 +1034,7 @@ public class EditStoreInformationActivity extends AppCompatActivity implements V
         user.put(Constants.PARAM_APPROACH, "" + tvApproach.getText());
         user.put(Constants.PARAM_SHIPMENT_TRANS, "" + tvShipment.getText());
         user.put(Constants.PARAM_PARTNER_WITH_OTHER, "" + isPartnered);
-        user.put(Constants.PARAM_STORE_TYPE_CONFIG, "" + tvStoreType.getText());
+        user.put(Constants.PARAM_STORE_TYPE_CONFIG, "" + isStore);
 
 
         Log.e("User Date", "Edit info" + user);

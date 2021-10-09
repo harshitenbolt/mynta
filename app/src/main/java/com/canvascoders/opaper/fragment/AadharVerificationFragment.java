@@ -1077,6 +1077,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                 }
 
                                 @Override
+                                public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                                }
+
+                                @Override
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                 }
@@ -1108,6 +1113,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                     ApiCallSubmitOcr(name, fathername, dob, id, voterDetailsId, filename, fileUrl);
 
                                     ApiCallSubmitKYC(name, fathername, dob, id);
+                                }
+
+                                @Override
+                                public void onStoreType(Integer positin, JSONObject jsonObject) {
+
                                 }
 
                                 @Override
@@ -1227,6 +1237,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                 }
 
                                 @Override
+                                public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                                }
+
+                                @Override
                                 public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                 }
@@ -1257,6 +1272,11 @@ public class AadharVerificationFragment extends Fragment implements View.OnClick
                                     ApiCallSubmitOcr(name, fathername, dob, id, dlIdDetailId, filename, fileUrl);
                                     ApiCallSubmitKYC(name, fathername, dob, id);
 
+
+                                }
+
+                                @Override
+                                public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                                 }
 

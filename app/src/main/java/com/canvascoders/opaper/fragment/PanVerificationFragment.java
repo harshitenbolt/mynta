@@ -290,6 +290,11 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                             }
 
                             @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                            }
+
+                            @Override
                             public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                             }
@@ -336,6 +341,11 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                                         Constants.ShowNoInternet(getActivity());
                                     }
                                 }
+
+                            }
+
+                            @Override
+                            public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                             }
 
@@ -768,6 +778,11 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                                     }
 
                                     @Override
+                                    public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+                                    }
+
+                                    @Override
                                     public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
                                     }
@@ -835,6 +850,11 @@ public class PanVerificationFragment extends Fragment implements View.OnClickLis
                                             } else {
                                                 Constants.ShowNoInternet(getActivity());
                                             }*/
+
+                                        }
+
+                                        @Override
+                                        public void onStoreType(Integer positin, JSONObject jsonObject) {
 
                                         }
 

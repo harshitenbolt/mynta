@@ -45,14 +45,17 @@ import com.canvascoders.opaper.activity.OTPActivity;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -210,7 +213,9 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
                                 Log.e("in JSON", "" + jsonObject.toString());
 
                                 if (jsonObject.getString("responseCode").equalsIgnoreCase("200")) {
-                                    JSONArray rateJsonArray = jsonObject.getJSONArray("data");
+                                    JSONArray rateJsonArray = jsonObject.getJSONArray("service");
+
+
                                     JSONObject result = jsonObject.getJSONObject("Mensa - Alteration");
                                     String msg = jsonObject.getString("Marvel DC 2.0 MSG");
                                        /* for (int i = 0; i < result.length(); i++) {
@@ -243,28 +248,9 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
                                     }
                                     rateTypeBeans.clear();
                                     rateTypeBeans.addAll(tempList);
-//                                    if (isSecondTime) {
-//                                        if (tempList.get(5).getIsApproved().equalsIgnoreCase("2") ||
-//                                                tempList.get(5).getIsApproved().equalsIgnoreCase("1")) {
-//
-//                                            tempList.get(5).setSelected(true);
-//                                            rateTypeBeans.add(tempList.get(5));
-//                                        } else {
-//                                            tempList.remove(5);
-//                                            for (int i = 0; i < tempList.size(); i++) {
-//                                                if (tempList.get(i).getIsApproved().equalsIgnoreCase("2") ||
-//                                                        tempList.get(i).getIsApproved().equalsIgnoreCase("1"))
-//                                                    tempList.get(i).setSelected(true);
-//                                            }
-//                                            rateTypeBeans.addAll(tempList);
-//                                        }
-//                                    } else {
-//
-//                                        rateTypeBeans.addAll(tempList);
-//                                    }
+                                    Constants.subStoreTypeList = rateTypeBeans;
 
-
-                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, getContext(), RateFragment.this, msg);
+                                    rateListAdapter = new RateListAdapter(rateTypeBeans, yourHashMap, getActivity(), RateFragment.this, msg);
                                     recyclerView.setAdapter(rateListAdapter);
                                 } else if (jsonObject.getString("responseCode").equalsIgnoreCase("202")) {
                                     showAlert(jsonObject.getString("response"));
@@ -325,6 +311,8 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
 
             if (AppApplication.networkConnectivity.isNetworkAvailable()) {
                 checkAndPrepareObj();
+
+
             } else {
                 Constants.ShowNoInternet(mcontext);
             }
@@ -339,7 +327,30 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
         // checking from neutral stores to get updated data.
         for (int i = 0; i < rateTypeBeans.size(); i++) {
 
-            if (rateTypeBeans.get(i).isSelected() && !rateTypeBeans.get(i).getIsApproved().equalsIgnoreCase("1")) {
+
+            if (rateTypeBeans.get(i).isSelected()) {
+                //  jsonArray.
+
+                if (rateTypeBeans.get(i).getStoreTypeId() == 3) {
+                    JsonObject jsonObject = new JsonObject();
+                    jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
+                    jsonObject.addProperty("rate", "0");
+                    jsonObject.addProperty("sub_store_type", alterationselected);
+                    jsonArray.add(jsonObject);
+                } else {
+                    for (int i1 = 0; i1 < rateTypeBeans.get(i).getList().size(); i1++) {
+                        if (rateTypeBeans.get(i).getList().get(i1).isSelected()) {
+                            JsonObject jsonObject = new JsonObject();
+                            jsonObject.addProperty("store_type", rateTypeBeans.get(i).getList().get(i1).getStoreTypeId());
+                            jsonObject.addProperty("rate", rateTypeBeans.get(i).getList().get(i1).getRate() + "");
+                            jsonArray.add(jsonObject);
+                        }
+                    }
+                }
+
+            }
+
+     /*       if (rateTypeBeans.get(i).isSelected() && !rateTypeBeans.get(i).getIsApproved().equalsIgnoreCase("1")) {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("store_type", rateTypeBeans.get(i).getStoreTypeId());
 
@@ -398,7 +409,10 @@ public class RateFragment extends Fragment implements View.OnClickListener, Recy
                 }
                 jsonArray.add(jsonObject);
             }
+     */
         }
+        Log.e("hamadigyu", jsonArray.toString());
+
 
         if (jsonArray.size() <= 0) {
             Toast.makeText(mcontext, "Nothing to Update or press Skip to sign addendum", Toast.LENGTH_LONG).show();
