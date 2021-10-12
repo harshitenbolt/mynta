@@ -95,7 +95,7 @@
                                 android:layout_height="@dimen/_20sdp"
                                 android:layout_marginLeft="@dimen/_35sdp"
                                 android:layout_marginTop="@dimen/_15sdp"
-                                android:text="12"
+                                android:text=""
                                 android:visibility="gone"
                                 android:fontFamily="@font/montesemibold"
                                 android:gravity="center"

@@ -1563,6 +1563,11 @@ public class InfoFragment extends Fragment implements View.OnClickListener, Recy
     }
 
     @Override
+    public void onStoreType(Integer positin, JSONObject jsonObject) {
+
+    }
+
+    @Override
     public void onClickChequeDetails(String accName, String payeename, String ifsc, String bankname, String BranchName, String bankAdress) {
 
         itrNumber = accName;

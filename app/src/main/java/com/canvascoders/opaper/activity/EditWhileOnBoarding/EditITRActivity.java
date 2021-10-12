@@ -46,6 +46,8 @@ import com.canvascoders.opaper.utils.RealPathUtil;
 import com.canvascoders.opaper.utils.RequestPermissionHandler;
 import com.canvascoders.opaper.utils.SessionManager;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -233,6 +235,11 @@ public class EditITRActivity extends AppCompatActivity implements DialogListner,
 
     @Override
     public void onClickDetails(String name, String fathername, String dob, String id) {
+
+    }
+
+    @Override
+    public void onStoreType(Integer positin, JSONObject jsonObject) {
 
     }
 

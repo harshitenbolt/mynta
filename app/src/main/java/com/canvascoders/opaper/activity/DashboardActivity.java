@@ -749,7 +749,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
                         if (getnotificationdata.getAgentNotificationCount() == 0) {
                             tvCountNotification.setVisibility(View.GONE);
                         } else {
-                            tvCountNotification.setVisibility(View.VISIBLE);
+                            tvCountNotification.setVisibility(View.GONE);
                         }
                         if (getnotificationdata.getTaskCount() == 0) {
                             tvCountTasks.setVisibility(View.GONE);
@@ -760,7 +760,7 @@ public class DashboardActivity extends AppCompatActivity implements NavigationVi
 
                         tvInProgressVendorCount.setText(String.valueOf(getnotificationdata.getInProgressCount()));
                         tvLiveVendorCount.setText(String.valueOf(getnotificationdata.getLiveVendorCount()));
-                        tvCountNotification.setText(String.valueOf(getnotificationdata.getAgentNotificationCount()));
+                        //tvCountNotification.setText(String.valueOf(getnotificationdata.getAgentNotificationCount()));
                         tvCountTasks.setText(String.valueOf(getnotificationdata.getTaskCount()));
 
 
